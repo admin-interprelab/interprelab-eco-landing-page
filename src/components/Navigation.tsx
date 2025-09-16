@@ -8,11 +8,11 @@ export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
-    { label: "Products", href: "#products" },
-    { label: "Solutions", href: "#solutions" },
-    { label: "Security", href: "#security" },
-    { label: "About", href: "#about" },
-    { label: "Contact", href: "#contact" }
+    { label: "Training Platform", href: "#training" },
+    { label: "Live Assistant", href: "#assistant" },
+    { label: "AI Analyst", href: "#analyst" },
+    { label: "Pricing", href: "#pricing" },
+    { label: "Security", href: "#security" }
   ];
 
   return (

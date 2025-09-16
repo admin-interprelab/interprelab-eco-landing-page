@@ -1,111 +1,141 @@
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { 
   Mic, 
-  MicOff, 
+  Square, 
   Volume2, 
   VolumeX, 
-  Settings, 
   Minimize2, 
-  Maximize2,
+  Settings,
   Languages,
-  Brain,
-  Activity,
-  AlertCircle,
-  CheckCircle,
-  Clock,
-  User,
-  Stethoscope
+  Stethoscope,
+  Globe,
+  BarChart3,
+  ArrowRight
 } from "lucide-react";
 
+// Updated interface to include extended agent types
 interface ContextWindow {
   id: string;
   title: string;
   content: string;
-  type: 'translation' | 'analysis' | 'cultural' | 'medical';
+  type: 'translation' | 'medical' | 'cultural' | 'analysis';
   confidence: number;
-  timestamp: string;
+  timestamp: Date;
 }
 
 export const ExtensionUI = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
-  const [contextWindows, setContextWindows] = useState<ContextWindow[]>([
+  const [contextWindows, setContextWindows] = useState<ContextWindow[]>([]);
+
+  // Mock context windows data representing multi-agent system processing
+  const mockContextWindows: ContextWindow[] = [
     {
       id: '1',
-      title: 'Live Translation',
-      content: 'The patient reports chest pain that started this morning...',
+      title: 'Speech-to-Text Agent',
+      content: 'Processed audio: "The patient presents with chest pain and shortness of breath..." (PII removed)',
       type: 'translation',
-      confidence: 0.94,
-      timestamp: new Date().toLocaleTimeString()
+      confidence: 98,
+      timestamp: new Date()
     },
     {
       id: '2', 
-      title: 'Medical Context',
-      content: 'Chest pain symptoms require immediate assessment for cardiac events...',
+      title: 'Medical Terminology Agent',
+      content: 'Detected: chest pain (dolor torácico), shortness of breath (disnea), cardiovascular assessment needed',
       type: 'medical',
-      confidence: 0.91,
-      timestamp: new Date().toLocaleTimeString()
+      confidence: 96,
+      timestamp: new Date(Date.now() - 15000)
     },
     {
       id: '3',
-      title: 'Cultural Note',
-      content: 'In this culture, patients may understate pain levels...',
+      title: 'Cultural Context Agent', 
+      content: 'Patient communication style: Direct. Cultural background: Latin American. Adaptation recommended.',
       type: 'cultural',
-      confidence: 0.87,
-      timestamp: new Date().toLocaleTimeString()
+      confidence: 92,
+      timestamp: new Date(Date.now() - 30000)
+    },
+    {
+      id: '4',
+      title: 'Ethics & QA Agent',
+      content: 'Interpretation accuracy: 95%. Completeness: 98%. Reminder: Maintain first-person speech patterns.',
+      type: 'analysis',
+      confidence: 94,
+      timestamp: new Date(Date.now() - 45000)
+    },
+    {
+      id: '5',
+      title: 'Live Assistance LLM',
+      content: 'Suggested phrase: "El paciente presenta dolor en el pecho y dificultad para respirar"',
+      type: 'translation',
+      confidence: 97,
+      timestamp: new Date(Date.now() - 60000)
+    },
+    {
+      id: '6',
+      title: 'Session Analytics',
+      content: 'Session duration: 12:34. Words interpreted: 1,247. Medical terms: 23. Overall performance: Excellent',
+      type: 'analysis',
+      confidence: 91,
+      timestamp: new Date(Date.now() - 75000)
     }
-  ]);
+  ];
 
   useEffect(() => {
-    // Simulate real-time updates
+    // Initialize with mock data
+    setContextWindows(mockContextWindows);
+
+    // Simulate real-time updates when recording
     const interval = setInterval(() => {
       if (isRecording && Math.random() > 0.7) {
         const updates = [
-          'Heart rate appears elevated, recommend ECG...',
-          'Patient mentions family history of cardiac issues...',
-          'Cultural consideration: Direct questioning preferred...',
-          'Medical term "angina" may need explanation...'
+          'New medical term detected: "hypertension" -> "hipertensión"',
+          'Cultural note: Patient may minimize symptoms due to cultural background',
+          'QA Alert: Consider slowing pace for complex medical terms',
+          'Live suggestion: "El médico va a revisar su presión arterial"',
+          'Analytics: Session quality improving, confidence up 3%'
         ];
         
         const randomUpdate = updates[Math.floor(Math.random() * updates.length)];
+        const types: Array<'translation' | 'medical' | 'cultural' | 'analysis'> = ['translation', 'medical', 'cultural', 'analysis'];
+        
         setContextWindows(prev => {
           const newWindow: ContextWindow = {
             id: Date.now().toString(),
             title: 'Real-time Update',
             content: randomUpdate,
-            type: Math.random() > 0.5 ? 'medical' : 'cultural',
-            confidence: 0.8 + Math.random() * 0.2,
-            timestamp: new Date().toLocaleTimeString()
+            type: types[Math.floor(Math.random() * types.length)],
+            confidence: 85 + Math.random() * 15,
+            timestamp: new Date()
           };
-          return [newWindow, ...prev.slice(0, 2)];
+          return [newWindow, ...prev.slice(0, 5)];
         });
       }
-    }, 5000);
+    }, 4000);
 
     return () => clearInterval(interval);
   }, [isRecording]);
 
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case 'translation': return <Languages className="w-4 h-4" />;
-      case 'medical': return <Stethoscope className="w-4 h-4" />;
-      case 'cultural': return <User className="w-4 h-4" />;
-      case 'analysis': return <Brain className="w-4 h-4" />;
-      default: return <AlertCircle className="w-4 h-4" />;
+      case 'translation': return <Languages className="w-3 h-3" />;
+      case 'medical': return <Stethoscope className="w-3 h-3" />;
+      case 'cultural': return <Globe className="w-3 h-3" />;
+      case 'analysis': return <BarChart3 className="w-3 h-3" />;
+      default: return <Languages className="w-3 h-3" />;
     }
   };
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'translation': return 'text-primary';
-      case 'medical': return 'text-success';
-      case 'cultural': return 'text-warning';
-      case 'analysis': return 'text-secondary';
-      default: return 'text-muted-foreground';
+      case 'translation': return 'bg-primary/20';
+      case 'medical': return 'bg-success/20';
+      case 'cultural': return 'bg-warning/20';
+      case 'analysis': return 'bg-secondary/20';
+      default: return 'bg-muted/20';
     }
   };
 
@@ -113,10 +143,10 @@ export const ExtensionUI = () => {
     return (
       <div className="fixed bottom-6 right-6 z-50">
         <Button 
-          variant="glass" 
+          variant="outline" 
           size="icon"
           onClick={() => setIsMinimized(false)}
-          className="w-14 h-14 rounded-full glow animate-pulse-glow"
+          className="w-14 h-14 rounded-full glow animate-pulse-glow bg-card/95 backdrop-blur-sm"
         >
           <Languages className="w-6 h-6" />
         </Button>
@@ -125,109 +155,134 @@ export const ExtensionUI = () => {
   }
 
   return (
-    <div className="fixed bottom-6 right-6 w-96 max-h-[80vh] z-50 extension-window">
-      {/* Header */}
-      <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-success rounded-full animate-pulse" />
-            <CardTitle className="text-lg">InterpreCoach</CardTitle>
-          </div>
-          
-          <div className="flex items-center gap-1">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8"
-              onClick={() => setIsMuted(!isMuted)}
-            >
-              {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-            </Button>
-            
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8"
-              onClick={() => setIsMinimized(true)}
-            >
-              <Minimize2 className="w-4 h-4" />
-            </Button>
-            
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8"
-            >
-              <Settings className="w-4 h-4" />
-            </Button>
-          </div>
-        </div>
-
-        {/* Control Bar */}
-        <div className="flex items-center justify-between pt-2">
-          <div className="flex items-center gap-2">
-            <Button
-              variant={isRecording ? "destructive" : "success"}
-              size="sm"
-              onClick={() => setIsRecording(!isRecording)}
-              className="flex items-center gap-2"
-            >
-              {isRecording ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
-              {isRecording ? "Stop" : "Start"}
-            </Button>
-            
-            <Badge variant="outline" className="text-xs">
-              EN → ES
-            </Badge>
-          </div>
-
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <Activity className="w-3 h-3" />
-            <span>{isRecording ? "Active" : "Standby"}</span>
-          </div>
-        </div>
-      </CardHeader>
-
-      {/* Context Windows */}
-      <CardContent className="space-y-3 max-h-96 overflow-y-auto">
-        {contextWindows.map((window) => (
-          <Card key={window.id} className="bg-muted/30 border-border/50">
-            <CardContent className="p-3">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <span className={getTypeColor(window.type)}>
-                    {getTypeIcon(window.type)}
-                  </span>
-                  <span className="text-sm font-medium">{window.title}</span>
-                </div>
-                
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <div className="flex items-center gap-1">
-                    <CheckCircle className="w-3 h-3 text-success" />
-                    <span>{Math.round(window.confidence * 100)}%</span>
-                  </div>
-                  <Clock className="w-3 h-3" />
-                  <span>{window.timestamp}</span>
+    <div className="fixed bottom-6 right-6 w-[480px] max-h-[600px] z-50">
+      <div className="extension-window">
+        <Card className="h-full bg-card/95 border-border/50">
+          <CardContent className="p-0 h-full flex flex-col">
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 border-b border-border/50">
+              <div className="flex items-center gap-3">
+                <div className="w-3 h-3 bg-success rounded-full animate-pulse" />
+                <div>
+                  <h3 className="font-semibold text-sm">InterpreCoach Multi-Agent System</h3>
+                  <p className="text-xs text-muted-foreground">Real-time AI Processing Pipeline</p>
                 </div>
               </div>
               
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {window.content}
-              </p>
-            </CardContent>
-          </Card>
-        ))}
-
-        {/* Status Indicator */}
-        {isRecording && (
-          <div className="flex items-center justify-center py-4">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <div className="w-2 h-2 bg-success rounded-full animate-pulse" />
-              <span>Listening and processing...</span>
+              <div className="flex items-center gap-2">
+                <Badge variant="outline" className="text-xs">
+                  6 Agents Active
+                </Badge>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="w-6 h-6"
+                  onClick={() => setIsMuted(!isMuted)}
+                >
+                  {isMuted ? <VolumeX className="w-3 h-3" /> : <Volume2 className="w-3 h-3" />}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="w-6 h-6"
+                  onClick={() => setIsMinimized(true)}
+                >
+                  <Minimize2 className="w-3 h-3" />
+                </Button>
+                <Button variant="ghost" size="icon" className="w-6 h-6">
+                  <Settings className="w-3 h-3" />
+                </Button>
+              </div>
             </div>
-          </div>
-        )}
-      </CardContent>
+
+            {/* Control Bar */}
+            <div className="flex items-center justify-between p-4 border-b border-border/50">
+              <div className="flex items-center gap-3">
+                <Button
+                  variant={isRecording ? "destructive" : "default"}
+                  size="sm"
+                  onClick={() => setIsRecording(!isRecording)}
+                  className="flex items-center gap-2"
+                >
+                  {isRecording ? (
+                    <>
+                      <Square className="w-3 h-3" />
+                      Stop Processing
+                    </>
+                  ) : (
+                    <>
+                      <Mic className="w-3 h-3" />
+                      Start Processing
+                    </>
+                  )}
+                </Button>
+                
+                <Badge variant="outline" className="text-xs">
+                  EN → ES Medical
+                </Badge>
+                
+                <Badge className="bg-success text-success-foreground text-xs">
+                  WebSocket Active
+                </Badge>
+              </div>
+            </div>
+
+            {/* Content Area - Multi-Agent Context Windows */}
+            <div className="flex-1 overflow-auto p-4 space-y-3">
+              <div className="grid grid-cols-2 gap-3">
+                {contextWindows.map((window) => (
+                  <Card key={window.id} className="bg-muted/30 border-border/50 hover:bg-muted/40 transition-colors">
+                    <CardContent className="p-3">
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                          <div className={`p-1.5 rounded ${getTypeColor(window.type)}`}>
+                            {getTypeIcon(window.type)}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="text-xs font-medium truncate">{window.title}</h4>
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                              <span>{window.confidence}%</span>
+                              <span>{window.timestamp.toLocaleTimeString()}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3">
+                          {window.content}
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+              
+              {isRecording && (
+                <div className="flex items-center gap-2 p-3 bg-success/10 rounded-lg border border-success/20 mt-4">
+                  <div className="w-2 h-2 bg-success rounded-full animate-pulse" />
+                  <span className="text-sm text-success-foreground">
+                    Multi-agent system processing audio stream...
+                  </span>
+                </div>
+              )}
+              
+              {/* Data Flow Visualization */}
+              <div className="mt-4 p-3 bg-primary/10 rounded-lg border border-primary/20">
+                <div className="text-xs text-primary-foreground mb-2 font-medium">Data Flow Pipeline:</div>
+                <div className="flex items-center gap-2 text-xs">
+                  <span className="px-2 py-1 bg-primary/20 rounded">Audio</span>
+                  <ArrowRight className="w-3 h-3" />
+                  <span className="px-2 py-1 bg-success/20 rounded">STT</span>
+                  <ArrowRight className="w-3 h-3" />
+                  <span className="px-2 py-1 bg-warning/20 rounded">PII Remove</span>
+                  <ArrowRight className="w-3 h-3" />
+                  <span className="px-2 py-1 bg-accent/20 rounded">LLM</span>
+                  <ArrowRight className="w-3 h-3" />
+                  <span className="px-2 py-1 bg-secondary/20 rounded">UI</span>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };

@@ -27,40 +27,53 @@ export const Hero = () => {
             Revolutionary AI-Powered Interpretation Platform
           </Badge>
 
-          {/* Main Headline */}
+           {/* Main Headline */}
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight">
             <span className="bg-gradient-primary bg-clip-text text-transparent animate-pulse-glow">
               InterpreLab
             </span>
             <br />
             <span className="text-foreground">
-              Redefining Medical &amp; Legal
+              Complete AI-Powered
             </span>
             <br />
             <span className="text-muted-foreground text-4xl md:text-5xl lg:text-6xl">
-              Interpretation
+              Interpreter Ecosystem
             </span>
           </h1>
 
           {/* Subtitle */}
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed animate-slide-up">
-            Advanced real-time interpretation powered by AI, designed for critical healthcare and legal environments. 
-            Where technology meets human expertise for life-changing communication.
+            Three integrated solutions: <strong>InterpreLab Platform</strong> for comprehensive training, 
+            <strong>InterpreCoach Extension</strong> for live session assistance, and <strong>InterpreBot Analyst</strong> 
+            for personalized skill assessment and development.
           </p>
 
           {/* Key Features */}
-          <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground animate-slide-up">
-            <div className="flex items-center gap-2">
-              <Shield className="w-5 h-5 text-success" />
-              <span>HIPAA Compliant</span>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto animate-slide-up">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
+                <span className="text-white text-sm">🎓</span>
+              </div>
+              <span>Training Platform</span>
             </div>
-            <div className="flex items-center gap-2">
-              <Zap className="w-5 h-5 text-primary" />
-              <span>Real-time Processing</span>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <div className="w-8 h-8 bg-gradient-success rounded-lg flex items-center justify-center">
+                <span className="text-white text-sm">⚡</span>
+              </div>
+              <span>Live Assistant</span>
             </div>
-            <div className="flex items-center gap-2">
-              <Users className="w-5 h-5 text-secondary" />
-              <span>Human-AI Collaboration</span>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                <span className="text-white text-sm">🤖</span>
+              </div>
+              <span>AI Analyst</span>
+            </div>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
+                <span className="text-white text-sm">☁️</span>
+              </div>
+              <span>Google Cloud</span>
             </div>
           </div>
 
