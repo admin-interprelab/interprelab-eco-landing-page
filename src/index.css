@@ -211,10 +211,10 @@ All colors MUST be HSL for consistency and theming.
 
 @keyframes pulseGlow {
   0%, 100% {
-    box-shadow: 0 0 20px hsl(209 84% 52% / 0.3);
+    transform: scale(1);
   }
   50% {
-    box-shadow: 0 0 40px hsl(209 84% 52% / 0.6);
+    transform: scale(1.02);
   }
 }
 
