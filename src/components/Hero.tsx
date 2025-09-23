@@ -29,7 +29,7 @@ export const Hero = () => {
 
            {/* Main Headline */}
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-none">
-            <span className="bg-gradient-primary bg-clip-text text-transparent animate-pulse-glow">
+            <span className="bg-gradient-primary bg-clip-text text-transparent glow">
               InterpreLab
             </span>
             <br />
@@ -44,9 +44,9 @@ export const Hero = () => {
 
           {/* Subtitle */}
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed animate-slide-up">
-            Three integrated solutions: <strong>InterpreLab Platform</strong> for comprehensive training, 
-            <strong>InterpreCoach Extension</strong> for live session assistance, and <strong>InterpreBot Analyst</strong> 
-            for personalized skill assessment and development.
+            InterpreLab offers a comprehensive ecosystem of AI-powered solutions: <strong>InterpreBot</strong>, 
+            <strong>InterpreCoach</strong>, Customized Learning Paths, Certification-Ready Training Courses, 
+            Interpreter Community & Resources, and advanced AI-driven Linguistic Analysis Features.
           </p>
 
           {/* Key Features */}

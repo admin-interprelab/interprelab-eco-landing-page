@@ -112,26 +112,26 @@ export const Testimonials = () => {
               {testimonials.map((testimonial, index) => (
                 <div key={index} className="w-full flex-shrink-0 px-4">
                   <Card className="bg-card/50 border-border/50 backdrop-blur-sm">
-                    <CardContent className="p-8">
-                      <div className="space-y-6">
-                        <div className="flex items-center gap-4">
-                          <Avatar className="w-16 h-16">
+                      <CardContent className="p-4 md:p-8">
+                        <div className="space-y-4 md:space-y-6">
+                        <div className="flex items-center gap-3 md:gap-4">
+                          <Avatar className="w-12 h-12 md:w-16 md:h-16 flex-shrink-0">
                             <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
                             <AvatarFallback>{testimonial.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                           </Avatar>
-                          <div className="flex-1">
-                            <h4 className="text-xl font-bold text-foreground">{testimonial.name}</h4>
-                            <p className="text-muted-foreground">{testimonial.role}</p>
-                            <p className="text-sm text-muted-foreground">{testimonial.location}</p>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="text-lg md:text-xl font-bold text-foreground truncate">{testimonial.name}</h4>
+                            <p className="text-sm md:text-base text-muted-foreground truncate">{testimonial.role}</p>
+                            <p className="text-xs md:text-sm text-muted-foreground truncate">{testimonial.location}</p>
                           </div>
-                          <Badge className={`${getSpecialtyColor(testimonial.specialty)} border-0 text-white`}>
+                          <Badge className={`${getSpecialtyColor(testimonial.specialty)} border-0 text-white text-xs whitespace-nowrap`}>
                             {testimonial.specialty}
                           </Badge>
                         </div>
 
                         <div className="relative">
                           <Quote className="w-8 h-8 text-primary/30 absolute -top-2 -left-2" />
-                          <blockquote className="text-lg text-muted-foreground leading-relaxed pl-6">
+                          <blockquote className="text-sm md:text-lg text-muted-foreground leading-relaxed pl-6">
                             {testimonial.quote}
                           </blockquote>
                         </div>

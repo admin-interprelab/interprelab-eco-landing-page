@@ -15,30 +15,30 @@ export const Resources = () => {
   const resources = [
     {
       icon: Play,
-      title: "Training Videos",
-      description: "Comprehensive video library for medical interpreters with real-world scenarios",
-      items: ["Medical Terminology", "Patient Communication", "Emergency Procedures"],
+      title: "Training Videos & Mock Scenarios",
+      description: "Comprehensive library with realistic medical interpreting encounters and AI-powered feedback",
+      items: ["Medical Terminology Mastery", "Patient Communication", "Emergency Procedures", "Cultural Context Training"],
       color: "bg-gradient-primary"
     },
     {
       icon: Users,
-      title: "Roleplay Scenarios",
-      description: "Interactive practice sessions with AI-powered feedback",
-      items: ["Doctor-Patient Consults", "Legal Depositions", "Emergency Situations"],
+      title: "Certification-Ready Courses",
+      description: "40-60 hour NBCMI & CCHI approved courses for certification preparation",
+      items: ["NBCMI Preparation", "CCHI Prerequisites", "Written Exam Readiness", "Professional Standards"],
       color: "bg-gradient-success"
     },
     {
       icon: BookOpen,
-      title: "Multilingual Dictionaries",
-      description: "Specialized dictionaries for medical and legal terminology",
-      items: ["Spanish-English Medical", "Legal Terms Database", "Cultural Context Guide"],
+      title: "AI-Driven Analysis Features",
+      description: "Advanced linguistic analysis with personalized insights and performance tracking",
+      items: ["Deep Performance Dashboard", "Weakness Identification", "Learning Path Generation", "Progress Analytics"],
       color: "bg-gradient-to-r from-purple-500 to-pink-500"
     },
     {
       icon: Scale,
-      title: "Legal & Compliance",
-      description: "Stay updated with interpretation standards and regulations",
-      items: ["HIPAA Guidelines", "Court Interpretation Rules", "Ethics Standards"],
+      title: "Legal References & Ethics",
+      description: "Comprehensive legal framework and ethical guidelines for professional interpreters",
+      items: ["HIPAA Compliance", "Court Procedures", "Professional Ethics", "Legal Documentation"],
       color: "bg-gradient-to-r from-orange-500 to-red-500"
     }
   ];
@@ -54,14 +54,14 @@ export const Resources = () => {
       <div className="container mx-auto relative z-10">
         <div className="text-center mb-16 animate-fade-in">
           <Badge className="bg-gradient-primary border-0 text-white px-4 py-2 mb-4">
-            Learning Resources
+            Comprehensive Resources & Community
           </Badge>
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-            Everything You Need to Excel
+            Professional Development Ecosystem
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Access comprehensive training materials, practice scenarios, and professional development resources 
-            designed specifically for medical and legal interpreters.
+            From certification-ready training courses to AI-driven linguistic analysis features and a dedicated 
+            interpreter community platform - everything you need for professional excellence.
           </p>
         </div>
 
@@ -109,8 +109,8 @@ export const Resources = () => {
             </div>
             
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Connect with the global interpreter community. Share experiences, discuss challenging situations, 
-              and discover new opportunities in the field.
+              InterpreLinks: A dedicated social web application for interpreters, like a specialized LinkedIn for our community. 
+              Share experiences, get peer feedback, and discover professional opportunities.
             </p>
 
             <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
