@@ -2,17 +2,18 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
-import { Menu, Chrome, Shield, Phone, Mail, ArrowRight } from "lucide-react";
+import { Menu, Chrome, Shield, Phone, Mail, ArrowRight, User } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
-    { label: "Training Platform", href: "#training" },
-    { label: "Live Assistant", href: "#assistant" },
-    { label: "AI Analyst", href: "#analyst" },
-    { label: "Pricing", href: "#pricing" },
-    { label: "Security", href: "#security" }
+    { label: "InterpreBot", href: "/interprebot" },
+    { label: "InterpreCoach", href: "/interprecoach" },
+    { label: "Resources", href: "/resources" },
+    { label: "About Us", href: "/about" },
+    { label: "Get in Touch", href: "/contact" }
   ];
 
   return (
@@ -20,7 +21,7 @@ export const Navigation = () => {
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-3">
+          <Link to="/" className="flex items-center gap-3">
             <div className="p-2 bg-gradient-primary rounded-lg">
               <Shield className="w-6 h-6 text-white" />
             </div>
@@ -28,31 +29,34 @@ export const Navigation = () => {
               <h1 className="text-xl font-bold">InterpreLab</h1>
               <p className="text-xs text-muted-foreground">Advanced Interpretation</p>
             </div>
-          </div>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
-              <a
+              <Link
                 key={item.label}
-                href={item.href}
+                to={item.href}
                 className="text-sm font-medium text-foreground hover:text-primary transition-colors"
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
           </div>
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center gap-3">
-            <Button variant="glass" size="sm" className="flex items-center gap-2">
-              <Chrome className="w-4 h-4" />
-              Extension
-            </Button>
-            <Button variant="hero" size="sm">
-              Get Started
-              <ArrowRight className="w-4 h-4 ml-1" />
-            </Button>
+            <Link to="/waitlist">
+              <Button variant="glass" size="sm" className="flex items-center gap-2">
+                Join Waitlist
+              </Button>
+            </Link>
+            <Link to="/signin">
+              <Button variant="hero" size="sm">
+                <User className="w-4 h-4 mr-2" />
+                Sign In
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Menu */}
@@ -65,25 +69,28 @@ export const Navigation = () => {
             <SheetContent side="right" className="glass">
               <div className="space-y-6 mt-8">
                 {navItems.map((item) => (
-                  <a
+                  <Link
                     key={item.label}
-                    href={item.href}
+                    to={item.href}
                     className="block text-lg font-medium text-foreground hover:text-primary transition-colors"
                     onClick={() => setIsOpen(false)}
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 ))}
                 
                 <div className="pt-6 space-y-3">
-                  <Button variant="glass" className="w-full flex items-center gap-2">
-                    <Chrome className="w-4 h-4" />
-                    Install Extension
-                  </Button>
-                  <Button variant="hero" className="w-full">
-                    Get Started
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
+                  <Link to="/waitlist">
+                    <Button variant="glass" className="w-full flex items-center gap-2" onClick={() => setIsOpen(false)}>
+                      Join Waitlist
+                    </Button>
+                  </Link>
+                  <Link to="/signin">
+                    <Button variant="hero" className="w-full" onClick={() => setIsOpen(false)}>
+                      <User className="w-4 h-4 mr-2" />
+                      Sign In
+                    </Button>
+                  </Link>
                 </div>
 
                 <div className="pt-6 border-t border-border/50">
