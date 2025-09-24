@@ -139,7 +139,7 @@ All colors MUST be HSL for consistency and theming.
   }
 
   .glow {
-    text-shadow: 0 0 10px #00f, 0 0 20px #00f;
+    box-shadow: var(--shadow-glow);
   }
 
   /* Animation classes */
