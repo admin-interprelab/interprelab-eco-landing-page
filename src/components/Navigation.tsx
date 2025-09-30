@@ -11,6 +11,7 @@ export const Navigation = () => {
   const navItems = [
     { label: "InterpreBot", href: "/interprebot" },
     { label: "InterpreCoach", href: "/interprecoach" },
+    { label: "Interpre-Hub", href: "/interpre-hub" },
     { label: "Resources", href: "/resources" },
     { label: "About Us", href: "/about" },
     { label: "Get in Touch", href: "/contact" }

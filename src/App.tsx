@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import InterpreBot from "./pages/InterpreBot";
 import InterpreCoach from "./pages/InterpreCoach";
+import InterpreHub from "./pages/InterpreHub";
 import Resources from "./pages/Resources";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -23,6 +24,14 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/interprebot" element={<InterpreBot />} />
+          <Route path="/interprecoach" element={<InterpreCoach />} />
+          <Route path="/interpre-hub" element={<InterpreHub />} />
+          <Route path="/resources" element={<Resources />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/waitlist" element={<Waitlist />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
