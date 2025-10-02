@@ -7,52 +7,90 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Eye, EyeOff, Mail, Lock, User, Shield, Chrome, ArrowRight } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { signInSchema, signUpSchema } from "@/lib/validations";
 
 const SignIn = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const { user, signIn, signUp } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [signInData, setSignInData] = useState({
     email: "",
-    password: ""
+    password: "",
   });
+
   const [signUpData, setSignUpData] = useState({
     firstName: "",
     lastName: "",
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
   });
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      // TODO: Integrate with Supabase authentication
-      // const { data, error } = await supabase.auth.signInWithPassword({
-      //   email: signInData.email,
-      //   password: signInData.password,
-      // });
+      // Validate input
+      const validated = signInSchema.parse(signInData);
       
-      // Placeholder for authentication
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const { error } = await signIn(validated.email, validated.password);
       
-      toast({
-        title: "Welcome back!",
-        description: "You've been successfully signed in.",
-      });
-      
-      // TODO: Redirect to dashboard or previous page
-    } catch (error) {
-      toast({
-        title: "Sign in failed",
-        description: "Please check your credentials and try again.",
-        variant: "destructive",
-      });
+      if (error) {
+        if (error.message.includes('Invalid login credentials')) {
+          toast({
+            title: "Error",
+            description: "Invalid email or password. Please try again.",
+            variant: "destructive",
+          });
+        } else if (error.message.includes('Email not confirmed')) {
+          toast({
+            title: "Error",
+            description: "Please confirm your email address before signing in.",
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Error",
+            description: error.message || "Failed to sign in. Please try again.",
+            variant: "destructive",
+          });
+        }
+      } else {
+        toast({
+          title: "Success!",
+          description: "You have successfully signed in.",
+        });
+        navigate('/');
+      }
+    } catch (error: any) {
+      if (error.errors) {
+        // Zod validation errors
+        toast({
+          title: "Validation Error",
+          description: error.errors[0]?.message || "Please check your input.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: "An unexpected error occurred. Please try again.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -60,44 +98,68 @@ const SignIn = () => {
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (signUpData.password !== signUpData.confirmPassword) {
-      toast({
-        title: "Passwords don't match",
-        description: "Please make sure your passwords match.",
-        variant: "destructive",
-      });
-      return;
-    }
-
     setIsLoading(true);
 
     try {
-      // TODO: Integrate with Supabase authentication
-      // const { data, error } = await supabase.auth.signUp({
-      //   email: signUpData.email,
-      //   password: signUpData.password,
-      //   options: {
-      //     data: {
-      //       first_name: signUpData.firstName,
-      //       last_name: signUpData.lastName,
-      //     }
-      //   }
-      // });
+      // Validate input
+      const validated = signUpSchema.parse(signUpData);
       
-      // Placeholder for authentication
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const { error } = await signUp(
+        validated.email,
+        validated.password,
+        validated.firstName,
+        validated.lastName
+      );
       
-      toast({
-        title: "Account created successfully!",
-        description: "Please check your email to verify your account.",
-      });
-    } catch (error) {
-      toast({
-        title: "Sign up failed",
-        description: "Please try again or contact support.",
-        variant: "destructive",
-      });
+      if (error) {
+        if (error.message.includes('already registered')) {
+          toast({
+            title: "Error",
+            description: "This email is already registered. Please sign in instead.",
+            variant: "destructive",
+          });
+        } else if (error.message.includes('Password')) {
+          toast({
+            title: "Error",
+            description: "Password does not meet requirements. Please use a stronger password.",
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Error",
+            description: error.message || "Failed to create account. Please try again.",
+            variant: "destructive",
+          });
+        }
+      } else {
+        toast({
+          title: "Success!",
+          description: "Your account has been created successfully. You can now sign in.",
+        });
+        // Reset form
+        setSignUpData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+        });
+      }
+    } catch (error: any) {
+      if (error.errors) {
+        // Zod validation errors
+        toast({
+          title: "Validation Error",
+          description: error.errors[0]?.message || "Please check your input.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: "An unexpected error occurred. Please try again.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsLoading(false);
     }

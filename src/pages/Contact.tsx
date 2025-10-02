@@ -9,9 +9,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { MapPin, Phone, Mail, Clock, Send, MessageSquare } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { contactSchema } from "@/lib/validations";
 
 const Contact = () => {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -27,17 +31,36 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
-      // TODO: Integrate with Supabase to save contact form data
-      // and send email notification to admin.ceo@interprelab.com
-      
-      // Placeholder for form submission
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      toast({
-        title: "Message sent successfully!",
-        description: "We'll get back to you within 24 hours.",
+      // Validate input
+      const validated = contactSchema.parse({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        organization: formData.organization,
+        inquiryType: formData.inquiryType,
+        message: formData.message,
       });
-      
+
+      // Insert into database
+      const { error } = await supabase
+        .from('contacts')
+        .insert([{
+          user_id: user?.id || null,
+          name: validated.name,
+          email: validated.email,
+          phone: validated.phone || null,
+          organization: validated.organization || null,
+          inquiry_type: validated.inquiryType,
+          message: validated.message,
+        }]);
+
+      if (error) throw error;
+
+      toast({
+        title: "Message Sent!",
+        description: "Thank you for contacting us. We'll get back to you soon.",
+      });
+
       // Reset form
       setFormData({
         name: "",
@@ -45,14 +68,23 @@ const Contact = () => {
         phone: "",
         organization: "",
         inquiryType: "",
-        message: ""
+        message: "",
       });
-    } catch (error) {
-      toast({
-        title: "Error sending message",
-        description: "Please try again or contact us directly.",
-        variant: "destructive",
-      });
+    } catch (error: any) {
+      if (error.errors) {
+        // Zod validation errors
+        toast({
+          title: "Validation Error",
+          description: error.errors[0]?.message || "Please check your input.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: error.message || "Failed to send message. Please try again.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsSubmitting(false);
     }

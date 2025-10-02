@@ -2,11 +2,19 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
-import { Menu, Chrome, Shield, Phone, Mail, ArrowRight, User } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Menu, Chrome, Shield, Phone, Mail, ArrowRight, User, LogOut } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
+  };
 
   const navItems = [
     { label: "InterpreBot", href: "/interprebot" },
@@ -47,17 +55,26 @@ export const Navigation = () => {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center gap-3">
-            <Link to="/waitlist">
-              <Button variant="glass" size="sm" className="flex items-center gap-2">
-                Join Waitlist
+            {user ? (
+              <Button onClick={handleSignOut} variant="glass" size="sm">
+                <LogOut className="w-4 h-4 mr-2" />
+                Sign Out
               </Button>
-            </Link>
-            <Link to="/signin">
-              <Button variant="hero" size="sm">
-                <User className="w-4 h-4 mr-2" />
-                Sign In
-              </Button>
-            </Link>
+            ) : (
+              <>
+                <Link to="/waitlist">
+                  <Button variant="glass" size="sm" className="flex items-center gap-2">
+                    Join Waitlist
+                  </Button>
+                </Link>
+                <Link to="/signin">
+                  <Button variant="hero" size="sm">
+                    <User className="w-4 h-4 mr-2" />
+                    Sign In
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu */}
@@ -81,17 +98,33 @@ export const Navigation = () => {
                 ))}
                 
                 <div className="pt-6 space-y-3">
-                  <Link to="/waitlist">
-                    <Button variant="glass" className="w-full flex items-center gap-2" onClick={() => setIsOpen(false)}>
-                      Join Waitlist
+                  {user ? (
+                    <Button 
+                      onClick={() => {
+                        handleSignOut();
+                        setIsOpen(false);
+                      }}
+                      variant="glass"
+                      className="w-full"
+                    >
+                      <LogOut className="w-4 h-4 mr-2" />
+                      Sign Out
                     </Button>
-                  </Link>
-                  <Link to="/signin">
-                    <Button variant="hero" className="w-full" onClick={() => setIsOpen(false)}>
-                      <User className="w-4 h-4 mr-2" />
-                      Sign In
-                    </Button>
-                  </Link>
+                  ) : (
+                    <>
+                      <Link to="/waitlist">
+                        <Button variant="glass" className="w-full flex items-center gap-2" onClick={() => setIsOpen(false)}>
+                          Join Waitlist
+                        </Button>
+                      </Link>
+                      <Link to="/signin">
+                        <Button variant="hero" className="w-full" onClick={() => setIsOpen(false)}>
+                          <User className="w-4 h-4 mr-2" />
+                          Sign In
+                        </Button>
+                      </Link>
+                    </>
+                  )}
                 </div>
 
                 <div className="pt-6 border-t border-border/50">

@@ -7,6 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { Mail, Star, Users, Bell } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { waitlistSchema } from "@/lib/validations";
 
 const Waitlist = () => {
   const { toast } = useToast();
@@ -22,23 +24,56 @@ const Waitlist = () => {
     setIsSubmitting(true);
 
     try {
-      // TODO: Integrate with Supabase to save waitlist data
-      // and send notification to admin.ceo@interprelab.com
-      
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      // Validate input
+      const validated = waitlistSchema.parse(formData);
+
+      // Insert into database
+      const { error } = await supabase
+        .from('waitlist')
+        .insert([{
+          first_name: validated.firstName,
+          last_name: validated.lastName,
+          email: validated.email,
+        }]);
+
+      if (error) {
+        if (error.message.includes('duplicate key')) {
+          toast({
+            title: "Already Registered",
+            description: "This email is already on the waitlist!",
+            variant: "destructive",
+          });
+          return;
+        }
+        throw error;
+      }
+
       toast({
-        title: "Welcome to the waitlist!",
-        description: "We'll notify you when InterpreLab becomes available.",
+        title: "Success!",
+        description: "You've been added to the waitlist. We'll notify you when we launch!",
       });
-      
-      setFormData({ email: "", firstName: "", lastName: "" });
-    } catch (error) {
-      toast({
-        title: "Error joining waitlist",
-        description: "Please try again.",
-        variant: "destructive",
+
+      // Reset form
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
       });
+    } catch (error: any) {
+      if (error.errors) {
+        // Zod validation errors
+        toast({
+          title: "Validation Error",
+          description: error.errors[0]?.message || "Please check your input.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: error.message || "Failed to join waitlist. Please try again.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsSubmitting(false);
     }
