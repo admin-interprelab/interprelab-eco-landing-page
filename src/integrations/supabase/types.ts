@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      call_logs: {
+        Row: {
+          created_at: string
+          currency: string
+          duration_seconds: number | null
+          earnings: number | null
+          end_time: string | null
+          id: string
+          notes: string | null
+          start_time: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          duration_seconds?: number | null
+          earnings?: number | null
+          end_time?: string | null
+          id?: string
+          notes?: string | null
+          start_time: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          duration_seconds?: number | null
+          earnings?: number | null
+          end_time?: string | null
+          id?: string
+          notes?: string | null
+          start_time?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       contacts: {
         Row: {
           created_at: string
@@ -91,6 +130,39 @@ export type Database = {
           created_at?: string
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_settings: {
+        Row: {
+          created_at: string
+          id: string
+          pay_rate: number
+          pay_rate_type: string
+          preferred_currency: string
+          preferred_language: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          pay_rate?: number
+          pay_rate_type?: string
+          preferred_currency?: string
+          preferred_language?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          pay_rate?: number
+          pay_rate_type?: string
+          preferred_currency?: string
+          preferred_language?: string
+          updated_at?: string
           user_id?: string
         }
         Relationships: []

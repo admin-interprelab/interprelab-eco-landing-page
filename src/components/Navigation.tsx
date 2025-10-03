@@ -5,11 +5,13 @@ import { Badge } from "@/components/ui/badge";
 import { Menu, Chrome, Shield, Phone, Mail, ArrowRight, User, LogOut } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const handleSignOut = async () => {
     await signOut();
@@ -17,12 +19,15 @@ export const Navigation = () => {
   };
 
   const navItems = [
-    { label: "InterpreBot", href: "/interprebot" },
-    { label: "InterpreCoach", href: "/interprecoach" },
-    { label: "Interpre-Hub", href: "/interpre-hub" },
-    { label: "Resources", href: "/resources" },
-    { label: "About Us", href: "/about" },
-    { label: "Get in Touch", href: "/contact" }
+    { label: t('interpreBot'), href: "/interprebot" },
+    { label: t('interpreCoach'), href: "/interprecoach" },
+    { label: t('interpreHub'), href: "/interpre-hub" },
+    { label: t('dashboard'), href: "/dashboard" },
+    { label: t('callTracker'), href: "/call-tracker" },
+    { label: t('settings'), href: "/settings" },
+    { label: t('resources'), href: "/resources" },
+    { label: t('about'), href: "/about" },
+    { label: t('contact'), href: "/contact" }
   ];
 
   return (
@@ -58,7 +63,7 @@ export const Navigation = () => {
             {user ? (
               <Button onClick={handleSignOut} variant="glass" size="sm">
                 <LogOut className="w-4 h-4 mr-2" />
-                Sign Out
+                {t('signOut')}
               </Button>
             ) : (
               <>
@@ -70,7 +75,7 @@ export const Navigation = () => {
                 <Link to="/signin">
                   <Button variant="hero" size="sm">
                     <User className="w-4 h-4 mr-2" />
-                    Sign In
+                    {t('signIn')}
                   </Button>
                 </Link>
               </>
@@ -108,7 +113,7 @@ export const Navigation = () => {
                       className="w-full"
                     >
                       <LogOut className="w-4 h-4 mr-2" />
-                      Sign Out
+                      {t('signOut')}
                     </Button>
                   ) : (
                     <>
@@ -120,7 +125,7 @@ export const Navigation = () => {
                       <Link to="/signin">
                         <Button variant="hero" className="w-full" onClick={() => setIsOpen(false)}>
                           <User className="w-4 h-4 mr-2" />
-                          Sign In
+                          {t('signIn')}
                         </Button>
                       </Link>
                     </>
