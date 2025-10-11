@@ -4,7 +4,6 @@ import { ProductShowcase } from "@/components/ProductShowcase";
 import { Resources } from "@/components/Resources";
 import { Testimonials } from "@/components/Testimonials";
 import { InterpreBotUI } from "@/components/ExtensionUI";
-import { InterpreCoachButton } from "@/components/InterpreCoachButton";
 import { Footer } from "@/components/Footer";
 
 const Index = () => {
@@ -21,11 +20,10 @@ const Index = () => {
       
       {/* InterpreBot - AI Assessment (First Contact) */}
       <InterpreBotUI />
-      
-      {/* InterpreCoach Extension Button */}
-      <InterpreCoachButton />
     </div>
   );
 };
 
 export default Index;
+
+
