@@ -6,6 +6,14 @@ import { Menu, Chrome, Shield, Phone, Mail, ArrowRight, User, LogOut } from "luc
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,15 +27,20 @@ export const Navigation = () => {
   };
 
   const navItems = [
-    { label: t('interpreBot'), href: "/interprebot" },
-    { label: t('interpreCoach'), href: "/interprecoach" },
-    { label: t('interpreHub'), href: "/interpre-hub" },
-    { label: t('dashboard'), href: "/dashboard" },
-    { label: t('callTracker'), href: "/call-tracker" },
-    { label: t('settings'), href: "/settings" },
-    { label: t('resources'), href: "/resources" },
-    { label: t('about'), href: "/about" },
-    { label: t('contact'), href: "/contact" }
+    { 
+      label: t('solutions'), 
+      submenu: [
+        { label: 'InterpreBot', href: '/interprebot' },
+        { label: 'InterpreCoach', href: '/interprecoach' },
+        { label: 'InterpreTrack', href: '/interpretrack' },
+      ]
+    },
+    { label: t('interpreHub'), href: '/interpre-hub' },
+    { label: t('dashboard'), href: '/dashboard' },
+    { label: t('settings'), href: '/settings' },
+    { label: t('resources'), href: '/resources' },
+    { label: t('about'), href: '/about' },
+    { label: t('contact'), href: '/contact' },
   ];
 
   return (
@@ -48,13 +61,38 @@ export const Navigation = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
-              <Link
-                key={item.label}
-                to={item.href}
-                className="text-sm font-medium text-foreground hover:text-primary transition-colors"
-              >
-                {item.label}
-              </Link>
+              item.submenu ? (
+                <NavigationMenu key={item.label}>
+                  <NavigationMenuList>
+                    <NavigationMenuItem>
+                      <NavigationMenuTrigger className="text-sm font-medium text-foreground/80 hover:text-foreground bg-transparent">
+                        {item.label}
+                      </NavigationMenuTrigger>
+                      <NavigationMenuContent>
+                        <ul className="grid w-48 gap-2 p-2">
+                          {item.submenu.map((subitem) => (
+                            <li key={subitem.href}>
+                              <Link to={subitem.href}>
+                                <NavigationMenuLink className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                                  <div className="text-sm font-medium leading-none">{subitem.label}</div>
+                                </NavigationMenuLink>
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
+                  </NavigationMenuList>
+                </NavigationMenu>
+              ) : (
+                <Link
+                  key={item.label}
+                  to={item.href}
+                  className="text-sm font-medium text-foreground hover:text-primary transition-colors"
+                >
+                  {item.label}
+                </Link>
+              )
             ))}
           </div>
 
@@ -92,14 +130,30 @@ export const Navigation = () => {
             <SheetContent side="right" className="glass">
               <div className="space-y-6 mt-8">
                 {navItems.map((item) => (
-                  <Link
-                    key={item.label}
-                    to={item.href}
-                    className="block text-lg font-medium text-foreground hover:text-primary transition-colors"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
+                  item.submenu ? (
+                    <div key={item.label} className="space-y-2">
+                      <p className="text-sm font-semibold text-muted-foreground">{item.label}</p>
+                      {item.submenu.map((subitem) => (
+                        <Link
+                          key={subitem.href}
+                          to={subitem.href}
+                          className="block text-base font-medium text-foreground hover:text-primary transition-colors pl-4"
+                          onClick={() => setIsOpen(false)}
+                        >
+                          {subitem.label}
+                        </Link>
+                      ))}
+                    </div>
+                  ) : (
+                    <Link
+                      key={item.label}
+                      to={item.href}
+                      className="block text-lg font-medium text-foreground hover:text-primary transition-colors"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {item.label}
+                    </Link>
+                  )
                 ))}
                 
                 <div className="pt-6 space-y-3">

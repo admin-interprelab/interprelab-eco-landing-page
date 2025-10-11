@@ -20,7 +20,8 @@ import {
   Sparkles,
   Zap,
   Eye,
-  Waves
+  Waves,
+  Clock
 } from "lucide-react";
 
 export const ProductShowcase = () => {
@@ -38,12 +39,10 @@ export const ProductShowcase = () => {
             Complete AI Ecosystem
           </Badge>
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-            Complete AI-Powered Interpreter Ecosystem
+            Three Powerful Tools, One Ecosystem
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            InterpreLab offers a comprehensive ecosystem of AI-powered solutions: InterpreBot, InterpreCoach, 
-            Customized Learning Paths, Certification-Ready Training Courses, Interpreter Community & Resources, 
-            and advanced AI-driven Linguistic Analysis Features.
+            Train smarter with InterpreBot, perform better with InterpreCoach, and manage your practice with InterpreTrack—all designed for medical interpreters.
           </p>
         </div>
 
@@ -57,55 +56,45 @@ export const ProductShowcase = () => {
                     <GraduationCap className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-foreground">InterpreLab Platform</h3>
-                    <p className="text-muted-foreground">Training & Certification Hub</p>
+                    <h3 className="text-xl font-bold text-foreground">InterpreBot</h3>
+                    <p className="text-muted-foreground">AI Skills Assessment</p>
                   </div>
                 </div>
                 
-                <div className="relative aspect-video rounded-lg overflow-hidden bg-muted">
-                  <img 
-                    src="src/assets/tech-background.jpg" 
-                    alt="InterpreLab Platform Dashboard"
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                <div className="relative aspect-video rounded-lg overflow-hidden bg-gradient-to-br from-purple-900/40 to-pink-900/40">
+                  <div className="w-full h-full flex items-center justify-center">
+                    <Brain className="w-16 h-16 text-purple-400 animate-pulse" />
+                  </div>
                   <div className="absolute bottom-4 left-4 right-4">
-                    <Badge className="bg-primary border-0 text-white mb-2">
-                      Training Active
+                    <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 border-0 text-white mb-2">
+                      AI Analysis
                     </Badge>
-                    <p className="text-white text-sm">Comprehensive skill development</p>
+                    <p className="text-white text-sm">Instant performance insights</p>
                   </div>
                 </div>
 
                 <div className="space-y-4">
-                  <h4 className="font-semibold text-foreground">Core Features:</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Get AI-powered analysis of your interpretation skills with detailed feedback on accuracy, fluency, and medical terminology mastery.
+                  </p>
                   <div className="space-y-2">
                     {[
-                      "40-60 Hour NBCMI/CCHI Approved Courses",
-                      "Customized Learning Paths",
-                      "Certification-Ready Training",
-                      "InterpreterHub Community",
-                      "Professional Resources Library"
+                      "Linguistic accuracy scoring",
+                      "Medical terminology assessment",
+                      "Grammar & flow analysis",
+                      "Real-time performance feedback"
                     ].map((feature) => (
                       <div key={feature} className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-primary rounded-full" />
+                        <div className="w-2 h-2 bg-purple-500 rounded-full" />
                         <span className="text-sm text-muted-foreground">{feature}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <div className="space-y-3">
-                  <h4 className="font-semibold text-foreground">Compliance:</h4>
-                  <div className="flex gap-2">
-                    <Badge variant="outline">HIPAA</Badge>
-                    <Badge variant="outline">SOC 2</Badge>
-                  </div>
-                </div>
-
-                <Button className="w-full bg-gradient-primary border-0 text-white hover:opacity-90">
-                  <BookOpen className="w-4 h-4 mr-2" />
-                  Start Training
+                <Button className="w-full bg-gradient-to-r from-purple-500 to-pink-500 border-0 text-white hover:opacity-90">
+                  <Brain className="w-4 h-4 mr-2" />
+                  Start Assessment
                 </Button>
               </div>
             </CardContent>
@@ -121,7 +110,7 @@ export const ProductShowcase = () => {
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-foreground">InterpreCoach</h3>
-                    <p className="text-muted-foreground">Live Session Assistant</p>
+                    <p className="text-muted-foreground">Real-Time Browser Assistant</p>
                   </div>
                 </div>
                 
@@ -134,22 +123,22 @@ export const ProductShowcase = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                   <div className="absolute bottom-4 left-4 right-4">
                     <Badge className="bg-success border-0 text-white mb-2">
-                      Live Recording
+                      Live Assistance
                     </Badge>
-                    <p className="text-white text-sm">Real-time interpretation assistance</p>
+                    <p className="text-white text-sm">In-session support</p>
                   </div>
                 </div>
 
                 <div className="space-y-4">
-                  <h4 className="font-semibold text-foreground">Live Features:</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Browser extension providing real-time terminology support, cultural context, and voice coaching during live interpretation sessions.
+                  </p>
                   <div className="space-y-2">
                     {[
-                      "🎧 Multi-Modal Real-Time Assistance",
-                      "🏥 Medical Terminology Management",
-                      "🌍 Cultural Context Analysis",
-                      "🎙️ Voice Training & Speech Regulation",
-                      "📊 Grammar & Tense Analysis",
-                      "🔮 Predictive Assistance"
+                      "Real-time terminology lookup",
+                      "Cultural context suggestions",
+                      "Voice & speech coaching",
+                      "Grammar assistance"
                     ].map((feature) => (
                       <div key={feature} className="flex items-center gap-2">
                         <div className="w-2 h-2 bg-success rounded-full" />
@@ -159,162 +148,62 @@ export const ProductShowcase = () => {
                   </div>
                 </div>
 
-                <div className="space-y-3">
-                  <h4 className="font-semibold text-foreground">Specializations:</h4>
-                  <div className="flex gap-2">
-                    <Badge variant="outline">Medical</Badge>
-                    <Badge variant="outline">Legal</Badge>
-                  </div>
-                </div>
-
                 <Button className="w-full bg-gradient-success border-0 text-white hover:opacity-90">
                   <Download className="w-4 h-4 mr-2" />
-                  Install Extension
+                  Add to Chrome
                 </Button>
               </div>
             </CardContent>
           </Card>
 
-          {/* InterpreBot AI Analyst */}
+          {/* InterpreTrack */}
           <Card className="bg-card/50 border-border/50 backdrop-blur-sm hover-lift group relative overflow-hidden">
             <CardContent className="p-8 relative z-10">
               <div className="space-y-6">
                 <div className="flex items-center gap-4">
-                  <div className="relative p-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg group-hover:scale-110 transition-transform duration-300">
-                    {/* Customized Emotive Icon */}
-                    <div className="relative">
-                      <Brain className="w-6 h-6 text-white animate-pulse" />
-                      <Sparkles className="w-3 h-3 text-yellow-300 absolute -top-1 -right-1 animate-pulse" style={{ animationDelay: '0.5s' }} />
-                    </div>
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg blur-lg opacity-30 animate-pulse" />
+                  <div className="p-3 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg">
+                    <Clock className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-foreground">InterpreBot 🧠✨</h3>
-                    <p className="text-muted-foreground">Advanced AI Training & Assessment Agent</p>
+                    <h3 className="text-xl font-bold text-foreground">InterpreTrack</h3>
+                    <p className="text-muted-foreground">Call Logging & Earnings</p>
                   </div>
                 </div>
                 
-                {/* Enhanced 3D Scene */}
-                <div className="relative aspect-video rounded-lg overflow-hidden bg-gradient-to-br from-purple-900/40 to-pink-900/40">
-                  {/* 3D Computer Scene */}
-                  <div className="w-full h-full relative perspective-1000">
-                    {/* Main 3D Computer */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="relative transform-gpu hover:scale-105 transition-transform duration-500">
-                        {/* Computer Base */}
-                        <div 
-                          className="w-32 h-20 bg-gradient-to-br from-slate-800 to-slate-900 rounded-lg shadow-xl"
-                          style={{ transform: 'rotateX(15deg) rotateY(-10deg)' }}
-                        >
-                          {/* Screen */}
-                          <div className="absolute top-1 left-2 right-2 bottom-6 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded border border-cyan-400/30 overflow-hidden">
-                            {/* Scrolling Code Effect */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-transparent via-cyan-400/10 to-transparent animate-pulse" />
-                            <div className="text-cyan-300 text-xs font-mono p-1 opacity-70">
-                              <div className="animate-pulse">AI Analysis...</div>
-                              <div className="animate-pulse" style={{ animationDelay: '0.2s' }}>Voice: 92%</div>
-                              <div className="animate-pulse" style={{ animationDelay: '0.4s' }}>Grammar: 88%</div>
-                            </div>
-                          </div>
-                          {/* Keyboard */}
-                          <div className="absolute bottom-1 left-2 right-2 h-2 bg-slate-700 rounded-sm" />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Floating Neural Network Elements */}
-                    <div className="absolute top-4 left-4 w-3 h-3 bg-cyan-400 rounded-full animate-float opacity-70" />
-                    <div className="absolute top-6 right-6 w-2 h-2 bg-purple-400 rounded-full animate-float opacity-70" style={{ animationDelay: '1s' }} />
-                    <div className="absolute bottom-6 left-8 w-4 h-4 bg-pink-400 rounded-full animate-float opacity-70" style={{ animationDelay: '2s' }} />
-                    <div className="absolute bottom-4 right-4 w-2 h-2 bg-yellow-400 rounded-full animate-float opacity-70" style={{ animationDelay: '1.5s' }} />
-
-                    {/* Data Flow Lines */}
-                    <div className="absolute inset-0 pointer-events-none">
-                      <svg className="w-full h-full">
-                        <defs>
-                          <linearGradient id="flowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style={{ stopColor: '#06b6d4', stopOpacity: 0.6 }} />
-                            <stop offset="100%" style={{ stopColor: '#8b5cf6', stopOpacity: 0.2 }} />
-                          </linearGradient>
-                        </defs>
-                        <path 
-                          d="M20,40 Q80,20 140,60 Q180,80 220,40" 
-                          stroke="url(#flowGradient)" 
-                          strokeWidth="2" 
-                          fill="none"
-                          className="animate-pulse"
-                        />
-                        <path 
-                          d="M40,80 Q100,100 160,80 Q200,60 240,80" 
-                          stroke="url(#flowGradient)" 
-                          strokeWidth="1" 
-                          fill="none"
-                          className="animate-pulse"
-                          style={{ animationDelay: '0.5s' }}
-                        />
-                      </svg>
-                    </div>
-
-                    {/* Voice Wave Animation */}
-                    <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-1">
-                      {[...Array(5)].map((_, i) => (
-                        <div 
-                          key={i}
-                          className="w-1 bg-gradient-to-t from-cyan-400 to-purple-400 rounded-full animate-pulse"
-                          style={{ 
-                            height: `${8 + Math.sin(i) * 4}px`,
-                            animationDelay: `${i * 0.1}s`,
-                            animationDuration: '1s'
-                          }}
-                        />
-                      ))}
-                    </div>
-
-                    {/* Holographic Interface Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-transparent via-cyan-400/5 to-purple-400/5" />
-                    
-                    {/* Status Badge */}
-                    <div className="absolute top-4 left-4">
-                      <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 border-0 text-white text-xs">
-                        <Eye className="w-3 h-3 mr-1" />
-                        AI Analysis Active
-                      </Badge>
-                    </div>
+                <div className="relative aspect-video rounded-lg overflow-hidden bg-gradient-to-br from-orange-900/40 to-red-900/40">
+                  <div className="w-full h-full flex items-center justify-center">
+                    <BarChart3 className="w-16 h-16 text-orange-400 animate-pulse" />
+                  </div>
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <Badge className="bg-gradient-to-r from-orange-500 to-red-500 border-0 text-white mb-2">
+                      Session Active
+                    </Badge>
+                    <p className="text-white text-sm">Tracking time & earnings</p>
                   </div>
                 </div>
 
                 <div className="space-y-4">
-                  <h4 className="font-semibold text-foreground">🧠✨ Deep Analysis Capabilities:</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Browser-integrated time tracker that logs session duration and calculates earnings automatically based on your custom pay rate.
+                  </p>
                   <div className="space-y-2">
                     {[
-                      "🎯 Linguistic Accuracy Assessment",
-                      "🏥 Medical Terminology Mastery",
-                      "📝 Grammatical Correctness Analysis",
-                      "🌊 Fluency & Flow Evaluation",
-                      "🎭 Contextual Appropriateness",
-                      "🤖 AI Mentor Guided Learning"
+                      "Automatic session logging",
+                      "Custom pay rate setup",
+                      "Real-time earnings calculation",
+                      "Currency conversion"
                     ].map((feature) => (
                       <div key={feature} className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse" />
+                        <div className="w-2 h-2 bg-orange-500 rounded-full" />
                         <span className="text-sm text-muted-foreground">{feature}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <div className="space-y-3">
-                  <h4 className="font-semibold text-foreground">🔍 Real-Time Detection:</h4>
-                  <div className="flex flex-wrap gap-2">
-                    <Badge variant="outline" className="text-xs">Voice Hesitations</Badge>
-                    <Badge variant="outline" className="text-xs">Tense Errors</Badge>
-                    <Badge variant="outline" className="text-xs">Flow Issues</Badge>
-                    <Badge variant="outline" className="text-xs">Cultural Context</Badge>
-                  </div>
-                </div>
-
-                <Button className="w-full bg-gradient-to-r from-purple-500 to-pink-500 border-0 text-white hover:opacity-90 hover:scale-105 transition-transform">
-                  <Brain className="w-4 h-4 mr-2" />
-                  🚀 Start Advanced Assessment
+                <Button className="w-full bg-gradient-to-r from-orange-500 to-red-500 border-0 text-white hover:opacity-90">
+                  <Clock className="w-4 h-4 mr-2" />
+                  View Dashboard
                 </Button>
               </div>
             </CardContent>

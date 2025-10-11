@@ -45,7 +45,7 @@ const App = () => (
                   <Dashboard />
                 </ProtectedRoute>
               } />
-              <Route path="/call-tracker" element={
+              <Route path="/interpretrack" element={
                 <ProtectedRoute>
                   <CallTracker />
                 </ProtectedRoute>

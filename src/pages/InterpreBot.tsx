@@ -18,8 +18,7 @@ const InterpreBot = () => {
             InterpreBot
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-            Get instant, AI-powered assessment of your interpretation skills. 
-            Identify strengths, discover areas for improvement, and track your progress over time.
+            AI-powered skills assessment with instant feedback on accuracy, fluency, and medical terminology mastery.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="glass-button">
@@ -41,11 +40,10 @@ const InterpreBot = () => {
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Advanced AI Assessment Platform
+              What We Measure
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Our cutting-edge AI technology evaluates your interpretation performance 
-              across multiple dimensions to provide comprehensive feedback.
+              Comprehensive analysis across linguistics, terminology, and communication effectiveness.
             </p>
           </div>
 

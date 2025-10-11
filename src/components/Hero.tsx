@@ -34,19 +34,17 @@ export const Hero = () => {
             </span>
             <br />
             <span className="text-foreground">
-              Complete AI-Powered
+              AI-Powered Training
             </span>
             <br />
             <span className="text-muted-foreground text-4xl md:text-5xl lg:text-6xl">
-              Interpreter Ecosystem
+              for Medical Interpreters
             </span>
           </h1>
 
           {/* Subtitle */}
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed animate-slide-up">
-            InterpreLab offers a comprehensive ecosystem of AI-powered solutions: <strong>InterpreBot</strong>, 
-            <strong>InterpreCoach</strong>, Customized Learning Paths, Certification-Ready Training Courses, 
-            Interpreter Community & Resources, and advanced AI-driven Linguistic Analysis Features.
+            Master medical interpretation with AI-driven assessment, real-time coaching, and certification-ready courses trusted by professionals worldwide.
           </p>
 
           {/* Key Features */}

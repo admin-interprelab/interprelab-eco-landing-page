@@ -20,8 +20,7 @@ const InterpreCoach = () => {
                 InterpreCoach
               </h1>
               <p className="text-xl text-muted-foreground mb-8">
-                Your AI-powered interpretation assistant. Get real-time support, 
-                terminology suggestions, and performance insights directly in your browser.
+                Chrome extension providing real-time terminology support and coaching during live interpretation sessions.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button size="lg" className="glass-button">
@@ -54,11 +53,10 @@ const InterpreCoach = () => {
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Powerful Features for Professional Interpreters
+              Key Features
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              InterpreCoach integrates seamlessly with your workflow to enhance 
-              your interpretation performance and professional development.
+              Seamless browser integration for real-time assistance during video calls.
             </p>
           </div>
 
