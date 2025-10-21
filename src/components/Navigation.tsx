@@ -33,11 +33,9 @@ export const Navigation = () => {
         { label: 'InterpreBot', href: '/interprebot' },
         { label: 'InterpreCoach', href: '/interprecoach' },
         { label: 'InterpreTrack', href: '/interpretrack' },
+        { label: 'InterpreHub', href: '/interpre-hub' },
       ]
     },
-    { label: t('interpreHub'), href: '/interpre-hub' },
-    { label: t('dashboard'), href: '/dashboard' },
-    { label: t('settings'), href: '/settings' },
     { label: t('resources'), href: '/resources' },
     { label: t('about'), href: '/about' },
     { label: t('contact'), href: '/contact' },
@@ -99,10 +97,22 @@ export const Navigation = () => {
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center gap-3">
             {user ? (
-              <Button onClick={handleSignOut} variant="glass" size="sm">
-                <LogOut className="w-4 h-4 mr-2" />
-                {t('signOut')}
-              </Button>
+              <>
+                <Link to="/dashboard">
+                  <Button variant="ghost" size="sm">
+                    Dashboard
+                  </Button>
+                </Link>
+                <Link to="/settings">
+                  <Button variant="ghost" size="sm">
+                    Settings
+                  </Button>
+                </Link>
+                <Button onClick={handleSignOut} variant="glass" size="sm">
+                  <LogOut className="w-4 h-4 mr-2" />
+                  {t('signOut')}
+                </Button>
+              </>
             ) : (
               <>
                 <Link to="/waitlist">

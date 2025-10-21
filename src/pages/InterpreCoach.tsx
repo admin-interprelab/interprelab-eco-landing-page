@@ -130,55 +130,108 @@ const InterpreCoach = () => {
         </div>
       </section>
 
-      {/* Installation Process */}
+      {/* Getting Started Timeline */}
       <section className="py-20 bg-gradient-subtle">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Get Started in Minutes
+              Get Started in 3 Steps
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Installing InterpreCoach is quick and easy. Start enhancing your 
-              interpretation skills today.
+              Your path to real-time interpretation assistance
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Chrome className="w-8 h-8 text-primary" />
+          <div className="max-w-4xl mx-auto">
+            <div className="space-y-12">
+              {/* Step 1 */}
+              <div className="flex gap-8 items-start">
+                <div className="flex-shrink-0">
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+                    <Chrome className="w-8 h-8 text-primary" />
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Download className="w-6 h-6 text-primary" />
+                    <h3 className="text-2xl font-semibold">Install Extension</h3>
+                  </div>
+                  <p className="text-muted-foreground mb-4">
+                    Add InterpreCoach to Chrome from the Web Store. One-click installation, no complex setup required.
+                  </p>
+                  <Button className="glass-button">
+                    <Chrome className="w-4 h-4 mr-2" />
+                    Add to Chrome
+                  </Button>
+                </div>
               </div>
-              <h3 className="text-xl font-semibold mb-4">Install Extension</h3>
-              <p className="text-muted-foreground">
-                Download InterpreCoach from the Chrome Web Store with one click.
-              </p>
-            </div>
 
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <span className="text-2xl font-bold text-primary">2</span>
+              {/* Step 2 */}
+              <div className="flex gap-8 items-start">
+                <div className="flex-shrink-0">
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+                    <span className="text-2xl font-bold text-primary">2</span>
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Star className="w-6 h-6 text-primary" />
+                    <h3 className="text-2xl font-semibold">Configure Your Profile</h3>
+                  </div>
+                  <p className="text-muted-foreground mb-4">
+                    Set your language pairs, specialty areas, and preferences for personalized coaching suggestions.
+                  </p>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="p-4 glass rounded-lg">
+                      <p className="text-sm font-semibold mb-1">Language Pairs</p>
+                      <p className="text-xs text-muted-foreground">EN ↔ ES, EN ↔ FR</p>
+                    </div>
+                    <div className="p-4 glass rounded-lg">
+                      <p className="text-sm font-semibold mb-1">Specialty</p>
+                      <p className="text-xs text-muted-foreground">Medical, Legal</p>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <h3 className="text-xl font-semibold mb-4">Create Account</h3>
-              <p className="text-muted-foreground">
-                Sign up for your InterpreLab account and complete your professional profile.
-              </p>
-            </div>
 
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Zap className="w-8 h-8 text-primary" />
+              {/* Step 3 */}
+              <div className="flex gap-8 items-start">
+                <div className="flex-shrink-0">
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+                    <Zap className="w-8 h-8 text-primary" />
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Globe className="w-6 h-6 text-primary" />
+                    <h3 className="text-2xl font-semibold">Start Your Session</h3>
+                  </div>
+                  <p className="text-muted-foreground mb-4">
+                    Join a video call and activate InterpreCoach. Get instant terminology support and cultural context suggestions.
+                  </p>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-primary rounded-full" />
+                      <span className="text-sm">Click the extension icon</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-primary rounded-full" />
+                      <span className="text-sm">Activate coaching mode</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-primary rounded-full" />
+                      <span className="text-sm">Get real-time assistance</span>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <h3 className="text-xl font-semibold mb-4">Start Coaching</h3>
-              <p className="text-muted-foreground">
-                Begin your first interpretation session with AI-powered assistance.
-              </p>
             </div>
           </div>
 
           <div className="text-center mt-12">
             <Button size="lg" className="glass-button">
               <Chrome className="w-5 h-5 mr-2" />
-              Meet InterpreCoach
+              Get InterpreCoach
             </Button>
           </div>
         </div>

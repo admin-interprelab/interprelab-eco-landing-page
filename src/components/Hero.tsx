@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Play, Shield, Zap, Users } from "lucide-react";
+import { ArrowRight, User, Shield, Zap } from "lucide-react";
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-interprelab.jpg";
 
 export const Hero = () => {
@@ -77,15 +78,19 @@ export const Hero = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up">
-            <Button variant="hero" size="xl" className="group">
-              Get Started Today
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
+            <Link to="/waitlist">
+              <Button variant="hero" size="xl" className="group">
+                Get Started Today
+                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
             
-            <Button variant="glass" size="xl" className="group">
-              <Play className="w-5 h-5 mr-2" />
-              Watch Demo
-            </Button>
+            <Link to="/signin">
+              <Button variant="glass" size="xl" className="group">
+                <User className="w-5 h-5 mr-2" />
+                Sign In
+              </Button>
+            </Link>
           </div>
 
           {/* Trust Indicators */}
