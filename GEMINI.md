@@ -7,7 +7,7 @@ This document provides the core business, product, and technical architecture kn
 ### Core Identity & Mission
 
 - **Project Name:** **InterpreLab**
-- **Elevator Pitch:** InterpreLab is a cutting-edge, AI-driven training and real-time assistance platform for medical interpreters, focused on human skill optimization and bridging critical communication gaps in healthcare.
+- **Elevator Pitch:** InterpreLab is an ecosystem of AI-powered solutions for medical interpreters! That's right, we shifted our focus from most AI-solutions in the Language Industry human skill optimization and bridging critical communication gaps in healthcare.
 - **Founder Profile:** The founder is a seasoned expert in the medical interpreting field and an early adopter/developer of AI-driven, agentic technologies. The focus is on continuous innovation of backend AI services.
 
 ### Products & Services
@@ -16,7 +16,7 @@ This document provides the core business, product, and technical architecture kn
 - **Function:** Provides realistic, interactive linguistic assessments to evaluate and hone interpreters' core skills with deep grammatical and contextual analysis.
 - **Key Features:**
     - Deep analysis of linguistic accuracy, terminology, and **grammatical correctness (tense, syntax)**.
-    - Generates a detailed performance dashboard pinpointing "weak areas of opportunity".
+    - Generates a detailed performance dashboard pinpointing "areas of opportunity".
     - Acts as an AI Mentor to guide users through **Customized Learning Paths** based on their assessment results.
 
 #### InterpreCoach 🎧 (Real-Time AI Assistance Browser Extension)

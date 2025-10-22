@@ -22,7 +22,6 @@ import {
   Eye,
   Waves
 } from "lucide-react";
-import { Link } from "react-router-dom";
 
 export const ProductShowcase = () => {
   return (
@@ -39,11 +38,12 @@ export const ProductShowcase = () => {
             Complete AI Ecosystem
           </Badge>
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-            Three Integrated Solutions, One Ecosystem
+            Complete AI-Powered Interpreter Ecosystem
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            From personalized training and real-time assistance to comprehensive analytics, 
-            InterpreLab delivers the complete AI-powered interpretation ecosystem for medical and legal professionals.
+            InterpreLab offers a comprehensive ecosystem of AI-powered solutions: InterpreBot, InterpreCoach, 
+            Customized Learning Paths, Certification-Ready Training Courses, Interpreter Community & Resources, 
+            and advanced AI-driven Linguistic Analysis Features.
           </p>
         </div>
 
@@ -81,11 +81,11 @@ export const ProductShowcase = () => {
                   <h4 className="font-semibold text-foreground">Core Features:</h4>
                   <div className="space-y-2">
                     {[
-                      "Continuous Monitoring & Feedback",
-                      "Performance Analytics",
-                      "Personalized Learning Paths",
-                      "Ethics-Grounded Training",
-                      "Certification Preparation"
+                      "40-60 Hour NBCMI/CCHI Approved Courses",
+                      "Customized Learning Paths",
+                      "Certification-Ready Training",
+                      "InterpreterHub Community",
+                      "Professional Resources Library"
                     ].map((feature) => (
                       <div key={feature} className="flex items-center gap-2">
                         <div className="w-2 h-2 bg-primary rounded-full" />
@@ -103,11 +103,9 @@ export const ProductShowcase = () => {
                   </div>
                 </div>
 
-                <Button asChild className="w-full bg-gradient-primary border-0 text-white hover:opacity-90">
-                  <Link to="/interprebot">
-                    <BookOpen className="w-4 h-4 mr-2" />
-                    Take the Assessment
-                  </Link>
+                <Button className="w-full bg-gradient-primary border-0 text-white hover:opacity-90">
+                  <BookOpen className="w-4 h-4 mr-2" />
+                  Start Training
                 </Button>
               </div>
             </CardContent>
@@ -146,11 +144,12 @@ export const ProductShowcase = () => {
                   <h4 className="font-semibold text-foreground">Live Features:</h4>
                   <div className="space-y-2">
                     {[
-                      "Browser Integration",
-                      "Real-time Speech-to-Text",
-                      "Multi-Agent Processing",
-                      "Context Windows",
-                      "QA & Ethics Feedback"
+                      "🎧 Multi-Modal Real-Time Assistance",
+                      "🏥 Medical Terminology Management",
+                      "🌍 Cultural Context Analysis",
+                      "🎙️ Voice Training & Speech Regulation",
+                      "📊 Grammar & Tense Analysis",
+                      "🔮 Predictive Assistance"
                     ].map((feature) => (
                       <div key={feature} className="flex items-center gap-2">
                         <div className="w-2 h-2 bg-success rounded-full" />
@@ -168,11 +167,9 @@ export const ProductShowcase = () => {
                   </div>
                 </div>
 
-                <Button asChild className="w-full bg-gradient-success border-0 text-white hover:opacity-90">
-                  <Link to="/interprecoach">
-                    <Download className="w-4 h-4 mr-2" />
-                    Meet InterpreCoach
-                  </Link>
+                <Button className="w-full bg-gradient-success border-0 text-white hover:opacity-90">
+                  <Download className="w-4 h-4 mr-2" />
+                  Install Extension
                 </Button>
               </div>
             </CardContent>
@@ -192,8 +189,8 @@ export const ProductShowcase = () => {
                     <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg blur-lg opacity-30 animate-pulse" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-foreground">InterpreBot</h3>
-                    <p className="text-muted-foreground">Personal AI Analyst</p>
+                    <h3 className="text-xl font-bold text-foreground">InterpreBot 🧠✨</h3>
+                    <p className="text-muted-foreground">Advanced AI Training & Assessment Agent</p>
                   </div>
                 </div>
                 
@@ -287,17 +284,18 @@ export const ProductShowcase = () => {
                 </div>
 
                 <div className="space-y-4">
-                  <h4 className="font-semibold text-foreground">Analysis Capabilities:</h4>
+                  <h4 className="font-semibold text-foreground">🧠✨ Deep Analysis Capabilities:</h4>
                   <div className="space-y-2">
                     {[
-                      "Voice Control & Clarity",
-                      "Grammar & Syntax Analysis",
-                      "Vocabulary Assessment",
-                      "Ethical Decision-Making",
-                      "Personalized Learning Paths"
+                      "🎯 Linguistic Accuracy Assessment",
+                      "🏥 Medical Terminology Mastery",
+                      "📝 Grammatical Correctness Analysis",
+                      "🌊 Fluency & Flow Evaluation",
+                      "🎭 Contextual Appropriateness",
+                      "🤖 AI Mentor Guided Learning"
                     ].map((feature) => (
                       <div key={feature} className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-purple-500 rounded-full" />
+                        <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse" />
                         <span className="text-sm text-muted-foreground">{feature}</span>
                       </div>
                     ))}
@@ -305,19 +303,18 @@ export const ProductShowcase = () => {
                 </div>
 
                 <div className="space-y-3">
-                  <h4 className="font-semibold text-foreground">Detection:</h4>
+                  <h4 className="font-semibold text-foreground">🔍 Real-Time Detection:</h4>
                   <div className="flex flex-wrap gap-2">
-                    <Badge variant="outline" className="text-xs">Hesitations</Badge>
-                    <Badge variant="outline" className="text-xs">Tone Issues</Badge>
-                    <Badge variant="outline" className="text-xs">Pacing</Badge>
+                    <Badge variant="outline" className="text-xs">Voice Hesitations</Badge>
+                    <Badge variant="outline" className="text-xs">Tense Errors</Badge>
+                    <Badge variant="outline" className="text-xs">Flow Issues</Badge>
+                    <Badge variant="outline" className="text-xs">Cultural Context</Badge>
                   </div>
                 </div>
 
-                <Button asChild className="w-full bg-gradient-to-r from-purple-500 to-pink-500 border-0 text-white hover:opacity-90">
-                  <Link to="/interprebot">
-                    <TrendingUp className="w-4 h-4 mr-2" />
-                    Find out more
-                  </Link>
+                <Button className="w-full bg-gradient-to-r from-purple-500 to-pink-500 border-0 text-white hover:opacity-90 hover:scale-105 transition-transform">
+                  <Brain className="w-4 h-4 mr-2" />
+                  🚀 Start Advanced Assessment
                 </Button>
               </div>
             </CardContent>
@@ -366,15 +363,14 @@ export const ProductShowcase = () => {
             Join thousands of interpreters who trust InterpreLab's AI-powered ecosystem for training, live assistance, and continuous improvement.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="bg-gradient-primary border-0 text-white hover:opacity-90">
-              <Link to="/interprecoach">
-                <ArrowRight className="w-5 h-5 mr-2" />
-                Join the waitlist
-              </Link>
+            <Button size="lg" className="bg-gradient-primary border-0 text-white hover:opacity-90">
+              <ArrowRight className="w-5 h-5 mr-2" />
+              Start Free Trial
             </Button>
-            <Button asChild size="lg" variant="outline" className="border-white/20 text-white hover:bg-white/10">
-                <Link to="/contact">Find out more</Link>
-              </Button>
+            <Button size="lg" variant="outline" className="border-white/20 text-white hover:bg-white/10">
+              <Calendar className="w-5 h-5 mr-2" />
+              Schedule Demo
+            </Button>
           </div>
         </div>
       </div>

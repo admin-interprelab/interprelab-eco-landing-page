@@ -2,19 +2,32 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
-import { Menu, Shield, ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Menu, Chrome, Shield, Phone, Mail, ArrowRight, User, LogOut } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+  const { t } = useLanguage();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
+  };
 
   const navItems = [
-    { label: "InterpreBot", href: "/interprebot" },
-    { label: "InterpreCoach", href: "/interprecoach" },
-    { label: "Resources", href: "/resources" },
-    { label: "About us", href: "/about" },
-    { label: "Get in touch", href: "/contact" },
-    { label: "Sign in", href: "/signin" }
+    { label: t('interpreBot'), href: "/interprebot" },
+    { label: t('interpreCoach'), href: "/interprecoach" },
+    { label: t('interpreHub'), href: "/interpre-hub" },
+    { label: t('dashboard'), href: "/dashboard" },
+    { label: t('callTracker'), href: "/call-tracker" },
+    { label: t('settings'), href: "/settings" },
+    { label: t('resources'), href: "/resources" },
+    { label: t('about'), href: "/about" },
+    { label: t('contact'), href: "/contact" }
   ];
 
   return (
@@ -47,9 +60,26 @@ export const Navigation = () => {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center gap-3">
-            <Button asChild variant="hero" size="sm">
-              <Link to="/interprecoach">Join the Waitlist <ArrowRight className="w-4 h-4 ml-1" /></Link>
-            </Button>
+            {user ? (
+              <Button onClick={handleSignOut} variant="glass" size="sm">
+                <LogOut className="w-4 h-4 mr-2" />
+                {t('signOut')}
+              </Button>
+            ) : (
+              <>
+                <Link to="/waitlist">
+                  <Button variant="glass" size="sm" className="flex items-center gap-2">
+                    Join Waitlist
+                  </Button>
+                </Link>
+                <Link to="/signin">
+                  <Button variant="hero" size="sm">
+                    <User className="w-4 h-4 mr-2" />
+                    {t('signIn')}
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu */}
@@ -73,9 +103,47 @@ export const Navigation = () => {
                 ))}
                 
                 <div className="pt-6 space-y-3">
-                  <Button asChild variant="hero" className="w-full">
-                    <Link to="/interprecoach">Join the Waitlist <ArrowRight className="w-4 h-4 ml-2" /></Link>
-                  </Button>
+                  {user ? (
+                    <Button 
+                      onClick={() => {
+                        handleSignOut();
+                        setIsOpen(false);
+                      }}
+                      variant="glass"
+                      className="w-full"
+                    >
+                      <LogOut className="w-4 h-4 mr-2" />
+                      {t('signOut')}
+                    </Button>
+                  ) : (
+                    <>
+                      <Link to="/waitlist">
+                        <Button variant="glass" className="w-full flex items-center gap-2" onClick={() => setIsOpen(false)}>
+                          Join Waitlist
+                        </Button>
+                      </Link>
+                      <Link to="/signin">
+                        <Button variant="hero" className="w-full" onClick={() => setIsOpen(false)}>
+                          <User className="w-4 h-4 mr-2" />
+                          {t('signIn')}
+                        </Button>
+                      </Link>
+                    </>
+                  )}
+                </div>
+
+                <div className="pt-6 border-t border-border/50">
+                  <p className="text-sm text-muted-foreground mb-3">Contact</p>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex items-center gap-2">
+                      <Phone className="w-4 h-4" />
+                      <span>+1 (555) 123-4567</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Mail className="w-4 h-4" />
+                      <span>hello@interprelab.com</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </SheetContent>

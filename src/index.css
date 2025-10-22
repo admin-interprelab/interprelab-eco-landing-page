@@ -20,13 +20,13 @@ All colors MUST be HSL for consistency and theming.
     --popover: 240 12% 8%;
     --popover-foreground: 210 30% 98%;
 
-    /* Brand Colors - Medical Trust Blue with Tech Accent */
-    --primary: 209 84% 52%;
+    /* Brand Colors - Logo-Harmonized Navy & Purple */
+    --primary: 209 46% 31%;
     --primary-foreground: 210 40% 98%;
-    --primary-glow: 209 84% 65%;
+    --primary-glow: 209 46% 45%;
 
-    /* Secondary - Professional Purple */
-    --secondary: 264 83% 58%;
+    /* Secondary - Logo-Harmonized Deep Purple */
+    --secondary: 237 26% 41%;
     --secondary-foreground: 210 40% 98%;
 
     /* Success Green - Real-time Active */
@@ -42,7 +42,7 @@ All colors MUST be HSL for consistency and theming.
     --muted-foreground: 210 20% 65%;
 
     /* Accent for Highlights */
-    --accent: 264 83% 58%;
+    --accent: 237 26% 41%;
     --accent-foreground: 210 40% 98%;
 
     /* Destructive States */
@@ -52,7 +52,7 @@ All colors MUST be HSL for consistency and theming.
     /* Borders & Inputs */
     --border: 240 10% 18%;
     --input: 240 12% 15%;
-    --ring: 209 84% 52%;
+    --ring: 209 46% 31%;
 
     /* Glass Effect Variables */
     --glass-bg: 240 10% 6% / 0.8;
@@ -60,12 +60,12 @@ All colors MUST be HSL for consistency and theming.
     --glass-blur: blur(12px);
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(209 84% 52%), hsl(264 83% 58%));
-    --gradient-success: linear-gradient(135deg, hsl(142 71% 45%), hsl(209 84% 52%));
-    --gradient-glow: radial-gradient(circle at 50% 50%, hsl(209 84% 52% / 0.3), transparent 70%);
+    --gradient-primary: linear-gradient(135deg, hsl(209 46% 31%), hsl(237 26% 41%));
+    --gradient-success: linear-gradient(135deg, hsl(142 71% 45%), hsl(209 46% 31%));
+    --gradient-glow: radial-gradient(circle at 50% 50%, hsl(209 46% 31% / 0.3), transparent 70%);
     
     /* Shadows */
-    --shadow-glow: 0 0 50px hsl(209 84% 52% / 0.3);
+    --shadow-glow: 0 0 50px hsl(209 46% 31% / 0.3);
     --shadow-card: 0 8px 32px hsl(240 10% 3.9% / 0.6);
     --shadow-extension: 0 20px 60px hsl(240 10% 3.9% / 0.8);
 
@@ -112,12 +112,12 @@ All colors MUST be HSL for consistency and theming.
   :root {
     --sidebar-background: 240 12% 8%;
     --sidebar-foreground: 210 30% 98%;
-    --sidebar-primary: 209 84% 52%;
+    --sidebar-primary: 209 46% 31%;
     --sidebar-primary-foreground: 210 40% 98%;
     --sidebar-accent: 240 10% 12%;
     --sidebar-accent-foreground: 210 30% 98%;
     --sidebar-border: 240 10% 18%;
-    --sidebar-ring: 209 84% 52%;
+    --sidebar-ring: 209 46% 31%;
   }
 }
 
@@ -139,7 +139,7 @@ All colors MUST be HSL for consistency and theming.
   }
 
   .glow {
-    box-shadow: var(--shadow-glow);
+    text-shadow: 0 0 50px hsl(209 46% 31% / 0.3);
   }
 
   /* Animation classes */

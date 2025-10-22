@@ -44,15 +44,7 @@ export const Testimonials = () => {
       rating: 5,
       specialty: "Medical"
     },
-    {
-      name: "Lisa Thompson",
-      role: "Legal Interpretation Coordinator",
-      location: "New York, NY",
-      avatar: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=150&h=150&fit=crop&crop=face",
-      quote: "InterpreLab's compliance features ensure our interpreters meet all legal standards. The HIPAA training module alone is worth the subscription.",
-      rating: 5,
-      specialty: "Legal"
-    },
+    
     {
       name: "Roberto Silva",
       role: "Community Health Interpreter",
