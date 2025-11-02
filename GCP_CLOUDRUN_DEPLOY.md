@@ -1,127 +1,151 @@
-# Deploying InterpreLab to Google Cloud Run
+# Google Cloud Run Deployment Guide
 
-This guide will walk you through containerizing your React application and deploying it to Google Cloud Run.
+## ✅ Current Status
 
-## Prerequisites
+Your InterpreLab application is successfully deployed to Google Cloud Run!
 
--   **Docker:** Ensure Docker is installed and running on your local machine.
--   **Google Cloud SDK (`gcloud` CLI):** Ensure `gcloud` is installed and configured for your project (`interprelab-eco-landing-page`).
-    -   You can verify your configuration with `gcloud config list`.
-    -   If not configured, run `gcloud init`.
+- **Project ID**: `interprelab-eco-landing-page`
+- **Service Name**: `interprelab-app`
+- **Region**: `us-central1`
+- **Service URL**: https://interprelab-app-293419676967.us-central1.run.app
+- **Docker Image**: `gcr.io/interprelab-eco-landing-page/interprelab-app:latest`
 
-## Step 1: Create a Dockerfile
+## 🚀 Automatic Deployment Setup
 
-Create a file named `Dockerfile` in the root of your project (the same directory as `package.json`) with the following content:
+### Current Configuration
+- ✅ Docker image built and pushed to Google Container Registry
+- ✅ Cloud Run service deployed and running
+- ✅ GitHub Actions workflow configured for auto-deployment
+- ✅ Dockerfile optimized for production with nginx
 
-```dockerfile
-# Stage 1: Build the React application
-FROM node:20-alpine as builder
+### Deployment Workflow
+Every commit to the `main` branch triggers:
+1. **Build**: Install dependencies and build React app
+2. **Test**: Run test suite (continues on failure)
+3. **Docker**: Build optimized Docker image with nginx
+4. **Push**: Upload image to Google Container Registry
+5. **Deploy**: Update Cloud Run service with new image
+6. **Verify**: Service automatically starts serving traffic
 
-WORKDIR /app
+## 🔧 Manual Deployment Commands
 
-COPY package.json bun.lockb ./
-RUN bun install --frozen-lockfile
+### Build and Deploy Locally
+```bash
+# Build Docker image
+docker build -t gcr.io/interprelab-eco-landing-page/interprelab-app:latest .
 
-COPY . .
-RUN bun run build
+# Push to registry
+docker push gcr.io/interprelab-eco-landing-page/interprelab-app:latest
 
-# Stage 2: Serve the application with Nginx
-FROM nginx:stable-alpine
-
-# Copy the build output from the builder stage
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-# Copy custom Nginx configuration (optional, but good practice)
-# If you have a custom nginx.conf, place it in your project root
-# COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+# Deploy to Cloud Run
+gcloud run deploy interprelab-app \
+  --image=gcr.io/interprelab-eco-landing-page/interprelab-app:latest \
+  --region=us-central1 \
+  --platform=managed \
+  --allow-unauthenticated \
+  --port=8080 \
+  --memory=1Gi \
+  --cpu=1 \
+  --min-instances=0 \
+  --max-instances=10 \
+  --concurrency=80 \
+  --timeout=300
 ```
 
-**Explanation of the Dockerfile:**
+### Service Management
+```bash
+# Check service status
+gcloud run services describe interprelab-app --region=us-central1
 
--   **Stage 1 (builder):**
-    -   Uses a Node.js Alpine image to keep the final image small.
-    -   Sets the working directory to `/app`.
-    -   Copies `package.json` and `bun.lockb` to install dependencies.
-    -   Runs `bun install --frozen-lockfile` to install project dependencies.
-    -   Copies the rest of your application code.
-    -   Runs `bun run build` to create the optimized production build of your React app.
+# View service logs
+gcloud run services logs tail interprelab-app --region=us-central1
 
--   **Stage 2 (nginx):**
-    -   Uses a lightweight Nginx Alpine image.
-    -   Copies the static files generated in the `builder` stage (`/app/dist`) to the Nginx web server directory (`/usr/share/nginx/html`).
-    -   Exposes port 80, which Nginx listens on by default.
-    -   Starts Nginx in the foreground.
+# List all revisions
+gcloud run revisions list --service=interprelab-app --region=us-central1
 
-## Step 2: Build and Push the Docker Image
+# Scale service
+gcloud run services update interprelab-app \
+  --region=us-central1 \
+  --min-instances=1 \
+  --max-instances=20
+```
 
-Open your terminal in the project root directory and run the following commands:
+## 🔐 Required GitHub Secrets
 
-1.  **Configure Docker to use Google Cloud's credential helper:**
+For automatic deployment, ensure these secrets are set in GitHub:
 
-    ```bash
-    gcloud auth configure-docker
-    ```
+1. **GCP_SA_KEY**: Service account JSON key for authentication
+2. **VITE_SUPABASE_URL**: Supabase project URL
+3. **VITE_SUPABASE_ANON_KEY**: Supabase anonymous key
 
-2.  **Build the Docker image:**
+## 📊 Service Configuration
 
-    ```bash
-    docker build -t gcr.io/interprelab-eco-landing-page/interprelab-frontend:latest .
-    ```
+### Current Settings
+- **Memory**: 1GB
+- **CPU**: 1 vCPU
+- **Min Instances**: 0 (scales to zero)
+- **Max Instances**: 10
+- **Concurrency**: 80 requests per instance
+- **Timeout**: 300 seconds
+- **Port**: 8080
 
-    -   `gcr.io`: Specifies Google Container Registry.
-    -   `interprelab-eco-landing-page`: Your Google Cloud Project ID.
-    -   `interprelab-frontend`: The name of your Docker image.
-    -   `latest`: The tag for your image (you can use version numbers instead of `latest`).
-    -   `.`: Indicates that the Dockerfile is in the current directory.
+### Environment Variables
+- `NODE_ENV=production`
+- `VITE_SUPABASE_URL` (from GitHub secret)
+- `VITE_SUPABASE_ANON_KEY` (from GitHub secret)
+- `VITE_GOOGLE_CLOUD_PROJECT_ID=interprelab-eco-landing-page`
 
-3.  **Push the Docker image to Google Container Registry:**
+## 🌐 Custom Domain Setup
 
-    ```bash
-    docker push gcr.io/interprelab-eco-landing-page/interprelab-frontend:latest
-    ```
+To use `app.interprelab.com`:
 
-## Step 3: Deploy to Cloud Run
+1. **Map Domain**:
+```bash
+gcloud run domain-mappings create \
+  --service=interprelab-app \
+  --domain=app.interprelab.com \
+  --region=us-central1
+```
 
-Now that your Docker image is in Google Container Registry, you can deploy it to Cloud Run:
+2. **Update DNS**: Add the provided DNS records to your domain registrar
+
+## 📈 Monitoring & Logs
+
+### Cloud Console
+- **Service**: https://console.cloud.google.com/run/detail/us-central1/interprelab-app
+- **Logs**: https://console.cloud.google.com/logs/query
+- **Metrics**: Built-in request metrics, latency, and error rates
+
+### Health Check
+The Docker image includes a health check endpoint at `/health`
+
+## 🔄 Rollback Process
+
+If you need to rollback to a previous version:
 
 ```bash
-gcloud run deploy interprelab-frontend \
-  --image gcr.io/interprelab-eco-landing-page/interprelab-frontend:latest \
-  --platform managed \
-  --region us-central1 \
-  --allow-unauthenticated \
-  --project interprelab-eco-landing-page
+# List revisions
+gcloud run revisions list --service=interprelab-app --region=us-central1
+
+# Rollback to specific revision
+gcloud run services update-traffic interprelab-app \
+  --to-revisions=REVISION_NAME=100 \
+  --region=us-central1
 ```
 
-**Explanation of the `gcloud run deploy` command:**
+## 🛡️ Security Features
 
--   `interprelab-frontend`: The name of the Cloud Run service.
--   `--image`: Specifies the Docker image to deploy.
--   `--platform managed`: Uses the fully managed Cloud Run environment.
--   `--region us-central1`: Specifies the GCP region to deploy to. You can choose a region closer to your users.
--   `--allow-unauthenticated`: Allows public access to your service. If you need authentication, you would omit this flag.
--   `--project interprelab-eco-landing-page`: Specifies your Google Cloud Project ID.
+- ✅ Non-root user in container
+- ✅ Minimal Alpine Linux base image
+- ✅ HTTPS enforced by Cloud Run
+- ✅ IAM-based access control
+- ✅ Container image vulnerability scanning
 
-After running this command, `gcloud` will provide you with the URL of your deployed service. You can access your application through this URL.
+## 💰 Cost Optimization
 
-## Step 4: (Optional) Connect to a Custom Domain
+- **Pay-per-use**: Only charged when serving requests
+- **Scale-to-zero**: No cost when idle
+- **Efficient caching**: nginx serves static assets efficiently
+- **Optimized build**: Multi-stage Docker build reduces image size
 
-If you want to use a custom domain (e.g., `interprelab.com`) with your Cloud Run service, you can follow these steps:
-
-1.  **Add a custom domain mapping:**
-
-    ```bash
-    gcloud run domains add interprelab.com \
-      --service interprelab-frontend \
-      --platform managed \
-      --region us-central1 \
-      --project interprelab-eco-landing-page
-    ```
-
-2.  **Update DNS records:** `gcloud` will provide you with the necessary DNS records (A and TXT records) that you need to add to your domain registrar (e.g., GoDaddy, Namecheap). Follow their instructions to update your DNS settings.
-
-    It might take some time for DNS changes to propagate.
+Your InterpreLab application is now fully deployed and will automatically update with every code change! 🎉
