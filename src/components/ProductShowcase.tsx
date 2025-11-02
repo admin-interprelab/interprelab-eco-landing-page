@@ -5,13 +5,7 @@ import {
   Brain,
   Chrome,
   Clock,
-  ArrowRight,
-  GraduationCap,
-  BookOpen,
-  Download,
-  Sparkles,
-  Eye,
-  TrendingUp
+  ArrowRight
 } from "lucide-react";
 import { Link } from "react-router-dom";
 

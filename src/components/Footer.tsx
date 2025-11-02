@@ -1,13 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Link } from "react-router-dom";
-import {
-  Shield,
-  Mail,
-  Phone,
-  MapPin,
-  Twitter,
-  Linkedin,
+import { 
+  Shield, 
+  Mail, 
+  Phone, 
+  MapPin, 
+  Twitter, 
+  Linkedin, 
   Github,
   Chrome,
   Stethoscope,
@@ -20,7 +19,7 @@ export const Footer = () => {
     <footer className="relative border-t border-border/50 bg-card/50 backdrop-blur-sm">
       <div className="container mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-
+          
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
@@ -32,9 +31,9 @@ export const Footer = () => {
                 <p className="text-xs text-muted-foreground">Advanced Interpretation</p>
               </div>
             </div>
-
+            
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Revolutionizing medical and legal interpretation through advanced AI technology
+              Revolutionizing medical and legal interpretation through advanced AI technology 
               while preserving the essential human element in critical communication.
             </p>
 
@@ -55,19 +54,19 @@ export const Footer = () => {
             <h4 className="text-sm font-semibold text-foreground">Services</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
-                <Link to="/interprebot" className="hover:text-foreground transition-colors flex items-center gap-2">
+                <a href="/interprebot" className="hover:text-foreground transition-colors flex items-center gap-2">
                   InterpreBot
-                </Link>
+                </a>
               </li>
               <li>
-                <Link to="/interprecoach" className="hover:text-foreground transition-colors flex items-center gap-2">
+                <a href="/interprecoach" className="hover:text-foreground transition-colors flex items-center gap-2">
                   InterpreCoach
-                </Link>
+                </a>
               </li>
               <li>
-                <Link to="/interprestudy" className="hover:text-foreground transition-colors">
-                  InterpreStudy
-                </Link>
+                <a href="#" className="hover:text-foreground transition-colors">
+                  Certification Courses
+                </a>
               </li>
             </ul>
           </div>
@@ -87,9 +86,9 @@ export const Footer = () => {
                 </a>
               </li>
               <li>
-                <Link to="/careers" className="hover:text-foreground transition-colors">
+                <a href="/careers" className="hover:text-foreground transition-colors">
                   Careers
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
@@ -131,11 +130,11 @@ export const Footer = () => {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-6 text-xs text-muted-foreground">
               <span>© 2024 InterpreLab. All rights reserved.</span>
-              <Link to="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link>
-              <Link to="/terms" className="hover:text-foreground transition-colors">Terms of Service</Link>
-              <Link to="/security" className="hover:text-foreground transition-colors">Security</Link>
+              <a href="#" className="hover:text-foreground transition-colors">Privacy Policy</a>
+              <a href="#" className="hover:text-foreground transition-colors">Terms of Service</a>
+              <a href="#" className="hover:text-foreground transition-colors">Security</a>
             </div>
-
+            
             <div className="flex items-center gap-4">
               <Badge variant="outline" className="text-xs">
                 <Shield className="w-3 h-3 mr-1" />
