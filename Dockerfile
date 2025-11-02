@@ -8,8 +8,8 @@ WORKDIR /app
 # Copy package files first for better caching
 COPY package*.json ./
 
-# Install dependencies with clean cache
-RUN npm install --only=production && \
+# Install all dependencies (including dev dependencies for build)
+RUN npm install && \
     npm cache clean --force
 
 # Copy source code
@@ -30,7 +30,9 @@ RUN apk add --no-cache \
 # Create nginx user directories with proper permissions
 RUN mkdir -p /var/cache/nginx /var/log/nginx /tmp/nginx && \
     chown -R nginx:nginx /var/cache/nginx /var/log/nginx /tmp/nginx && \
-    chmod -R 755 /var/cache/nginx /var/log/nginx /tmp/nginx
+    chmod -R 755 /var/cache/nginx /var/log/nginx /tmp/nginx && \
+    touch /tmp/nginx.pid && \
+    chown nginx:nginx /tmp/nginx.pid
 
 # Copy custom nginx configuration for InterpreLab domains
 COPY nginx.conf /etc/nginx/nginx.conf
@@ -38,25 +40,17 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Copy built application from builder stage
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Copy additional configuration files
-COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+# No additional configuration files needed
 
 # Create robots.txt for SEO
 RUN echo -e "User-agent: *\nAllow: /\nSitemap: https://interprelab.com/sitemap.xml" > /usr/share/nginx/html/robots.txt
 
-# Switch to non-root user for security
-USER nginx
-
-# Expose port 8080 (Cloud Run standard)
-EXPOSE 8080
+# Expose port 80 (Cloud Run standard)
+EXPOSE 80
 
 # Health check for container orchestration
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8080/health || exit 1
+    CMD curl -f http://localhost:80/health || exit 1
 
-# Use custom entrypoint for environment variable injection
-ENTRYPOINT ["/docker-entrypoint.sh"]
-
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Start nginx directly
+CMD ["sh", "-c", "mkdir -p /tmp/nginx/client_temp /tmp/nginx/proxy_temp /tmp/nginx/fastcgi_temp /tmp/nginx/uwsgi_temp /tmp/nginx/scgi_temp && chmod -R 755 /tmp/nginx && touch /tmp/nginx.pid && chmod 644 /tmp/nginx.pid && nginx -t && nginx -g 'daemon off;'"]

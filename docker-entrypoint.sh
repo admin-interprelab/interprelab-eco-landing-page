@@ -10,19 +10,13 @@ log() {
 
 log "Starting InterpreLab application container..."
 
-# Check if we're running as root and switch to nginx user
-if [ "$(id -u)" = "0" ]; then
-    log "Running as root, switching to nginx user..."
-    exec su-exec nginx "$0" "$@"
-fi
-
 # Validate required environment variables
 if [ -z "$VITE_SUPABASE_URL" ]; then
     log "WARNING: VITE_SUPABASE_URL not set"
 fi
 
-if [ -z "$VITE_SUPABASE_PUBLISHABLE_KEY" ]; then
-    log "WARNING: VITE_SUPABASE_PUBLISHABLE_KEY not set"
+if [ -z "$VITE_SUPABASE_ANON_KEY" ]; then
+    log "WARNING: VITE_SUPABASE_ANON_KEY not set"
 fi
 
 # Create necessary directories
@@ -34,6 +28,8 @@ mkdir -p /tmp/nginx/scgi_temp
 
 # Set proper permissions
 chmod -R 755 /tmp/nginx
+touch /tmp/nginx.pid
+chmod 644 /tmp/nginx.pid
 
 # Test nginx configuration
 log "Testing nginx configuration..."
@@ -49,7 +45,7 @@ fi
 # Log container information
 log "Container started successfully"
 log "Server name: interprelab.com, app.interprelab.com"
-log "Port: 8080"
+log "Port: 80"
 log "Health check: /health"
 
 # Execute the main command
