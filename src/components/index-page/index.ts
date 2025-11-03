@@ -2,7 +2,8 @@
  * Index Page Components Export
  */
 
-export { Index } from './Index';
+// Explicitly reference the TSX file to avoid case-insensitive re-export cycles on Windows
+export { Index } from './Index.tsx';
 export { MainContent } from './MainContent';
 
 // Hooks
