@@ -1,23 +1,18 @@
-import { Navigation } from "@/components/Navigation";
-import { Hero } from "@/components/Hero";
-import { ProductShowcase } from "@/components/ProductShowcase";
-import { StatsSection } from "@/components/StatsSection";
-import { Testimonials } from "@/components/Testimonials";
-import { Footer } from "@/components/Footer";
+/**
+ * Refactored Index Page
+ * Now uses modular architecture for better maintainability
+ */
 
+import { Index as ModularIndex } from '@/components/index-page';
+
+/**
+ * Index Page Component
+ *
+ * Wrapper component that maintains backward compatibility
+ * while using the new modular architecture
+ */
 const Index = () => {
-  return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
-      <main>
-        <Hero />
-        <ProductShowcase />
-        <StatsSection />
-        <Testimonials />
-      </main>
-      <Footer />
-    </div>
-  );
+  return <ModularIndex />;
 };
 
 export default Index;

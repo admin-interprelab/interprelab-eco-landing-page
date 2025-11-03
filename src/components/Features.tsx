@@ -1,104 +1,94 @@
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
-import { 
-  Monitor,
-  TrendingUp,
-  BookOpen,
-  Shield,
-  Users,
-  Database,
-  Clock,
-  Award
-} from "lucide-react";
+/**
+ * Refactored Features Component
+ * Modular, maintainable, and following best practices
+ */
 
+import { useState } from 'react';
+import { FeatureSection, FeatureModal, DEFAULT_FEATURES_SECTION } from './features/index';
+import { useFeatureInteractions } from './features/hooks';
+import type { Feature } from './features/types';
+
+/**
+ * Main Features Component
+ *
+ * A comprehensive features showcase that provides:
+ * - Responsive feature grid layout
+ * - Interactive feature cards with hover effects
+ * - Detailed modal views for features
+ * - Background image and overlay effects
+ * - Accessibility support with ARIA labels
+ * - Animation and transition effects
+ *
+ * Features:
+ * - Modular architecture with separated concerns
+ * - Custom hooks for interaction management
+ * - TypeScript support with proper interfaces
+ * - Responsive design with mobile-first approach
+ * - Performance optimizations with lazy loading
+ * - Full keyboard navigation support
+ */
 export const Features = () => {
-  const features = [
-    {
-      icon: Monitor,
-      title: "Continuous Quality Assurance",
-      description: "Real-time monitoring combines AI precision with human expertise for comprehensive quality control."
-    },
-    {
-      icon: TrendingUp,
-      title: "Performance Analytics",
-      description: "Track terminology fidelity, ethical decisions, and get session-based performance reports."
-    },
-    {
-      icon: BookOpen,
-      title: "Resource Management",
-      description: "Upload, test, and refine language resources. Integrate glossaries and experiment with custom models."
-    },
-    {
-      icon: Shield,
-      title: "Data Security & Privacy",
-      description: "Enterprise-grade security with HIPAA compliance and SOC 2 certification for sensitive environments."
-    },
-    {
-      icon: Users,
-      title: "Collaborative Platform",
-      description: "Space for linguists, developers, and educators to share insights and best practices."
-    },
-    {
-      icon: Database,
-      title: "Conversation Analytics",
-      description: "Comprehensive dashboards track logs, usage statistics, and model performance metrics."
-    },
-    {
-      icon: Clock,
-      title: "Real-time Feedback",
-      description: "Instant feedback during sessions with adaptive scenarios and AI-driven simulations."
-    },
-    {
-      icon: Award,
-      title: "Certification Support",
-      description: "Structured preparation for professional certification with graded assessments."
-    }
-  ];
+  const [selectedFeature, setSelectedFeature] = useState<Feature | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const {
+    handleCardClick,
+  } = useFeatureInteractions();
+
+  // Handle feature card click
+  const handleFeatureClick = (feature: Feature) => {
+    setSelectedFeature(feature);
+    setIsModalOpen(true);
+    handleCardClick(feature);
+  };
+
+  // Handle modal close
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setSelectedFeature(null);
+  };
 
   return (
-    <section className="py-20 px-6 relative">
-      <div 
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/src/assets/tech-background.jpg')" }}
+    <>
+      {/* Main Features Section */}
+      <FeatureSection
+        section={DEFAULT_FEATURES_SECTION}
+        showAnimation={true}
+        onFeatureClick={handleFeatureClick}
       />
-      <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/90 to-background/95" />
-      
-      <div className="container mx-auto relative z-10">
-        <div className="text-center mb-16 animate-fade-in">
-          <Badge className="bg-gradient-primary border-0 text-white px-4 py-2 mb-4">
-            Platform Capabilities
-          </Badge>
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-            Comprehensive Features for Professional Interpreters
-          </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            From continuous monitoring to collaborative learning, InterpreLab provides 
-            everything interpreters need to excel in high-stakes environments.
-          </p>
-        </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {features.map((feature, index) => (
-            <Card 
-              key={feature.title}
-              className="bg-card/50 border-border/50 backdrop-blur-sm hover-lift group"
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
-              <CardContent className="p-6 text-center space-y-4">
-                <div className="w-12 h-12 bg-gradient-primary rounded-lg flex items-center justify-center mx-auto">
-                  <feature.icon className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">
-                  {feature.title}
-                </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {feature.description}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </div>
-    </section>
+      {/* Feature Detail Modal */}
+      <FeatureModal
+        feature={selectedFeature}
+        isOpen={isModalOpen}
+        onClose={handleModalClose}
+      />
+    </>
   );
 };
+
+// Export individual components for potential standalone use
+export {
+  FeatureCard,
+  FeatureGrid,
+  FeatureFilter,
+  FeatureModal,
+} from './features/index';
+
+// Export hooks for external use
+export {
+  useFeatureFiltering,
+  useFeatureAnimations,
+  useFeatureInteractions,
+  useResponsiveLayout,
+  useFeatureVisibility,
+} from './features/hooks';
+
+// Export types
+export type {
+  Feature,
+  FeatureCategory,
+  FeatureSection as FeatureSectionType,
+  FeatureCardProps,
+  FeatureGridProps,
+} from './features/types';

@@ -5,43 +5,17 @@ import {
   Brain,
   Chrome,
   Clock,
-  ArrowRight
+  ArrowRight,
+  GraduationCap,
+  BookOpen,
+  Download,
+  Eye,
+  Sparkles,
+  TrendingUp
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export const ProductShowcase = () => {
-  const products = [
-    {
-      id: "interprebot",
-      name: "InterpreBot",
-      tagline: "Skills Assessment",
-      description: "AI-powered evaluation of your interpretation skills with personalized improvement paths.",
-      icon: Brain,
-      gradient: "from-primary to-primary-glow",
-      link: "/interprebot",
-      cta: "Take Assessment"
-    },
-    {
-      id: "interprecoach",
-      name: "InterpreCoach",
-      tagline: "Real-Time Assistant",
-      description: "Browser extension providing instant terminology support during live sessions.",
-      icon: Chrome,
-      gradient: "from-success to-primary",
-      link: "/interprecoach",
-      cta: "Install Extension"
-    },
-    {
-      id: "interpretrack",
-      name: "InterpreTrack",
-      tagline: "Session Tracking",
-      description: "Automated logging and earnings tracking for freelance interpreters.",
-      icon: Clock,
-      gradient: "from-secondary to-accent",
-      link: "/interpretrack",
-      cta: "Start Tracking"
-    }
-  ];
 
   return (
     <section className="py-32 px-6 relative">
@@ -351,7 +325,7 @@ export const ProductShowcase = () => {
                 <Badge variant="outline">Perfect for Students</Badge>
               </CardContent>
             </Card>
-            <Card className="bg-card/30 border-border/50 backdrop-blur-sm border-primary/50">
+            <Card className="bg-card/30 backdrop-blur-sm border-primary/50">
               <CardContent className="p-6 text-center">
                 <h4 className="text-xl font-bold text-foreground mb-2">Professional</h4>
                 <p className="text-muted-foreground mb-4">Advanced features for working interpreters</p>

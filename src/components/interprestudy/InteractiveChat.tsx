@@ -17,6 +17,7 @@ export const InteractiveChat = () => {
   const [input, setInput] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [chatMode, setChatMode] = useState<'ethics' | 'quiz' | 'general'>('general');
 
   const handleSend = async () => {
     if (!input.trim()) return;
@@ -135,26 +136,57 @@ export const InteractiveChat = () => {
           </div>
         </div>
 
+        {/* Chat Mode Selector */}
+        <div className="flex items-center gap-2 mb-4">
+          <span className="text-sm font-medium">Mode:</span>
+          <div className="flex gap-1">
+            {[
+              { value: 'general', label: 'General', icon: '💬' },
+              { value: 'ethics', label: 'Ethics', icon: '⚖️' },
+              { value: 'quiz', label: 'Quiz', icon: '🧠' },
+            ].map((mode) => (
+              <Button
+                key={mode.value}
+                variant={chatMode === mode.value ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setChatMode(mode.value as typeof chatMode)}
+                className="text-xs"
+              >
+                {mode.icon} {mode.label}
+              </Button>
+            ))}
+          </div>
+        </div>
+
         {/* Quick Actions */}
         <div className="flex flex-wrap gap-2">
           <Button
             variant="outline"
             size="sm"
-            onClick={() => setInput('Quiz me on code of ethics')}
+            onClick={() => {
+              setChatMode('ethics');
+              setInput('Quiz me on code of ethics');
+            }}
           >
             Ethics Quiz
           </Button>
           <Button
             variant="outline"
             size="sm"
-            onClick={() => setInput('What are the standards of practice?')}
+            onClick={() => {
+              setChatMode('general');
+              setInput('What are the standards of practice?');
+            }}
           >
             Standards Query
           </Button>
           <Button
             variant="outline"
             size="sm"
-            onClick={() => setInput('Test my knowledge')}
+            onClick={() => {
+              setChatMode('quiz');
+              setInput('Test my knowledge');
+            }}
           >
             Knowledge Test
           </Button>

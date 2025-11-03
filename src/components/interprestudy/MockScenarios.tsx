@@ -10,6 +10,8 @@ export const MockScenarios = () => {
   const [isCreating, setIsCreating] = useState(false);
   const [scenarioTitle, setScenarioTitle] = useState('');
   const [scenarioDescription, setScenarioDescription] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('medical');
+  const [difficulty, setDifficulty] = useState('intermediate');
 
   return (
     <div className="space-y-6">

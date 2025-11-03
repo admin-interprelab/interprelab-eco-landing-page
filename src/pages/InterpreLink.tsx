@@ -100,6 +100,53 @@ export default function InterpreLink() {
       type: "reel",
       tags: ["Humor", "Reels"],
       videoThumbnail: "/placeholder-reel.jpg"
+    },
+    {
+      id: 4,
+      author: "Ana Silva",
+      role: "Hospital Interpreter - CMI",
+      avatar: "AS",
+      avatarColor: "bg-primary",
+      timeAgo: "2 hours ago",
+      title: "Handling complex terminology on the fly?",
+      content: "Just had a challenging session involving rare genetic disorders during a telehealth consult. The terminology was intense! How do you all prepare for or handle unexpected, highly specialized terms during a live interpretation? Any favorite quick-reference tools or techniques, especially when remote? My online glossary helps, but speed is crucial.",
+      likes: 12,
+      comments: 5,
+      shares: 2,
+      type: "discussion",
+      tags: ["Best Practices", "Medical"]
+    },
+    {
+      id: 5,
+      author: "Ben Carter",
+      role: "ER Interpreter",
+      avatar: "BC",
+      avatarColor: "bg-success",
+      timeAgo: "1 hour ago",
+      content: "Great question, Ana! Happens all the time in the ER. For those moments, I sometimes use a 'placeholder' technique if the context allows. I'll interpret the concept generally (\"a condition affecting the blood\") and make a note to clarify or look up the precise term (like 'thrombocytopenia') immediately after for documentation or follow-up. Building specialty-specific glossaries beforehand is a lifesaver too.",
+      likes: 18,
+      comments: 3,
+      shares: 7,
+      type: "discussion",
+      tags: ["Best Practices", "Tips"],
+      isReply: true,
+      replyTo: 4
+    },
+    {
+      id: 6,
+      author: "Chloe Garcia",
+      role: "Oncology Interpreter",
+      avatar: "CG",
+      avatarColor: "bg-warning",
+      timeAgo: "45 minutes ago",
+      content: "Adding to Ben's point - requesting clarification is often the *best* practice in medical settings. Don't hesitate to ask 'Could you please clarify what you mean by...' - it shows professionalism and ensures accuracy.",
+      likes: 8,
+      comments: 1,
+      shares: 3,
+      type: "discussion",
+      tags: ["Best Practices"],
+      isReply: true,
+      replyTo: 4
     }
   ];
 
@@ -253,7 +300,7 @@ export default function InterpreLink() {
 
               <TabsContent value="feed" className="space-y-6">
                 {posts.map((post) => (
-                  <Card key={post.id} className="hover:shadow-lg transition-shadow">
+                  <Card key={post.id} className={`hover:shadow-lg transition-shadow ${post.isReply ? "ml-12" : ""}`}>
                     <CardHeader>
                       <div className="flex items-start gap-4">
                         <Avatar className="w-12 h-12">
@@ -274,6 +321,9 @@ export default function InterpreLink() {
                               </Button>
                             </div>
                           </div>
+                          {post.title && (
+                            <h2 className="text-lg font-semibold mb-3 mt-2">{post.title}</h2>
+                          )}
                         </div>
                       </div>
                     </CardHeader>
@@ -347,19 +397,78 @@ export default function InterpreLink() {
               </TabsContent>
 
               <TabsContent value="discussions" className="space-y-6">
-                <Card>
-                  <CardContent className="p-8 text-center">
-                    <MessageCircle className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                    <h3 className="text-lg font-semibold mb-2">Start a Discussion</h3>
-                    <p className="text-muted-foreground mb-4">
-                      Ask questions, share insights, or start a conversation with the community
-                    </p>
-                    <Button>
-                      <Plus className="w-4 h-4 mr-2" />
-                      New Discussion
-                    </Button>
-                  </CardContent>
-                </Card>
+                {posts.filter(post => post.type === "discussion").length > 0 ? (
+                  posts.filter(post => post.type === "discussion").map((discussion) => (
+                    <Card key={discussion.id} className={`${discussion.isReply ? "ml-12" : ""}`}>
+                      <CardHeader>
+                        <div className="flex items-start gap-4">
+                          <Avatar className="w-12 h-12">
+                            <AvatarFallback className={discussion.avatarColor}>
+                              {discussion.avatar}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              <h3 className="font-semibold">{discussion.author}</h3>
+                              <span className="text-sm text-muted-foreground">
+                                ({discussion.role})
+                              </span>
+                              <span className="text-sm text-muted-foreground">•</span>
+                              <span className="text-sm text-muted-foreground">
+                                {discussion.timeAgo}
+                              </span>
+                            </div>
+                            {discussion.title && (
+                              <h2 className="text-lg font-semibold mb-3">{discussion.title}</h2>
+                            )}
+                          </div>
+                          <Button variant="ghost" size="icon">
+                            <MoreHorizontal className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-foreground mb-4 leading-relaxed">
+                          {discussion.content}
+                        </p>
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {discussion.tags.map((tag, index) => (
+                            <Badge key={index} variant="secondary">
+                              {tag}
+                            </Badge>
+                          ))}
+                        </div>
+                        <div className="flex items-center gap-6">
+                          <Button variant="ghost" size="sm" className="flex items-center gap-2">
+                            Reply
+                          </Button>
+                          <Button variant="ghost" size="sm" className="flex items-center gap-2">
+                            <Heart className="w-4 h-4" />
+                            Like ({discussion.likes})
+                          </Button>
+                          <Button variant="ghost" size="sm" className="flex items-center gap-2">
+                            <Share2 className="w-4 h-4" />
+                            Share
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))
+                ) : (
+                  <Card>
+                    <CardContent className="p-8 text-center">
+                      <MessageCircle className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+                      <h3 className="text-lg font-semibold mb-2">Start a Discussion</h3>
+                      <p className="text-muted-foreground mb-4">
+                        Ask questions, share insights, or start a conversation with the community
+                      </p>
+                      <Button>
+                        <Plus className="w-4 h-4 mr-2" />
+                        New Discussion
+                      </Button>
+                    </CardContent>
+                  </Card>
+                )}
               </TabsContent>
             </Tabs>
           </div>

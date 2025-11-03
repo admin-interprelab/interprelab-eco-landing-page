@@ -1,156 +1,130 @@
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { 
-  Shield, 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Twitter, 
-  Linkedin, 
-  Github,
-  Chrome,
-  Stethoscope,
-  Scale,
-  Globe
-} from "lucide-react";
+/**
+ * Refactored Footer Component
+ * Modular, maintainable, and following best practices
+ */
 
-export const Footer = () => {
+import { FooterCompany, FooterSection, FooterContact, FooterBottom, DEFAULT_FOOTER_DATA } from './footer/index';
+import { useFooterLayout, useFooterAnimations } from './footer/hooks';
+import { getFooterLayoutClasses } from './footer/utils';
+import type { FooterProps } from './footer/types';
+
+/**
+ * Main Footer Component
+ *
+ * A comprehensive footer that provides:
+ * - Company information with logo and description
+ * - Organized sections with navigation links
+ * - Contact information and social media links
+ * - Legal links and certification badges
+ * - Responsive design with mobile-first approach
+ * - Accessibility support with proper ARIA labels
+ *
+ * Features:
+ * - Modular architecture with separated concerns
+ * - Custom hooks for responsive behavior
+ * - TypeScript support with proper interfaces
+ * - Animation support with reduced motion respect
+ * - Performance optimizations
+ * - Full keyboard navigation support
+ */
+export const Footer = ({
+  data = DEFAULT_FOOTER_DATA,
+  className = '',
+  showCertifications = true,
+  showSocial = true,
+  variant = 'default',
+}: FooterProps) => {
+  const { company, sections, contact, social, legal, certifications, copyright } = data;
+
+  const { screenSize, isMobile } = useFooterLayout();
+  const { getAnimationDelay, getAnimationClasses } = useFooterAnimations();
+
+  const layoutClasses = getFooterLayoutClasses(variant);
+
   return (
-    <footer className="relative border-t border-border/50 bg-card/50 backdrop-blur-sm">
+    <footer
+      className={`relative border-t border-border/50 bg-card/50 backdrop-blur-sm ${className}`}
+      role="contentinfo"
+      aria-label="Site footer"
+    >
       <div className="container mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          
-          {/* Company Info */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-gradient-primary rounded-lg">
-                <Shield className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h3 className="text-lg font-bold">InterpreLab</h3>
-                <p className="text-xs text-muted-foreground">Advanced Interpretation</p>
-              </div>
-            </div>
-            
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Revolutionizing medical and legal interpretation through advanced AI technology 
-              while preserving the essential human element in critical communication.
-            </p>
-
-            <div className="flex gap-2">
-              <Badge variant="outline" className="text-xs">
-                <Stethoscope className="w-3 h-3 mr-1" />
-                Medical
-              </Badge>
-              <Badge variant="outline" className="text-xs">
-                <Scale className="w-3 h-3 mr-1" />
-                Legal
-              </Badge>
-            </div>
+        {/* Main Footer Content */}
+        <div className={`grid ${layoutClasses}`}>
+          {/* Company Information */}
+          <div
+            className={getAnimationClasses('company')}
+            style={{ animationDelay: getAnimationDelay(0) }}
+          >
+            <FooterCompany company={company} />
           </div>
 
-          {/* Products */}
-          <div className="space-y-4">
-            <h4 className="text-sm font-semibold text-foreground">Services</h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>
-                <a href="/interprebot" className="hover:text-foreground transition-colors flex items-center gap-2">
-                  InterpreBot
-                </a>
-              </li>
-              <li>
-                <a href="/interprecoach" className="hover:text-foreground transition-colors flex items-center gap-2">
-                  InterpreCoach
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-foreground transition-colors">
-                  Certification Courses
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Solutions */}
-          <div className="space-y-4">
-            <h4 className="text-sm font-semibold text-foreground">Resources</h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>
-                <a href="https://www.certifiedmedicalinterpreters.org/" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
-                  NBCMI
-                </a>
-              </li>
-              <li>
-                <a href="https://cchicertification.org/" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
-                  CCHI
-                </a>
-              </li>
-              <li>
-                <a href="/careers" className="hover:text-foreground transition-colors">
-                  Careers
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Contact & Support */}
-          <div className="space-y-4">
-            <h4 className="text-sm font-semibold text-foreground">Contact</h4>
-            <div className="space-y-3 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <Mail className="w-4 h-4" />
-                <span>admin.ceo@interprelab.com</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Phone className="w-4 h-4" />
-                <span>+1 (555) 123-4567</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4" />
-                <span>Houston, Texas</span>
-              </div>
+          {/* Footer Sections */}
+          {sections.map((section, index) => (
+            <div
+              key={section.id}
+              className={getAnimationClasses(section.id)}
+              style={{ animationDelay: getAnimationDelay(index + 1) }}
+            >
+              <FooterSection section={section} />
             </div>
+          ))}
 
-            <div className="flex gap-2">
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <Twitter className="w-4 h-4" />
-              </Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <Linkedin className="w-4 h-4" />
-              </Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <Github className="w-4 h-4" />
-              </Button>
+          {/* Contact Information */}
+          {(contact.length > 0 || (showSocial && social.length > 0)) && (
+            <div
+              className={getAnimationClasses('contact')}
+              style={{ animationDelay: getAnimationDelay(sections.length + 1) }}
+            >
+              <FooterContact
+                contact={contact}
+                social={showSocial ? social : []}
+              />
             </div>
-          </div>
+          )}
         </div>
 
-        {/* Bottom Section */}
-        <div className="border-t border-border/50 mt-12 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex items-center gap-6 text-xs text-muted-foreground">
-              <span>© 2024 InterpreLab. All rights reserved.</span>
-              <a href="#" className="hover:text-foreground transition-colors">Privacy Policy</a>
-              <a href="#" className="hover:text-foreground transition-colors">Terms of Service</a>
-              <a href="#" className="hover:text-foreground transition-colors">Security</a>
-            </div>
-            
-            <div className="flex items-center gap-4">
-              <Badge variant="outline" className="text-xs">
-                <Shield className="w-3 h-3 mr-1" />
-                HIPAA Compliant
-              </Badge>
-              <Badge variant="outline" className="text-xs">
-                SOC 2 Type II
-              </Badge>
-              <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                <Globe className="w-3 h-3" />
-                <span>50+ Countries</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Footer Bottom */}
+        <FooterBottom
+          copyright={copyright}
+          legal={legal}
+          certifications={certifications}
+          showCertifications={showCertifications}
+        />
       </div>
     </footer>
   );
 };
+
+// Export individual components for potential standalone use
+export {
+  FooterCompany,
+  FooterSection,
+  FooterContact,
+  FooterBottom,
+  FooterNewsletter,
+} from './footer/index';
+
+// Export hooks for external use
+export {
+  useFooterLayout,
+  useFooterLinks,
+  useFooterContact,
+  useSocialLinks,
+  useFooterAnimations,
+  useFooterCopyright,
+  useFooterVisibility,
+  useFooterTheme,
+} from './footer/hooks';
+
+// Export types
+export type {
+  FooterLink,
+  FooterSection as FooterSectionType,
+  ContactInfo,
+  SocialLink,
+  CompanyInfo,
+  LegalLink,
+  CertificationBadge,
+  FooterData,
+  FooterProps,
+} from './footer/types';
