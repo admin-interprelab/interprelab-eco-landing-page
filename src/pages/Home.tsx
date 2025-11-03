@@ -29,7 +29,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation transparent />
+      <Navigation />
 
       {/* Full-screen video sections with snap scrolling */}
       <div className="h-screen overflow-y-scroll snap-y snap-mandatory">

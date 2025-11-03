@@ -55,20 +55,10 @@ export const TerminologyLookup = () => {
   const loadGlossaryTerms = async () => {
     if (!user?.id) return;
 
-    const { data, error } = await supabase
-      .from('glossary_terms')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false });
-
-    if (error) {
-      console.error('Error loading glossary terms:', error);
-      return;
-    }
-
-    if (data) {
-      setGlossaryTerms(data);
-    }
+    // TODO: glossary_terms table needs to be created
+    // Temporarily disabled until database migration is complete
+    console.log('Glossary terms feature coming soon');
+    setGlossaryTerms([]);
   };
 
   const handleSearch = async () => {
@@ -76,25 +66,8 @@ export const TerminologyLookup = () => {
 
     setIsLoading(true);
 
-    // First check if term exists in database
-    const { data: existingTerms } = await supabase
-      .from('glossary_terms')
-      .select('*')
-      .or(`term.ilike.%${searchTerm}%,definition.ilike.%${searchTerm}%`)
-      .limit(1);
-
-    if (existingTerms && existingTerms.length > 0) {
-      const term = existingTerms[0];
-      setResult({
-        english: term.term,
-        translation: term.target_language || 'Translation not available',
-        pronunciation: term.pronunciation || 'Pronunciation not available',
-        definition: term.definition,
-        imageUrl: undefined,
-      });
-      setIsLoading(false);
-      return;
-    }
+    // TODO: Database lookup disabled until glossary_terms table is created
+    // Simulate AI lookup for demo purposes
 
     // Simulate AI lookup for demo purposes
     setTimeout(() => {
@@ -112,57 +85,19 @@ export const TerminologyLookup = () => {
   const handleAddToGlossary = async () => {
     if (!result || !user?.id) return;
 
-    const { error } = await supabase
-      .from('glossary_terms')
-      .insert({
-        user_id: user.id,
-        term: result.english,
-        definition: result.definition,
-        pronunciation: result.pronunciation,
-        target_language: result.translation,
-        category: 'medical',
-        language_code: 'en',
-        is_public: false,
-      });
-
-    if (error) {
-      toast({
-        title: 'Error',
-        description: 'Failed to add term to glossary',
-        variant: 'destructive',
-      });
-      return;
-    }
-
+    // TODO: glossary_terms table needs to be created
     toast({
-      title: 'Success',
-      description: 'Term added to your glossary!',
+      title: 'Coming Soon',
+      description: 'Glossary feature will be available after database setup.',
     });
-
-    loadGlossaryTerms();
   };
 
   const deleteTerm = async (termId: string) => {
-    const { error } = await supabase
-      .from('glossary_terms')
-      .delete()
-      .eq('id', termId);
-
-    if (error) {
-      toast({
-        title: 'Error',
-        description: 'Failed to delete term',
-        variant: 'destructive',
-      });
-      return;
-    }
-
+    // TODO: glossary_terms table needs to be created
     toast({
-      title: 'Success',
-      description: 'Term deleted from glossary',
+      title: 'Coming Soon',
+      description: 'Glossary feature will be available after database setup.',
     });
-
-    loadGlossaryTerms();
   };
 
   const playPronunciation = () => {
