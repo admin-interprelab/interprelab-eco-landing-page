@@ -12,7 +12,6 @@ import InterpreBot from "./pages/InterpreBot";
 import InterpreCoach from "./pages/InterpreCoach";
 import InterpreStudy from "./pages/InterpreStudy";
 import InterpreLink from "./pages/InterpreLink";
-import InterpreHub from "./pages/InterpreHub";
 import Dashboard from "./pages/Dashboard";
 import InterpreTrack from "./pages/InterpreTrack";
 import CallTracker from "./pages/CallTracker";
@@ -47,7 +46,7 @@ const App = () => (
                 <Route path="/interprelink" element={<InterpreLink />} />
                 <Route path="/interpre-hub" element={
                   <ProtectedRoute>
-                    <InterpreHub />
+                    <InterpreLink />
                   </ProtectedRoute>
                 } />
                 <Route path="/dashboard" element={
