@@ -61,6 +61,7 @@ interface ChartDataPoint {
   value: number;
   fill: string;
   percentage: number;
+  [key: string]: any; // Index signature for recharts compatibility
 }
 
 interface CallTypeChartProps {
@@ -151,16 +152,7 @@ const EmptyState = ({ message }: EmptyStateProps) => (
  * Enhanced legend with icons, labels, and statistics
  */
 interface CustomLegendProps {
-  payload?: Array<{
-    value: string;
-    color?: string;
-    payload?: {
-      strokeDasharray: string | number;
-      value?: number;
-      name?: string;
-      fill?: string;
-    };
-  }>;
+  payload?: any[];
   showDetailedStats?: boolean;
   chartData?: ChartDataPoint[];
   totalCalls?: number;
@@ -282,7 +274,8 @@ export default function CallTypeChart({
    * Custom label renderer for pie chart
    * Shows percentage labels on chart segments
    */
-  const renderCustomLabel = useCallback(({ percent }: { percent: number }) => {
+  const renderCustomLabel = useCallback((props: any) => {
+    const { percent } = props;
     // Only show label if percentage is significant enough
     if (percent < 5) return null;
     return formatPercentage(percent * 100);
@@ -301,9 +294,10 @@ export default function CallTypeChart({
         {hasData ? (
           <ChartContainer
             config={CHART_CONFIG}
-            className="mx-auto aspect-square h-full w-full"
+            className="mx-auto w-full"
+            style={{ height: `${height}px`, minHeight: `${height}px` }}
           >
-            <ResponsiveContainer width="100%" height={height}>
+            <ResponsiveContainer width="100%" height="100%" minHeight={height}>
               <PieChart>
                 <ChartTooltipContent
                   hideLabel
@@ -334,9 +328,9 @@ export default function CallTypeChart({
                   ))}
                 </Pie>
                 <Legend
-                  content={(props) => (
+                  content={(props: any) => (
                     <CustomLegend
-                      payload={props.payload}
+                      payload={props.payload ? [...props.payload] : []}
                       showDetailedStats={showDetailedStats}
                       chartData={chartData}
                       totalCalls={totalCalls}

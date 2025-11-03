@@ -14,7 +14,7 @@ import {
   LayoutProvider,
   useLayout,
   useLayoutKeyboardShortcuts,
-} from './layout';
+} from './layout/index';
 import {
   getLayoutContainerClasses,
   shouldShowComponent,
@@ -109,7 +109,7 @@ const LayoutContent = ({
  * - Loading and error states
  */
 export const Layout = (props: LayoutProps) => {
-  const { initialConfig, onError, ...layoutProps } = props;
+  const { onError, initialConfig, ...layoutProps } = props;
 
   return (
     <ErrorBoundary onError={onError}>

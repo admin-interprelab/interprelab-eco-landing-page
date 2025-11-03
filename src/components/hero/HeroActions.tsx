@@ -3,16 +3,16 @@
  * Call-to-action buttons for hero section
  */
 
-import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
-import type { HeroAction } from './types';
-import { getActionTarget, getActionRel, isExternalAction } from './utils';
-import { useHeroActions } from './hooks';
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import type { HeroAction } from "./types";
+import { getActionTarget, getActionRel, isExternalAction } from "./utils";
+import { useHeroActions } from "./hooks";
 
 interface HeroActionsProps {
   actions: HeroAction[];
   className?: string;
-  layout?: 'horizontal' | 'vertical' | 'responsive';
+  layout?: "horizontal" | "vertical" | "responsive";
 }
 
 /**
@@ -28,20 +28,21 @@ interface HeroActionsProps {
  */
 export const HeroActions = ({
   actions,
-  className = '',
-  layout = 'responsive'
+  className = "",
+  layout = "responsive",
 }: HeroActionsProps) => {
-  const { hoveredAction, handleActionHover, handleActionClick, handleKeyDown } = useHeroActions();
+  const { hoveredAction, handleActionHover, handleActionClick, handleKeyDown } =
+    useHeroActions();
 
   const getLayoutClasses = () => {
     switch (layout) {
-      case 'horizontal':
-        return 'flex gap-4 justify-center items-center';
-      case 'vertical':
-        return 'flex flex-col gap-4 items-center';
-      case 'responsive':
+      case "horizontal":
+        return "flex gap-4 justify-center items-center";
+      case "vertical":
+        return "flex flex-col gap-4 items-center";
+      case "responsive":
       default:
-        return 'flex flex-col sm:flex-row gap-4 justify-center items-center';
+        return "flex flex-col sm:flex-row gap-4 justify-center items-center";
     }
   };
 
@@ -53,23 +54,25 @@ export const HeroActions = ({
 
         const buttonContent = (
           <>
-            {action.icon && action.iconPosition === 'left' && (
+            {action.icon && action.iconPosition === "left" && (
               <action.icon className="w-5 h-5 mr-2" />
             )}
             {action.label}
-            {action.icon && action.iconPosition === 'right' && (
-              <action.icon className={`w-5 h-5 ml-2 transition-transform duration-200 ${
-                isHovered ? 'translate-x-1' : ''
-              }`} />
+            {action.icon && action.iconPosition === "right" && (
+              <action.icon
+                className={`w-5 h-5 ml-2 transition-transform duration-200 ${
+                  isHovered ? "translate-x-1" : ""
+                }`}
+              />
             )}
           </>
         );
 
         const buttonProps = {
           variant: action.variant,
-          size: action.size || 'xl',
+          size: (action.size || "xl") as "sm" | "lg" | "xl",
           className: `group transition-all duration-300 ${
-            isHovered ? 'scale-105' : ''
+            isHovered ? "scale-105" : ""
           }`,
           onMouseEnter: () => handleActionHover(action.id),
           onMouseLeave: () => handleActionHover(null),
@@ -79,11 +82,7 @@ export const HeroActions = ({
 
         if (isExternal) {
           return (
-            <Button
-              key={action.id}
-              {...buttonProps}
-              asChild
-            >
+            <Button key={action.id} {...buttonProps} asChild>
               <a
                 href={action.href}
                 target={getActionTarget(action)}
@@ -97,14 +96,8 @@ export const HeroActions = ({
         }
 
         return (
-          <Button
-            key={action.id}
-            {...buttonProps}
-            asChild
-          >
-            <Link to={action.href}>
-              {buttonContent}
-            </Link>
+          <Button key={action.id} {...buttonProps} asChild>
+            <Link to={action.href}>{buttonContent}</Link>
           </Button>
         );
       })}

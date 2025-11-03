@@ -42,24 +42,13 @@ export const getMainContentClasses = (
  * Check if layout should show component
  */
 export const shouldShowComponent = (
-  component: 'navigation' | 'footer' | 'interpreBot',
-  variant: 'default' | 'minimal' | 'fullscreen' | 'dashboard',
-  override?: boolean
+  override: boolean | undefined,
+  defaultValue: boolean
 ): boolean => {
-  if (override !== undefined) return override;
-
-  const config = getLayoutVariantConfig(variant);
-
-  switch (component) {
-    case 'navigation':
-      return config.showNavigation;
-    case 'footer':
-      return config.showFooter;
-    case 'interpreBot':
-      return config.showInterpreBot;
-    default:
-      return true;
+  if (override !== undefined) {
+    return override;
   }
+  return defaultValue;
 };
 
 /**

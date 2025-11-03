@@ -37,11 +37,11 @@ export const LayoutProvider = ({ children, initialConfig }: LayoutProviderProps)
   }, []);
 
   const setLoading = useCallback((loading: boolean, message?: string) => {
-    setConfig(prev => ({ ...prev, isLoading: loading }));
+    setConfig(prev => ({ ...prev, isLoading: loading, loadingMessage: message }));
   }, []);
 
   const setError = useCallback((error: string | null) => {
-    setConfig(prev => ({ ...prev, error }));
+    setConfig(prev => ({ ...prev, error: error }));
   }, []);
 
   const contextValue: LayoutContextType = {

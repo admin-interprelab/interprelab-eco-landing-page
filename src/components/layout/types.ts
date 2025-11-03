@@ -33,6 +33,10 @@ export interface LayoutProps {
   error?: string | null;
   /** Error retry handler */
   onRetry?: () => void;
+  /** Initial layout configuration */
+  initialConfig?: Partial<LayoutContextType>;
+  /** Error boundary handler */
+  onError?: (error: Error, errorInfo: React.ErrorInfo) => void;
 }
 
 export interface MainContentProps {

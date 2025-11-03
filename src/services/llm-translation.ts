@@ -1,3 +1,5 @@
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
 /**
  * LLM Translation Service
  * Handles AI-powered translation and definition lookup
@@ -38,32 +40,52 @@ export interface LLMError {
 }
 
 /**
- * Mock LLM Translation Service
- * In production, this would connect to OpenAI, Anthropic, or similar
+ * LLM Translation Service
+ * Connects to Google Gemini for AI-powered translations.
  */
 class LLMTranslationService {
-  private readonly baseUrl = process.env.NEXT_PUBLIC_LLM_API_URL || 'https://api.openai.com/v1';
-  private readonly apiKey = process.env.NEXT_PUBLIC_LLM_API_KEY || '';
+  private readonly genAI: GoogleGenerativeAI | null;
+  private readonly isConfigured: boolean;
+
+  constructor() {
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+
+    if (!apiKey || apiKey === 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' || apiKey === 'your-api-key-here') {
+      console.warn("VITE_GEMINI_API_KEY is not properly configured. LLM translation features will be disabled.");
+      this.genAI = null;
+      this.isConfigured = false;
+    } else {
+      this.genAI = new GoogleGenerativeAI(apiKey);
+      this.isConfigured = true;
+    }
+  }
 
   /**
    * Translate and define a term using AI
    */
   async translateTerm(request: TranslationRequest): Promise<TranslationResult> {
-    try {
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1000));
+    if (!this.isConfigured || !this.genAI) {
+      return this.createFallbackResult(request);
+    }
 
-      // Mock response based on common medical terms
-      const mockResponses = this.getMockResponses();
-      const mockResponse = mockResponses[request.term.toLowerCase()] || this.generateGenericResponse(request);
+    try {
+      const model = this.genAI.getGenerativeModel({ model: "gemini-pro" });
+      const prompt = this.createPrompt(request);
+      const result = await model.generateContent(prompt);
+      const response = result.response;
+      const text = response.text();
+
+      // The response from Gemini is expected to be a JSON string.
+      const translationResult = JSON.parse(text) as Omit<TranslationResult, 'id' | 'term'>;
 
       return {
-        id: `term_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-        ...mockResponse,
+        id: `term_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`,
         term: request.term,
+        ...translationResult,
       };
     } catch (error) {
-      throw this.handleError(error);
+      console.warn("LLM translation failed, falling back to basic result:", error);
+      return this.createFallbackResult(request);
     }
   }
 
@@ -71,6 +93,10 @@ class LLMTranslationService {
    * Get multiple translations for batch processing
    */
   async translateBatch(requests: TranslationRequest[]): Promise<TranslationResult[]> {
+    if (!this.isConfigured) {
+      return requests.map(request => this.createFallbackResult(request));
+    }
+
     const results = await Promise.allSettled(
       requests.map(request => this.translateTerm(request))
     );
@@ -83,88 +109,64 @@ class LLMTranslationService {
   }
 
   /**
+   * Create a fallback result when LLM is not available
+   */
+  private createFallbackResult(request: TranslationRequest): TranslationResult {
+    return {
+      id: `fallback_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`,
+      term: request.term,
+      translation: `[Translation for "${request.term}"]`,
+      pronunciation: `[Pronunciation for "${request.term}"]`,
+      definition: `[Definition for "${request.term}" - LLM service not configured]`,
+      etymology: "Etymology not available",
+      usageExamples: [`Example usage of "${request.term}"`],
+      synonyms: ["synonym1", "synonym2"],
+      relatedTerms: ["related1", "related2"],
+      difficulty: 'intermediate' as const,
+      category: request.specialty || 'general',
+      subcategory: 'terminology',
+      confidence: 0.5,
+      sources: ['Fallback service'],
+      imageUrl: undefined,
+      audioUrl: undefined,
+    };
+  }
+
+  /**
    * Get pronunciation audio URL
    */
   async getPronunciationAudio(term: string, language: string = 'en'): Promise<string> {
-    // Mock audio URL - in production, this would generate or fetch actual audio
+    // This would ideally call a Text-to-Speech API.
+    // For now, we'll return a placeholder.
     return `https://api.pronunciation.com/audio/${language}/${encodeURIComponent(term)}.mp3`;
   }
 
-  private getMockResponses(): Record<string, Omit<TranslationResult, 'id' | 'term'>> {
-    return {
-      'diagnosis': {
-        translation: 'Diagnóstico',
-        pronunciation: '/di.aɡˈnos.ti.ko/',
-        definition: 'The identification of the nature of an illness or other problem by examination of the symptoms.',
-        etymology: 'From Greek διάγνωσις (diagnosis), from διαγιγνώσκειν (diagignōskein, "to discern, distinguish")',
-        usageExamples: [
-          'The doctor made a diagnosis of pneumonia.',
-          'Early diagnosis is crucial for effective treatment.',
-          'The diagnosis was confirmed by laboratory tests.'
-        ],
-        synonyms: ['identification', 'determination', 'assessment'],
-        relatedTerms: ['prognosis', 'symptom', 'examination', 'medical evaluation'],
-        difficulty: 'intermediate',
-        category: 'Medical',
-        subcategory: 'General Medicine',
-        confidence: 0.95,
-        sources: ['Medical Dictionary', 'WHO Guidelines', 'Medical Literature']
-      },
-      'treatment': {
-        translation: 'Tratamiento',
-        pronunciation: '/tɾa.taˈmjen.to/',
-        definition: 'Medical care given to a patient for an illness or injury.',
-        etymology: 'From Latin tractāmentum, from tractāre ("to handle, manage")',
-        usageExamples: [
-          'The treatment for this condition is antibiotics.',
-          'She is receiving treatment for her injury.',
-          'The new treatment shows promising results.'
-        ],
-        synonyms: ['therapy', 'care', 'medication', 'intervention'],
-        relatedTerms: ['diagnosis', 'prescription', 'recovery', 'healing'],
-        difficulty: 'beginner',
-        category: 'Medical',
-        subcategory: 'Treatment',
-        confidence: 0.98,
-        sources: ['Medical Dictionary', 'Clinical Guidelines']
-      },
-      'prescription': {
-        translation: 'Receta médica',
-        pronunciation: '/re.ˈse.ta ˈme.ði.ka/',
-        definition: 'A written instruction from a medical practitioner that authorizes a patient to be provided a medicine or treatment.',
-        etymology: 'From Latin praescriptio, from praescribere ("to write before")',
-        usageExamples: [
-          'The doctor wrote a prescription for antibiotics.',
-          'You need a prescription to buy this medication.',
-          'Please bring your prescription to the pharmacy.'
-        ],
-        synonyms: ['medical order', 'script', 'medication order'],
-        relatedTerms: ['medication', 'pharmacy', 'dosage', 'treatment'],
-        difficulty: 'intermediate',
-        category: 'Medical',
-        subcategory: 'Pharmacy',
-        confidence: 0.92,
-        sources: ['Pharmaceutical Guidelines', 'Medical Dictionary']
-      }
-    };
-  }
+  private createPrompt(request: TranslationRequest): string {
+    return `
+      Provide a detailed translation and definition for the term "${request.term}" from ${request.sourceLanguage} to ${request.targetLanguage}.
+      The user has provided the following context: "${request.context || 'none'}".
+      The specialty is ${request.specialty || 'general'}.
 
-  private generateGenericResponse(request: TranslationRequest): Omit<TranslationResult, 'id' | 'term'> {
-    return {
-      translation: `[Translation of ${request.term}]`,
-      pronunciation: `[Pronunciation of ${request.term}]`,
-      definition: `Definition of ${request.term} in the context of ${request.specialty || 'general'} terminology.`,
-      usageExamples: [`Example usage of ${request.term} in context.`],
-      synonyms: ['synonym1', 'synonym2'],
-      relatedTerms: ['related1', 'related2'],
-      difficulty: 'intermediate',
-      category: request.specialty || 'General',
-      confidence: 0.75,
-      sources: ['AI Generated']
-    };
+      Please return the response as a JSON object with the following structure:
+      {
+        "translation": "...",
+        "pronunciation": "...",
+        "definition": "...",
+        "etymology": "...",
+        "usageExamples": ["...", "..."],
+        "synonyms": ["...", "..."],
+        "relatedTerms": ["...", "..."],
+        "difficulty": "beginner" | "intermediate" | "advanced" | "expert",
+        "category": "...",
+        "subcategory": "...",
+        "confidence": 0.0 to 1.0,
+        "sources": ["...", "..."]
+      }
+    `;
   }
 
   private handleError(error: unknown): LLMError {
+    console.error("Error in LLMTranslationService:", error);
     return {
       code: 'TRANSLATION_ERROR',
       message: 'Failed to translate term',
@@ -173,4 +175,26 @@ class LLMTranslationService {
   }
 }
 
-export const llmTranslationService = new LLMTranslationService();
+// Lazy initialization to avoid startup errors
+let _llmTranslationService: LLMTranslationService | null = null;
+
+export const llmTranslationService = {
+  getInstance(): LLMTranslationService {
+    if (!_llmTranslationService) {
+      _llmTranslationService = new LLMTranslationService();
+    }
+    return _llmTranslationService;
+  },
+
+  async translateTerm(request: TranslationRequest): Promise<TranslationResult> {
+    return this.getInstance().translateTerm(request);
+  },
+
+  async translateBatch(requests: TranslationRequest[]): Promise<TranslationResult[]> {
+    return this.getInstance().translateBatch(requests);
+  },
+
+  async getPronunciationAudio(term: string, language: string = 'en'): Promise<string> {
+    return this.getInstance().getPronunciationAudio(term, language);
+  }
+};

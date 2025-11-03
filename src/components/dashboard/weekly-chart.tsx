@@ -342,9 +342,10 @@ export default function WeeklyChart({
         {hasData ? (
           <ChartContainer
             config={CHART_CONFIG}
-            className={`h-[${height}px] w-full`}
+            className="w-full"
+            style={{ height: `${height}px`, minHeight: `${height}px` }}
           >
-            <ResponsiveContainer width="100%" height={height}>
+            <ResponsiveContainer width="100%" height="100%" minHeight={height}>
               <BarChart data={processedData} margin={DEFAULT_CHART_MARGIN}>
                 <CartesianGrid
                   vertical={false}
