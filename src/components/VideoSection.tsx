@@ -84,7 +84,7 @@ export const FullScreenVideoHero = ({
             {title}
           </h1>
           <p className="text-xl md:text-2xl text-white/90 leading-relaxed font-sans max-w-3xl mx-auto">
-            Despite legal requirements under Title VI and Section 1557 of the ACA, Limited English Proficiency (LEP) patients face increased health risks due to interpretation quality issues.
+            {description}
           </p>
         </div>
       </div>
