@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Search, Plus, MessageCircle, Heart, Share, MoreHorizontal, Users, BookOpen, HelpCircle, Briefcase, Network } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function InterpreHub() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -121,10 +122,18 @@ export default function InterpreHub() {
             <div className="max-w-4xl mx-auto">
               {/* Header */}
               <div className="mb-8">
-                <h1 className="text-4xl font-bold mb-4">Medical Interpreters' Hub</h1>
+                <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
+                  Addressing Pain Point #5: Isolation & Lack of Support
+                </Badge>
+                <h1 className="text-4xl font-bold mb-4">InterpreHub: You're Not Alone</h1>
                 <p className="text-xl text-muted-foreground mb-6">
-                  Connect, share challenges, and discuss best practices in medical interpreting.
+                  We know the isolation—absorbing trauma in silence, facing challenges without a support network. InterpreHub is the professional community we wish we had from day one. Connect with fellow interpreters, share the weight, and find the solidarity that makes this work sustainable.
                 </p>
+                <div className="glass p-4 rounded-lg mb-6">
+                  <p className="text-sm text-muted-foreground">
+                    💬 <strong>Built from lived experience:</strong> As working interpreters, we've felt the psychological toll. This hub exists because we believe in the power of community to heal, support, and strengthen our profession.
+                  </p>
+                </div>
 
                 {/* Search and New Discussion */}
                 <div className="flex gap-4 mb-6">
@@ -196,6 +205,28 @@ export default function InterpreHub() {
                   </Card>
                 ))}
               </div>
+
+              {/* Mission & Collaboration CTA */}
+              <Card className="glass border-primary/20 mt-12">
+                <CardContent className="p-8 text-center space-y-6">
+                  <h2 className="text-2xl font-bold">InterpreLab: A Lifeline Built by Interpreters</h2>
+                  <p className="text-muted-foreground leading-relaxed">
+                    We're passionate about being conduits of information and supporting people in vulnerable situations—but we're also humans affected by vicarious trauma, burnout, and isolation. InterpreLab exists to lighten that load. We can't do it alone. If you want to collaborate, discuss partnerships, or help us broaden our reach through your connections, let's connect.
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <Link to="/contact">
+                      <Button variant="hero">
+                        Get In Touch
+                      </Button>
+                    </Link>
+                    <Link to="/interprelink">
+                      <Button variant="glass">
+                        Join InterpreLink
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>

@@ -13,6 +13,7 @@ import {
   Image as ImageIcon, Send, Bookmark, TrendingUp
 } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 interface SidebarItem {
   icon: any;
@@ -178,12 +179,20 @@ export default function InterpreLink() {
           <div className="flex-1 p-8 max-w-4xl">
             {/* Header */}
             <div className="mb-8">
+              <Badge className="mb-6 bg-primary/10 text-primary border-primary/20">
+                Addressing Pain Point #5: Professional Community & Support
+              </Badge>
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <h1 className="text-4xl font-bold mb-2">Your InterpreLink Feed</h1>
-                  <p className="text-muted-foreground">
-                    A safe space for interpreters to connect and share experiences
+                  <h1 className="text-4xl font-bold mb-2">InterpreLink: Your Professional Network</h1>
+                  <p className="text-muted-foreground mb-4">
+                    We're working interpreters who understand the need for real connection, not just another social media clone. InterpreLink is where you find partnerships, share the emotional weight, and build the professional relationships that sustain your career and mental health.
                   </p>
+                  <div className="glass p-4 rounded-lg max-w-2xl">
+                    <p className="text-sm text-muted-foreground">
+                      🤝 <strong>More than networking:</strong> This is where collaborations are born, where you find your next referral partner, and where InterpreLab connects with interpreters to broaden our reach together.
+                    </p>
+                  </div>
                 </div>
                 <Dialog open={isCreatePostOpen} onOpenChange={setIsCreatePostOpen}>
                   <DialogTrigger asChild>
@@ -366,6 +375,21 @@ export default function InterpreLink() {
 
           {/* Right Sidebar - Trending & Suggestions */}
           <div className="w-80 p-6 border-l sticky top-0 h-screen overflow-y-auto">
+            {/* Mission Card */}
+            <Card className="mb-6 glass border-primary/20">
+              <CardContent className="p-6 space-y-4">
+                <h3 className="font-bold text-lg">InterpreLab: A Lifeline for Interpreters</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  We're working interpreters building solutions for the pain points we live every day. Want to collaborate, discuss partnerships, or help us reach more interpreters? Let's connect.
+                </p>
+                <Link to="/contact">
+                  <Button className="w-full" variant="hero">
+                    Get In Touch
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+            
             <Card className="mb-6">
               <CardHeader>
                 <h3 className="font-semibold">Trending Topics</h3>
