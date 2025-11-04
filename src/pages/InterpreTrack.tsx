@@ -3,6 +3,8 @@ import {
   DashboardProvider,
   useDashboardData,
 } from "@/components/dashboard/DashboardProvider";
+import ErrorBoundary from "@/components/ErrorBoundary";
+import { Navigation } from "@/components/navigation";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import StatsCards from "@/components/dashboard/stats-cards";
 import WeeklyChart from "@/components/dashboard/weekly-chart";
@@ -62,48 +64,57 @@ const DashboardContent = () => {
   }
 
   return (
-    <div className="p-4 md:p-8 space-y-6">
-      {/* Enhanced Header with Controls */}
-      <DashboardHeader
-        title="InterpreTrack Dashboard"
-        subtitle="Your comprehensive interpretation activity center"
-        showQuickStats={true}
-        showExportOptions={true}
-      />
+    <div className="min-h-screen bg-background">
+      {/* Navigation */}
+      <Navigation />
+
+      <div className="p-4 md:p-8 space-y-6">
+        {/* Enhanced Header with Controls */}
+        <DashboardHeader
+          title="InterpreTrack Dashboard"
+          subtitle="Your comprehensive interpretation activity center"
+          showQuickStats={true}
+          showExportOptions={true}
+        />
 
       {/* Main Stats Cards with Enhanced Features */}
       <StatsCards stats={stats} showTrends={true} timePeriod="This month" />
 
       {/* Primary Dashboard Grid */}
-      <div className="grid gap-6 lg:grid-cols-5">
+      <div className="dashboard-grid">
         {/* Left Column - Primary Actions & Analytics */}
-        <div className="lg:col-span-3 space-y-6">
+        <div className="space-y-6">
           {/* Manual Call Logging */}
-          <ManualLogWrapper />
+          <div className="dashboard-card">
+            <ManualLogWrapper />
+          </div>
 
           {/* Weekly Activity Chart with Enhanced Features */}
-          <WeeklyChart
-            data={weeklyData}
-            showStats={true}
-            showAverageLines={true}
-            title="Weekly Performance"
-            description="Your call volume and earnings trend over the past 7 days"
-          />
+          <div className="dashboard-card chart-container">
+            <WeeklyChart
+              data={weeklyData}
+              showStats={true}
+              showAverageLines={true}
+              title="Weekly Performance"
+              description="Your call volume and earnings trend over the past 7 days"
+            />
+          </div>
         </div>
 
-        {/* Right Column - Insights & Breakdown */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Call Type Distribution */}
+        {/* Right Column - Call Type Chart */}
+        <div className="dashboard-card chart-container">
           <CallTypeChart
             data={callTypeStats}
             showDetailedStats={true}
             title="Call Distribution"
             description="Breakdown of your VRI vs OPI sessions"
           />
-
-          {/* AI-Powered Insights */}
-          <AIInsights stats={aiStats} error={aiError} />
         </div>
+      </div>
+
+      {/* AI Insights Section - Separate Row */}
+      <div className="insights-container">
+        <AIInsights stats={aiStats} error={aiError} />
       </div>
 
       {/* Recent Activity Section */}
@@ -133,6 +144,7 @@ const DashboardContent = () => {
           </CardContent>
         </Card>
       )}
+      </div>
     </div>
   );
 };
@@ -140,10 +152,12 @@ const DashboardContent = () => {
 // Main component with provider wrapper
 export default function InterpreTrack() {
   return (
-    <DashboardProvider refreshInterval={30000}>
-      <Suspense fallback={<DashboardSkeleton />}>
-        <DashboardContent />
-      </Suspense>
-    </DashboardProvider>
+    <ErrorBoundary>
+      <DashboardProvider refreshInterval={30000}>
+        <Suspense fallback={<DashboardSkeleton />}>
+          <DashboardContent />
+        </Suspense>
+      </DashboardProvider>
+    </ErrorBoundary>
   );
 }

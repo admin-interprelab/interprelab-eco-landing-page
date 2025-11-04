@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { Navigation } from '@/components/Navigation';
+import { Navigation } from '@/components/navigation';
 import { Footer } from '@/components/Footer';
 import { MainContent } from './MainContent';
 import { useIndexAnalytics } from './hooks';
@@ -42,6 +42,7 @@ export const Index = React.memo<IndexPageProps>(({
 
       <MainContent
         showHero={sectionConfig.showHero}
+        showVideoSection={sectionConfig.showVideoSection}
         showProductShowcase={sectionConfig.showProductShowcase}
         showStats={sectionConfig.showStats}
         showTestimonials={sectionConfig.showTestimonials}

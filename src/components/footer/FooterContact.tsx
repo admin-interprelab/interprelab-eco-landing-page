@@ -5,6 +5,7 @@
 
 import { Button } from '@/components/ui/button';
 import type { FooterContactProps } from './types';
+import type { LucideIcon } from 'lucide-react';
 import {
   formatContactValue,
   getContactHref,
@@ -59,10 +60,15 @@ export const FooterContact = ({
               key={contactItem.id}
               className="flex items-center gap-2"
             >
-              <contactItem.icon
-                className="w-4 h-4 flex-shrink-0"
-                aria-hidden="true"
-              />
+              {(() => {
+                const ContactIcon = contactItem.icon as unknown as LucideIcon;
+                return (
+                  <ContactIcon
+                    className="w-4 h-4 flex-shrink-0"
+                    aria-hidden="true"
+                  />
+                );
+              })()}
 
               {href ? (
                 <a
@@ -113,7 +119,10 @@ export const FooterContact = ({
                     rel="noopener noreferrer"
                     aria-label={ariaLabel}
                   >
-                    <socialItem.icon className="w-4 h-4" />
+                    {(() => {
+                      const SocialIcon = socialItem.icon as unknown as LucideIcon;
+                      return <SocialIcon className="w-4 h-4" />;
+                    })()}
                   </a>
                 </Button>
               );

@@ -4,6 +4,7 @@
  */
 
 import { ExternalLink } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import type { FooterSectionProps } from './types';
 import {
   getLinkTarget,
@@ -77,9 +78,10 @@ export const FooterSection = ({
                 aria-describedby={link.description ? `${linkId}-desc` : undefined}
               >
                 {/* Link Icon */}
-                {link.icon && (
-                  <link.icon className="w-4 h-4 flex-shrink-0" />
-                )}
+                {link.icon && (() => {
+                  const LinkIcon = link.icon as unknown as LucideIcon;
+                  return <LinkIcon className="w-4 h-4 flex-shrink-0" />;
+                })()}
 
                 {/* Link Label */}
                 <span className="flex-1">{link.label}</span>

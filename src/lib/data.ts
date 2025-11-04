@@ -58,13 +58,40 @@ const generateCallRecords = (count: number): CallRecord[] => {
 export const callRecords: CallRecord[] = generateCallRecords(50);
 
 
-export const addCallRecord = (record: Omit<CallRecord, 'id' | 'earnings'>) => {
+export const addCallRecord = async (record: Omit<CallRecord, 'id' | 'earnings'>, userId?: string) => {
+  const earnings = parseFloat((record.duration * userPreferences.payPerMinuteUSD).toFixed(2));
+
+  // Add to memory for immediate UI update
   const newRecord: CallRecord = {
     ...record,
     id: `call_${callRecords.length + 1}`,
-    earnings: parseFloat((record.duration * userPreferences.payPerMinuteUSD).toFixed(2)),
+    earnings,
   };
   callRecords.unshift(newRecord);
+
+  // Save to database if userId is provided
+  if (userId) {
+    try {
+      const { supabase } = await import('@/integrations/supabase/client');
+      const { error } = await supabase
+        .from('call_logs')
+        .insert({
+          user_id: userId,
+          start_time: record.startTime.toISOString(),
+          end_time: record.endTime.toISOString(),
+          duration_seconds: record.duration * 60, // Convert minutes to seconds
+          earnings: earnings,
+          notes: `${record.callType} call on ${record.platform}`,
+        });
+
+      if (error) {
+        console.error('Failed to save call to database:', error);
+      }
+    } catch (error) {
+      console.error('Database save error:', error);
+    }
+  }
+
   return newRecord;
 }
 

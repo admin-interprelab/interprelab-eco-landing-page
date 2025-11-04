@@ -28,7 +28,11 @@ export const FooterCompany = ({
       <div className="flex items-center gap-3">
         {logo && (
           <div className="p-2 bg-gradient-primary rounded-lg">
-            <logo.icon className={logo.className || 'w-5 h-5 text-white'} />
+            {/** Use a capitalized variable for JSX components to avoid JSX treating it as an intrinsic tag */}
+            {(() => {
+              const LogoIcon = logo.icon;
+              return <LogoIcon className={logo.className || 'w-5 h-5 text-white'} />;
+            })()}
           </div>
         )}
         <div>
@@ -51,7 +55,10 @@ export const FooterCompany = ({
               variant={badge.variant || 'outline'}
               className="text-xs flex items-center gap-1"
             >
-              {badge.icon && <badge.icon className="w-3 h-3" />}
+              {badge.icon && (() => {
+                const BadgeIcon = badge.icon;
+                return <BadgeIcon className="w-3 h-3" />;
+              })()}
               {badge.label}
             </Badge>
           ))}

@@ -326,11 +326,27 @@ export default function WeeklyChart({
   currencySymbol = "$",
 }: WeeklyChartProps) {
   const { processedData, stats, hasData } = useWeeklyData(data);
+
+  // Safety check for invalid data
+  if (!Array.isArray(data)) {
+    return (
+      <Card className="w-full">
+        <ChartHeader
+          title={title}
+          description={description}
+          showStats={showStats}
+        />
+        <CardContent className="flex flex-col min-h-[300px] justify-center">
+          <EmptyState message="Invalid chart data format" />
+        </CardContent>
+      </Card>
+    );
+  }
   const { formatEarningsAxis, formatCallsAxis } =
     useAxisFormatters(currencySymbol);
 
   return (
-    <Card className="h-full flex flex-col">
+    <Card className="w-full">
       <ChartHeader
         title={title}
         description={description}
@@ -338,7 +354,7 @@ export default function WeeklyChart({
         showStats={showStats}
       />
 
-      <CardContent className="flex-grow flex flex-col">
+      <CardContent className="flex flex-col" style={{ minHeight: `${height + 50}px` }}>
         {hasData ? (
           <ChartContainer
             config={CHART_CONFIG}

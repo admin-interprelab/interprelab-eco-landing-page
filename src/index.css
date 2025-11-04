@@ -63,7 +63,7 @@ All colors MUST be HSL for consistency and theming.
     --gradient-primary: linear-gradient(135deg, hsl(209 46% 31%), hsl(237 26% 41%));
     --gradient-success: linear-gradient(135deg, hsl(142 71% 45%), hsl(209 46% 31%));
     --gradient-glow: radial-gradient(circle at 50% 50%, hsl(209 46% 31% / 0.3), transparent 70%);
-    
+
     /* Shadows */
     --shadow-glow: 0 0 50px hsl(209 46% 31% / 0.3);
     --shadow-card: 0 8px 32px hsl(240 10% 3.9% / 0.6);
@@ -224,5 +224,38 @@ All colors MUST be HSL for consistency and theming.
   }
   50% {
     transform: translateY(-10px);
+  }
+}
+
+/* Dashboard Layout Fixes */
+@layer components {
+  .dashboard-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 1024px) {
+    .dashboard-grid {
+      grid-template-columns: 2fr 1fr;
+    }
+  }
+
+  .dashboard-card {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .chart-container {
+    position: relative;
+    width: 100%;
+    min-height: 200px;
+  }
+
+  .insights-container {
+    position: relative;
+    z-index: 2;
+    margin-top: 1.5rem;
   }
 }

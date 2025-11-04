@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { Navigation } from '@/components/Navigation';
+import { Navigation } from '@/components/navigation';
 import { Footer } from '@/components/Footer';
 import { VideoHeroSection } from './VideoHeroSection';
 import { MainContent } from './MainContent';

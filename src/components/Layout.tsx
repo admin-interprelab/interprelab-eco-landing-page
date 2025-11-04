@@ -3,7 +3,7 @@
  * Modular, maintainable, and following best practices
  */
 
-import { Navigation } from './Navigation';
+import { Navigation } from './navigation';
 import { Footer } from './Footer';
 import { InterpreBotUI } from './InterpreBotUI';
 import {

@@ -4,8 +4,8 @@
 
 import React from 'react';
 import { SolutionHero } from '@/components/SolutionHero';
-import { StatsSection } from '@/components/StatsSection';
-import { Testimonials } from '@/components/Testimonials';
+import { StatsSection } from '@/components/stats';
+import { Testimonials } from '@/components/testimonials';
 import { useHomeAnalytics } from './hooks';
 import type { MainContentProps } from './types';
 

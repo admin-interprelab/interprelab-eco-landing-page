@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Play, Square, Timer } from "lucide-react";
 import { addCallRecord, getRoundedDuration } from "@/lib/data";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 import { Label } from "../ui/label";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import {
@@ -297,6 +298,7 @@ const useCallSettings = () => {
 export default function ManualLog() {
   const { isActive, startTime, elapsedTime, startTimer, stopTimer } =
     useTimer();
+  const { user } = useAuth();
   const { platform, callType, updatePlatform, updateCallType } =
     useCallSettings();
   const { toast } = useToast();
@@ -313,7 +315,7 @@ export default function ManualLog() {
    * Handles stopping the call timer and logging the call
    * Creates a new call record and shows success notification
    */
-  const handleStop = useCallback(() => {
+  const handleStop = useCallback(async () => {
     if (!startTime) return;
 
     const endTime = new Date();
@@ -329,7 +331,7 @@ export default function ManualLog() {
     };
 
     try {
-      addCallRecord(newRecord);
+      await addCallRecord(newRecord, user?.id);
 
       toast({
         title: "Call Logged Successfully",
@@ -347,7 +349,7 @@ export default function ManualLog() {
     }
 
     stopTimer();
-  }, [startTime, platform, callType, toast, stopTimer]);
+  }, [startTime, platform, callType, toast, stopTimer, user?.id]);
 
   return (
     <Card>

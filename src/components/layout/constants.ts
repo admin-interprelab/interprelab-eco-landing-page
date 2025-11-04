@@ -10,29 +10,31 @@ export const LAYOUT_VARIANTS = {
     showNavigation: true,
     showFooter: true,
     showInterpreBot: true,
-    mainPadding: 'pt-20',
-    containerClasses: 'min-h-screen bg-background',
+    // Make the layout a column flex container so the main content can grow
+    // and the footer will sit at the bottom without creating a large empty gap.
+    mainPadding: 'flex-1 pt-20',
+    containerClasses: 'min-h-screen bg-background flex flex-col',
   },
   minimal: {
     showNavigation: true,
     showFooter: false,
     showInterpreBot: false,
-    mainPadding: 'pt-16',
-    containerClasses: 'min-h-screen bg-background',
+    mainPadding: 'flex-1 pt-16',
+    containerClasses: 'min-h-screen bg-background flex flex-col',
   },
   fullscreen: {
     showNavigation: false,
     showFooter: false,
     showInterpreBot: false,
-    mainPadding: 'pt-0',
-    containerClasses: 'h-screen bg-background overflow-hidden',
+    mainPadding: 'flex-1 pt-0',
+    containerClasses: 'h-screen bg-background overflow-hidden flex flex-col',
   },
   dashboard: {
     showNavigation: true,
     showFooter: false,
     showInterpreBot: true,
-    mainPadding: 'pt-16',
-    containerClasses: 'min-h-screen bg-muted/10',
+    mainPadding: 'flex-1 pt-16',
+    containerClasses: 'min-h-screen bg-muted/10 flex flex-col',
   },
 } as const;
 
