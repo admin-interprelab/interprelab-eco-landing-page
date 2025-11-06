@@ -9,12 +9,14 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
-import { DollarSign, Globe, Settings2 } from 'lucide-react';
+import { DollarSign, Globe, Settings2, Clock } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
 const Settings = () => {
   const [payRate, setPayRate] = useState('0');
   const [payRateType, setPayRateType] = useState('per_hour');
   const [currency, setCurrency] = useState('USD');
+  const [roundingMethod, setRoundingMethod] = useState('actual');
   const { user } = useAuth();
   const { language, setLanguage, availableLanguages } = useLanguage();
   const { toast } = useToast();
@@ -48,6 +50,7 @@ const Settings = () => {
       setPayRate(data.pay_rate?.toString() || '0');
       setPayRateType(data.pay_rate_type || 'per_hour');
       setCurrency(data.preferred_currency || 'USD');
+      setRoundingMethod(data.time_rounding_method || 'actual');
     }
   };
 
@@ -62,6 +65,7 @@ const Settings = () => {
         pay_rate_type: payRateType,
         preferred_currency: currency,
         preferred_language: language,
+        time_rounding_method: roundingMethod,
       }, {
         onConflict: 'user_id'
       });
@@ -170,6 +174,58 @@ const Settings = () => {
                     ))}
                   </SelectContent>
                 </Select>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Clock className="h-5 w-5" />
+                Time Tracking Method
+              </CardTitle>
+              <CardDescription>
+                Configure how your call duration is calculated
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="rounding">Rounding Method</Label>
+                <Select value={roundingMethod} onValueChange={setRoundingMethod}>
+                  <SelectTrigger id="rounding">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="actual">Actual Time (No Rounding)</SelectItem>
+                    <SelectItem value="round_down">Round Down to Completed Minutes</SelectItem>
+                    <SelectItem value="roll_over">Roll Over to Next Minute</SelectItem>
+                  </SelectContent>
+                </Select>
+                <div className="mt-3 p-3 bg-muted/50 rounded-lg">
+                  <p className="text-xs text-muted-foreground">
+                    {roundingMethod === 'actual' && (
+                      <>
+                        <Badge variant="outline" className="mb-2">Recommended</Badge>
+                        <br />
+                        Track your exact call duration without any rounding. This gives you the most accurate picture of your work.
+                      </>
+                    )}
+                    {roundingMethod === 'round_down' && (
+                      <>
+                        <Badge variant="outline" className="mb-2 bg-orange-500/10 text-orange-600 border-orange-500/20">LSP Standard</Badge>
+                        <br />
+                        Many LSPs round down to completed minutes only. Use this to match their reporting and see time differences. InterpreTrack will show both your actual time and the rounded time.
+                      </>
+                    )}
+                    {roundingMethod === 'roll_over' && (
+                      <>
+                        <Badge variant="outline" className="mb-2">Fair Compensation</Badge>
+                        <br />
+                        Any partial minute counts as a full minute. This is fairer compensation for interpreters, though few LSPs use this method.
+                      </>
+                    )}
+                  </p>
+                </div>
               </div>
             </CardContent>
           </Card>

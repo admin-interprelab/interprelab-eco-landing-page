@@ -12,13 +12,12 @@ import InterpreBot from "./pages/InterpreBot";
 import InterpreCoach from "./pages/InterpreCoach";
 import InterpreStudy from "./pages/InterpreStudy";
 import InterpreLink from "./pages/InterpreLink";
-import InterpreHub from "./pages/InterpreHub";
 import Dashboard from "./pages/Dashboard";
-import InterpreTrack from "./pages/InterpreTrack";
 import CallTracker from "./pages/CallTracker";
 import Settings from "./pages/Settings";
 import Resources from "./pages/Resources";
 import About from "./pages/About";
+import InterpreWellbeing from "./pages/InterpreWellbeing";
 import Contact from "./pages/Contact";
 import GetInTouch from "./pages/GetInTouch";
 import Careers from "./pages/Careers";
@@ -45,17 +44,16 @@ const App = () => (
                 <Route path="/interprecoach" element={<InterpreCoach />} />
                 <Route path="/interprestudy" element={<InterpreStudy />} />
                 <Route path="/interprelink" element={<InterpreLink />} />
-                <Route path="/interpre-hub" element={
-                  <ProtectedRoute>
-                    <InterpreHub />
-                  </ProtectedRoute>
-                } />
                 <Route path="/dashboard" element={
                   <ProtectedRoute>
                     <Dashboard />
                   </ProtectedRoute>
                 } />
-                <Route path="/interpretrack" element={<InterpreTrack />} />
+                <Route path="/interpretrack" element={
+                  <ProtectedRoute>
+                    <CallTracker />
+                  </ProtectedRoute>
+                } />
                 <Route path="/call-tracker" element={
                   <ProtectedRoute>
                     <CallTracker />
@@ -73,6 +71,7 @@ const App = () => (
                 <Route path="/get-in-touch" element={<GetInTouch />} />
                 <Route path="/signin" element={<SignIn />} />
                 <Route path="/waitlist" element={<Waitlist />} />
+                <Route path="/interprewellbeing" element={<InterpreWellbeing />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
