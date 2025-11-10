@@ -5,18 +5,13 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
+import { AccessibilityControls } from "@/components/accessibility";
 import { MegaMenu } from "@/components/navigation/MegaMenu";
 import { MobileNavigation } from "@/components/navigation/MobileNavigation";
 import { BreadcrumbNavigation } from "@/components/navigation/BreadcrumbNavigation";
+import { TherapeuticNavigation } from "@/components/navigation/TherapeuticNavigation";
 import { megaMenuSections } from "@/data/navigationData";
+import { JourneyStage, EmotionalState } from "@/types/navigation";
 
 export const Navigation = () => {
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
@@ -24,6 +19,35 @@ export const Navigation = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useLanguage();
+
+  // Mock journey stage - in real app this would come from user context/API
+  const currentJourneyStage: JourneyStage = {
+    stage: 'validation',
+    progress: 25,
+    completedMilestones: ['Acknowledged challenges', 'Explored pain points'],
+    nextRecommendedAction: 'Explore AI-powered solutions that address your specific challenges'
+  };
+
+  // Mock emotional state - in real app this would be determined by user behavior/input
+  const emotionalState: EmotionalState = {
+    stressLevel: 'moderate',
+    primaryConcerns: [
+      {
+        type: 'financial',
+        severity: 7,
+        description: 'Inconsistent income from interpretation work',
+        relatedSolutions: ['/premium', '/interpretrack']
+      },
+      {
+        type: 'technological',
+        severity: 5,
+        description: 'Need better tools for skill assessment',
+        relatedSolutions: ['/interprebot', '/interprecoach']
+      }
+    ],
+    supportNeeds: ['professional', 'community'],
+    preferredCommunicationStyle: 'encouraging'
+  };
 
   const handleSignOut = async () => {
     await signOut();
@@ -84,6 +108,7 @@ export const Navigation = () => {
 
             {/* CTA Buttons */}
             <div className="hidden md:flex items-center gap-3">
+              <AccessibilityControls />
               <ThemeToggle />
               {user ? (
                 <>
@@ -125,13 +150,25 @@ export const Navigation = () => {
               user={user}
               onSignOut={handleSignOut}
               t={t}
+              stressAware={true}
+              crisisSupportEnabled={true}
             />
           </div>
         </div>
       </nav>
 
-      {/* Breadcrumb Navigation */}
+      {/* Therapeutic Navigation */}
       <div className="pt-20">
+        <TherapeuticNavigation
+          user={user}
+          currentJourneyStage={currentJourneyStage}
+          emotionalState={emotionalState}
+          supportResourcesEnabled={true}
+        />
+      </div>
+
+      {/* Breadcrumb Navigation */}
+      <div>
         <BreadcrumbNavigation />
       </div>
     </>

@@ -5,6 +5,20 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { Calendar, DollarSign, Clock, TrendingUp, Phone } from 'lucide-react';
 import { format, startOfMonth, startOfYear, endOfMonth, endOfYear } from 'date-fns';
+import AIInsights from '@/components/dashboard/AiInsights';
+import CallTypeChart from '@/components/dashboard/CallTypeChart';
+import EarningsProjection from '@/components/dashboard/EarningsProjection';
+import GoalsTracker from '@/components/dashboard/GoalsTracker';
+import IntegrationStatus from '@/components/dashboard/IntegrationStatus';
+import LearningProgress from '@/components/dashboard/LearningProgress';
+import ManualLog from '@/components/dashboard/ManualLog';
+import PerformanceHeatmap from '@/components/dashboard/PerformanceHeatmap';
+import PlatformComparison from '@/components/dashboard/PlatformComparison';
+import PremiumStatsOverview from '@/components/dashboard/PremiumStatsOverview';
+import PremiumUpgradeCard from '@/components/dashboard/PremiumUpgradeCard';
+import RecentCalls from '@/components/dashboard/RecentCalls';
+import StatsCards from '@/components/dashboard/StatsCards';
+import WeeklyChart from '@/components/dashboard/WeeklyChart';
 
 interface Stats {
   monthTotal: number;
@@ -16,6 +30,7 @@ interface Stats {
   avgCallDuration: number;
   totalCalls: number;
 }
+
 
 const Dashboard = () => {
   const [stats, setStats] = useState<Stats>({
@@ -31,6 +46,20 @@ const Dashboard = () => {
   const [recentCalls, setRecentCalls] = useState<any[]>([]);
   const [currency, setCurrency] = useState('USD');
   const { user } = useAuth();
+  const [isPremium, setIsPremium] = useState(false); // Placeholder for premium status
+
+  // Placeholder data for new components
+  const [callTypeData, setCallTypeData] = useState({ vri: 0, opi: 0 });
+  const [weeklyData, setWeeklyData] = useState([]);
+  const [projectionData, setProjectionData] = useState([]);
+  const [goals, setGoals] = useState([]);
+  const [integrations, setIntegrations] = useState([]);
+  const [learningMetrics, setLearningMetrics] = useState({ studyHours: 0, termsLearned: 0, quizzesCompleted: 0, scenariosPracticed: 0, botConversations: 0, streak: 0 });
+  const [heatmapData, setHeatmapData] = useState([]);
+  const [platformData, setPlatformData] = useState([]);
+  const [premiumStats, setPremiumStats] = useState({ totalCalls: 0, totalMinutes: 0, totalEarnings: 0, avgCallDuration: 0, peakHourEarnings: 0, streakDays: 0, monthlyGoalProgress: 0, efficiencyScore: 0 });
+  const [aiInsights, setAiInsights] = useState(null);
+
 
   useEffect(() => {
     if (user) {
@@ -61,7 +90,7 @@ const Dashboard = () => {
     // Get month stats
     const { data: monthData } = await supabase
       .from('call_logs')
-      .select('duration_seconds, earnings')
+      .select('duration_seconds, earnings, interpretation_type')
       .eq('user_id', user.id)
       .gte('start_time', monthStart.toISOString())
       .lte('start_time', monthEnd.toISOString());
@@ -104,6 +133,52 @@ const Dashboard = () => {
     });
 
     setRecentCalls(recent || []);
+
+    // Placeholder data population
+    setCallTypeData({
+      vri: monthData?.filter(c => c.interpretation_type === 'VRI').length || 0,
+      opi: monthData?.filter(c => c.interpretation_type === 'OPI').length || 0,
+    });
+
+    // This is just placeholder data, in a real app you would fetch this from your backend
+    setWeeklyData([
+      { day: 'Mon', calls: 4, earnings: 200 },
+      { day: 'Tue', calls: 6, earnings: 300 },
+      { day: 'Wed', calls: 5, earnings: 250 },
+      { day: 'Thu', calls: 8, earnings: 400 },
+      { day: 'Fri', calls: 7, earnings: 350 },
+      { day: 'Sat', calls: 3, earnings: 150 },
+      { day: 'Sun', calls: 2, earnings: 100 },
+    ]);
+    setProjectionData([
+        { month: 'Jan', actual: 3000, projected: 3200, conservative: 2800, optimistic: 3500 },
+        { month: 'Feb', actual: 3500, projected: 3700, conservative: 3200, optimistic: 4000 },
+        { month: 'Mar', projected: 4000, conservative: 3500, optimistic: 4500 },
+        { month: 'Apr', projected: 4200, conservative: 3700, optimistic: 4800 },
+        { month: 'May', projected: 4500, conservative: 4000, optimistic: 5000 },
+        { month: 'Jun', projected: 4800, conservative: 4200, optimistic: 5500 },
+    ]);
+    setGoals([
+        { id: '1', title: 'Monthly Earnings', target: 5000, current: 3500, unit: 'dollars', deadline: '2025-12-31', type: 'monthly' },
+        { id: '2', title: 'Weekly Hours', target: 40, current: 30, unit: 'hours', deadline: '2025-11-15', type: 'weekly' },
+    ]);
+    setIntegrations([
+        { name: 'Google Calendar', status: 'connected', lastSync: '2025-11-10T10:00:00Z', icon: <Calendar />, dataPoints: 120 },
+        { name: 'Stripe', status: 'syncing', icon: <DollarSign />, dataPoints: 45 },
+    ]);
+    setLearningMetrics({ studyHours: 12, termsLearned: 150, quizzesCompleted: 25, scenariosPracticed: 10, botConversations: 42, streak: 5 });
+    setHeatmapData([
+        { day: 'Mon', hour: 10, calls: 2, earnings: 100 },
+        { day: 'Tue', hour: 14, calls: 3, earnings: 150 },
+        { day: 'Tue', hour: 15, calls: 2, earnings: 100 },
+        { day: 'Fri', hour: 11, calls: 4, earnings: 200 },
+    ]);
+    setPlatformData([
+        { name: 'Platform A', calls: 25, earnings: 1500, avgDuration: 30, change: 10 },
+        { name: 'Platform B', calls: 15, earnings: 1000, avgDuration: 40, change: -5 },
+    ]);
+    setPremiumStats({ totalCalls: 40, totalMinutes: 1800, totalEarnings: 3500, avgCallDuration: 45, peakHourEarnings: 250, streakDays: 5, monthlyGoalProgress: 70, efficiencyScore: 85 });
+    setAiInsights("You're on track to meet your monthly goal. Keep up the great work!");
   };
 
   const calculateStats = (data: any[]) => {
@@ -130,101 +205,49 @@ const Dashboard = () => {
 
   return (
     <Layout>
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold mb-8">Dashboard</h1>
-
-        {/* Monthly & Yearly Totals */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">This Month</CardTitle>
-              <Calendar className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{formatCurrency(stats.monthEarnings)}</div>
-              <p className="text-xs text-muted-foreground">
-                {stats.monthCalls} calls • {formatDuration(stats.monthTotal)}
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">This Year</CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{formatCurrency(stats.yearEarnings)}</div>
-              <p className="text-xs text-muted-foreground">
-                {stats.yearCalls} calls • {formatDuration(stats.yearTotal)}
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Avg Call Duration</CardTitle>
-              <Clock className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{formatDuration(stats.avgCallDuration)}</div>
-              <p className="text-xs text-muted-foreground">Across all calls</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Calls</CardTitle>
-              <Phone className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.totalCalls}</div>
-              <p className="text-xs text-muted-foreground">All time</p>
-            </CardContent>
-          </Card>
+      <div className="container mx-auto px-4 py-8 space-y-8">
+        <div className="flex justify-between items-center">
+            <h1 className="text-4xl font-bold">Dashboard</h1>
+            <Button onClick={() => setIsPremium(!isPremium)}>Toggle Premium</Button>
         </div>
 
-        {/* Recent Calls */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Calls</CardTitle>
-            <CardDescription>Your latest interpretation sessions</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {recentCalls.length === 0 ? (
-                <p className="text-center text-muted-foreground py-8">
-                  No calls logged yet. Start tracking your calls to see them here.
-                </p>
-              ) : (
-                recentCalls.map((call) => (
-                  <div
-                    key={call.id}
-                    className="flex items-center justify-between p-4 border rounded-lg"
-                  >
-                    <div className="flex-1">
-                      <div className="font-medium">
-                        {format(new Date(call.start_time), 'MMM dd, yyyy • hh:mm a')}
-                      </div>
-                      {call.notes && (
-                        <div className="text-sm text-muted-foreground mt-1">{call.notes}</div>
-                      )}
-                    </div>
-                    <div className="text-right">
-                      <div className="font-semibold">{formatCurrency(parseFloat(call.earnings))}</div>
-                      <div className="text-sm text-muted-foreground">
-                        {formatDuration(call.duration_seconds)}
-                      </div>
-                    </div>
-                  </div>
-                ))
-              )}
+        {isPremium ? (
+            <PremiumStatsOverview stats={premiumStats} isPremium={isPremium} />
+        ) : (
+            <StatsCards stats={{ totalCalls: stats.totalCalls, totalMinutes: stats.monthTotal, totalEarnings: stats.monthEarnings }} />
+        )}
+
+        {!isPremium && <PremiumUpgradeCard />}
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 space-y-8">
+                <WeeklyChart data={weeklyData} />
+                <RecentCalls />
+                <PerformanceHeatmap data={heatmapData} isPremium={isPremium} />
             </div>
-          </CardContent>
-        </Card>
+            <div className="space-y-8">
+                <ManualLog />
+                <CallTypeChart data={callTypeData} />
+                <AIInsights stats={aiInsights} />
+            </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <GoalsTracker goals={goals} isPremium={isPremium} />
+            <EarningsProjection data={projectionData} isPremium={isPremium} />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <PlatformComparison platforms={platformData} isPremium={isPremium} />
+            <LearningProgress metrics={learningMetrics} />
+        </div>
+
+        <IntegrationStatus integrations={integrations} />
+
       </div>
     </Layout>
   );
 };
+
 
 export default Dashboard;

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen, Video, FileText, Users, ExternalLink, Download, Calendar, Star } from "lucide-react";
+import { PageHero } from "@/components/PageHero";
 
 const Resources = () => {
   const resources = [
@@ -73,25 +74,11 @@ const Resources = () => {
 
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="py-20 bg-gradient-subtle">
-        <div className="container mx-auto px-6 text-center">
-          <Badge className="mb-6 bg-primary/10 text-primary border-primary/20">
-            Professional Development
-          </Badge>
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 gradient-text">
-            Resources & Training
-          </h1>
-          <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-            Access comprehensive training materials, industry resources, and professional 
-            development tools to advance your interpretation career.
-          </p>
-          <Button size="lg" className="glass-button">
-            <BookOpen className="w-5 h-5 mr-2" />
-            Explore Resources
-          </Button>
-        </div>
-      </section>
+      <PageHero
+        badgeText="Professional Development"
+        title="Resources & Training"
+        subtitle="Access comprehensive training materials, industry resources, and professional development tools to advance your interpretation career."
+      />
 
       {/* Featured Resources */}
       <section className="py-20">
@@ -101,15 +88,15 @@ const Resources = () => {
               Featured Training Materials
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Curated content designed by industry experts to enhance your 
+              Curated content designed by industry experts to enhance your
               interpretation skills and professional knowledge.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {resources.map((resource, index) => (
-              <Card 
-                key={index} 
+              <Card
+                key={index}
                 className={`glass border-border/50 hover:border-primary/50 transition-all duration-300 ${
                   resource.featured ? 'ring-2 ring-primary/20' : ''
                 }`}
@@ -165,7 +152,7 @@ const Resources = () => {
               Industry Organizations & Certifications
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Connect with professional organizations and pursue industry-recognized 
+              Connect with professional organizations and pursue industry-recognized
               certifications to advance your career.
             </p>
           </div>
@@ -204,7 +191,7 @@ const Resources = () => {
             <Calendar className="w-16 h-16 text-primary mx-auto mb-6" />
             <h2 className="text-3xl font-bold mb-4">Stay Updated</h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Get the latest resources, industry insights, and training materials 
+              Get the latest resources, industry insights, and training materials
               delivered to your inbox monthly.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">

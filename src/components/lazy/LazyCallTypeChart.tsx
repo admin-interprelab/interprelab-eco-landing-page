@@ -4,7 +4,7 @@ import { ChartErrorBoundary } from '@/components/error';
 import type { CallTypeStats } from '@/lib/types';
 
 // Lazy load the CallTypeChart component
-const CallTypeChart = lazy(() => import('@/components/dashboard/call-type-chart'));
+const CallTypeChart = lazy(() => import('@/components/dashboard/CallTypeChart'));
 
 interface LazyCallTypeChartProps {
   data: CallTypeStats;

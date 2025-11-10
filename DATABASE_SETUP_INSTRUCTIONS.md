@@ -3,15 +3,18 @@
 ## Quick Setup Steps
 
 1. **Go to your Supabase Dashboard**:
+
    - Visit: https://supabase.com/dashboard/project/iokgkrnbawhizmuejluz
    - Click on "SQL Editor" in the left sidebar
 
 2. **Run the Database Migration**:
+
    - Copy the entire content from `supabase/migrations/20241205000000_complete_interprelab_schema.sql`
    - Paste it into the SQL Editor
    - Click "Run" to execute the migration
 
 3. **Verify Tables Created**:
+
    - Go to "Table Editor" in the left sidebar
    - You should see these tables:
      - `user_settings`
@@ -33,6 +36,7 @@
 ## Troubleshooting
 
 If you get authentication errors (400 Bad Request):
+
 1. Make sure the migration has been run successfully
 2. Check that RLS policies are enabled
 3. Try creating a user directly in the Supabase dashboard first
@@ -40,6 +44,7 @@ If you get authentication errors (400 Bad Request):
 ## After Setup
 
 Once the database is set up, you can:
+
 - Sign up for a new account in your app
 - Test the call tracking functionality
 - Use the study modules

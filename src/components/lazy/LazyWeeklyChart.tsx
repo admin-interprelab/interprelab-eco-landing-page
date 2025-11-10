@@ -3,7 +3,7 @@ import LazyComponent from "./LazyComponent";
 import { ChartErrorBoundary } from "@/components/error";
 
 // Lazy load the WeeklyChart component
-const WeeklyChart = lazy(() => import("@/components/dashboard/weekly-chart"));
+const WeeklyChart = lazy(() => import("@/components/dashboard/WeeklyChart"));
 
 interface LazyWeeklyChartProps {
   data: {

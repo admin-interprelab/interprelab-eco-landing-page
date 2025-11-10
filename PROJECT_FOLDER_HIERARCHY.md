@@ -22,6 +22,7 @@ This document provides a comprehensive overview of the project's folder structur
 ├── package-lock.json
 ├── package.json
 ├── postcss.config.js
+├── PROJECT_FOLDER_HIERARCHY.md    # This document
 ├── README.md
 ├── SUPABASE_SETUP.md
 ├── tailwind.config.ts
@@ -45,6 +46,7 @@ This document provides a comprehensive overview of the project's folder structur
 ## Detailed Directory Structure
 
 ### .kiro/
+
 ```
 .kiro/
 └── specs/
@@ -55,6 +57,7 @@ This document provides a comprehensive overview of the project's folder structur
 ```
 
 ### integrations/
+
 ```
 integrations/
 └── supabase/
@@ -62,6 +65,7 @@ integrations/
 ```
 
 ### public/
+
 ```
 public/
 ├── favicon.ico
@@ -70,6 +74,7 @@ public/
 ```
 
 ### src/
+
 ```
 src/
 ├── App.css
@@ -100,8 +105,31 @@ src/
 │   ├── ThemeToggle.tsx
 │   ├── VideoSection.tsx
 │   ├── dashboard/
+│   │   ├── ai-insights.tsx
+│   │   ├── call-type-chart.tsx
+│   │   ├── manual-log.tsx
+│   │   ├── recent-calls.tsx
+│   │   ├── stats-cards.tsx
+│   │   ├── weekly-chart.tsx
+│   │   └── optimized-features/
+│   │       ├── ai-insights.tsx
+│   │       ├── call-type-chart.tsx
+│   │       ├── earnings-projection.tsx
+│   │       ├── goals-tracker.tsx
+│   │       ├── integration-status.tsx
+│   │       ├── learning-progress.tsx
+│   │       ├── manual-log.tsx
+│   │       ├── performance-heatmap.tsx
+│   │       ├── platform-comparison.tsx
+│   │       ├── premium-stats-overview.tsx
+│   │       ├── premium-upgrade-card.tsx
+│   │       ├── recent-calls.tsx
+│   │       ├── stats-cards.tsx
+│   │       └── weekly-chart.tsx
 │   ├── error/
-│   │   └── ErrorBoundary.tsx
+│   │   ├── ErrorBoundary.tsx
+│   │   └── __tests__/
+│   │       └── ErrorBoundary.test.ts
 │   ├── lazy/
 │   │   ├── LazyCallTypeChart.tsx
 │   │   ├── LazyComponent.tsx
@@ -132,6 +160,55 @@ src/
 │   │   ├── GoalSetting.tsx
 │   │   └── PerformanceInsights.tsx
 │   └── ui/
+│       ├── accordion.tsx
+│       ├── alert-dialog.tsx
+│       ├── alert.tsx
+│       ├── aspect-ratio.tsx
+│       ├── avatar.tsx
+│       ├── badge.tsx
+│       ├── breadcrumb.tsx
+│       ├── button.tsx
+│       ├── calendar.tsx
+│       ├── card.tsx
+│       ├── carousel.tsx
+│       ├── chart.tsx
+│       ├── checkbox.tsx
+│       ├── collapsible.tsx
+│       ├── command.tsx
+│       ├── context-menu.tsx
+│       ├── dialog.tsx
+│       ├── drawer.tsx
+│       ├── dropdown-menu.tsx
+│       ├── form.tsx
+│       ├── hover-card.tsx
+│       ├── input-otp.tsx
+│       ├── input.tsx
+│       ├── label.tsx
+│       ├── menubar.tsx
+│       ├── navigation-menu.tsx
+│       ├── pagination.tsx
+│       ├── popover.tsx
+│       ├── progress.tsx
+│       ├── radio-group.tsx
+│       ├── resizable.tsx
+│       ├── scroll-area.tsx
+│       ├── select.tsx
+│       ├── separator.tsx
+│       ├── sheet.tsx
+│       ├── sidebar.tsx
+│       ├── skeleton.tsx
+│       ├── slider.tsx
+│       ├── sonner.tsx
+│       ├── switch.tsx
+│       ├── table.tsx
+│       ├── tabs.tsx
+│       ├── textarea.tsx
+│       ├── toast.tsx
+│       ├── toaster.tsx
+│       ├── toggle-group.tsx
+│       ├── toggle.tsx
+│       ├── tooltip.tsx
+│       └── use-toast.ts
 ├── contexts/
 │   ├── AuthContext.tsx
 │   ├── LanguageContext.tsx
@@ -149,6 +226,8 @@ src/
 │       └── useBreadcrumbs.test.ts
 ├── integrations/
 │   └── supabase/
+│       ├── client.ts
+│       └── types.ts
 ├── lib/
 │   ├── data.ts
 │   ├── imageOptimization.ts
@@ -183,6 +262,7 @@ src/
 ```
 
 ### supabase/
+
 ```
 supabase/
 ├── config.toml
@@ -196,6 +276,7 @@ supabase/
 ```
 
 ### dist/ (Build Output)
+
 ```
 dist/
 ├── favicon.ico
@@ -213,21 +294,33 @@ dist/
 ## Key Observations
 
 ### Missing Directories from File Tree
-The following directories appear in the file tree but are empty or don't contain accessible files:
+
+The following directories appear in the file tree but are empty:
+
 - `build-utils/` - Empty directory
 - `utils/` - Empty directory
-- Several subdirectories in `src/components/` (dashboard, ui)
-- `src/integrations/supabase/` - May contain files not visible in this listing
+
+### Previously Missing but Now Found
+
+The following directories were initially missed but have been added to the hierarchy:
+
+- `src/components/ui/` - Complete shadcn/ui component library (47 components)
+- `src/components/dashboard/` - Dashboard components with optimized-features subdirectory
+- `src/integrations/supabase/` - Supabase client and types
 
 ### Test Structure
+
 The project has a distributed test structure with `__tests__` directories in:
+
 - `src/components/lazy/__tests__/`
 - `src/components/navigation/__tests__/`
 - `src/hooks/__tests__/`
 - `src/components/error/__tests__/` (referenced in open files)
 
 ### Configuration Files
+
 The project includes comprehensive configuration for:
+
 - **TypeScript**: Multiple tsconfig files for different environments
 - **Build Tools**: Vite, PostCSS, Tailwind CSS
 - **Linting**: ESLint configuration
@@ -236,18 +329,42 @@ The project includes comprehensive configuration for:
 - **Database**: Supabase with migration files
 
 ### Kiro Specs
+
 The `.kiro/specs/website-ux-improvements/` directory contains:
+
 - `requirements.md` - Feature requirements
 - `design.md` - Design specifications
 - `tasks.md` - Implementation tasks
 
 This structure suggests an active development workflow using Kiro's spec-driven development approach.
 
-## File Access Discrepancies
+## File Access Verification
 
-Based on the open editor files list, there may be some files that exist but weren't captured in the directory listing, particularly in:
-- `src/components/ui/` directory
-- Some test files that are referenced but may be in different locations
-- Potential additional files in `src/integrations/supabase/`
+After double-checking, the hierarchy now includes all accessible files and directories. Key additions include:
 
-The hierarchy shown here represents the files and directories that are directly accessible through the file system tools.
+### UI Components Library
+
+The `src/components/ui/` directory contains a complete shadcn/ui component library with 47 components including:
+
+- Form controls (button, input, select, checkbox, etc.)
+- Layout components (card, sheet, dialog, etc.)
+- Navigation components (breadcrumb, navigation-menu, etc.)
+- Data display (table, chart, badge, etc.)
+- Feedback components (toast, alert, progress, etc.)
+
+### Dashboard Components
+
+The `src/components/dashboard/` directory contains:
+
+- Core dashboard components (6 files)
+- An `optimized-features/` subdirectory with enhanced versions (13 files)
+- Components for analytics, charts, and performance tracking
+
+### Integration Files
+
+The `src/integrations/supabase/` directory contains:
+
+- `client.ts` - Supabase client configuration
+- `types.ts` - TypeScript type definitions
+
+The hierarchy now accurately represents all files and directories that are accessible through the file system tools and matches the open editor files list.

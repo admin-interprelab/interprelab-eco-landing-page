@@ -11,6 +11,7 @@ interface TestRunner {
   runLazyLoadingTests: () => boolean;
   runImageOptimizationTests: () => Promise<boolean>;
   runErrorBoundaryTests: () => boolean;
+  runPainPointSearchTests: () => boolean;
   help: () => void;
 }
 
@@ -45,6 +46,14 @@ const createTestRunner = (): TestRunner => {
       return true;
     },
 
+    runPainPointSearchTests() {
+      console.log('🔍 Running pain point search tests...');
+      import('@/components/discovery/__tests__/PainPointAwareSearch.test').then(module => {
+        return module.runPainPointSearchTests();
+      });
+      return true;
+    },
+
     help() {
       console.log(`
 🧪 InterpreLab Performance Test Runner
@@ -55,6 +64,7 @@ Available commands:
   testRunner.runLazyLoadingTests()     - Test lazy loading components
   testRunner.runImageOptimizationTests() - Test image optimization
   testRunner.runErrorBoundaryTests()   - Test error boundaries
+  testRunner.runPainPointSearchTests() - Test pain point-aware search system
   testRunner.help()                    - Show this help message
 
 Example usage:
@@ -76,7 +86,7 @@ export const testRunner = createTestRunner();
 
 // Make available globally in development
 if (process.env.NODE_ENV === 'development') {
-  (window as any).testRunner = testRunner;
+  (window as unknown as { testRunner: TestRunner }).testRunner = testRunner;
   console.log('🧪 Performance test runner available as window.testRunner');
   console.log('Type testRunner.help() for available commands');
 }

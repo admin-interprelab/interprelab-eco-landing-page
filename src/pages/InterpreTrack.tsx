@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
-import StatsCards from '@/components/dashboard/stats-cards';
+import StatsCards from '@/components/dashboard/StatsCards';
 import { LazyWeeklyChart, LazyCallTypeChart } from '@/components/lazy';
-import AIInsights from '@/components/dashboard/ai-insights';
-import RecentCalls from '@/components/dashboard/recent-calls';
-import ManualLog from '@/components/dashboard/manual-log';
+import AIInsights from '@/components/dashboard/AiInsights';
+import RecentCalls from '@/components/dashboard/RecentCalls';
+import ManualLog from '@/components/dashboard/ManualLog';
 import { useCallTracker } from '@/hooks/useCallTracker';
 import { useCallStats } from '@/hooks/useCallStats';
 import { Button } from '@/components/ui/button';
@@ -13,6 +13,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Play, Square, Timer, DollarSign, Target, TrendingUp, BarChart3 } from 'lucide-react';
 import { GoalSetting } from '@/components/track/GoalSetting';
 import { PerformanceInsights } from '@/components/track/PerformanceInsights';
+import GoalsTracker from '@/components/dashboard/GoalsTracker';
+import EarningsProjection from '@/components/dashboard/EarningsProjection';
+import { usePremium } from '@/contexts/PremiumContext';
 
 export default function InterpreTrack() {
   const {
@@ -27,6 +30,7 @@ export default function InterpreTrack() {
   } = useCallTracker();
 
   const { stats, dailyStats, callTypeStats, loading, error } = useCallStats();
+  const { isPremium } = usePremium();
   const [callNotes, setCallNotes] = useState('');
   const [activeView, setActiveView] = useState<'dashboard' | 'goals' | 'insights'>('dashboard');
 
@@ -41,28 +45,30 @@ export default function InterpreTrack() {
   const [goals, setGoals] = useState([
     {
       id: '1',
-      type: 'earnings' as const,
+      unit: 'dollars' as const,
       target: 5000,
       current: 3200,
-      period: 'monthly' as const,
+      type: 'monthly' as const,
       title: 'Monthly Earnings Goal',
-      deadline: new Date('2024-12-31')
+      deadline: new Date('2024-12-31').toISOString()
     },
     {
       id: '2',
-      type: 'calls' as const,
+      unit: 'calls' as const,
       target: 100,
       current: 67,
-      period: 'monthly' as const,
-      title: 'Monthly Call Target'
+      type: 'monthly' as const,
+      title: 'Monthly Call Target',
+      deadline: new Date('2024-12-31').toISOString()
     },
     {
       id: '3',
-      type: 'hours' as const,
+      unit: 'hours' as const,
       target: 40,
       current: 28,
-      period: 'weekly' as const,
-      title: 'Weekly Hours Goal'
+      type: 'weekly' as const,
+      title: 'Weekly Hours Goal',
+      deadline: new Date('2024-11-15').toISOString()
     }
   ]);
 
@@ -257,7 +263,18 @@ export default function InterpreTrack() {
                     }))} />
                   </div>
                   <div className="lg:col-span-2 grid gap-6">
-                    <LazyCallTypeChart data={callTypeStats} />
+                    {isPremium ? (
+                      <>
+                        <EarningsProjection data={[
+                            { month: 'Jan', actual: 3000, projected: 3200, conservative: 2800, optimistic: 3500 },
+                            { month: 'Feb', actual: 3500, projected: 3700, conservative: 3200, optimistic: 4000 },
+                            { month: 'Mar', projected: 4000, conservative: 3500, optimistic: 4500 },
+                        ]} isPremium={isPremium} />
+                        <GoalsTracker goals={goals} isPremium={isPremium} />
+                      </>
+                    ) : (
+                      <LazyCallTypeChart data={callTypeStats} />
+                    )}
                     <AIInsights stats={`Total Calls: ${stats?.totalCalls || 0}, Average Duration: ${stats?.averageCallDuration ? Math.round(stats.averageCallDuration / 60) : 0} min`} error={false} />
                   </div>
                 </div>
