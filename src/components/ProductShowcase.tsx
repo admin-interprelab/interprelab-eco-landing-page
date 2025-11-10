@@ -1,5 +1,3 @@
-import techBackground from "@/assets/tech-background.jpg";
-import interpreHubMockup from "@/assets/interpre-hub-mockup.png";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -8,7 +6,6 @@ import {
   Chrome,
   Clock,
   ArrowRight,
-  GraduationCap,
   BookOpen,
   Download,
   Sparkles,
@@ -73,7 +70,7 @@ export const ProductShowcase = () => {
               <div className="space-y-6">
                 <div className="flex items-center gap-4">
                   <div className="p-3 bg-gradient-primary rounded-lg">
-                    <GraduationCap className="w-6 h-6 text-white" />
+                    <BookOpen className="w-6 h-6 text-white" />
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-foreground">InterpreLab Platform</h3>
@@ -83,7 +80,7 @@ export const ProductShowcase = () => {
 
                 <div className="relative aspect-video rounded-lg overflow-hidden bg-muted">
                   <img
-                    src={techBackground}
+                    src="src/assets/tech-background.jpg"
                     alt="InterpreLab Platform Dashboard"
                     className="w-full h-full object-cover"
                   />
@@ -148,7 +145,7 @@ export const ProductShowcase = () => {
 
                 <div className="relative aspect-video rounded-lg overflow-hidden bg-muted">
                   <img
-                    src={interpreHubMockup}
+                    src="src/assets/extension-preview.jpg"
                     alt="InterpreCoach Extension Preview"
                     className="w-full h-full object-cover"
                   />

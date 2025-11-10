@@ -1,165 +1,234 @@
-import { Layout } from '@/components/Layout';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import React, { useState } from 'react';
+import { Navigation } from '@/components/Navigation';
+import { Footer } from '@/components/Footer';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { BookOpen, MessageSquare, Layers, Settings, Brain, Languages } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { InteractiveChat } from '@/components/interprestudy/InteractiveChat';
-import { TerminologyLookup } from '@/components/interprestudy/TerminologyLookup';
-import { FlashcardBuilder } from '@/components/interprestudy/FlashcardBuilder';
-import { MockScenarios } from '@/components/interprestudy/MockScenarios';
-import { StudySettings } from '@/components/interprestudy/StudySettings';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
+import { BookOpen, Brain, Users, Award, Clock, CheckCircle } from 'lucide-react';
 
-export default function InterpreStudy() {
-  return (
-    <Layout>
-      <div className="container mx-auto px-4 py-12">
-        {/* Hero Section */}
-        <div
-          className="text-center mb-16 animate-fade-in py-20 px-4 rounded-3xl bg-cover bg-center"
-          style={{ backgroundImage: "url('/src/assets/studying-learning.jpg')" }}
+const InterpreStudy = () => {
+  const [completedModules, setCompletedModules] = useState<string[]>([]);
+
+  const ethicsModules = [
+    {
+      id: 'ethics-1',
+      title: 'Professional Ethics Fundamentals',
+      description: 'Core principles of interpreter ethics and professional conduct',
+      duration: '45 min',
+      difficulty: 'Beginner',
+      completed: completedModules.includes('ethics-1')
+    },
+    {
+      id: 'ethics-2',
+      title: 'Confidentiality and Privacy',
+      description: 'Understanding HIPAA and confidentiality requirements',
+      duration: '30 min',
+      difficulty: 'Intermediate',
+      completed: completedModules.includes('ethics-2')
+    },
+    {
+      id: 'ethics-3',
+      title: 'Cultural Competency',
+      description: 'Navigating cultural differences in interpretation',
+      duration: '60 min',
+      difficulty: 'Advanced',
+      completed: completedModules.includes('ethics-3')
+    }
+  ];
+
+  const terminologyModules = [
+    {
+      id: 'term-1',
+      title: 'Medical Terminology Basics',
+      description: 'Essential medical terms and anatomy',
+      duration: '90 min',
+      difficulty: 'Beginner',
+      completed: completedModules.includes('term-1')
+    },
+    {
+      id: 'term-2',
+      title: 'Legal Terminology',
+      description: 'Court and legal system vocabulary',
+      duration: '75 min',
+      difficulty: 'Intermediate',
+      completed: completedModules.includes('term-2')
+    },
+    {
+      id: 'term-3',
+      title: 'Specialized Medical Fields',
+      description: 'Advanced terminology for specialized medical areas',
+      duration: '120 min',
+      difficulty: 'Advanced',
+      completed: completedModules.includes('term-3')
+    }
+  ];
+
+  const practiceScenarios = [
+    {
+      id: 'practice-1',
+      title: 'Hospital Emergency Room',
+      description: 'Practice interpreting in high-stress medical situations',
+      duration: '30 min',
+      difficulty: 'Intermediate',
+      completed: completedModules.includes('practice-1')
+    },
+    {
+      id: 'practice-2',
+      title: 'Court Proceedings',
+      description: 'Legal interpretation practice scenarios',
+      duration: '45 min',
+      difficulty: 'Advanced',
+      completed: completedModules.includes('practice-2')
+    },
+    {
+      id: 'practice-3',
+      title: 'Business Meetings',
+      description: 'Corporate and business interpretation practice',
+      duration: '40 min',
+      difficulty: 'Intermediate',
+      completed: completedModules.includes('practice-3')
+    }
+  ];
+
+  const markComplete = (moduleId: string) => {
+    if (!completedModules.includes(moduleId)) {
+      setCompletedModules([...completedModules, moduleId]);
+    }
+  };
+
+  const calculateProgress = (modules: any[]) => {
+    const completed = modules.filter(m => completedModules.includes(m.id)).length;
+    return (completed / modules.length) * 100;
+  };
+
+  const ModuleCard = ({ module, onComplete }: { module: any, onComplete: (id: string) => void }) => (
+    <Card className="h-full">
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-lg">{module.title}</CardTitle>
+          {module.completed && <CheckCircle className="h-5 w-5 text-green-500" />}
+        </div>
+        <CardDescription>{module.description}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="flex items-center gap-4 mb-4">
+          <Badge variant="outline" className="flex items-center gap-1">
+            <Clock className="h-3 w-3" />
+            {module.duration}
+          </Badge>
+          <Badge variant={module.difficulty === 'Beginner' ? 'default' :
+                         module.difficulty === 'Intermediate' ? 'secondary' : 'destructive'}>
+            {module.difficulty}
+          </Badge>
+        </div>
+        <Button
+          onClick={() => onComplete(module.id)}
+          disabled={module.completed}
+          className="w-full"
         >
-          <div className="absolute inset-0 bg-black/70 rounded-3xl" />
-          <div className="relative z-10">
-            <Badge className="mb-6 bg-primary/10 text-primary border-primary/20">
-              Addressing Pain Point #4: Accessible, Specialized Training
-            </Badge>
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Brain className="w-12 h-12 text-primary" />
-            <h1 className="text-5xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-              InterpreStudy
-            </h1>
-          </div>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-6">
-            Specialized training shouldn't be a luxury reserved for those who can afford $100s-$1000s. We've been there—struggling to find quality oncology, genetics, or legal terminology resources. InterpreStudy provides AI-powered learning, ethics training, and interactive scenarios tailored to your specialty, all in one accessible platform.
+          {module.completed ? 'Completed' : 'Start Module'}
+        </Button>
+      </CardContent>
+    </Card>
+  );
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+      <Navigation />
+
+      <main className="container mx-auto px-4 py-8">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">InterpreStudy</h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Comprehensive training platform for professional interpreters. Master ethics, terminology, and practical skills.
           </p>
-          <div className="glass p-6 rounded-lg max-w-2xl mx-auto">
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              🎯 <strong>Why This Matters:</strong> As working interpreters, we know the desperation of entering a specialized call unprepared. We built InterpreStudy to democratize access to the training that should have always been available—because every interpreter deserves to feel confident and prepared.
-            </p>
-          </div>
-          </div>
         </div>
 
-        {/* Main Content Tabs */}
-        <Tabs defaultValue="chat" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-8">
-            <TabsTrigger value="chat" className="flex items-center gap-2">
-              <MessageSquare className="w-4 h-4" />
-              AI Chat
-            </TabsTrigger>
-            <TabsTrigger value="terminology" className="flex items-center gap-2">
-              <Languages className="w-4 h-4" />
-              Terminology
-            </TabsTrigger>
-            <TabsTrigger value="flashcards" className="flex items-center gap-2">
-              <Layers className="w-4 h-4" />
-              Flashcards
-            </TabsTrigger>
-            <TabsTrigger value="scenarios" className="flex items-center gap-2">
-              <BookOpen className="w-4 h-4" />
-              Scenarios
-            </TabsTrigger>
-            <TabsTrigger value="settings" className="flex items-center gap-2">
-              <Settings className="w-4 h-4" />
-              Settings
-            </TabsTrigger>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <Card>
+            <CardContent className="p-6 text-center">
+              <BookOpen className="h-12 w-12 text-blue-500 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold mb-2">Ethics Training</h3>
+              <Progress value={calculateProgress(ethicsModules)} className="mb-2" />
+              <p className="text-sm text-gray-600">
+                {Math.round(calculateProgress(ethicsModules))}% Complete
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6 text-center">
+              <Brain className="h-12 w-12 text-green-500 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold mb-2">Terminology</h3>
+              <Progress value={calculateProgress(terminologyModules)} className="mb-2" />
+              <p className="text-sm text-gray-600">
+                {Math.round(calculateProgress(terminologyModules))}% Complete
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6 text-center">
+              <Users className="h-12 w-12 text-purple-500 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold mb-2">Practice</h3>
+              <Progress value={calculateProgress(practiceScenarios)} className="mb-2" />
+              <p className="text-sm text-gray-600">
+                {Math.round(calculateProgress(practiceScenarios))}% Complete
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Tabs defaultValue="ethics" className="w-full">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="ethics">Ethics Training</TabsTrigger>
+            <TabsTrigger value="terminology">Terminology</TabsTrigger>
+            <TabsTrigger value="practice">Practice Scenarios</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="chat" className="animate-fade-in">
-            <InteractiveChat />
+          <TabsContent value="ethics" className="mt-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {ethicsModules.map((module) => (
+                <ModuleCard
+                  key={module.id}
+                  module={module}
+                  onComplete={markComplete}
+                />
+              ))}
+            </div>
           </TabsContent>
 
-          <TabsContent value="terminology" className="animate-fade-in">
-            <TerminologyLookup />
+          <TabsContent value="terminology" className="mt-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {terminologyModules.map((module) => (
+                <ModuleCard
+                  key={module.id}
+                  module={module}
+                  onComplete={markComplete}
+                />
+              ))}
+            </div>
           </TabsContent>
 
-          <TabsContent value="flashcards" className="animate-fade-in">
-            <FlashcardBuilder />
-          </TabsContent>
-
-          <TabsContent value="scenarios" className="animate-fade-in">
-            <MockScenarios />
-          </TabsContent>
-
-          <TabsContent value="settings" className="animate-fade-in">
-            <StudySettings />
+          <TabsContent value="practice" className="mt-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {practiceScenarios.map((module) => (
+                <ModuleCard
+                  key={module.id}
+                  module={module}
+                  onComplete={markComplete}
+                />
+              ))}
+            </div>
           </TabsContent>
         </Tabs>
+      </main>
 
-        {/* Quick Actions */}
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="glass border-border/50 hover:border-primary/50 transition-all duration-300">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <BookOpen className="w-5 h-5 text-primary" />
-                Code of Ethics
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground mb-4">
-                Query and quiz yourself on professional standards and ethical guidelines
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className="glass border-border/50 hover:border-primary/50 transition-all duration-300">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Brain className="w-5 h-5 text-primary" />
-                Live Practice
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground mb-4">
-                Real-time conversation with AI in 8-second response windows
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className="glass border-border/50 hover:border-primary/50 transition-all duration-300">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Languages className="w-5 h-5 text-primary" />
-                Custom Glossary
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground mb-4">
-                Build your personal terminology library with translations and images
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Mission & Collaboration CTA */}
-        <section className="py-20">
-          <Card className="glass border-primary/20 max-w-4xl mx-auto">
-            <CardContent className="p-8 md:p-12 text-center space-y-6">
-              <h2 className="text-3xl font-bold">InterpreLab: Your Lifeline in the Field</h2>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                We're not building tools from an ivory tower. We're interpreters who've experienced the frustration of inaccessible training, the anxiety of specialized terminology, and the weight of serving vulnerable patients. Our mission is to use our skills to create solutions that actually help—but we need your partnership to reach every interpreter who needs these resources.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-                <Link to="/contact">
-                  <Button size="lg" variant="hero">
-                    Collaborate With Us
-                  </Button>
-                </Link>
-                <Link to="/interprelink">
-                  <Button size="lg" variant="glass">
-                    Join Our Community
-                  </Button>
-                </Link>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Have connections to interpreter networks? Want to discuss bulk training programs? Let's talk—together we can make professional development accessible to all.
-              </p>
-            </CardContent>
-          </Card>
-        </section>
-      </div>
-    </Layout>
+      <Footer />
+    </div>
   );
-}
+};
+
+export default InterpreStudy;
