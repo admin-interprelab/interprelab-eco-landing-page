@@ -5,7 +5,12 @@ import {
   Brain,
   Chrome,
   Clock,
-  ArrowRight
+  ArrowRight,
+  BookOpen,
+  Download,
+  Sparkles,
+  Eye,
+  TrendingUp
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -65,7 +70,7 @@ export const ProductShowcase = () => {
               <div className="space-y-6">
                 <div className="flex items-center gap-4">
                   <div className="p-3 bg-gradient-primary rounded-lg">
-                    <GraduationCap className="w-6 h-6 text-white" />
+                    <BookOpen className="w-6 h-6 text-white" />
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-foreground">InterpreLab Platform</h3>
