@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Layout } from '@/components/Layout';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { Calendar, DollarSign, Clock, TrendingUp, Phone } from 'lucide-react';
+import { usePremium } from '@/contexts/PremiumContext';
+import { Calendar, DollarSign } from 'lucide-react';
 import { format, startOfMonth, startOfYear, endOfMonth, endOfYear } from 'date-fns';
 import AIInsights from '@/components/dashboard/AiInsights';
 import CallTypeChart from '@/components/dashboard/CallTypeChart';
@@ -15,10 +16,10 @@ import ManualLog from '@/components/dashboard/ManualLog';
 import PerformanceHeatmap from '@/components/dashboard/PerformanceHeatmap';
 import PlatformComparison from '@/components/dashboard/PlatformComparison';
 import PremiumStatsOverview from '@/components/dashboard/PremiumStatsOverview';
-import PremiumUpgradeCard from '@/components/dashboard/PremiumUpgradeCard';
 import RecentCalls from '@/components/dashboard/RecentCalls';
 import StatsCards from '@/components/dashboard/StatsCards';
 import WeeklyChart from '@/components/dashboard/WeeklyChart';
+import { PremiumUpgradeCard } from '@/components/premium/PremiumUpgradeCard';
 
 interface Stats {
   monthTotal: number;
@@ -46,16 +47,14 @@ const Dashboard = () => {
   const [recentCalls, setRecentCalls] = useState<any[]>([]);
   const [currency, setCurrency] = useState('USD');
   const { user } = useAuth();
-  const [isPremium, setIsPremium] = useState(false); // Placeholder for premium status
+  const { isPremium, upgrade } = usePremium();
 
   // Placeholder data for new components
   const [callTypeData, setCallTypeData] = useState({ vri: 0, opi: 0 });
   const [weeklyData, setWeeklyData] = useState([]);
-  const [projectionData, setProjectionData] = useState([]);
   const [goals, setGoals] = useState([]);
   const [integrations, setIntegrations] = useState([]);
   const [learningMetrics, setLearningMetrics] = useState({ studyHours: 0, termsLearned: 0, quizzesCompleted: 0, scenariosPracticed: 0, botConversations: 0, streak: 0 });
-  const [heatmapData, setHeatmapData] = useState([]);
   const [platformData, setPlatformData] = useState([]);
   const [premiumStats, setPremiumStats] = useState({ totalCalls: 0, totalMinutes: 0, totalEarnings: 0, avgCallDuration: 0, peakHourEarnings: 0, streakDays: 0, monthlyGoalProgress: 0, efficiencyScore: 0 });
   const [aiInsights, setAiInsights] = useState(null);
@@ -150,14 +149,6 @@ const Dashboard = () => {
       { day: 'Sat', calls: 3, earnings: 150 },
       { day: 'Sun', calls: 2, earnings: 100 },
     ]);
-    setProjectionData([
-        { month: 'Jan', actual: 3000, projected: 3200, conservative: 2800, optimistic: 3500 },
-        { month: 'Feb', actual: 3500, projected: 3700, conservative: 3200, optimistic: 4000 },
-        { month: 'Mar', projected: 4000, conservative: 3500, optimistic: 4500 },
-        { month: 'Apr', projected: 4200, conservative: 3700, optimistic: 4800 },
-        { month: 'May', projected: 4500, conservative: 4000, optimistic: 5000 },
-        { month: 'Jun', projected: 4800, conservative: 4200, optimistic: 5500 },
-    ]);
     setGoals([
         { id: '1', title: 'Monthly Earnings', target: 5000, current: 3500, unit: 'dollars', deadline: '2025-12-31', type: 'monthly' },
         { id: '2', title: 'Weekly Hours', target: 40, current: 30, unit: 'hours', deadline: '2025-11-15', type: 'weekly' },
@@ -167,12 +158,6 @@ const Dashboard = () => {
         { name: 'Stripe', status: 'syncing', icon: <DollarSign />, dataPoints: 45 },
     ]);
     setLearningMetrics({ studyHours: 12, termsLearned: 150, quizzesCompleted: 25, scenariosPracticed: 10, botConversations: 42, streak: 5 });
-    setHeatmapData([
-        { day: 'Mon', hour: 10, calls: 2, earnings: 100 },
-        { day: 'Tue', hour: 14, calls: 3, earnings: 150 },
-        { day: 'Tue', hour: 15, calls: 2, earnings: 100 },
-        { day: 'Fri', hour: 11, calls: 4, earnings: 200 },
-    ]);
     setPlatformData([
         { name: 'Platform A', calls: 25, earnings: 1500, avgDuration: 30, change: 10 },
         { name: 'Platform B', calls: 15, earnings: 1000, avgDuration: 40, change: -5 },
@@ -208,7 +193,7 @@ const Dashboard = () => {
       <div className="container mx-auto px-4 py-8 space-y-8">
         <div className="flex justify-between items-center">
             <h1 className="text-4xl font-bold">Dashboard</h1>
-            <Button onClick={() => setIsPremium(!isPremium)}>Toggle Premium</Button>
+            <Button onClick={upgrade}>Toggle Premium</Button>
         </div>
 
         {isPremium ? (
@@ -217,13 +202,13 @@ const Dashboard = () => {
             <StatsCards stats={{ totalCalls: stats.totalCalls, totalMinutes: stats.monthTotal, totalEarnings: stats.monthEarnings }} />
         )}
 
-        {!isPremium && <PremiumUpgradeCard />}
+        {!isPremium && <PremiumUpgradeCard featureName="Advanced Analytics" />}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-8">
                 <WeeklyChart data={weeklyData} />
                 <RecentCalls />
-                <PerformanceHeatmap data={heatmapData} isPremium={isPremium} />
+                <PerformanceHeatmap isPremium={isPremium} />
             </div>
             <div className="space-y-8">
                 <ManualLog />
@@ -234,7 +219,7 @@ const Dashboard = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <GoalsTracker goals={goals} isPremium={isPremium} />
-            <EarningsProjection data={projectionData} isPremium={isPremium} />
+            <EarningsProjection isPremium={isPremium} />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

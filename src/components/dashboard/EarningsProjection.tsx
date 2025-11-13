@@ -1,8 +1,10 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip } from 'recharts';
-import { TrendingUp, DollarSign, Calendar } from 'lucide-react';
+import { TrendingUp, DollarSign, Calendar, AlertTriangle } from 'lucide-react';
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
+import { useEarningsProjection } from '@/hooks/useEarningsProjection';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface ProjectionData {
   month: string;
@@ -10,11 +12,6 @@ interface ProjectionData {
   projected: number;
   conservative: number;
   optimistic: number;
-}
-
-interface EarningsProjectionProps {
-  data: ProjectionData[];
-  isPremium: boolean;
 }
 
 const chartConfig = {
@@ -36,11 +33,15 @@ const chartConfig = {
   },
 };
 
-export default function EarningsProjection({ data, isPremium }: EarningsProjectionProps) {
-  const currentMonthEarnings = data.find(d => d.actual)?.actual || 0;
-  const projectedEndOfYear = data[data.length - 1]?.projected || 0;
-  const growthRate = ((projectedEndOfYear - currentMonthEarnings) / currentMonthEarnings * 100).toFixed(1);
+interface EarningsProjectionProps {
+  isPremium: boolean;
+}
 
+export default function EarningsProjection({ isPremium }: EarningsProjectionProps) {
+  const { data, isLoading, isError, error } = useEarningsProjection();
+
+  // The backend function returns a single projection object, not an array for a chart.
+  // For this component, we will display the single projection numbers.
   if (!isPremium) {
     return (
       <Card className="relative overflow-hidden">
@@ -64,6 +65,42 @@ export default function EarningsProjection({ data, isPremium }: EarningsProjecti
               </p>
             </div>
           </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <Card>
+        <CardHeader>
+          <Skeleton className="h-6 w-48" />
+          <Skeleton className="h-4 w-64" />
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-3 gap-4">
+            <Skeleton className="h-24 w-full" />
+            <Skeleton className="h-24 w-full" />
+            <Skeleton className="h-24 w-full" />
+          </div>
+          <Skeleton className="h-16 w-full" />
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Card className="border-destructive/50">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-destructive">
+            <AlertTriangle className="h-5 w-5" />
+            Earnings Forecast
+          </CardTitle>
+          <CardDescription>Could not load AI-powered predictions.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-destructive">{error.message}</p>
         </CardContent>
       </Card>
     );
@@ -123,50 +160,50 @@ export default function EarningsProjection({ data, isPremium }: EarningsProjecti
             <ResponsiveContainer>
               <LineChart data={data} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                <XAxis 
-                  dataKey="month" 
+                <XAxis
+                  dataKey="month"
                   tickLine={false}
                   axisLine={false}
                   fontSize={12}
                 />
-                <YAxis 
+                <YAxis
                   tickLine={false}
                   axisLine={false}
                   fontSize={12}
                   tickFormatter={(value) => `$${value}`}
                 />
                 <Tooltip content={<ChartTooltipContent />} />
-                
+
                 {/* Confidence interval area */}
-                <Line 
-                  type="monotone" 
-                  dataKey="conservative" 
-                  stroke="var(--color-conservative)" 
+                <Line
+                  type="monotone"
+                  dataKey="conservative"
+                  stroke="var(--color-conservative)"
                   strokeWidth={1}
                   strokeDasharray="5 5"
                   dot={false}
                 />
-                <Line 
-                  type="monotone" 
-                  dataKey="optimistic" 
-                  stroke="var(--color-optimistic)" 
+                <Line
+                  type="monotone"
+                  dataKey="optimistic"
+                  stroke="var(--color-optimistic)"
                   strokeWidth={1}
                   strokeDasharray="5 5"
                   dot={false}
                 />
-                
+
                 {/* Main lines */}
-                <Line 
-                  type="monotone" 
-                  dataKey="actual" 
-                  stroke="var(--color-actual)" 
+                <Line
+                  type="monotone"
+                  dataKey="actual"
+                  stroke="var(--color-actual)"
                   strokeWidth={3}
                   dot={{ fill: 'var(--color-actual)', r: 4 }}
                 />
-                <Line 
-                  type="monotone" 
-                  dataKey="projected" 
-                  stroke="var(--color-projected)" 
+                <Line
+                  type="monotone"
+                  dataKey="projected"
+                  stroke="var(--color-projected)"
                   strokeWidth={3}
                   dot={{ fill: 'var(--color-projected)', r: 4 }}
                 />
@@ -183,7 +220,7 @@ export default function EarningsProjection({ data, isPremium }: EarningsProjecti
               <div className="space-y-1">
                 <h4 className="font-semibold text-sm">AI Insight</h4>
                 <p className="text-sm text-muted-foreground">
-                  Based on your current trajectory and market trends, you're on track to exceed your annual target by 12%. 
+                  Based on your current trajectory and market trends, you're on track to exceed your annual target by 12%.
                   Consider increasing your Thursday and Friday availability for optimal results.
                 </p>
               </div>

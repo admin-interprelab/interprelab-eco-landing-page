@@ -1,21 +1,18 @@
 import { useState } from 'react';
-import { Navigation } from '@/components/Navigation';
-import { Footer } from '@/components/Footer';
+import { Layout } from '@/components/Layout';
 import StatsCards from '@/components/dashboard/StatsCards';
 import { LazyWeeklyChart, LazyCallTypeChart } from '@/components/lazy';
 import AIInsights from '@/components/dashboard/AiInsights';
 import RecentCalls from '@/components/dashboard/RecentCalls';
 import ManualLog from '@/components/dashboard/ManualLog';
-import { useCallTracker } from '@/hooks/useCallTracker';
 import { useCallStats } from '@/hooks/useCallStats';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Play, Square, Timer, DollarSign, Target, TrendingUp, BarChart3 } from 'lucide-react';
-import { GoalSetting } from '@/components/track/GoalSetting';
-import { PerformanceInsights } from '@/components/track/PerformanceInsights';
 import GoalsTracker from '@/components/dashboard/GoalsTracker';
 import EarningsProjection from '@/components/dashboard/EarningsProjection';
 import { usePremium } from '@/contexts/PremiumContext';
+import { PageHero } from '@/components/PageHero';
+import { GoalSetting } from '@/components/track/GoalSetting';
+import { PerformanceInsights } from '@/components/track/PerformanceInsights';
+import { useCallTracker } from '@/hooks/useCallTracker';
 
 export default function InterpreTrack() {
   const {
@@ -121,105 +118,13 @@ export default function InterpreTrack() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-blue-900">
-      <Navigation />
-
+    <Layout>
       <main className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">InterpreTrack</h1>
-          <p className="text-xl text-gray-600 dark:text-blue-200">
-            Professional call tracking and earnings management
-          </p>
-        </div>
-
-        {/* Navigation Tabs */}
-        <div className="flex justify-center mb-8">
-          <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-1">
-            <div className="flex gap-1">
-              <Button
-                onClick={() => setActiveView('dashboard')}
-                variant={activeView === 'dashboard' ? 'default' : 'ghost'}
-                size="sm"
-                className={activeView === 'dashboard' ? 'bg-white/20 text-white' : 'text-white hover:bg-white/10'}
-              >
-                <BarChart3 className="h-4 w-4 mr-2" />
-                Dashboard
-              </Button>
-              <Button
-                onClick={() => setActiveView('goals')}
-                variant={activeView === 'goals' ? 'default' : 'ghost'}
-                size="sm"
-                className={activeView === 'goals' ? 'bg-white/20 text-white' : 'text-white hover:bg-white/10'}
-              >
-                <Target className="h-4 w-4 mr-2" />
-                Goals
-              </Button>
-              <Button
-                onClick={() => setActiveView('insights')}
-                variant={activeView === 'insights' ? 'default' : 'ghost'}
-                size="sm"
-                className={activeView === 'insights' ? 'bg-white/20 text-white' : 'text-white hover:bg-white/10'}
-              >
-                <TrendingUp className="h-4 w-4 mr-2" />
-                Insights
-              </Button>
-            </div>
-          </div>
-        </div>
-
-        {/* Real-time Call Tracker */}
-        <Card className="mb-8 bg-white/10 backdrop-blur-md border border-white/20 shadow-xl">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-white">
-              <Timer className="h-6 w-6 text-blue-400" />
-              Live Call Tracker
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-              {/* Timer Display */}
-              <div className="text-center">
-                <div className="text-4xl font-mono font-bold text-white mb-2">
-                  {formatDuration(elapsedSeconds)}
-                </div>
-                <p className="text-sm text-blue-200">Current Session</p>
-              </div>
-
-              {/* Earnings Display */}
-              <div className="text-center">
-                <div className="text-2xl font-bold text-green-400 mb-2 flex items-center justify-center gap-1">
-                  <DollarSign className="h-6 w-6" />
-                  {formatCurrency(currentEarnings, userSettings?.preferred_currency)}
-                </div>
-                <p className="text-sm text-blue-200">Current Earnings</p>
-              </div>
-
-              {/* Controls */}
-              <div className="flex justify-center gap-3">
-                {!isTracking ? (
-                  <Button
-                    onClick={startCall}
-                    size="lg"
-                    className="bg-green-500/20 hover:bg-green-500/30 text-green-200 border border-green-500/30"
-                  >
-                    <Play className="h-5 w-5 mr-2" />
-                    Start Call
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={handleEndCall}
-                    size="lg"
-                    className="bg-red-500/20 hover:bg-red-500/30 text-red-200 border border-red-500/30"
-                  >
-                    <Square className="h-5 w-5 mr-2" />
-                    End Call
-                  </Button>
-                )}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <PageHero
+          badgeText="Performance Analytics"
+          title="InterpreTrack: Your Path to Peak Performance"
+          subtitle="Set goals, track your progress, and gain valuable insights into your interpretation work. Understand your patterns and unlock your full potential."
+        />
 
         {/* Content Area */}
         {activeView === 'goals' ? (
@@ -285,8 +190,6 @@ export default function InterpreTrack() {
           </div>
         )}
       </main>
-
-      <Footer />
-    </div>
+    </Layout>
   );
 }

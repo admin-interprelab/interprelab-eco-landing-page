@@ -146,31 +146,30 @@ CREATE TABLE earnings_projections (
 
 ## Missing Edge Functions ❌
 
-We need these Supabase Edge Functions for premium features:
+We need dedicated Supabase Edge Functions for premium features and a database trigger for goal updates.
 
-### 1. AI Earnings Projection
+### 1. AI Earnings Projection Function
 
 - **Function**: `generate-earnings-projection`
-- **Purpose**: Generate AI-powered earnings forecasts
-- **Integration**: Google Cloud AI/Gemini API
+- **Path**: `supabase/functions/generate-earnings-projection/index.ts`
+- **Purpose**: Generates AI-powered earnings forecasts using the Gemini API.
 
-### 2. Performance Analytics
+### 2. Performance Metrics Calculation Function
 
 - **Function**: `calculate-performance-metrics`
-- **Purpose**: Aggregate and calculate performance heatmaps
-- **Triggers**: Daily/hourly data processing
+- **Path**: `supabase/functions/calculate-performance-metrics/index.ts`
+- **Purpose**: Aggregates and calculates performance heatmap data (triggered by a schedule, uses a database RPC).
 
-### 3. Learning Data Sync
+### 3. Learning Data Synchronization Function
 
 - **Function**: `sync-learning-data`
-- **Purpose**: Sync data from InterpreStudy and InterpreBot
-- **Integration**: External API calls
+- **Path**: `supabase/functions/sync-learning-data/index.ts`
+- **Purpose**: Syncs data from InterpreStudy and InterpreBot (external API calls).
 
-### 4. Goal Progress Updates
+### 4. Goal Progress Update (Database Trigger)
 
-- **Function**: `update-goal-progress`
-- **Purpose**: Automatically update goal progress based on call logs
-- **Triggers**: After call log insertion/update
+- **Mechanism**: `handle_new_call_log_for_goals` PostgreSQL function and `on_new_call_log` trigger.
+- **Purpose**: Automatically updates goal progress based on new call logs inserted into the `call_logs` table. This is handled directly in the database for efficiency.
 
 ## Environment Configuration Issues ❌
 
