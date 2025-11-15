@@ -63,8 +63,8 @@ export const useSolutionInteractions = () => {
     setClickedSolution(solution.id);
 
     // Analytics tracking
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'solution_clicked', {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'solution_clicked', {
         solution_id: solution.id,
         solution_title: solution.title,
       });

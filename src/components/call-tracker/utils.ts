@@ -218,7 +218,7 @@ export const generateCallAnalytics = (session: CallSession, userSettings: UserSe
 /**
  * Debounce function for auto-save
  */
-export const debounce = <T extends (...args: any[]) => any>(
+export const debounce = <T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number
 ): ((...args: Parameters<T>) => void) => {

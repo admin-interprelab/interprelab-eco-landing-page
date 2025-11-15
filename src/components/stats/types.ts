@@ -7,7 +7,7 @@ import { LucideIcon } from 'lucide-react';
 
 export interface StatItem {
   id: string;
-  icon: LucideIcon | ComponentType<any>;
+  icon: LucideIcon | ComponentType<{ className: string }>;
   value: string | number;
   label: string;
   gradient: string;

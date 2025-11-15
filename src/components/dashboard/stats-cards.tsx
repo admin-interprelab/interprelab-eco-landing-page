@@ -1,4 +1,5 @@
-import { useMemo, useCallback } from 'react';
+import { useDashboardData } from './dashboard-utils';
+import { useMemo } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Phone, Clock, DollarSign, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 
@@ -35,8 +36,6 @@ interface StatsData {
 }
 
 interface StatsCardsProps {
-  /** Statistics data to display */
-  stats: StatsData;
   /** Optional time period label */
   timePeriod?: string;
   /** Optional currency code for earnings formatting */
@@ -280,7 +279,6 @@ const useProcessedStats = (
  * @param gridClasses - Custom CSS classes for grid layout
  */
 export default function StatsCards({
-  stats,
   timePeriod = DEFAULT_TIME_PERIOD,
   currency = DEFAULT_CURRENCY,
   locale = DEFAULT_LOCALE,
@@ -288,6 +286,7 @@ export default function StatsCards({
   trends,
   gridClasses = GRID_CLASSES,
 }: StatsCardsProps) {
+  const { stats } = useDashboardData();
   const processedStats = useProcessedStats(stats, currency, locale, trends);
 
   return (

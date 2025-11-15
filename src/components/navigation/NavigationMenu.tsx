@@ -12,7 +12,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
-import type { NavigationMenuProps } from './types';
+import type { NavigationMenuProps, NavItem, NavSubItem } from './types';
 import { isNavItemActive } from './utils';
 import { useLocation } from 'react-router-dom';
 
@@ -29,7 +29,7 @@ export const NavigationMenu = ({
 }: NavigationMenuProps) => {
   const location = useLocation();
 
-  const handleItemClick = (item: any) => {
+  const handleItemClick = (item: NavItem | NavSubItem) => {
     if (onItemClick) {
       onItemClick(item);
     }

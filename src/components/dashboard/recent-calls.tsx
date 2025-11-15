@@ -1,13 +1,13 @@
-import { callRecords } from '@/lib/data';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
 import { Button } from '../ui/button';
 import { Phone, Video } from 'lucide-react';
+import { useDashboardData } from './dashboard-utils';
 
 export default function RecentCalls() {
-  const recentCalls = callRecords.slice(0, 5);
+  const { recentCalls } = useDashboardData();
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
   };

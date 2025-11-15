@@ -3,10 +3,11 @@
  */
 
 import { ReactNode } from 'react';
+import { LucideIcon } from 'lucide-react';
 
 export interface SolutionItem {
   id: string;
-  icon: ReactNode;
+  icon: LucideIcon;
   title: string;
   description: string;
   link: string;

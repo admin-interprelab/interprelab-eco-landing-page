@@ -12,7 +12,7 @@ export const INDEX_SECTIONS = {
 
 export const DEFAULT_SECTION_CONFIG = {
   showHero: true,
-  showVideoSection: false, // Set to true to enable video pain points section
+  showVideoSection: true, // Enabled: show video pain-points section on landing
   showProductShowcase: true,
   showStats: true,
   showTestimonials: true,

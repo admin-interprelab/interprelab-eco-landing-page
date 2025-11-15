@@ -106,8 +106,8 @@ export const useJobInteractions = () => {
     setViewedJobs(prev => new Set([...prev, job.id]));
 
     // Track analytics
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'job_viewed', {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'job_viewed', {
         job_id: job.id,
         job_title: job.title,
         department: job.department,
@@ -119,8 +119,8 @@ export const useJobInteractions = () => {
     setAppliedJobs(prev => new Set([...prev, job.id]));
 
     // Track analytics
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'job_applied', {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'job_applied', {
         job_id: job.id,
         job_title: job.title,
         department: job.department,
@@ -165,8 +165,8 @@ export const useDepartments = (initialDepartments: Department[] = DEPARTMENTS) =
     setSelectedDepartment(department);
 
     // Track analytics
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'department_clicked', {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'department_clicked', {
         department_id: department.id,
         department_name: department.name,
         open_positions: department.openPositions,
@@ -274,8 +274,8 @@ export const useCareersAnalytics = () => {
     }));
 
     // Track with analytics service
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'careers_page_viewed', {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'careers_page_viewed', {
         page_name: page,
       });
     }
@@ -289,8 +289,8 @@ export const useCareersAnalytics = () => {
     }));
 
     // Track with analytics service
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'careers_interaction', {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'careers_interaction', {
         interaction_type: type,
         item_id: itemId,
       });

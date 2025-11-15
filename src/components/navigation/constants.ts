@@ -28,8 +28,8 @@ export const DEFAULT_NAV_ITEMS: NavItem[] = [
         icon: BarChart3,
       },
       {
-        label: 'InterpreHub',
-        href: '/interpre-hub',
+        label: 'InterpreLink',
+        href: '/interprelink',
         description: 'Community platform',
         icon: Users,
       },

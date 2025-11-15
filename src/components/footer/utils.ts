@@ -189,7 +189,7 @@ export const isValidEmail = (email: string): boolean => {
  * Validate phone number
  */
 export const isValidPhone = (phone: string): boolean => {
-  const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+  const phoneRegex = /^[+]?[1-9][\d]{0,15}$/;
   const cleanPhone = phone.replace(/\D/g, '');
   return phoneRegex.test(cleanPhone);
 };

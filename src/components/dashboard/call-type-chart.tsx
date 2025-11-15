@@ -1,3 +1,4 @@
+import { useDashboardData } from './dashboard-utils';
 import { useMemo, useCallback } from 'react';
 import { PieChart, Pie, ResponsiveContainer, Legend, Cell } from 'recharts';
 import type { Payload } from 'recharts/types/component/DefaultLegendContent';
@@ -63,12 +64,9 @@ interface ChartDataPoint {
   value: number;
   fill: string;
   percentage: number;
-  [key: string]: any;
 }
 
 interface CallTypeChartProps {
-  /** Call statistics data containing VRI and OPI counts */
-  data: CallTypeStats;
   /** Optional custom height for the chart */
   height?: number;
   /** Whether to show detailed statistics */
@@ -264,12 +262,12 @@ const useChartData = (data: CallTypeStats) => {
  * @param description - Custom description override
  */
 export default function CallTypeChart({
-  data,
   height = CHART_HEIGHT,
   showDetailedStats = false,
   title = COMPONENT_TITLE,
   description = COMPONENT_DESCRIPTION,
 }: CallTypeChartProps) {
+  const { callTypeStats: data } = useDashboardData();
   // Safety check for invalid data - do this before hooks
   const isValidData = data && typeof data === 'object';
   const safeData = isValidData ? data : { vri: 0, opi: 0 };

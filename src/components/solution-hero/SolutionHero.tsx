@@ -46,8 +46,8 @@ export const SolutionHero = ({
     handleSolutionClick(solution);
 
     // Track with analytics service
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', analyticsData.event, analyticsData);
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', analyticsData.event, analyticsData);
     }
   };
 

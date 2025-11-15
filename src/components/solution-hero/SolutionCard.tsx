@@ -41,7 +41,7 @@ export const SolutionCard = ({
   const cardId = generateSolutionId(solution);
   const featuredBadgeText = getFeaturedBadgeText(solution);
   const featuredBadgeColor = getFeaturedBadgeColor(solution);
-  const IconComponent = solution.icon as any;
+  const IconComponent = solution.icon;
 
   const handleClick = () => {
     if (onClick) {

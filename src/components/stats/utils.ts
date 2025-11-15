@@ -169,10 +169,11 @@ export const sortStats = (
         return parseStatValue(b.value) - parseStatValue(a.value);
       case 'label':
         return a.label.localeCompare(b.label);
-      case 'trend':
+      case 'trend': {
         const aTrend = a.trend?.value || 0;
         const bTrend = b.trend?.value || 0;
         return bTrend - aTrend;
+      }
       default:
         return 0;
     }

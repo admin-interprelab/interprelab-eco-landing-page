@@ -137,8 +137,8 @@ export const useStatsInteractions = () => {
     setClickedStat(stat.id);
 
     // Analytics tracking
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'stat_clicked', {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'stat_clicked', {
         stat_id: stat.id,
         stat_label: stat.label,
         stat_value: stat.value,
@@ -262,8 +262,8 @@ export const useStatsAnalytics = () => {
     setViewedStats(prev => new Set([...prev, statId]));
 
     // Track with analytics service
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'stat_viewed', {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'stat_viewed', {
         stat_id: statId,
       });
     }
@@ -277,8 +277,8 @@ export const useStatsAnalytics = () => {
     }));
 
     // Track with analytics service
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', `stat_${type}`, {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', `stat_${type}`, {
         stat_id: statId,
       });
     }

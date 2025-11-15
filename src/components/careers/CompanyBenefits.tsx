@@ -37,7 +37,7 @@ export const CompanyBenefits = ({
 
         <div className="space-y-12">
           {Object.entries(benefitsByCategory).map(([category, categoryBenefits]) => {
-            const categoryTitle = getBenefitCategoryDisplay(category as any);
+            const categoryTitle = getBenefitCategoryDisplay(category as CompanyBenefit['category']);
 
             return (
               <div key={category}>

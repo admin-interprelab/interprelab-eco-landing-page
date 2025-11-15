@@ -1,3 +1,4 @@
+import { useDashboardData } from "./dashboard-utils";
 import { useMemo, useCallback } from "react";
 import {
   BarChart,
@@ -76,8 +77,6 @@ interface WeeklyStats {
 }
 
 interface WeeklyChartProps {
-  /** Weekly activity data for the chart */
-  data: DayData[];
   /** Optional custom height for the chart */
   height?: number;
   /** Custom title override */
@@ -315,7 +314,6 @@ const useAxisFormatters = (currencySymbol: string = "$") => {
  * @param currencySymbol - Currency symbol for earnings formatting (default: '$')
  */
 export default function WeeklyChart({
-  data,
   height = DEFAULT_CHART_HEIGHT,
   title = COMPONENT_TITLE,
   description = COMPONENT_DESCRIPTION,
@@ -325,7 +323,10 @@ export default function WeeklyChart({
   chartType = "grouped",
   currencySymbol = "$",
 }: WeeklyChartProps) {
+  const { weeklyData: data } = useDashboardData();
   const { processedData, stats, hasData } = useWeeklyData(data);
+  const { formatEarningsAxis, formatCallsAxis } =
+    useAxisFormatters(currencySymbol);
 
   // Safety check for invalid data
   if (!Array.isArray(data)) {
@@ -342,8 +343,6 @@ export default function WeeklyChart({
       </Card>
     );
   }
-  const { formatEarningsAxis, formatCallsAxis } =
-    useAxisFormatters(currencySymbol);
 
   return (
     <Card className="w-full">

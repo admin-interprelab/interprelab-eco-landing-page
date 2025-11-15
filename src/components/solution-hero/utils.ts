@@ -174,7 +174,7 @@ export const getGridClasses = (itemCount: number): string => {
 /**
  * Debounce function for search
  */
-export const debounce = <T extends (...args: any[]) => any>(
+export const debounce = <T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number
 ): ((...args: Parameters<T>) => void) => {

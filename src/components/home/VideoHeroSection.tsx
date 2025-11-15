@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { FullScreenVideoHero } from '@/components/VideoSection';
+import { VideoHeroSection as FullScreenVideoHero } from '@/components/hero/VideoHeroSection';
 import { useHomeAnalytics } from './hooks';
 import type { VideoHeroSectionProps } from './types';
 
@@ -31,9 +31,7 @@ export const VideoHeroSection = React.memo<VideoHeroSectionProps>(({
       {painPoints.map((painPoint, index) => (
         <FullScreenVideoHero
           key={index}
-          videoSrc={painPoint.videoSrc}
-          title={painPoint.title}
-          description={painPoint.description}
+          section={{ ...painPoint, id: painPoint.title.replace(/\s+/g, '-').toLowerCase() }}
           index={index}
         />
       ))}

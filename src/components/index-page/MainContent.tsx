@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { Hero } from '@/components/Hero';
-import { VideoSection } from '@/components/VideoSection';
+import VideoSection from '@/components/VideoSection';
 import { VIDEO_HERO_SECTIONS } from '@/components/hero/constants';
 import { ProductShowcase } from '@/components/ProductShowcase';
 import { StatsSection } from '@/components/stats';

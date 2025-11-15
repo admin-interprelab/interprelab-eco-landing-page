@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { SolutionHero } from '@/components/SolutionHero';
+import { InterpreLabHero as SolutionHero } from '@/components/SolutionHero';
 import { StatsSection } from '@/components/stats';
 import { Testimonials } from '@/components/testimonials';
 import { useHomeAnalytics } from './hooks';

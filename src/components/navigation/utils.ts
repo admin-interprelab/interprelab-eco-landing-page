@@ -179,10 +179,11 @@ export const sortNavItems = (
     switch (sortBy) {
       case 'label':
         return a.label.localeCompare(b.label);
-      case 'href':
+      case 'href': {
         const aHref = a.href || '';
         const bHref = b.href || '';
         return aHref.localeCompare(bHref);
+      }
       case 'order':
       default:
         return 0; // Maintain original order
@@ -214,7 +215,7 @@ export const shouldNavigationBeSticky = (scrollY: number, threshold: number = 10
 /**
  * Debounce function for navigation interactions
  */
-export const debounce = <T extends (...args: any[]) => any>(
+export const debounce = <T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number
 ): ((...args: Parameters<T>) => void) => {
@@ -229,7 +230,7 @@ export const debounce = <T extends (...args: any[]) => any>(
 /**
  * Throttle function for scroll events
  */
-export const throttle = <T extends (...args: any[]) => any>(
+export const throttle = <T extends (...args: unknown[]) => unknown>(
   func: T,
   limit: number
 ): ((...args: Parameters<T>) => void) => {
