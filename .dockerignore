@@ -65,7 +65,7 @@ __tests__/
 .eslintrc*
 
 # Package manager files
-package-lock.json
+# package-lock.json - REQUIRED for Docker build
 yarn.lock
 pnpm-lock.yaml
 

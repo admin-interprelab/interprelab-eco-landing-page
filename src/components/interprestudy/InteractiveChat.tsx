@@ -32,16 +32,51 @@ export const InteractiveChat = () => {
     setInput('');
     setIsLoading(true);
 
-    // TODO: Integrate with Lovable AI
-    setTimeout(() => {
+    import { runChat } from '../../services/gemini';
+
+// ... (imports)
+
+// ... (Message interface)
+
+export const InteractiveChat = () => {
+  // ... (state declarations)
+
+  const handleSend = async () => {
+    if (!input.trim()) return;
+
+    const userMessage: Message = {
+      role: 'user',
+      content: input,
+      timestamp: new Date(),
+    };
+
+    setMessages((prev) => [...prev, userMessage]);
+    setInput('');
+    setIsLoading(true);
+
+    try {
+      const response = await runChat(input);
       const assistantMessage: Message = {
         role: 'assistant',
-        content: 'This will be connected to AI for ethics queries and quizzes.',
+        content: response,
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, assistantMessage]);
+    } catch (error) {
+      console.error('Error fetching from Gemini API:', error);
+      const errorMessage: Message = {
+        role: 'assistant',
+        content: 'Sorry, I encountered an error. Please try again.',
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
+  };
+
+  // ... (rest of the component)
+
   };
 
   const toggleRecording = () => {

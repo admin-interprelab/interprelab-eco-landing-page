@@ -278,30 +278,35 @@ const useCallSettings = () => {
   };
 };
 
+interface ManualLogProps {
+  onCallLogged: (callData: {
+    startTime: Date;
+    endTime: Date;
+    platform: CallRecord['platform'];
+    callType: CallRecord['callType'];
+  }) => Promise<void>;
+}
+
 /**
  * Manual Call Log Component
  *
  * A comprehensive timer-based call logging system that allows interpreters to:
  * - Start and stop call timers manually
  * - Select platform and call type
- * - Automatically calculate duration and log calls
- * - Provide visual feedback and notifications
+ * - Automatically calculate duration
+ * - Provide visual feedback and notifications (handled by parent)
  *
  * Features:
  * - Real-time timer display with HH:MM:SS format
  * - Platform selection (Platform A, B, C)
  * - Call type selection (VRI/OPI)
- * - Automatic call record creation
- * - Toast notifications for successful logging
  * - Disabled controls during active calls to prevent accidental changes
  */
-export default function ManualLog() {
+export default function ManualLog({ onCallLogged }: ManualLogProps) {
   const { isActive, startTime, elapsedTime, startTimer, stopTimer } =
     useTimer();
-  const { user } = useAuth();
   const { platform, callType, updatePlatform, updateCallType } =
     useCallSettings();
-  const { toast } = useToast();
 
   /**
    * Handles starting a new call timer
@@ -319,37 +324,11 @@ export default function ManualLog() {
     if (!startTime) return;
 
     const endTime = new Date();
-    const duration = getRoundedDuration(startTime, endTime);
 
-    // Create new call record
-    const newRecord: Omit<CallRecord, "id" | "earnings"> = {
-      startTime,
-      endTime,
-      duration,
-      platform,
-      callType,
-    };
-
-    try {
-      await addCallRecord(newRecord, user?.id);
-
-      toast({
-        title: "Call Logged Successfully",
-        description: `Your ${callType} call on ${platform} has been logged with a duration of ${duration} minutes.`,
-      });
-
-      // Refresh the page to update all components with new data
-      window.location.reload();
-    } catch (error) {
-      toast({
-        title: "Error Logging Call",
-        description: "There was an error logging your call. Please try again.",
-        variant: "destructive",
-      });
-    }
+    await onCallLogged({ startTime, endTime, platform, callType });
 
     stopTimer();
-  }, [startTime, platform, callType, toast, stopTimer, user?.id]);
+  }, [startTime, platform, callType, onCallLogged, stopTimer]);
 
   return (
     <Card>

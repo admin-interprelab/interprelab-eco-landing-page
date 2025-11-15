@@ -3,7 +3,7 @@ import {
   DashboardProvider,
   useDashboardData,
 } from "@/components/dashboard/DashboardProvider";
-import ErrorBoundary from "@/components/ErrorBoundary";
+import { ErrorBoundary } from "@/components/layout";
 import { Navigation } from "@/components/navigation";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import StatsCards from "@/components/dashboard/stats-cards";

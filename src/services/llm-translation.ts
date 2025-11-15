@@ -69,7 +69,7 @@ class LLMTranslationService {
     }
 
     try {
-      const model = this.genAI.getGenerativeModel({ model: "gemini-pro" });
+      const model = this.genAI.getGenerativeModel({ model: "gemini-1.5-pro-latest" });
       const prompt = this.createPrompt(request);
       const result = await model.generateContent(prompt);
       const response = result.response;

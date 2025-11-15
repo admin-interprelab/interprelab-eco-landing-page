@@ -7,8 +7,8 @@ on:
     branches: [ main, master ]
 
 env:
-  PROJECT_ID: interprelab-eco-landing-page
-  SERVICE_NAME: interprelab-app
+  PROJECT_ID: interprelab-prod
+  SERVICE_NAME: interprelab-com
   REGION: us-central1
 
 jobs:
@@ -73,9 +73,14 @@ jobs:
           --timeout=300 \
           --set-env-vars="NODE_ENV=production,VITE_SUPABASE_URL=${{ secrets.VITE_SUPABASE_URL }},VITE_SUPABASE_ANON_KEY=${{ secrets.VITE_SUPABASE_ANON_KEY }},VITE_GOOGLE_CLOUD_PROJECT_ID=$PROJECT_ID"
 
+    - name: Map custom domain
+      run: |
+        gcloud run domain-mappings create --service=$SERVICE_NAME --domain=interprelab.com --region=$REGION
+        gcloud run domain-mappings create --service=$SERVICE_NAME --domain=www.interprelab.com --region=$REGION
+
     - name: Get service URL
       run: |
         SERVICE_URL=$(gcloud run services describe $SERVICE_NAME --region=$REGION --format="value(status.url)")
         echo "🚀 Deployment successful!"
         echo "📱 Service URL: $SERVICE_URL"
-        echo "🌐 Custom domain: https://app.interprelab.com"
+        echo "🌐 Custom domain: https://interprelab.com"
