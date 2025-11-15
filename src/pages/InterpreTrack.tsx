@@ -1,4 +1,5 @@
-import { useState } from 'react';
+/*eslint-disable @typescript-eslint/no-explicit-any */
+import { useState, useMemo } from 'react';
 import { Layout } from '@/components/Layout';
 import StatsCards from '@/components/dashboard/StatsCards';
 import { LazyWeeklyChart, LazyCallTypeChart } from '@/components/lazy';
@@ -10,9 +11,10 @@ import GoalsTracker from '@/components/dashboard/GoalsTracker';
 import EarningsProjection from '@/components/dashboard/EarningsProjection';
 import { usePremium } from '@/contexts/PremiumContext';
 import { PageHero } from '@/components/PageHero';
-import { GoalSetting } from '@/components/track/GoalSetting';
-import { PerformanceInsights } from '@/components/track/PerformanceInsights';
+import { GoalSetting } from '@/components/track/GoalSetting'; // eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { PerformanceInsights } from '@/components/track/PerformanceInsights'; // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { useCallTracker } from '@/hooks/useCallTracker';
+import { useGoals } from '../../useGoals';
 
 export default function InterpreTrack() {
   const {
@@ -27,6 +29,7 @@ export default function InterpreTrack() {
   } = useCallTracker();
 
   const { stats, dailyStats, callTypeStats, loading, error } = useCallStats();
+  const { data: goals = [], isLoading: goalsLoading, isError: goalsError } = useGoals();
   const { isPremium } = usePremium();
   const [callNotes, setCallNotes] = useState('');
   const [activeView, setActiveView] = useState<'dashboard' | 'goals' | 'insights'>('dashboard');
@@ -37,37 +40,6 @@ export default function InterpreTrack() {
   };
 
   const currentEarnings = calculateEarnings(elapsedSeconds);
-
-  // Mock goals data
-  const [goals, setGoals] = useState([
-    {
-      id: '1',
-      unit: 'dollars' as const,
-      target: 5000,
-      current: 3200,
-      type: 'monthly' as const,
-      title: 'Monthly Earnings Goal',
-      deadline: new Date('2024-12-31').toISOString()
-    },
-    {
-      id: '2',
-      unit: 'calls' as const,
-      target: 100,
-      current: 67,
-      type: 'monthly' as const,
-      title: 'Monthly Call Target',
-      deadline: new Date('2024-12-31').toISOString()
-    },
-    {
-      id: '3',
-      unit: 'hours' as const,
-      target: 40,
-      current: 28,
-      type: 'weekly' as const,
-      title: 'Weekly Hours Goal',
-      deadline: new Date('2024-11-15').toISOString()
-    }
-  ]);
 
   // Mock performance data
   const performanceData = {
@@ -100,21 +72,20 @@ export default function InterpreTrack() {
     ]
   };
 
-  const handleUpdateGoal = (goal: any) => {
-    setGoals(prev => prev.map(g => g.id === goal.id ? goal : g));
-  };
+  // These handlers will need to be implemented with mutations to the backend
+  const handleUpdateGoal = (goal: any) => {};
 
   const handleDeleteGoal = (goalId: string) => {
-    setGoals(prev => prev.filter(g => g.id !== goalId));
+    // setGoals(prev => prev.filter(g => g.id !== goalId));
   };
 
   const handleAddGoal = (newGoal: any) => {
-    const goal = {
-      ...newGoal,
-      id: Date.now().toString(),
-      current: 0
-    };
-    setGoals(prev => [...prev, goal]);
+    // const goal = {
+    //   ...newGoal,
+    //   id: Date.now().toString(),
+    //   current: 0
+    // };
+    // setGoals(prev => [...prev, goal]);
   };
 
   return (
@@ -134,6 +105,7 @@ export default function InterpreTrack() {
             onDeleteGoal={handleDeleteGoal}
             onAddGoal={handleAddGoal}
           />
+          <GoalsTracker goals={goals || []} isPremium={isPremium} />
         ) : activeView === 'insights' ? (
           <PerformanceInsights
             data={performanceData}
@@ -141,11 +113,11 @@ export default function InterpreTrack() {
           />
         ) : (
           /* Dashboard Content */
-          <div className="space-y-6">
-            {loading ? (
+          <div className="space-y-6">{
+            (loading || goalsLoading) ? (
               <div className="text-center py-8">
                 <p className="text-white">Loading your statistics...</p>
-              </div>
+              </div>)
             ) : error ? (
               <div className="text-center py-8">
                 <p className="text-red-400">Error loading statistics: {error}</p>
@@ -170,12 +142,8 @@ export default function InterpreTrack() {
                   <div className="lg:col-span-2 grid gap-6">
                     {isPremium ? (
                       <>
-                        <EarningsProjection data={[
-                            { month: 'Jan', actual: 3000, projected: 3200, conservative: 2800, optimistic: 3500 },
-                            { month: 'Feb', actual: 3500, projected: 3700, conservative: 3200, optimistic: 4000 },
-                            { month: 'Mar', projected: 4000, conservative: 3500, optimistic: 4500 },
-                        ]} isPremium={isPremium} />
-                        <GoalsTracker goals={goals} isPremium={isPremium} />
+                        <EarningsProjection isPremium={isPremium} />
+                        <GoalsTracker goals={goals || []} isPremium={isPremium} />
                       </>
                     ) : (
                       <LazyCallTypeChart data={callTypeStats} />

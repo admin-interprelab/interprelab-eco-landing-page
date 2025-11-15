@@ -1,11 +1,8 @@
-import { useEffect, useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { Button } from '@/components/ui/button';
-import { supabase } from '@/integrations/supabase/client';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePremium } from '@/contexts/PremiumContext';
-import { Calendar, DollarSign } from 'lucide-react';
-import { format, startOfMonth, startOfYear, endOfMonth, endOfYear } from 'date-fns';
 import AIInsights from '@/components/dashboard/AiInsights';
 import CallTypeChart from '@/components/dashboard/CallTypeChart';
 import EarningsProjection from '@/components/dashboard/EarningsProjection';
@@ -20,159 +17,37 @@ import RecentCalls from '@/components/dashboard/RecentCalls';
 import StatsCards from '@/components/dashboard/StatsCards';
 import WeeklyChart from '@/components/dashboard/WeeklyChart';
 import { PremiumUpgradeCard } from '@/components/premium/PremiumUpgradeCard';
+import { useDashboardData } from '@/hooks/useDashboardData';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useGoals } from '../../useGoals';
+import { AlertTriangle } from 'lucide-react';
 
-interface Stats {
-  monthTotal: number;
-  monthEarnings: number;
-  monthCalls: number;
-  yearTotal: number;
-  yearEarnings: number;
-  yearCalls: number;
-  avgCallDuration: number;
-  totalCalls: number;
-}
-
+// TODO: This component should be refactored to use a custom hook (e.g., `useDashboardData`) to handle data fetching and state management.
 
 const Dashboard = () => {
-  const [stats, setStats] = useState<Stats>({
-    monthTotal: 0,
-    monthEarnings: 0,
-    monthCalls: 0,
-    yearTotal: 0,
-    yearEarnings: 0,
-    yearCalls: 0,
-    avgCallDuration: 0,
-    totalCalls: 0,
-  });
-  const [recentCalls, setRecentCalls] = useState<any[]>([]);
-  const [currency, setCurrency] = useState('USD');
   const { user } = useAuth();
   const { isPremium, upgrade } = usePremium();
+  const { data, loading, error, refresh } = useDashboardData();
+  const { data: goals, isLoading: goalsLoading } = useGoals();
 
-  // Placeholder data for new components
-  const [callTypeData, setCallTypeData] = useState({ vri: 0, opi: 0 });
-  const [weeklyData, setWeeklyData] = useState([]);
-  const [goals, setGoals] = useState([]);
-  const [integrations, setIntegrations] = useState([]);
-  const [learningMetrics, setLearningMetrics] = useState({ studyHours: 0, termsLearned: 0, quizzesCompleted: 0, scenariosPracticed: 0, botConversations: 0, streak: 0 });
-  const [platformData, setPlatformData] = useState([]);
-  const [premiumStats, setPremiumStats] = useState({ totalCalls: 0, totalMinutes: 0, totalEarnings: 0, avgCallDuration: 0, peakHourEarnings: 0, streakDays: 0, monthlyGoalProgress: 0, efficiencyScore: 0 });
-  const [aiInsights, setAiInsights] = useState(null);
+  const getErrorMessage = (err: any): { title: string, description: string, raw: string } => {
+    const rawError = err?.message || 'An unknown error occurred.';
 
-
-  useEffect(() => {
-    if (user) {
-      loadDashboardData();
-    }
-  }, [user]);
-
-  const loadDashboardData = async () => {
-    if (!user) return;
-
-    // Get user currency
-    const { data: settings } = await supabase
-      .from('user_settings')
-      .select('preferred_currency')
-      .eq('user_id', user.id)
-      .maybeSingle();
-
-    if (settings) {
-      setCurrency(settings.preferred_currency);
+    // Check for common network error messages
+    if (typeof rawError === 'string' && (rawError.toLowerCase().includes('network request failed') || rawError.toLowerCase().includes('failed to fetch'))) {
+      return {
+        title: 'Network Connection Error',
+        description: 'It seems you are offline. Please check your internet connection and try again.',
+        raw: rawError,
+      };
     }
 
-    const now = new Date();
-    const monthStart = startOfMonth(now);
-    const monthEnd = endOfMonth(now);
-    const yearStart = startOfYear(now);
-    const yearEnd = endOfYear(now);
-
-    // Get month stats
-    const { data: monthData } = await supabase
-      .from('call_logs')
-      .select('duration_seconds, earnings, interpretation_type')
-      .eq('user_id', user.id)
-      .gte('start_time', monthStart.toISOString())
-      .lte('start_time', monthEnd.toISOString());
-
-    // Get year stats
-    const { data: yearData } = await supabase
-      .from('call_logs')
-      .select('duration_seconds, earnings')
-      .eq('user_id', user.id)
-      .gte('start_time', yearStart.toISOString())
-      .lte('start_time', yearEnd.toISOString());
-
-    // Get all time stats
-    const { data: allData } = await supabase
-      .from('call_logs')
-      .select('duration_seconds, earnings')
-      .eq('user_id', user.id);
-
-    // Get recent calls
-    const { data: recent } = await supabase
-      .from('call_logs')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('start_time', { ascending: false })
-      .limit(5);
-
-    const monthStats = calculateStats(monthData || []);
-    const yearStats = calculateStats(yearData || []);
-    const allStats = calculateStats(allData || []);
-
-    setStats({
-      monthTotal: monthStats.totalDuration,
-      monthEarnings: monthStats.totalEarnings,
-      monthCalls: monthStats.callCount,
-      yearTotal: yearStats.totalDuration,
-      yearEarnings: yearStats.totalEarnings,
-      yearCalls: yearStats.callCount,
-      avgCallDuration: allStats.avgDuration,
-      totalCalls: allStats.callCount,
-    });
-
-    setRecentCalls(recent || []);
-
-    // Placeholder data population
-    setCallTypeData({
-      vri: monthData?.filter(c => c.interpretation_type === 'VRI').length || 0,
-      opi: monthData?.filter(c => c.interpretation_type === 'OPI').length || 0,
-    });
-
-    // This is just placeholder data, in a real app you would fetch this from your backend
-    setWeeklyData([
-      { day: 'Mon', calls: 4, earnings: 200 },
-      { day: 'Tue', calls: 6, earnings: 300 },
-      { day: 'Wed', calls: 5, earnings: 250 },
-      { day: 'Thu', calls: 8, earnings: 400 },
-      { day: 'Fri', calls: 7, earnings: 350 },
-      { day: 'Sat', calls: 3, earnings: 150 },
-      { day: 'Sun', calls: 2, earnings: 100 },
-    ]);
-    setGoals([
-        { id: '1', title: 'Monthly Earnings', target: 5000, current: 3500, unit: 'dollars', deadline: '2025-12-31', type: 'monthly' },
-        { id: '2', title: 'Weekly Hours', target: 40, current: 30, unit: 'hours', deadline: '2025-11-15', type: 'weekly' },
-    ]);
-    setIntegrations([
-        { name: 'Google Calendar', status: 'connected', lastSync: '2025-11-10T10:00:00Z', icon: <Calendar />, dataPoints: 120 },
-        { name: 'Stripe', status: 'syncing', icon: <DollarSign />, dataPoints: 45 },
-    ]);
-    setLearningMetrics({ studyHours: 12, termsLearned: 150, quizzesCompleted: 25, scenariosPracticed: 10, botConversations: 42, streak: 5 });
-    setPlatformData([
-        { name: 'Platform A', calls: 25, earnings: 1500, avgDuration: 30, change: 10 },
-        { name: 'Platform B', calls: 15, earnings: 1000, avgDuration: 40, change: -5 },
-    ]);
-    setPremiumStats({ totalCalls: 40, totalMinutes: 1800, totalEarnings: 3500, avgCallDuration: 45, peakHourEarnings: 250, streakDays: 5, monthlyGoalProgress: 70, efficiencyScore: 85 });
-    setAiInsights("You're on track to meet your monthly goal. Keep up the great work!");
-  };
-
-  const calculateStats = (data: any[]) => {
-    const totalDuration = data.reduce((sum, call) => sum + (call.duration_seconds || 0), 0);
-    const totalEarnings = data.reduce((sum, call) => sum + (parseFloat(call.earnings) || 0), 0);
-    const callCount = data.length;
-    const avgDuration = callCount > 0 ? totalDuration / callCount : 0;
-
-    return { totalDuration, totalEarnings, callCount, avgDuration };
+    // Default error message
+    return {
+      title: 'Error Loading Dashboard',
+      description: "We couldn't fetch your dashboard data. Please try again.",
+      raw: rawError,
+    };
   };
 
   const formatDuration = (seconds: number): string => {
@@ -181,12 +56,56 @@ const Dashboard = () => {
     return `${hours}h ${minutes}m`;
   };
 
-  const formatCurrency = (amount: number): string => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: currency,
-    }).format(amount);
-  };
+  if (loading || goalsLoading) {
+    return (
+        <Layout>
+            <div className="container mx-auto px-4 py-8 space-y-8">
+                <div className="flex justify-between items-center">
+                    <Skeleton className="h-10 w-48" />
+                    <Skeleton className="h-10 w-24" />
+                </div>
+                <div className="grid gap-4 md:grid-cols-3">
+                    <Skeleton className="h-28" />
+                    <Skeleton className="h-28" />
+                    <Skeleton className="h-28" />
+                </div>
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div className="lg:col-span-2 space-y-8">
+                        <Skeleton className="h-64" />
+                        <Skeleton className="h-80" />
+                    </div>
+                    <div className="space-y-8">
+                        <Skeleton className="h-96" />
+                        <Skeleton className="h-64" />
+                    </div>
+                </div>
+            </div>
+        </Layout>
+    );
+  }
+
+  if (error) {
+    const { title, description, raw } = getErrorMessage(error);
+    return (
+      <Layout>
+        <div className="container mx-auto px-4 py-8">
+          <Alert variant="destructive" className="max-w-2xl mx-auto">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertTitle>{title}</AlertTitle>
+            <AlertDescription>
+              <p>{description}</p>
+              <pre className="mt-2 text-xs bg-background/50 p-2 rounded">{raw}</pre>
+              <Button onClick={() => refresh()} className="mt-4">Retry</Button>
+            </AlertDescription>
+          </Alert>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (!user || !data) {
+      return <Layout><div>Please sign in to view your dashboard.</div></Layout>;
+  }
 
   return (
     <Layout>
@@ -197,37 +116,37 @@ const Dashboard = () => {
         </div>
 
         {isPremium ? (
-            <PremiumStatsOverview stats={premiumStats} isPremium={isPremium} />
+            <PremiumStatsOverview stats={data.premiumStats} isPremium={isPremium} />
         ) : (
-            <StatsCards stats={{ totalCalls: stats.totalCalls, totalMinutes: stats.monthTotal, totalEarnings: stats.monthEarnings }} />
+            <StatsCards stats={{ totalCalls: data.stats.totalCalls, totalMinutes: Math.round(data.stats.monthTotal / 60), totalEarnings: data.stats.monthEarnings }} />
         )}
 
         {!isPremium && <PremiumUpgradeCard featureName="Advanced Analytics" />}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-8">
-                <WeeklyChart data={weeklyData} />
-                <RecentCalls />
-                <PerformanceHeatmap isPremium={isPremium} />
+                <WeeklyChart data={data.weeklyData} />
+                <RecentCalls calls={data.recentCalls} />
+                <PerformanceHeatmap data={data.heatmapData} isPremium={isPremium} />
             </div>
             <div className="space-y-8">
                 <ManualLog />
-                <CallTypeChart data={callTypeData} />
-                <AIInsights stats={aiInsights} />
+                <CallTypeChart data={data.callTypeData} />
+                <AIInsights stats={data.aiInsights} />
             </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <GoalsTracker goals={goals} isPremium={isPremium} />
+            <GoalsTracker goals={goals || []} isPremium={isPremium} />
             <EarningsProjection isPremium={isPremium} />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <PlatformComparison platforms={platformData} isPremium={isPremium} />
-            <LearningProgress metrics={learningMetrics} />
+            <PlatformComparison platforms={data.platformData} isPremium={isPremium} />
+            <LearningProgress metrics={data.learningMetrics} />
         </div>
 
-        <IntegrationStatus integrations={integrations} />
+        <IntegrationStatus integrations={data.integrations} />
 
       </div>
     </Layout>

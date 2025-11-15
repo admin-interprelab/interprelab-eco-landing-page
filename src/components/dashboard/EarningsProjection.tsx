@@ -132,7 +132,7 @@ export default function EarningsProjection({ isPremium }: EarningsProjectionProp
                 <span className="text-xs font-medium text-muted-foreground">Current Month</span>
               </div>
               <div className="text-2xl font-bold">
-                {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(currentMonthEarnings)}
+                {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data?.currentMonthEarnings || 0)}
               </div>
             </div>
 
@@ -142,7 +142,7 @@ export default function EarningsProjection({ isPremium }: EarningsProjectionProp
                 <span className="text-xs font-medium text-muted-foreground">Projected (6mo)</span>
               </div>
               <div className="text-2xl font-bold text-accent">
-                {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(projectedEndOfYear)}
+                {new Intl.numberformat('en-us', { style: 'currency', currency: 'usd' }).format(data?.projectedSixMonths || 0)}
               </div>
             </div>
 
@@ -151,14 +151,14 @@ export default function EarningsProjection({ isPremium }: EarningsProjectionProp
                 <TrendingUp className="h-4 w-4 text-emerald-500" />
                 <span className="text-xs font-medium text-muted-foreground">Growth Rate</span>
               </div>
-              <div className="text-2xl font-bold text-emerald-500">+{growthRate}%</div>
+              <div className="text-2xl font-bold text-emerald-500">+{data?.growthRate.toFixed(1) || 0}%</div>
             </div>
           </div>
 
           {/* Chart */}
           <ChartContainer config={chartConfig} className="h-[300px] w-full">
             <ResponsiveContainer>
-              <LineChart data={data} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
+              <LineChart data={data?.chartData || []} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
                 <XAxis
                   dataKey="month"
