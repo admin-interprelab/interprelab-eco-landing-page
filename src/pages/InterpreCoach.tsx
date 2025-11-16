@@ -1,3 +1,4 @@
+import interpreHubMockup from "@/assets/interpre-hub-mockup.png";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -43,7 +44,7 @@ const InterpreCoach = () => {
             <div className="relative">
               <div className="glass rounded-2xl p-8 border border-border/50">
                 <img
-                  src="/src/assets/extension-preview.jpg"
+                  src={interpreHubMockup}
                   alt="InterpreCoach Extension Preview"
                   className="w-full rounded-lg shadow-2xl"
                 />
