@@ -1,31 +1,36 @@
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, Users, Globe, Award } from "lucide-react";
+import CountUp from 'react-countup';
 
 export const StatsSection = () => {
   const stats = [
     {
       icon: Users,
-      value: "10,000+",
+      value: 10000,
       label: "Active Interpreters",
-      gradient: "from-primary to-primary-glow"
+      gradient: "from-primary to-primary-glow",
+      suffix: "+"
     },
     {
       icon: Globe,
-      value: "50+",
+      value: 50,
       label: "Countries Worldwide",
-      gradient: "from-success to-primary"
+      gradient: "from-success to-primary",
+      suffix: "+"
     },
     {
       icon: TrendingUp,
-      value: "40%",
+      value: 40,
       label: "Accuracy Improvement",
-      gradient: "from-secondary to-accent"
+      gradient: "from-secondary to-accent",
+      suffix: "%"
     },
     {
       icon: Award,
-      value: "98%",
+      value: 98,
       label: "Client Satisfaction",
-      gradient: "from-primary to-secondary"
+      gradient: "from-primary to-secondary",
+      suffix: "%"
     }
   ];
 
@@ -57,7 +62,7 @@ export const StatsSection = () => {
                       <Icon className="w-6 h-6 text-white" />
                     </div>
                     <div className="text-4xl md:text-5xl font-bold text-foreground">
-                      {stat.value}
+                      <CountUp end={stat.value} duration={3} suffix={stat.suffix} enableScrollSpy />
                     </div>
                     <div className="text-sm text-muted-foreground">
                       {stat.label}

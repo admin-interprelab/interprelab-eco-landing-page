@@ -178,8 +178,8 @@ export default function InterpreWellness() {
     <Layout>
       <div className="min-h-screen bg-gradient-to-b from-background to-accent/5">
         {/* Hero Section */}
-        <section className="relative py-20 px-4 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-accent/5 to-primary/5" />
+        <section className="relative py-20 px-4 overflow-hidden bg-cover bg-center" style={{ backgroundImage: "url('/src/assets/wellness-support.jpg')" }}>
+          <div className="absolute inset-0 bg-black/60" />
           <div className="max-w-4xl mx-auto relative z-10">
             <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
               Addressing Pain Point #5: Psychological Toll & Lack of Support
