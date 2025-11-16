@@ -65,7 +65,7 @@ export const FullScreenVideoHero = ({
   return (
     <section
       ref={sectionRef}
-      className="h-screen w-full relative snap-start snap-always overflow-hidden"
+      className="h-screen w-full relative snap-start snap-always overflow-hidden transition-opacity duration-700 ease-in-out"
     >
       {/* Full-screen video background */}
       <video
@@ -80,8 +80,8 @@ export const FullScreenVideoHero = ({
         <source src={videoSrc} type="video/mp4" />
       </video>
 
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/60 z-10" />
+      {/* Dark overlay with gradient fade */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70 z-10 transition-opacity duration-1000" />
 
       {/* Content */}
       <div className="relative z-20 h-full flex flex-col items-center justify-center px-6">

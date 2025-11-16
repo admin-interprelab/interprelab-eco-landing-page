@@ -9,21 +9,27 @@ export default function Home() {
   const painPoints = [
     {
       videoSrc: "/videos/lep-statistics.mp4",
-      title: "20 Million Voices Unheard",
+      title: "Overworked & Underpaid",
       description:
-        "Despite legal requirements under Title VI and Section 1557 of the ACA, Limited English Proficiency (LEP) patients face increased health risks due to interpretation quality issues.",
+        "As of the present day, research suggests remote interpreters are overworked and underpaid, so how does this reflect on the services provided?",
     },
     {
       videoSrc: "/videos/interpreter-stress.mp4",
-      title: "Real-Time Precision Under Pressure",
+      title: "The Unqualified Gap",
       description:
-        "Medical interpreters face immense pressure to deliver accurate translations in high-stakes situations where every word can impact patient outcomes and safety.",
+        "The shortage of qualified interpreters has led to hiring untrained bilinguals, in some cases, limited English proficient. Independent contractor relationships mean QA teams provide minimal feedback - often analyzing just one call every 4-6 months.",
     },
     {
       videoSrc: "/videos/terminology-gap.mp4",
-      title: "Mastering Medicine Alone",
+      title: "Lives at Stake",
       description:
-        "Complex medical terminology and evolving healthcare practices create ongoing challenges for interpreters who must stay current without adequate support systems.",
+        "As a result, Limited English Proficiency patients are twice as likely to die when hospitalized compared to English-speaking patients. These disparities often go unreported as LEP communities face marginalization and discrimination in healthcare.",
+    },
+    {
+      videoSrc: "/videos/lep-statistics.mp4",
+      title: "The Solution: InterpreLab",
+      description:
+        "Embrace the change, don't get replaced by it. InterpreLab empowers interpreters with AI-driven tools for continuous learning, wellness support, and performance tracking - transforming challenges into opportunities for professional excellence.",
     },
   ];
 
