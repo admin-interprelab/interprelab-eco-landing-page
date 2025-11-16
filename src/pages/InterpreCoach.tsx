@@ -44,8 +44,8 @@ const InterpreCoach = () => {
             <div className="relative">
               <div className="glass rounded-2xl p-8 border border-border/50">
                 <img
-                  src="/src/assets/real-time-assistance.png"
-                  alt="Real-time assistance illustration"
+                  src={interpreHubMockup}
+                  alt="InterpreCoach Extension Preview"
                   className="w-full rounded-lg shadow-2xl"
                 />
               </div>
