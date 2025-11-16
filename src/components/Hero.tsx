@@ -2,17 +2,18 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, User, Shield, Zap, Play } from "lucide-react";
 import { Link } from "react-router-dom";
-import heroBg from '../assets/hero-interprelab.jpg';
+import heroBg from '../assets/hero-homepage.jpg';
 
 export const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      {/* Background Image */}
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20" role="banner">
+      {/* Background Image with Parallax */}
       <div
-        className="absolute inset-0 z-0 bg-cover bg-center"
+        className="absolute inset-0 z-0 bg-cover bg-center transition-transform duration-700"
         style={{ backgroundImage: `url(${heroBg})` }}
+        aria-hidden="true"
       >
-        <div className="absolute inset-0 bg-black/60" /> {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70" />
       </div>
 
       {/* Content */}
@@ -43,16 +44,26 @@ export const Hero = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up">
-            <Button variant="hero" size="xl" className="group" asChild>
-              <Link to="/interprebot">
+            <Button 
+              variant="hero" 
+              size="xl" 
+              className="group hover:shadow-glow transition-all duration-300 hover:scale-105" 
+              asChild
+            >
+              <Link to="/interprebot" aria-label="Start your assessment with InterpreBot">
                 Take the Assessment
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" aria-hidden="true" />
               </Link>
             </Button>
 
-            <Button variant="glass" size="xl" className="group" asChild>
-              <Link to="/interprecoach">
-                <Play className="w-5 h-5 mr-2" />
+            <Button 
+              variant="glass" 
+              size="xl" 
+              className="group hover:bg-white/10 transition-all duration-300 hover:scale-105" 
+              asChild
+            >
+              <Link to="/interprecoach" aria-label="Learn more about InterpreCoach AI assistant">
+                <Play className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-300" aria-hidden="true" />
                 Meet InterpreCoach
               </Link>
             </Button>

@@ -3,9 +3,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Quote } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 export const Testimonials = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { ref, isVisible } = useScrollAnimation({ threshold: 0.2 });
 
   const testimonials = [
     {
@@ -83,13 +85,13 @@ export const Testimonials = () => {
   };
 
   return (
-    <section className="py-32 px-6 relative">      
+    <section className="py-32 px-6 relative" ref={ref} aria-labelledby="testimonials-heading">      
       <div className="container mx-auto relative z-10">
-        <div className="text-center mb-16 animate-fade-in">
+        <div className={`text-center mb-16 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <Badge className="glass px-6 py-3 mb-6 border-primary/20">
             Testimonials
           </Badge>
-          <h2 className="text-5xl md:text-6xl font-bold text-foreground mb-6">
+          <h2 id="testimonials-heading" className="text-5xl md:text-6xl font-bold text-foreground mb-6">
             Loved by <span className="bg-gradient-primary bg-clip-text text-transparent">Interpreters</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">

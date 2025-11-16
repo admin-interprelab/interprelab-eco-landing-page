@@ -4,6 +4,7 @@ import { SolutionHero } from "../components/SolutionHero";
 import { StatsSection } from "../components/StatsSection";
 import { Testimonials } from "../components/Testimonials";
 import { Footer } from "../components/Footer";
+import { ScrollProgress } from "../components/ScrollProgress";
 
 export default function Home() {
   const painPoints = [
@@ -35,10 +36,11 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background">
+      <ScrollProgress />
       <Navigation />
 
       {/* Full-screen video sections with snap scrolling */}
-      <div className="h-screen overflow-y-scroll snap-y snap-mandatory">
+      <div className="h-screen overflow-y-scroll snap-y snap-mandatory scroll-snap-container" role="region" aria-label="Pain points and solutions showcase">
         {painPoints.map((painPoint, index) => (
           <FullScreenVideoHero
             key={index}
@@ -51,7 +53,7 @@ export default function Home() {
       </div>
 
       {/* Main content */}
-      <main>
+      <main role="main">
         <SolutionHero />
         <StatsSection />
         <Testimonials />

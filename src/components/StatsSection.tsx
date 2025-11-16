@@ -1,8 +1,11 @@
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, Users, Globe, Award } from "lucide-react";
 import CountUp from 'react-countup';
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 export const StatsSection = () => {
+  const { ref, isVisible } = useScrollAnimation({ threshold: 0.3 });
+
   const stats = [
     {
       icon: Users,
@@ -35,7 +38,7 @@ export const StatsSection = () => {
   ];
 
   return (
-    <section className="py-20 px-6 relative">
+    <section className="py-20 px-6 relative" ref={ref} aria-labelledby="stats-heading">
       <div className="container mx-auto">
         <div className="glass border-border/30 rounded-3xl p-12 md:p-16 relative overflow-hidden">
           {/* Background glow */}
@@ -43,11 +46,11 @@ export const StatsSection = () => {
           
           <div className="relative z-10">
             {/* Header */}
-            <div className="text-center mb-12">
+            <div className={`text-center mb-12 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
               <Badge className="mb-4 px-6 py-3">
                 Trusted Globally
               </Badge>
-              <h2 className="text-3xl md:text-5xl font-bold text-foreground">
+              <h2 id="stats-heading" className="text-3xl md:text-5xl font-bold text-foreground">
                 Transforming Interpretation
               </h2>
             </div>
@@ -57,11 +60,17 @@ export const StatsSection = () => {
               {stats.map((stat, index) => {
                 const Icon = stat.icon;
                 return (
-                  <div key={index} className="text-center space-y-3">
-                    <div className={`w-12 h-12 mx-auto bg-gradient-to-br ${stat.gradient} rounded-xl flex items-center justify-center mb-4`}>
-                      <Icon className="w-6 h-6 text-white" />
+                  <div 
+                    key={index} 
+                    className={`text-center space-y-3 transition-all duration-700 ${
+                      isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                    }`}
+                    style={{ transitionDelay: isVisible ? `${index * 150}ms` : '0ms' }}
+                  >
+                    <div className={`w-12 h-12 mx-auto bg-gradient-to-br ${stat.gradient} rounded-xl flex items-center justify-center mb-4 hover:scale-110 hover:rotate-6 transition-all duration-300`}>
+                      <Icon className="w-6 h-6 text-white" aria-hidden="true" />
                     </div>
-                    <div className="text-4xl md:text-5xl font-bold text-foreground">
+                    <div className="text-4xl md:text-5xl font-bold text-foreground" role="status" aria-live="polite">
                       <CountUp end={stat.value} duration={3} suffix={stat.suffix} enableScrollSpy />
                     </div>
                     <div className="text-sm text-muted-foreground">

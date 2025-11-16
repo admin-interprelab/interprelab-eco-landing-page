@@ -131,6 +131,28 @@ All colors MUST be HSL for consistency and theming.
     font-family: 'Inter', system-ui, sans-serif;
   }
 
+  /* Accessibility improvements */
+  *:focus-visible {
+    @apply outline-2 outline-offset-2 outline-primary ring-2 ring-primary/20;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Reduced motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
   /* Glass morphism utilities */
   .glass {
     background: hsl(var(--glass-bg));
@@ -167,6 +189,37 @@ All colors MUST be HSL for consistency and theming.
   .hover-lift:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow-card);
+  }
+
+  /* Enhanced Button Interactions */
+  .glass-button {
+    @apply relative overflow-hidden transition-all duration-300;
+  }
+
+  .glass-button::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent;
+    @apply translate-x-[-200%] transition-transform duration-700;
+  }
+
+  .glass-button:hover::before {
+    @apply translate-x-[200%];
+  }
+
+  /* Loading skeleton */
+  .skeleton {
+    @apply animate-pulse bg-muted/50 rounded;
+  }
+
+  /* Smooth scroll snap */
+  .scroll-snap-container {
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+  }
+
+  .scroll-snap-item {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
   }
 
   /* Extension window styles */

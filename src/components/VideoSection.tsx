@@ -66,6 +66,7 @@ export const FullScreenVideoHero = ({
     <section
       ref={sectionRef}
       className="h-screen w-full relative snap-start snap-always overflow-hidden transition-opacity duration-700 ease-in-out"
+      aria-label={`Pain point ${index + 1}: ${title}`}
     >
       {/* Full-screen video background */}
       <video
@@ -76,12 +77,13 @@ export const FullScreenVideoHero = ({
         loop
         preload="auto"
         poster={index === 0 ? "/videos/lep-statistics-poster.jpg" : index === 1 ? "/videos/interpreter-stress-poster.jpg" : "/videos/terminology-gap-poster.jpg"}
+        aria-hidden="true"
       >
         <source src={videoSrc} type="video/mp4" />
       </video>
 
       {/* Dark overlay with gradient fade */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70 z-10 transition-opacity duration-1000" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70 z-10 transition-opacity duration-1000" aria-hidden="true" />
 
       {/* Content */}
       <div className="relative z-20 h-full flex flex-col items-center justify-center px-6">
