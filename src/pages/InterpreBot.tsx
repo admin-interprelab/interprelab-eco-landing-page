@@ -1,3 +1,4 @@
+import interpreHubMockup from "@/assets/interpre-hub-mockup.png";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -151,6 +152,31 @@ const InterpreBot = () => {
                   Compare your performance with industry standards and peer benchmarks.
                 </CardDescription>
               </CardHeader>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Assessment Dashboard Preview */}
+      <section className="py-20">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              Your Personalized Dashboard
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Visualize your progress and get actionable insights.
+            </p>
+          </div>
+          <div className="max-w-4xl mx-auto">
+            <Card className="glass border-border/50">
+              <CardContent className="p-4">
+                <img
+                  src="/src/assets/ai-assessment.png"
+                  alt="AI assessment illustration"
+                  className="w-full rounded-lg"
+                />
+              </CardContent>
             </Card>
           </div>
         </div>

@@ -1,3 +1,5 @@
+import techBackground from "@/assets/tech-background.jpg";
+import interpreHubMockup from "@/assets/interpre-hub-mockup.png";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -81,7 +83,7 @@ export const ProductShowcase = () => {
 
                 <div className="relative aspect-video rounded-lg overflow-hidden bg-muted">
                   <img
-                    src="src/assets/tech-background.jpg"
+                    src={techBackground}
                     alt="InterpreLab Platform Dashboard"
                     className="w-full h-full object-cover"
                   />
@@ -146,7 +148,7 @@ export const ProductShowcase = () => {
 
                 <div className="relative aspect-video rounded-lg overflow-hidden bg-muted">
                   <img
-                    src="src/assets/extension-preview.jpg"
+                    src={interpreHubMockup}
                     alt="InterpreCoach Extension Preview"
                     className="w-full h-full object-cover"
                   />
