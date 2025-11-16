@@ -39,8 +39,9 @@ export default function RecentCalls() {
               <TableRow key={call.id}>
                 <TableCell>
                   {call.callType === 'VRI'
-                    ? <Video className="h-4 w-4 text-muted-foreground" aria-label="VRI" />
-                    : <Phone className="h-4 w-4 text-muted-foreground" aria-label="OPI" />}
+                    ? <Video className="h-4 w-4 text-muted-foreground" aria-label="VRI" title="VRI" />
+                    : <Phone className="h-4 w-4 text-muted-foreground" aria-label="OPI" title="OPI" />}
+                </TableCell>
                 </TableCell>
                 <TableCell>{call.startTime.toLocaleString()}</TableCell>
                 <TableCell>{call.duration} min</TableCell>
