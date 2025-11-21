@@ -9,7 +9,6 @@ import {
   getCertificationAriaLabel,
   shouldShowCertifications
 } from './utils';
-import type { LucideIcon } from 'lucide-react';
 import { useFooterCopyright } from './hooks';
 
 /**
@@ -75,15 +74,12 @@ export const FooterBottom = ({
                   title={cert.description}
                   aria-label={ariaLabel}
                 >
-                  {cert.icon && (() => {
-                    const CertIcon = cert.icon as unknown as LucideIcon;
-                    return (
-                      <CertIcon
-                        className="w-3 h-3"
-                        aria-hidden="true"
-                      />
-                    );
-                  })()}
+                  {cert.icon && (
+                    <cert.icon
+                      className="w-3 h-3"
+                      aria-hidden="true"
+                    />
+                  )}
                   {cert.label}
                 </Badge>
               );

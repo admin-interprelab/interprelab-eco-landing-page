@@ -1,4 +1,3 @@
-import { useDashboardData } from "./dashboard-utils";
 import { useMemo, useCallback } from "react";
 import {
   BarChart,
@@ -77,6 +76,8 @@ interface WeeklyStats {
 }
 
 interface WeeklyChartProps {
+  /** Weekly activity data for the chart */
+  data: DayData[];
   /** Optional custom height for the chart */
   height?: number;
   /** Custom title override */
@@ -314,6 +315,7 @@ const useAxisFormatters = (currencySymbol: string = "$") => {
  * @param currencySymbol - Currency symbol for earnings formatting (default: '$')
  */
 export default function WeeklyChart({
+  data,
   height = DEFAULT_CHART_HEIGHT,
   title = COMPONENT_TITLE,
   description = COMPONENT_DESCRIPTION,
@@ -323,29 +325,12 @@ export default function WeeklyChart({
   chartType = "grouped",
   currencySymbol = "$",
 }: WeeklyChartProps) {
-  const { weeklyData: data } = useDashboardData();
   const { processedData, stats, hasData } = useWeeklyData(data);
   const { formatEarningsAxis, formatCallsAxis } =
     useAxisFormatters(currencySymbol);
 
-  // Safety check for invalid data
-  if (!Array.isArray(data)) {
-    return (
-      <Card className="w-full">
-        <ChartHeader
-          title={title}
-          description={description}
-          showStats={showStats}
-        />
-        <CardContent className="flex flex-col min-h-[300px] justify-center">
-          <EmptyState message="Invalid chart data format" />
-        </CardContent>
-      </Card>
-    );
-  }
-
   return (
-    <Card className="w-full">
+    <Card className="h-full flex flex-col">
       <ChartHeader
         title={title}
         description={description}
@@ -353,7 +338,7 @@ export default function WeeklyChart({
         showStats={showStats}
       />
 
-      <CardContent className="flex flex-col" style={{ minHeight: `${height + 50}px` }}>
+      <CardContent className="flex-grow flex flex-col">
         {hasData ? (
           <ChartContainer
             config={CHART_CONFIG}

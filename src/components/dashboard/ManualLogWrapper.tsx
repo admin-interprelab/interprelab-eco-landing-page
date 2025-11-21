@@ -1,9 +1,9 @@
+import { useCallback } from 'react';
 import ManualLog from './manual-log';
 import { useDashboardActions } from './dashboard-utils';
 import { getRoundedDuration } from '@/lib/data';
 import { useToast } from '@/hooks/use-toast';
 import type { CallRecord } from '@/lib/types';
-import { useAuth } from '@/contexts/AuthContext'; // Import useAuth
 
 /**
  * Wrapper component that provides dashboard integration to ManualLog
@@ -12,7 +12,6 @@ import { useAuth } from '@/contexts/AuthContext'; // Import useAuth
 export default function ManualLogWrapper() {
   const { addNewCall } = useDashboardActions();
   const { toast } = useToast();
-  const { user } = useAuth(); // Use useAuth to get the user
 
   const handleCallLogged = useCallback(async (callData: {
     startTime: Date;
@@ -31,12 +30,11 @@ export default function ManualLogWrapper() {
     };
 
     try {
-      await addNewCall(newRecord, user?.id); // Pass user.id to addNewCall
+      await addNewCall(newRecord);
       toast({
         title: "Call Logged Successfully",
         description: `Your ${callData.callType} call on ${callData.platform} has been logged with a duration of ${duration} minutes.`,
       });
-      window.location.reload(); // Refresh the page to update all components with new data
     } catch (error) {
       toast({
         title: "Error Logging Call",
@@ -44,7 +42,9 @@ export default function ManualLogWrapper() {
         variant: "destructive",
       });
     }
-  }, [addNewCall, toast, user?.id]);
+  }, [addNewCall, toast]);
 
-  return <ManualLog onCallLogged={handleCallLogged} />;
+  // For now, just render the original ManualLog
+  // In the future, we could pass the handleCallLogged as a prop
+  return <ManualLog />;
 }

@@ -3,7 +3,7 @@
  */
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import type { CompanyBenefitsProps } from './types';
+import type { CompanyBenefitsProps, BenefitCategory } from './types';
 import { COMPANY_BENEFITS } from './constants';
 import { groupBenefitsByCategory, getBenefitCategoryDisplay } from './utils';
 
@@ -37,7 +37,7 @@ export const CompanyBenefits = ({
 
         <div className="space-y-12">
           {Object.entries(benefitsByCategory).map(([category, categoryBenefits]) => {
-            const categoryTitle = getBenefitCategoryDisplay(category as CompanyBenefit['category']);
+            const categoryTitle = getBenefitCategoryDisplay(category as BenefitCategory);
 
             return (
               <div key={category}>

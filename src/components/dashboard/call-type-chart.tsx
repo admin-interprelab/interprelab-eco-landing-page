@@ -1,8 +1,5 @@
-import { useDashboardData } from './dashboard-utils';
 import { useMemo, useCallback } from 'react';
-import { PieChart, Pie, ResponsiveContainer, Legend, Cell } from 'recharts';
-import type { Payload } from 'recharts/types/component/DefaultLegendContent';
-import type { PieLabelRenderProps } from 'recharts';
+import { PieChart, Pie, ResponsiveContainer, Legend, Cell, LabelList } from 'recharts';
 import {
   Card,
   CardHeader,
@@ -64,9 +61,12 @@ interface ChartDataPoint {
   value: number;
   fill: string;
   percentage: number;
+  [key: string]: unknown; // Index signature for recharts compatibility
 }
 
 interface CallTypeChartProps {
+  /** Call statistics data containing VRI and OPI counts */
+  data: CallTypeStats;
   /** Optional custom height for the chart */
   height?: number;
   /** Whether to show detailed statistics */
@@ -152,7 +152,7 @@ const EmptyState = ({ message }: EmptyStateProps) => (
  * Enhanced legend with icons, labels, and statistics
  */
 interface CustomLegendProps {
-  payload?: Payload[];
+  payload?: unknown[];
   showDetailedStats?: boolean;
   chartData?: ChartDataPoint[];
   totalCalls?: number;
@@ -262,32 +262,27 @@ const useChartData = (data: CallTypeStats) => {
  * @param description - Custom description override
  */
 export default function CallTypeChart({
+  data,
   height = CHART_HEIGHT,
   showDetailedStats = false,
   title = COMPONENT_TITLE,
   description = COMPONENT_DESCRIPTION,
 }: CallTypeChartProps) {
-  const { callTypeStats: data } = useDashboardData();
-  // Safety check for invalid data - do this before hooks
-  const isValidData = data && typeof data === 'object';
-  const safeData = isValidData ? data : { vri: 0, opi: 0 };
-
-  const { chartData, totalCalls, hasData } = useChartData(safeData);
+  const { chartData, totalCalls, hasData } = useChartData(data);
 
   /**
    * Custom label renderer for pie chart
    * Shows percentage labels on chart segments
    */
-  const renderCustomLabel = useCallback((props: PieLabelRenderProps) => {
+  const renderCustomLabel = useCallback((props: { percent: number }) => {
     const { percent } = props;
-    if (percent === undefined) return null;
     // Only show label if percentage is significant enough
-    if (percent * 100 < 5) return null;
+    if (percent < 5) return null;
     return formatPercentage(percent * 100);
   }, []);
 
   return (
-    <Card className="w-full">
+    <Card className="h-full flex flex-col">
       <ChartHeader
         title={title}
         description={description}
@@ -295,7 +290,7 @@ export default function CallTypeChart({
         showDetailedStats={showDetailedStats}
       />
 
-      <CardContent className="flex flex-col items-center justify-center" style={{ minHeight: `${height + 100}px` }}>
+      <CardContent className="flex-grow flex flex-col items-center justify-center">
         {hasData ? (
           <ChartContainer
             config={CHART_CONFIG}
@@ -333,7 +328,7 @@ export default function CallTypeChart({
                   ))}
                 </Pie>
                 <Legend
-                  content={(props: { payload?: Payload[] }) => (
+                  content={(props) => (
                     <CustomLegend
                       payload={props.payload ? [...props.payload] : []}
                       showDetailedStats={showDetailedStats}
@@ -346,9 +341,7 @@ export default function CallTypeChart({
             </ResponsiveContainer>
           </ChartContainer>
         ) : (
-          <div className="min-h-[200px] flex items-center justify-center">
-            <EmptyState message={NO_DATA_MESSAGE} />
-          </div>
+          <EmptyState message={NO_DATA_MESSAGE} />
         )}
       </CardContent>
     </Card>

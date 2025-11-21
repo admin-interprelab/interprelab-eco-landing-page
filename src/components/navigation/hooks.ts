@@ -213,8 +213,8 @@ export const useNavigationAnalytics = () => {
     setLastClicked(href);
 
     // Track with analytics service
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', 'nav_item_clicked', {
+    if (typeof window !== 'undefined' && (window as unknown).gtag) {
+      (window as unknown).gtag('event', 'nav_item_clicked', {
         item_label: label,
         item_href: href,
         context,

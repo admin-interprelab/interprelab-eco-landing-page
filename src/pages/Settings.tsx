@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Navigation } from '@/components/navigation';
+import { Layout } from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -82,8 +82,7 @@ const Settings = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
+    <Layout>
       <div className="container mx-auto px-4 py-8 max-w-2xl">
         <div className="flex items-center gap-2 mb-8">
           <Settings2 className="h-8 w-8" />
@@ -180,7 +179,7 @@ const Settings = () => {
           </Button>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 

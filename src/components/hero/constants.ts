@@ -66,9 +66,8 @@ export const VIDEO_HERO_SECTIONS: VideoHeroSection[] = [
     id: 'stress-terminology',
     title: 'High-Stress Situations Leave No Room for Mistakes',
     description: 'Interpreters face intense pressure when encountering unknown medical terminology during critical encounters. Rather than interrupt the flow, they often rely on guesswork, leading to potential miscommunication in life-or-death situations.',
-    // Public sample video (Big Buck Bunny) used as a placeholder for the interpreter-stress clip
-    videoSrc: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-    posterSrc: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1200&h=675&fit=crop&crop=faces',
+    videoSrc: '/videos/interpreter-stress.mp4',
+    posterSrc: '/videos/interpreter-stress-poster.jpg',
     statistics: {
       value: '73%',
       label: 'of interpreters report high stress from unknown terminology',
@@ -78,9 +77,8 @@ export const VIDEO_HERO_SECTIONS: VideoHeroSection[] = [
     id: 'quality-standards',
     title: 'High Demand Has Lowered Quality Standards',
     description: 'The shortage of qualified interpreters has led to hiring untrained bilinguals or those with limited English proficiency. Independent contractor relationships mean QA teams provide minimal feedback - often analyzing just one call every 4-6 months.',
-    // Public sample video (Elephants Dream) used as a placeholder for the quality-gap clip
-    videoSrc: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
-    posterSrc: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1200&h=675&fit=crop&crop=faces',
+    videoSrc: '/videos/quality-gap.mp4',
+    posterSrc: '/videos/quality-gap-poster.jpg',
     statistics: {
       value: '1 in 6 months',
       label: 'average QA feedback frequency for interpreters',
@@ -90,9 +88,8 @@ export const VIDEO_HERO_SECTIONS: VideoHeroSection[] = [
     id: 'patient-outcomes',
     title: 'Language Barriers Cost Lives',
     description: 'Limited English Proficiency patients are twice as likely to die when hospitalized compared to English-speaking patients. These disparities often go unreported as LEP communities face marginalization and discrimination in healthcare.',
-    // Public sample video (For Bigger Joyrides) used as a placeholder for the patient-outcomes clip
-    videoSrc: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4',
-    posterSrc: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=1200&h=675&fit=crop&crop=faces',
+    videoSrc: '/videos/patient-outcomes.mp4',
+    posterSrc: '/videos/patient-outcomes-poster.jpg',
     statistics: {
       value: '2x higher',
       label: 'mortality rate for LEP patients in hospitals',

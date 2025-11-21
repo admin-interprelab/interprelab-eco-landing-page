@@ -3,9 +3,9 @@
  */
 
 import React from 'react';
-import { InterpreLabHero as SolutionHero } from '@/components/SolutionHero';
-import { StatsSection } from '@/components/stats';
-import { Testimonials } from '@/components/testimonials';
+import { SolutionHero } from '@/components/SolutionHero';
+import { StatsSection } from '@/components/StatsSection';
+import { Testimonials } from '@/components/Testimonials';
 import { useHomeAnalytics } from './hooks';
 import type { MainContentProps } from './types';
 
