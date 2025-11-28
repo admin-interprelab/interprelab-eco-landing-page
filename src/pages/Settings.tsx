@@ -1,13 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Layout } from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { supabase } from '@/integrations/supabase/client.ts';
-import { useAuth } from '@/contexts/AuthContext';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { db } from '@/firebase';
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { useAuth } from '@/contexts/auth';
+import { useLanguage } from '@/hooks/useLanguage';
 import { useToast } from '@/hooks/use-toast';
 import { DollarSign, Globe, Settings2 } from 'lucide-react';
 
@@ -15,8 +16,8 @@ const Settings = () => {
   const [payRate, setPayRate] = useState('0');
   const [payRateType, setPayRateType] = useState('per_hour');
   const [currency, setCurrency] = useState('USD');
-  const { user } = useAuth();
-  const { language, setLanguage, availableLanguages } = useLanguage();
+  const { currentUser: user } = useAuth();
+  const { language, setLanguage, supportedLanguages } = useLanguage();
   const { toast } = useToast();
 
   const currencies = [
@@ -31,54 +32,52 @@ const Settings = () => {
     { code: 'MXN', name: 'Mexican Peso' },
   ];
 
+  const loadSettings = useCallback(async () => {
+    if (!user) return;
+    const userSettingsRef = doc(db, 'user_settings', user.uid);
+    const docSnap = await getDoc(userSettingsRef);
+
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      setPayRate(data.pay_rate?.toString() || '0');
+      setPayRateType(data.pay_rate_type || 'per_hour');
+      setCurrency(data.preferred_currency || 'USD');
+      if (data.preferred_language) {
+        setLanguage(data.preferred_language);
+      }
+    }
+  }, [user, setLanguage]);
+
   useEffect(() => {
     if (user) {
       loadSettings();
     }
-  }, [user]);
-
-  const loadSettings = async () => {
-    const { data } = await supabase
-      .from('user_settings')
-      .select('*')
-      .eq('user_id', user?.id)
-      .maybeSingle();
-
-    if (data) {
-      setPayRate(data.pay_rate?.toString() || '0');
-      setPayRateType(data.pay_rate_type || 'per_hour');
-      setCurrency(data.preferred_currency || 'USD');
-    }
-  };
+  }, [user, loadSettings]);
 
   const handleSave = async () => {
     if (!user) return;
+    const userSettingsRef = doc(db, 'user_settings', user.uid);
 
-    const { error } = await supabase
-      .from('user_settings')
-      .upsert({
-        user_id: user.id,
+    try {
+      await setDoc(userSettingsRef, {
+        user_id: user.uid,
         pay_rate: parseFloat(payRate),
         pay_rate_type: payRateType,
         preferred_currency: currency,
         preferred_language: language,
-      }, {
-        onConflict: 'user_id'
-      });
+      }, { merge: true });
 
-    if (error) {
+      toast({
+        title: 'Success',
+        description: 'Settings saved successfully',
+      });
+    } catch (error) {
       toast({
         title: 'Error',
         description: 'Failed to save settings',
         variant: 'destructive',
       });
-      return;
     }
-
-    toast({
-      title: 'Success',
-      description: 'Settings saved successfully',
-    });
   };
 
   return (
@@ -163,7 +162,7 @@ const Settings = () => {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {availableLanguages.map((lang) => (
+                    {supportedLanguages.map((lang) => (
                       <SelectItem key={lang.code} value={lang.code}>
                         {lang.name}
                       </SelectItem>

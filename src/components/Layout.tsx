@@ -1,6 +1,5 @@
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
-import { InterpreBotUI } from "@/components/ExtensionUI";
 import { ReactNode } from "react";
 
 interface LayoutProps {
@@ -18,7 +17,9 @@ export const Layout = ({ children, showInterpreBot = true }: LayoutProps) => {
       <Footer />
       
       {/* InterpreBot - AI Assessment (Available site-wide) */}
-      {showInterpreBot && <InterpreBotUI />}
+      {/* {showInterpreBot && <InterpreBotUI />} */}
     </div>
   );
 };
+
+export default Layout;

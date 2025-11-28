@@ -1,73 +1,124 @@
-# Welcome to your Lovable project
+# InterpreLab Project
 
-## Project info
+Welcome to the InterpreLab project! This document provides a comprehensive guide to understanding, setting up, and contributing to the project.
 
-**URL**: https://lovable.dev/projects/61694cb5-bbd8-44b1-aa9e-2b4cead1a91a
+## 1. Core Identity & Mission
 
-## How can I edit this code?
+- **Project Name:** **InterpreLab**
+- **Elevator Pitch:** InterpreLab is an ecosystem of AI-powered solutions for medical interpreters! We are focused on human skill optimization and bridging critical communication gaps in healthcare.
+- **Founder Profile:** The founder is a seasoned expert in the medical interpreting field and an early adopter/developer of AI-driven, agentic technologies. The focus is on continuous innovation of backend AI services.
 
-There are several ways of editing your application.
+## 2. Products & Services
 
-**Use Lovable**
+### InterpreBot 🤖 (AI Training & Assessment)
+- **Function:** Provides realistic, interactive linguistic assessments to evaluate and hone interpreters' core skills with deep grammatical and contextual analysis.
+- **Key Features:**
+    - Deep analysis of linguistic accuracy, terminology, and grammatical correctness.
+    - Generates a detailed performance dashboard pinpointing "areas of opportunity".
+    - Acts as an AI Mentor to guide users through Customized Learning Paths.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/61694cb5-bbd8-44b1-aa9e-2b4cead1a91a) and start prompting.
+### InterpreCoach 🎧 (Real-Time AI Assistance Browser Extension)
+- **Function:** A multi-modal, real-time AI assistant that integrates discreetly into existing interpreter platforms via a browser extension.
+- **Key Features:**
+    - **Advanced Terminology Management:** Provides real-time translations with additional context, relevant images, and medication details (generic name, brand name, aliases).
+    - **Acoustic & Voice Training:** Utilizes backend speech regulator agents to analyze and assist with voice softness, deepness, pitch, and speed.
+    - **Key Insights & Summarization:** Actively listens and summarizes critical points of the conversation.
+    - **Predictive Assistance:** Infers conversational context to proactively prepare relevant vocabulary.
 
-Changes made via Lovable will be committed automatically to this repo.
+### Certification-Ready Training Courses 🎓
+- **Offering:** 40 to 60-hour Healthcare Medical Interpreter Training Courses.
+- **Accreditation:** Approved by **NBCMI** and **CCHI** as prerequisite courses.
 
-**Use your preferred IDE**
+### Interpreter Community & Resources (InterpreLinks) 🤝
+- **Function:** A dedicated social web application and professional network for interpreters.
+- **Features:** Community forums, job boards, and a curated library of resources.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 3. Technical & Architectural Directives
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Frontend Code Generation
+- **Tech Stack:** **React** with **Next.js** (App Router). Code must be in **TypeScript**.
+- **Styling:** **Tailwind CSS** exclusively.
+- **Architecture:** Modular, component-based, and reusable.
+- **Accessibility:** Must adhere to **WCAG 2.1 AA** standards.
 
-Follow these steps:
+### Backend & Google Cloud Integration
+- **Philosophy:** **Serverless-first architecture.**
+- **Core Services:**
+    - **Authentication:** **Firebase Authentication**.
+    - **Database:** **Cloud Firestore** (NoSQL best practices).
+    - **Backend Logic:** **Cloud Functions (2nd Gen)**.
+    - **AI/ML APIs:** **Speech-to-Text API** and **Natural Language API**.
+    - **File Storage:** **Google Cloud Storage**.
+- **Security:** Use **Secret Manager** for secrets.
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Getting Started & Connecting to the Backend
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+Follow these steps to set up your local development environment and connect it to a live Firebase backend.
 
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+#### Step 1: Clone the Repository
+```bash
+git clone https://github.com/your-repo/interprelab.git
+cd interprelab
 ```
 
-**Edit a file directly in GitHub**
+#### Step 2: Install Project Dependencies
+```bash
+npm install
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+#### Step 3: Create and Configure a Firebase Project
 
-**Use GitHub Codespaces**
+1.  **Create the Project:**
+    - Go to the [Firebase Console](https://console.firebase.google.com/).
+    - Click **"Add project"**, give it a name (e.g., "InterpreLab-dev"), and follow the setup steps.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+2.  **Register a Web App:**
+    - In your project's dashboard, click the **Web icon (`</>`)**.
+    - Give the app a nickname (e.g., "InterpreLab Web") and click **"Register app"**.
 
-## What technologies are used for this project?
+3.  **Copy Firebase Config:**
+    - After registering, Firebase will show you a `firebaseConfig` object. **Copy this entire object.**
 
-This project is built with:
+4.  **Add Config to Your Local Project:**
+    - Open the `src/firebase.ts` file in your editor.
+    - You will see a `firebaseConfig` object with placeholder values. **Replace these placeholders with the object you copied** from your Firebase project.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+    ```typescript
+    // src/firebase.ts
+    import { initializeApp } from "firebase/app";
+    import { getAuth } from "firebase/auth";
+    import { getFirestore } from "firebase/firestore";
 
-## How can I deploy this project?
+    // PASTE YOUR FIREBASE CONFIGURATION OBJECT HERE
+    const firebaseConfig = {
+      apiKey: "AIza...",
+      authDomain: "your-project-id.firebaseapp.com",
+      // ... and so on
+    };
 
-Simply open [Lovable](https://lovable.dev/projects/61694cb5-bbd8-44b1-aa9e-2b4cead1a91a) and click on Share -> Publish.
+    const app = initializeApp(firebaseConfig);
+    export const auth = getAuth(app);
+    export const db = getFirestore(app);
+    ```
 
-## Can I connect a custom domain to my Lovable project?
+#### Step 4: Set Up Firestore Database
+1.  In the Firebase Console, go to the **Build > Firestore Database** section.
+2.  Click **"Create database"**.
+3.  Select **"Start in test mode"**. This is crucial for initial development to allow read/write access.
+    *(Note: You must add security rules before going to production.)*
+4.  Choose a location for your database and click **"Enable"**.
 
-Yes, you can!
+#### Step 5: Run the Development Server
+Now that your project is connected to Firebase, you can start the local server.
+```bash
+npm run dev
+```
+Your application will open on `http://localhost:5173`, and it is now connected to your personal Firebase backend.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### Deployment & DevOps (CI/CD)
+- **Hosting:** **Firebase Hosting** for the frontend.
+- **CI/CD:** Use **Google Cloud Build** and a `cloudbuild.yaml` file for automation.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## 4. Content & SEO Directives
+- **Target Persona:** The Aspiring/Certified Medical Interpreter.
+- **Primary Keywords:** "medical interpreter training", "AI for interpreters", "NBCMI prerequisite course", "CCHI approved training", "interpreter skills assessment".

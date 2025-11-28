@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Chrome, Zap, Shield, Globe, Download, Star, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import CoachFrontendDesign from "@/assets/coach-frontned-design.png";
 
 const InterpreCoach = () => {
   return (
@@ -39,7 +40,7 @@ const InterpreCoach = () => {
             <div className="relative">
               <div className="glass rounded-2xl p-8 border border-border/50">
                 <img
-                  src="/src/assets/extension-preview.jpg"
+                  src={CoachFrontendDesign}
                   alt="InterpreCoach Extension Preview"
                   className="w-full rounded-lg shadow-2xl"
                 />
@@ -68,8 +69,7 @@ const InterpreCoach = () => {
                 <Zap className="w-12 h-12 text-primary mb-4" />
                 <CardTitle>Real-time Assistance</CardTitle>
                 <CardDescription>
-                  Get instant terminology suggestions, context clues, and cultural references 
-                  while you interpret.
+                  Get instant terminology detection and translations, live trasncription to consult, key-insights, medication consultations and metric conversions, all in real-time so you can focus on what matters most -Providing top-quality information!
                 </CardDescription>
               </CardHeader>
             </Card>

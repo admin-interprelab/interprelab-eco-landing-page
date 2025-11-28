@@ -11,6 +11,8 @@ import Index from "./pages/Index";
 import InterpreBot from "./pages/InterpreBot";
 import InterpreCoach from "./pages/InterpreCoach";
 import InterpreHub from "./pages/InterpreHub";
+import InterpreStudy from "./pages/InterpreStudy";
+import MyTranslations from "./pages/MyTranslations";
 
 import CallTracker from "./pages/CallTracker";
 import Settings from "./pages/Settings";
@@ -30,7 +32,7 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <BrowserRouter>
+          <BrowserRouter future={{ v7_startTransition: true }}>
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/interprebot" element={<InterpreBot />} />
@@ -51,6 +53,16 @@ const App = () => (
                   <Settings />
                 </ProtectedRoute>
               } />
+              <Route path="/my-translations" element={
+                <ProtectedRoute>
+                  <MyTranslations />
+                </ProtectedRoute>
+              } />
+              <Route path="/interprestudy" element={
+                <ProtectedRoute>
+                  <InterpreStudy />
+                </ProtectedRoute>
+              } />
               <Route path="/resources" element={<Resources />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
@@ -65,5 +77,6 @@ const App = () => (
     </AuthProvider>
   </QueryClientProvider>
 );
+
 
 export default App;

@@ -10,15 +10,28 @@ import { Eye, EyeOff, Mail, Lock, User, Shield, Chrome, ArrowRight } from "lucid
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/auth";
 import { signInSchema, signUpSchema } from "@/lib/validations";
+import { z } from "zod";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 const SignIn = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { user, signIn, signUp } = useAuth();
+  const { currentUser: user, signIn, signUp } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
   const [signInData, setSignInData] = useState({
     email: "",
     password: "",
@@ -50,25 +63,7 @@ const SignIn = () => {
       const { error } = await signIn(validated.email, validated.password);
       
       if (error) {
-        if (error.message.includes('Invalid login credentials')) {
-          toast({
-            title: "Error",
-            description: "Invalid email or password. Please try again.",
-            variant: "destructive",
-          });
-        } else if (error.message.includes('Email not confirmed')) {
-          toast({
-            title: "Error",
-            description: "Please confirm your email address before signing in.",
-            variant: "destructive",
-          });
-        } else {
-          toast({
-            title: "Error",
-            description: error.message || "Failed to sign in. Please try again.",
-            variant: "destructive",
-          });
-        }
+        setError(error);
       } else {
         toast({
           title: "Success!",
@@ -76,8 +71,8 @@ const SignIn = () => {
         });
         navigate('/');
       }
-    } catch (error: any) {
-      if (error.errors) {
+    } catch (error) {
+      if (error instanceof z.ZodError) {
         // Zod validation errors
         toast({
           title: "Validation Error",
@@ -112,25 +107,7 @@ const SignIn = () => {
       );
       
       if (error) {
-        if (error.message.includes('already registered')) {
-          toast({
-            title: "Error",
-            description: "This email is already registered. Please sign in instead.",
-            variant: "destructive",
-          });
-        } else if (error.message.includes('Password')) {
-          toast({
-            title: "Error",
-            description: "Password does not meet requirements. Please use a stronger password.",
-            variant: "destructive",
-          });
-        } else {
-          toast({
-            title: "Error",
-            description: error.message || "Failed to create account. Please try again.",
-            variant: "destructive",
-          });
-        }
+        setError(error);
       } else {
         toast({
           title: "Success!",
@@ -145,8 +122,8 @@ const SignIn = () => {
           confirmPassword: "",
         });
       }
-    } catch (error: any) {
-      if (error.errors) {
+    } catch (error) {
+      if (error instanceof z.ZodError) {
         // Zod validation errors
         toast({
           title: "Validation Error",
@@ -167,6 +144,19 @@ const SignIn = () => {
 
   return (
     <Layout showInterpreBot={false}>
+      {error && (
+        <AlertDialog defaultOpen>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Error</AlertDialogTitle>
+              <AlertDialogDescription>{error.message}</AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogAction onClick={() => setError(null)}>Close</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
       {/* Hero Section */}
       <section className="py-20 bg-gradient-subtle">
         <div className="container mx-auto px-6">

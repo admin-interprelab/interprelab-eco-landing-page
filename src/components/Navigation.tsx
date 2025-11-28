@@ -1,15 +1,14 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Badge } from "@/components/ui/badge";
-import { Menu, Chrome, Shield, Phone, Mail, ArrowRight, User, LogOut } from "lucide-react";
+import { Menu, Shield, Phone, Mail, User, LogOut } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/auth";
+import { useLanguage } from "@/hooks/useLanguage";
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { user, signOut } = useAuth();
+  const { currentUser: user, signOut } = useAuth();
   const navigate = useNavigate();
   const { t } = useLanguage();
 
@@ -25,6 +24,8 @@ export const Navigation = () => {
     { label: t('dashboard'), href: "/dashboard" },
     { label: t('callTracker'), href: "/call-tracker" },
     { label: t('settings'), href: "/settings" },
+    { label: t('myTranslations'), href: "/my-translations" },
+    { label: t('interpreStudy'), href: "/interprestudy" },
     { label: t('resources'), href: "/resources" },
     { label: t('about'), href: "/about" },
     { label: t('contact'), href: "/contact" }
@@ -141,7 +142,7 @@ export const Navigation = () => {
                     </div>
                     <div className="flex items-center gap-2">
                       <Mail className="w-4 h-4" />
-                      <span>hello@interprelab.com</span>
+                      <span>admin.ceo@interprelab.com</span>
                     </div>
                   </div>
                 </div>

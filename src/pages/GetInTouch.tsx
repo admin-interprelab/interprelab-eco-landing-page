@@ -4,6 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const GetInTouch = () => {
   return (
@@ -30,7 +38,19 @@ const GetInTouch = () => {
                 <Label htmlFor="message">Message</Label>
                 <Textarea id="message" placeholder="Your message..." />
               </div>
-              <Button type="submit" className="w-full">Send Message</Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button type="submit" className="w-full">Send Message</Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Success!</DialogTitle>
+                    <DialogDescription>
+                      Your message has been sent. We'll get back to you soon.
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
             </form>
           </div>
           <div className="space-y-4">
@@ -40,7 +60,7 @@ const GetInTouch = () => {
             </p>
             <div className="space-y-2">
               <p><strong>Email:</strong> admin.ceo@interprelab.com</p>
-              <p><strong>Phone:</strong> +1 (555) 123-4567</p>
+              <p><strong>Phone:</strong> +1 (832) 709-7703</p>
               <p><strong>Address:</strong> Houston, Texas</p>
             </div>
             <div className="bg-muted rounded-lg h-64 flex items-center justify-center">

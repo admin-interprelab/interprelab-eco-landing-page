@@ -9,13 +9,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { MapPin, Phone, Mail, Clock, Send, MessageSquare } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/contexts/AuthContext";
+import { db } from "@/firebase";
+import { collection, addDoc } from "firebase/firestore";
+import { useAuth } from "@/contexts/auth";
 import { contactSchema } from "@/lib/validations";
+import { z } from "zod";
 
 const Contact = () => {
   const { toast } = useToast();
-  const { user } = useAuth();
+  const { currentUser: user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -32,29 +34,19 @@ const Contact = () => {
 
     try {
       // Validate input
-      const validated = contactSchema.parse({
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        organization: formData.organization,
-        inquiryType: formData.inquiryType,
-        message: formData.message,
-      });
+      const validated = contactSchema.parse(formData);
 
       // Insert into database
-      const { error } = await supabase
-        .from('contacts')
-        .insert([{
-          user_id: user?.id || null,
-          name: validated.name,
-          email: validated.email,
-          phone: validated.phone || null,
-          organization: validated.organization || null,
-          inquiry_type: validated.inquiryType,
-          message: validated.message,
-        }]);
-
-      if (error) throw error;
+      await addDoc(collection(db, "contacts"), {
+        user_id: user?.uid || null,
+        name: validated.name,
+        email: validated.email,
+        phone: validated.phone || null,
+        organization: validated.organization || null,
+        inquiry_type: validated.inquiryType,
+        message: validated.message,
+        submittedAt: new Date(),
+      });
 
       toast({
         title: "Message Sent!",
@@ -70,18 +62,24 @@ const Contact = () => {
         inquiryType: "",
         message: "",
       });
-    } catch (error: any) {
-      if (error.errors) {
+    } catch (error: unknown) {
+      if (error instanceof z.ZodError) {
         // Zod validation errors
         toast({
           title: "Validation Error",
           description: error.errors[0]?.message || "Please check your input.",
           variant: "destructive",
         });
-      } else {
+      } else if (error instanceof Error) {
         toast({
           title: "Error",
           description: error.message || "Failed to send message. Please try again.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "An Unexpected Error Occurred",
+          description: "Please try again later.",
           variant: "destructive",
         });
       }

@@ -3,7 +3,7 @@ import { Hero } from "@/components/Hero";
 import { ProductShowcase } from "@/components/ProductShowcase";
 import { Resources } from "@/components/Resources";
 import { Testimonials } from "@/components/Testimonials";
-import { InterpreBotUI } from "@/components/ExtensionUI";
+// import { InterpreBotUI } from "@/components/ExtensionUI";
 import { Footer } from "@/components/Footer";
 
 const Index = () => {
@@ -19,7 +19,7 @@ const Index = () => {
       <Footer />
       
       {/* InterpreBot - AI Assessment (First Contact) */}
-      <InterpreBotUI />
+      {/* <InterpreBotUI /> */}
     </div>
   );
 };

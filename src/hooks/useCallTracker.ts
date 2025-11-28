@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/contexts/AuthContext';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { db } from '@/firebase';
+import { doc, getDoc, setDoc, addDoc, collection } from "firebase/firestore";
+import { useAuth } from '@/contexts/auth';
 import { useToast } from '@/hooks/use-toast';
 
 interface CallSession {
@@ -12,20 +13,49 @@ interface CallSession {
   currency?: string;
 }
 
+interface UserSettings {
+    user_id: string;
+    pay_rate: number;
+    pay_rate_type: 'per_hour' | 'per_minute';
+    preferred_currency: string;
+    preferred_language: string;
+}
+
 export const useCallTracker = () => {
   const [isTracking, setIsTracking] = useState(false);
   const [currentSession, setCurrentSession] = useState<CallSession | null>(null);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
-  const [userSettings, setUserSettings] = useState<any>(null);
+  const [userSettings, setUserSettings] = useState<UserSettings | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const { user } = useAuth();
+  const { currentUser: user } = useAuth();
   const { toast } = useToast();
+
+  const loadUserSettings = useCallback(async () => {
+    if (!user) return;
+    const userSettingsRef = doc(db, 'user_settings', user.uid);
+    const docSnap = await getDoc(userSettingsRef);
+
+    if (docSnap.exists()) {
+      setUserSettings(docSnap.data() as UserSettings);
+    } else {
+      // Create default settings with 'per_minute'
+      const newSettings: UserSettings = {
+        user_id: user.uid,
+        pay_rate: 0,
+        pay_rate_type: 'per_minute',
+        preferred_currency: 'USD',
+        preferred_language: 'en',
+      };
+      await setDoc(userSettingsRef, newSettings);
+      setUserSettings(newSettings);
+    }
+  }, [user]);
 
   useEffect(() => {
     if (user) {
       loadUserSettings();
     }
-  }, [user]);
+  }, [user, loadUserSettings]);
 
   useEffect(() => {
     if (isTracking) {
@@ -44,33 +74,6 @@ export const useCallTracker = () => {
       }
     };
   }, [isTracking]);
-
-  const loadUserSettings = async () => {
-    const { data, error } = await supabase
-      .from('user_settings')
-      .select('*')
-      .eq('user_id', user?.id)
-      .maybeSingle();
-
-    if (data) {
-      setUserSettings(data);
-    } else if (!error) {
-      // Create default settings
-      const { data: newSettings } = await supabase
-        .from('user_settings')
-        .insert({
-          user_id: user?.id,
-          pay_rate: 0,
-          pay_rate_type: 'per_hour',
-          preferred_currency: 'USD',
-          preferred_language: 'en',
-        })
-        .select()
-        .single();
-      
-      setUserSettings(newSettings);
-    }
-  };
 
   const calculateEarnings = (durationSeconds: number): number => {
     if (!userSettings || !userSettings.pay_rate) return 0;
@@ -104,10 +107,9 @@ export const useCallTracker = () => {
     const durationSeconds = elapsedSeconds;
     const earnings = calculateEarnings(durationSeconds);
 
-    const { error } = await supabase
-      .from('call_logs')
-      .insert({
-        user_id: user.id,
+    try {
+      await addDoc(collection(db, 'call_logs'), {
+        user_id: user.uid,
         start_time: currentSession.startTime.toISOString(),
         end_time: endTime.toISOString(),
         duration_seconds: durationSeconds,
@@ -115,8 +117,7 @@ export const useCallTracker = () => {
         currency: userSettings?.preferred_currency || 'USD',
         notes: notes,
       });
-
-    if (error) {
+    } catch (error) {
       toast({
         title: 'Error',
         description: 'Failed to save call log',
