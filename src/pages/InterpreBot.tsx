@@ -1,4 +1,7 @@
 import interpreHubMockup from "@/assets/interpre-hub-mockup.png";
+import aiAssessment from "@/assets/ai-assessment.png";
+import studyingLearning from "@/assets/studying-learning.jpg";
+import communitySupport from "@/assets/community-support.jpg";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -116,7 +119,7 @@ const InterpreBot = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <Card className="glass border-border/50 hover:border-primary/50 transition-all duration-300">
               <CardHeader>
-                <Brain className="w-12 h-12 text-primary mb-4" />
+                <img src={aiAssessment} alt="Cognitive Analysis" className="w-full h-32 object-cover rounded-t-lg mb-4" />
                 <CardTitle>Cognitive Analysis</CardTitle>
                 <CardDescription>
                   Assess cognitive load, processing speed, and mental agility during interpretation.
@@ -126,7 +129,7 @@ const InterpreBot = () => {
 
             <Card className="glass border-border/50 hover:border-primary/50 transition-all duration-300">
               <CardHeader>
-                <Target className="w-12 h-12 text-primary mb-4" />
+                <img src={studyingLearning} alt="Accuracy Metrics" className="w-full h-32 object-cover rounded-t-lg mb-4" />
                 <CardTitle>Accuracy Metrics</CardTitle>
                 <CardDescription>
                   Measure precision in terminology, context preservation, and cultural adaptation.
@@ -146,7 +149,7 @@ const InterpreBot = () => {
 
             <Card className="glass border-border/50 hover:border-primary/50 transition-all duration-300">
               <CardHeader>
-                <Users className="w-12 h-12 text-primary mb-4" />
+                <img src={communitySupport} alt="Peer Comparison" className="w-full h-32 object-cover rounded-t-lg mb-4" />
                 <CardTitle>Peer Comparison</CardTitle>
                 <CardDescription>
                   Compare your performance with industry standards and peer benchmarks.

@@ -1,4 +1,7 @@
 import interpreHubMockup from "@/assets/interpre-hub-mockup.png";
+import realTimeAssistance from "@/assets/real-time-assistance.png";
+import medicalTeam from "@/assets/medical-team.jpg";
+import wellnessSupport from "@/assets/wellness-support.jpg";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -69,7 +72,7 @@ const InterpreCoach = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <Card className="glass border-border/50 hover:border-primary/50 transition-all duration-300">
               <CardHeader>
-                <Zap className="w-12 h-12 text-primary mb-4" />
+                <img src={realTimeAssistance} alt="Real-time Assistance" className="w-full h-32 object-cover rounded-t-lg mb-4" />
                 <CardTitle>Real-time Assistance</CardTitle>
                 <CardDescription>
                   Get instant terminology suggestions, context clues, and cultural references 
@@ -80,7 +83,7 @@ const InterpreCoach = () => {
 
             <Card className="glass border-border/50 hover:border-primary/50 transition-all duration-300">
               <CardHeader>
-                <Globe className="w-12 h-12 text-primary mb-4" />
+                <img src={medicalTeam} alt="Multi-language Support" className="w-full h-32 object-cover rounded-t-lg mb-4" />
                 <CardTitle>Multi-language Support</CardTitle>
                 <CardDescription>
                   Support for 50+ language pairs with specialized terminology 
@@ -91,7 +94,7 @@ const InterpreCoach = () => {
 
             <Card className="glass border-border/50 hover:border-primary/50 transition-all duration-300">
               <CardHeader>
-                <Shield className="w-12 h-12 text-primary mb-4" />
+                <img src={wellnessSupport} alt="Privacy Secured" className="w-full h-32 object-cover rounded-t-lg mb-4" />
                 <CardTitle>Privacy Secured</CardTitle>
                 <CardDescription>
                   HIPAA-compliant with end-to-end encryption. Your sessions 
