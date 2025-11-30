@@ -1,149 +1,163 @@
-import { Suspense } from "react";
-import {
-  DashboardProvider,
-  useDashboardData,
-} from "@/components/dashboard/DashboardProvider";
-import DashboardHeader from "@/components/dashboard/DashboardHeader";
-import StatsCards from "@/components/dashboard/stats-cards";
-import WeeklyChart from "@/components/dashboard/weekly-chart";
-import AIInsights from "@/components/dashboard/ai-insights";
-import RecentCalls from "@/components/dashboard/recent-calls";
-import CallTypeChart from "@/components/dashboard/call-type-chart";
-import ManualLogWrapper from "@/components/dashboard/ManualLogWrapper";
-import { Card, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { AlertCircle, TrendingUp } from "lucide-react";
+/*eslint-disable @typescript-eslint/no-explicit-any */
+import { useState, useMemo } from 'react';
+import { Layout } from '@/components/Layout';
+import StatsCards from '@/components/dashboard/StatsCards';
+import { LazyWeeklyChart, LazyCallTypeChart } from '@/components/lazy';
+import AIInsights from '@/components/dashboard/AiInsights';
+import RecentCalls from '@/components/dashboard/RecentCalls';
+import ManualLog from '@/components/dashboard/ManualLog';
+import { useCallStats } from '@/hooks/useCallStats';
+import GoalsTracker from '@/components/dashboard/GoalsTracker';
+import EarningsProjection from '@/components/dashboard/EarningsProjection';
+import { usePremium } from '@/contexts/PremiumContext';
+import { PageHero } from '@/components/PageHero';
+import { GoalSetting } from '@/components/track/GoalSetting'; // eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { PerformanceInsights } from '@/components/track/PerformanceInsights'; // eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { useCallTracker } from '@/hooks/useCallTracker';
+import { useGoals } from '../../useGoals';
 
-// Loading skeleton component
-const DashboardSkeleton = () => (
-  <div className="p-4 md:p-8 space-y-6">
-    <div className="space-y-4">
-      <Skeleton className="h-8 w-64" />
-      <Skeleton className="h-4 w-96" />
-    </div>
-
-    <div className="grid gap-4 md:grid-cols-3">
-      {[...Array(3)].map((_, i) => (
-        <Card key={i}>
-          <CardContent className="p-6">
-            <Skeleton className="h-4 w-24 mb-2" />
-            <Skeleton className="h-8 w-16" />
-          </CardContent>
-        </Card>
-      ))}
-    </div>
-
-    <div className="grid gap-6 lg:grid-cols-5">
-      <div className="lg:col-span-3 space-y-6">
-        <Skeleton className="h-64" />
-        <Skeleton className="h-80" />
-      </div>
-      <div className="lg:col-span-2 space-y-6">
-        <Skeleton className="h-64" />
-        <Skeleton className="h-64" />
-      </div>
-    </div>
-  </div>
-);
-
-// Main dashboard content component
-const DashboardContent = () => {
-  const { stats, weeklyData, callTypeStats, isLoading } = useDashboardData();
-
-  // Mock AI stats for now
-  const aiStats =
-    stats.totalCalls > 0
-      ? `Based on your ${stats.totalCalls} calls totaling ${stats.totalMinutes} minutes, you're maintaining excellent productivity! Your average call duration suggests efficient communication skills.`
-      : null;
-  const aiError = false;
-
-  if (isLoading) {
-    return <DashboardSkeleton />;
-  }
-
-  return (
-    <div className="p-4 md:p-8 space-y-6">
-      {/* Enhanced Header with Controls */}
-      <DashboardHeader
-        title="InterpreTrack Dashboard"
-        subtitle="Your comprehensive interpretation activity center"
-        showQuickStats={true}
-        showExportOptions={true}
-      />
-
-      {/* Main Stats Cards with Enhanced Features */}
-      <StatsCards stats={stats} showTrends={true} timePeriod="This month" />
-
-      {/* Primary Dashboard Grid */}
-      <div className="grid gap-6 lg:grid-cols-5">
-        {/* Left Column - Primary Actions & Analytics */}
-        <div className="lg:col-span-3 space-y-6">
-          {/* Manual Call Logging */}
-          <ManualLogWrapper />
-
-          {/* Weekly Activity Chart with Enhanced Features */}
-          <WeeklyChart
-            data={weeklyData}
-            showStats={true}
-            showAverageLines={true}
-            title="Weekly Performance"
-            description="Your call volume and earnings trend over the past 7 days"
-          />
-        </div>
-
-        {/* Right Column - Insights & Breakdown */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Call Type Distribution */}
-          <CallTypeChart
-            data={callTypeStats}
-            showDetailedStats={true}
-            title="Call Distribution"
-            description="Breakdown of your VRI vs OPI sessions"
-          />
-
-          {/* AI-Powered Insights */}
-          <AIInsights stats={aiStats} error={aiError} />
-        </div>
-      </div>
-
-      {/* Recent Activity Section */}
-      <div className="space-y-4">
-        <div className="flex items-center gap-2">
-          <TrendingUp className="h-5 w-5 text-primary" />
-          <h2 className="text-xl font-semibold">Recent Activity</h2>
-        </div>
-        <RecentCalls />
-      </div>
-
-      {/* Empty State Guidance */}
-      {stats.totalCalls === 0 && (
-        <Card className="border-dashed border-2 border-muted-foreground/25">
-          <CardContent className="flex flex-col items-center justify-center text-center p-8 space-y-4">
-            <AlertCircle className="h-12 w-12 text-muted-foreground/50" />
-            <div className="space-y-2">
-              <h3 className="text-lg font-semibold">
-                Welcome to InterpreTrack!
-              </h3>
-              <p className="text-muted-foreground max-w-md">
-                Start by logging your first call using the Manual Call Log
-                above. Once you have some data, you'll see detailed analytics
-                and insights here.
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-    </div>
-  );
-};
-
-// Main component with provider wrapper
 export default function InterpreTrack() {
+  const {
+    isTracking,
+    elapsedSeconds,
+    userSettings,
+    startCall,
+    endCall,
+    formatDuration,
+    formatCurrency,
+    calculateEarnings
+  } = useCallTracker();
+
+  const { stats, dailyStats, callTypeStats, loading, error } = useCallStats();
+  const { data: goals = [], isLoading: goalsLoading, isError: goalsError } = useGoals();
+  const { isPremium } = usePremium();
+  const [callNotes, setCallNotes] = useState('');
+  const [activeView, setActiveView] = useState<'dashboard' | 'goals' | 'insights'>('dashboard');
+
+  const handleEndCall = () => {
+    endCall(callNotes);
+    setCallNotes('');
+  };
+
+  const currentEarnings = calculateEarnings(elapsedSeconds);
+
+  // Mock performance data
+  const performanceData = {
+    totalEarnings: 3200,
+    totalCalls: 67,
+    totalHours: 28,
+    averageCallDuration: 45,
+    averageHourlyRate: 85,
+    bestDay: {
+      date: 'November 15, 2024',
+      earnings: 450,
+      calls: 8
+    },
+    trends: {
+      earningsChange: 12,
+      callsChange: -5,
+      hoursChange: 8
+    },
+    insights: [
+      'Your earnings have increased by 12% compared to last month',
+      'Peak performance hours are between 10 AM - 2 PM',
+      'Medical interpretation calls have the highest hourly rate',
+      'You\'ve maintained a consistent 5-day work schedule'
+    ],
+    recommendations: [
+      'Consider scheduling more calls during your peak hours',
+      'Focus on medical interpretation to maximize earnings',
+      'Set up recurring availability for consistent bookings',
+      'Track call preparation time to improve efficiency'
+    ]
+  };
+
+  // These handlers will need to be implemented with mutations to the backend
+  const handleUpdateGoal = (goal: any) => {};
+
+  const handleDeleteGoal = (goalId: string) => {
+    // setGoals(prev => prev.filter(g => g.id !== goalId));
+  };
+
+  const handleAddGoal = (newGoal: any) => {
+    // const goal = {
+    //   ...newGoal,
+    //   id: Date.now().toString(),
+    //   current: 0
+    // };
+    // setGoals(prev => [...prev, goal]);
+  };
+
   return (
-    <DashboardProvider refreshInterval={30000}>
-      <Suspense fallback={<DashboardSkeleton />}>
-        <DashboardContent />
-      </Suspense>
-    </DashboardProvider>
+    <Layout>
+      <main className="container mx-auto px-4 py-8">
+        <PageHero
+          badgeText="Performance Analytics"
+          title="InterpreTrack: Your Path to Peak Performance"
+          subtitle="Set goals, track your progress, and gain valuable insights into your interpretation work. Understand your patterns and unlock your full potential."
+        />
+
+        {/* Content Area */}
+        {activeView === 'goals' ? (
+          <GoalSetting
+            goals={goals}
+            onUpdateGoal={handleUpdateGoal}
+            onDeleteGoal={handleDeleteGoal}
+            onAddGoal={handleAddGoal}
+          />
+          <GoalsTracker goals={goals || []} isPremium={isPremium} />
+        ) : activeView === 'insights' ? (
+          <PerformanceInsights
+            data={performanceData}
+            period="month"
+          />
+        ) : (
+          /* Dashboard Content */
+          <div className="space-y-6">{
+            (loading || goalsLoading) ? (
+              <div className="text-center py-8">
+                <p className="text-white">Loading your statistics...</p>
+              </div>)
+            ) : error ? (
+              <div className="text-center py-8">
+                <p className="text-red-400">Error loading statistics: {error}</p>
+              </div>
+            ) : (
+              <>
+                <StatsCards stats={{
+                  totalCalls: stats?.totalCalls || 0,
+                  totalMinutes: Math.round((stats?.totalDuration || 0) / 60),
+                  totalEarnings: stats?.totalEarnings || 0
+                }} />
+
+                <div className="grid gap-6 lg:grid-cols-5">
+                  <div className="lg:col-span-3 space-y-6">
+                    <ManualLog />
+                    <LazyWeeklyChart data={dailyStats.map(day => ({
+                      day: new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' }),
+                      calls: day.calls,
+                      earnings: day.earnings
+                    }))} />
+                  </div>
+                  <div className="lg:col-span-2 grid gap-6">
+                    {isPremium ? (
+                      <>
+                        <EarningsProjection isPremium={isPremium} />
+                        <GoalsTracker goals={goals || []} isPremium={isPremium} />
+                      </>
+                    ) : (
+                      <LazyCallTypeChart data={callTypeStats} />
+                    )}
+                    <AIInsights stats={`Total Calls: ${stats?.totalCalls || 0}, Average Duration: ${stats?.averageCallDuration ? Math.round(stats.averageCallDuration / 60) : 0} min`} error={false} />
+                  </div>
+                </div>
+
+                <RecentCalls />
+              </>
+            )}
+          </div>
+        )}
+      </main>
+    </Layout>
   );
 }

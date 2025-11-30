@@ -2,6 +2,7 @@ import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { PageHero } from "@/components/PageHero";
 import { MapPin, Users, Target, Award, Heart, Globe, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -14,7 +15,7 @@ const About = () => {
     },
     {
       icon: Heart,
-      title: "Empathy",
+      title: "Compassion",
       description: "Understanding the human element in communication drives everything we build and every decision we make."
     },
     {
@@ -58,48 +59,39 @@ const About = () => {
 
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="py-20 bg-gradient-subtle">
+      <PageHero
+        badgeText="Our Story"
+        title="About InterpreLab"
+        subtitle="Founded by interpreters, for interpreters. We're on a mission to revolutionize the interpretation industry through innovative AI technology and comprehensive professional development."
+      />
+
+      {/* Image and Stats Section */}
+      <section className="py-20">
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <Badge className="mb-6 bg-primary/10 text-primary border-primary/20">
-                Our Story
-              </Badge>
-              <h1 className="text-4xl md:text-6xl font-bold mb-6 gradient-text">
-                About InterpreLab
-              </h1>
-              <p className="text-xl text-muted-foreground mb-8">
-                Founded by interpreters, for interpreters. We're on a mission to revolutionize
-                the interpretation industry through innovative AI technology and comprehensive
-                professional development.
-              </p>
-              <div className="flex items-center gap-6 text-sm text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4" />
-                  <span>Houston, Texas</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Users className="w-4 h-4" />
-                  <span>50+ Team Members</span>
-                </div>
-              </div>
+          <div className="relative max-w-4xl mx-auto">
+            <div className="glass rounded-2xl p-8 border border-border/50">
+              <img
+                src="/src/assets/hero-interprelab.jpg"
+                alt="InterpreLab Team"
+                className="w-full rounded-lg shadow-2xl"
+              />
             </div>
-            <div className="relative">
-              <div className="glass rounded-2xl p-8 border border-border/50">
-                <img
-                  src="/src/assets/hero-interprelab.jpg"
-                  alt="InterpreLab Team"
-                  className="w-full rounded-lg shadow-2xl"
-                />
-              </div>
+          </div>
+          <div className="flex justify-center items-center gap-8 text-sm text-muted-foreground mt-8">
+            <div className="flex items-center gap-2">
+              <MapPin className="w-4 h-4" />
+              <span>Houston, Texas</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Users className="w-4 h-4" />
+              <span>50+ Team Members</span>
             </div>
           </div>
         </div>
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-20">
+      <section className="py-20 bg-gradient-subtle">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <Card className="glass border-border/50 p-8">
@@ -132,7 +124,7 @@ const About = () => {
       </section>
 
       {/* Values */}
-      <section className="py-20 bg-gradient-subtle">
+      <section className="py-20">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
@@ -164,7 +156,7 @@ const About = () => {
       </section>
 
       {/* Team */}
-      <section className="py-20">
+      <section className="py-20 bg-gradient-subtle">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
@@ -205,7 +197,7 @@ const About = () => {
       </section>
 
       {/* Company Stats */}
-      <section className="py-20 bg-gradient-subtle">
+      <section className="py-20">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
@@ -229,7 +221,7 @@ const About = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20">
+      <section className="py-20 bg-gradient-subtle">
         <div className="container mx-auto px-6">
           <div className="glass rounded-2xl p-12 text-center border border-border/50">
             <h2 className="text-3xl font-bold mb-4">Join Our Mission</h2>
