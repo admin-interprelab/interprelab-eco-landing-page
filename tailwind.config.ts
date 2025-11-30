@@ -82,7 +82,8 @@ export default {
         'bounce': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
       },
       fontFamily: {
-        'sans': ['Inter', 'system-ui', 'sans-serif'],
+        'sans': ['Roboto', 'Inter', 'system-ui', 'sans-serif'],
+        'heading': ['Poppins', 'Inter', 'system-ui', 'sans-serif'],
         'mono': ['JetBrains Mono', 'Fira Code', 'monospace'],
       },
       borderRadius: {
