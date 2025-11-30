@@ -1,213 +1,157 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Play, Pause } from 'lucide-react';
+import { useEffect, useRef, useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { TrendingDown, Users, DollarSign, Brain } from "lucide-react";
 
-interface VideoData {
-  id: string;
-  title: string;
-  description: string;
-  videoUrl: string;
-  posterUrl?: string;
+interface DataOverlay {
+  stat: string;
+  label: string;
+  icon?: React.ReactNode;
 }
 
-const VideoSection = () => {
-  const [currentVideo, setCurrentVideo] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-  const sectionRef = useRef<HTMLDivElement>(null);
+interface FullScreenVideoHeroProps {
+  videoSrc: string;
+  title: string;
+  description: string;
+  index: number;
+  dataOverlays?: DataOverlay[];
+}
 
-  const videos: VideoData[] = [
-    {
-      id: 'intro',
-      title: 'Welcome to InterpreLab',
-      description: 'Discover how our comprehensive platform transforms interpreter training and practice.',
-      videoUrl: '/videos/interprelab-intro.mp4',
-      posterUrl: '/images/video-poster-1.jpg'
-    },
-    {
-      id: 'training',
-      title: 'Advanced Training Modules',
-      description: 'Experience our cutting-edge training system with real-world scenarios.',
-      videoUrl: '/videos/training-demo.mp4',
-      posterUrl: '/images/video-poster-2.jpg'
-    },
-    {
-      id: 'tracking',
-      title: 'Professional Call Tracking',
-      description: 'See how InterpreTrack helps you manage your interpretation business.',
-      videoUrl: '/videos/tracking-demo.mp4',
-      posterUrl: '/images/video-poster-3.jpg'
-    }
-  ];
+export const FullScreenVideoHero = ({
+  videoSrc,
+  title,
+  description,
+  index,
+  dataOverlays,
+}: FullScreenVideoHeroProps) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [textVisible, setTextVisible] = useState(false);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry, index) => {
-          if (entry.isIntersecting) {
-            setCurrentVideo(index);
-            // Auto-play video when it comes into view
-            const video = videoRefs.current[index];
-            if (video) {
-              video.play().catch(() => {
-                // Auto-play failed, user interaction required
-                setIsPlaying(false);
-              });
-              setIsPlaying(true);
-            }
-          } else {
-            // Pause video when it goes out of view
-            const video = videoRefs.current[index];
-            if (video) {
-              video.pause();
-              if (index === currentVideo) {
-                setIsPlaying(false);
-              }
-            }
-          }
-        });
-      },
-      {
-        threshold: 0.5,
-        rootMargin: '-10% 0px -10% 0px'
-      }
-    );
+    const video = videoRef.current;
+    const section = sectionRef.current;
+    if (!video || !section) return;
 
-    videoRefs.current.forEach((video) => {
-      if (video) {
-        observer.observe(video);
-      }
-    });
+    const observerOptions = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0.5,
+    };
 
-    return () => {
-      videoRefs.current.forEach((video) => {
-        if (video) {
-          observer.unobserve(video);
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          video.play().catch((error) => {
+            console.log("Video play failed:", error);
+            video.muted = true;
+            video.play().catch((e) => console.log("Retry failed:", e));
+          });
+          // Fade in text after 800ms
+          setTimeout(() => setTextVisible(true), 800);
+        } else {
+          video.pause();
+          setTextVisible(false);
         }
       });
-    };
-  }, [currentVideo]);
+    }, observerOptions);
 
-  const togglePlayPause = (index: number) => {
-    const video = videoRefs.current[index];
-    if (video) {
-      if (video.paused) {
-        video.play();
-        setIsPlaying(true);
-      } else {
-        video.pause();
-        setIsPlaying(false);
-      }
-    }
-  };
+    observer.observe(section);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   return (
-    <div
+    <section
       ref={sectionRef}
-      className="relative w-full"
-      style={{ scrollSnapType: 'y mandatory' }}
+      className="h-screen w-full relative snap-start snap-always overflow-hidden transition-opacity duration-700 ease-in-out"
+      aria-label={`Pain point ${index + 1}: ${title}`}
     >
-      {videos.map((video, index) => (
-        <div
-          key={video.id}
-          className="relative w-full h-screen flex items-center justify-center"
-          style={{ scrollSnapAlign: 'start' }}
-        >
-          {/* Video Background */}
-          <video
-            ref={(el) => (videoRefs.current[index] = el)}
-            className="absolute inset-0 w-full h-full object-cover"
-            poster={video.posterUrl}
-            muted
-            loop
-            playsInline
-            onPlay={() => setIsPlaying(true)}
-            onPause={() => setIsPlaying(false)}
-          >
-            <source src={video.videoUrl} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+      {/* Full-screen video background */}
+      <video
+        ref={videoRef}
+        className="absolute inset-0 w-full h-full object-cover"
+        playsInline
+        muted
+        loop
+        preload="auto"
+        poster={index === 0 ? "/videos/lep-statistics-poster.jpg" : index === 1 ? "/videos/interpreter-stress-poster.jpg" : "/videos/terminology-gap-poster.jpg"}
+        aria-hidden="true"
+      >
+        <source src={videoSrc} type="video/mp4" />
+      </video>
 
-          {/* Overlay */}
-          <div className="absolute inset-0 bg-black bg-opacity-40" />
+      {/* Dark overlay with gradient fade */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70 z-10 transition-opacity duration-1000" aria-hidden="true" />
 
-          {/* Content */}
-          <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
-              {video.title}
-            </h2>
-            <p className="text-xl md:text-2xl mb-8 opacity-90 animate-fade-in-delay">
-              {video.description}
-            </p>
-
-            {/* Play/Pause Button */}
-            <button
-              onClick={() => togglePlayPause(index)}
-              className="group relative inline-flex items-center justify-center w-20 h-20 bg-white bg-opacity-20 backdrop-blur-sm rounded-full border-2 border-white border-opacity-30 hover:bg-opacity-30 transition-all duration-300 animate-fade-in-delay-2"
-            >
-              {currentVideo === index && isPlaying ? (
-                <Pause className="w-8 h-8 text-white group-hover:scale-110 transition-transform" />
-              ) : (
-                <Play className="w-8 h-8 text-white ml-1 group-hover:scale-110 transition-transform" />
-              )}
-            </button>
-          </div>
-
-          {/* Video Progress Indicator */}
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2">
-            {videos.map((_, i) => (
+      {/* Content */}
+      <div className="relative z-20 h-full flex flex-col items-center justify-center px-6">
+        {/* Data Overlays - Top Corners */}
+        {dataOverlays && textVisible && (
+          <div className="absolute top-8 left-0 right-0 px-6 flex justify-between max-w-7xl mx-auto">
+            {dataOverlays.slice(0, 2).map((overlay, idx) => (
               <div
-                key={i}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  i === currentVideo
-                    ? 'bg-white scale-125'
-                    : 'bg-white bg-opacity-50 hover:bg-opacity-75'
+                key={idx}
+                className={`glass px-6 py-4 rounded-xl border border-white/20 backdrop-blur-md transition-all duration-1000 delay-${(idx + 1) * 200} ${
+                  textVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
                 }`}
-              />
+              >
+                <div className="flex items-center gap-3">
+                  {overlay.icon && <div className="text-white">{overlay.icon}</div>}
+                  <div>
+                    <div className="text-3xl font-bold text-white">{overlay.stat}</div>
+                    <div className="text-sm text-white/80">{overlay.label}</div>
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
+        )}
 
-          {/* Scroll Indicator (only on first video) */}
-          {index === 0 && (
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 animate-bounce">
-              <div className="w-6 h-10 border-2 border-white border-opacity-50 rounded-full flex justify-center">
-                <div className="w-1 h-3 bg-white bg-opacity-50 rounded-full mt-2 animate-pulse" />
-              </div>
-            </div>
-          )}
+        {/* Main Content */}
+        <div
+          className={`max-w-4xl text-center space-y-6 transition-all duration-1000 ${
+            textVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
+        >
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white leading-tight drop-shadow-2xl">
+            {title}
+          </h1>
+          <p className="text-xl md:text-2xl text-white/90 leading-relaxed font-sans max-w-3xl mx-auto drop-shadow-lg">
+            {description}
+          </p>
         </div>
-      ))}
 
-      <style jsx>{`
-        @keyframes fade-in {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
+        {/* Additional Data Overlays - Bottom */}
+        {dataOverlays && dataOverlays.length > 2 && textVisible && (
+          <div className="absolute bottom-24 left-0 right-0 px-6">
+            <div className="max-w-4xl mx-auto flex justify-center gap-4">
+              {dataOverlays.slice(2).map((overlay, idx) => (
+                <Badge
+                  key={idx}
+                  className={`glass px-6 py-3 text-base border-white/20 transition-all duration-1000 delay-${(idx + 3) * 200} ${
+                    textVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                  }`}
+                >
+                  {overlay.icon && <span className="mr-2">{overlay.icon}</span>}
+                  <span className="font-bold">{overlay.stat}</span>
+                  <span className="ml-2 opacity-80">{overlay.label}</span>
+                </Badge>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
 
-        .animate-fade-in {
-          animation: fade-in 1s ease-out;
-        }
-
-        .animate-fade-in-delay {
-          animation: fade-in 1s ease-out 0.3s both;
-        }
-
-        .animate-fade-in-delay-2 {
-          animation: fade-in 1s ease-out 0.6s both;
-        }
-
-        /* Smooth scrolling for snap */
-        html {
-          scroll-behavior: smooth;
-        }
-      `}</style>
-    </div>
+      {/* Scroll indicator (only on first section) */}
+      {index === 0 && (
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
+          <div className="w-6 h-10 border-2 border-white/50 rounded-full flex items-start justify-center p-2">
+            <div className="w-1 h-3 bg-white/50 rounded-full" />
+          </div>
+        </div>
+      )}
+    </section>
   );
 };
-
-export default VideoSection;

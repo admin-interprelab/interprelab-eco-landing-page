@@ -1,13 +1,12 @@
+import interpreHubMockup from "@/assets/interpre-hub-mockup.png";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { FeatureCard } from "../components/FeatureCard";
 import { Input } from "@/components/ui/input";
 import { Brain, Target, BarChart, Users, ArrowRight, Play, MessageSquare, CheckCircle, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { PageHero } from "@/components/PageHero";
 
 const InterpreBot = () => {
   const [userQuestion, setUserQuestion] = useState("");
@@ -21,39 +20,26 @@ const InterpreBot = () => {
     "What languages are supported?",
   ];
 
-  const features = [
-    {
-      icon: Brain,
-      title: "Cognitive Analysis",
-      description: "Assess cognitive load, processing speed, and mental agility during interpretation."
-    },
-    {
-      icon: Target,
-      title: "Accuracy Metrics",
-      description: "Measure precision in terminology, context preservation, and cultural adaptation."
-    },
-    {
-      icon: BarChart,
-      title: "Performance Tracking",
-      description: "Monitor progress with detailed analytics and improvement suggestions."
-    },
-    {
-      icon: Users,
-      title: "Peer Comparison",
-      description: "Compare your performance with industry standards and peer benchmarks."
-    }
-  ];
-
   return (
     <Layout>
-      <PageHero
-        badgeText="AI-Powered Assessment"
-        title="InterpreBot"
-        subtitle="Get instant AI-powered assessment of your interpretation skills with detailed feedback on accuracy, fluency, and medical terminology."
-      />
       {/* Hero Section with Q&A Bot */}
       <section className="py-20 bg-gradient-subtle">
         <div className="container mx-auto px-6 text-center">
+          <Badge className="mb-6 bg-primary/10 text-primary border-primary/20">
+            Addressing Pain Point #4: Inaccessible Professional Development
+          </Badge>
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 gradient-text">
+            InterpreBot
+          </h1>
+          <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
+            Professional development shouldn't cost $100s-$1000s or require guesswork. As working interpreters, we know the struggle. InterpreBot provides instant AI-powered assessment of your interpretation skills with detailed, personalized feedback—because you deserve to know exactly where you stand and how to improve.
+          </p>
+          <div className="glass p-6 rounded-lg max-w-2xl mx-auto mb-8">
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              💡 <strong>Why We Built This:</strong> We've experienced the frustration of expensive courses with minimal support. We're working interpreters building tools that we wish existed—affordable, accessible, and actually helpful. This is our mission: to be a lifeline for interpreters like us.
+            </p>
+          </div>
+
           {/* Q&A Interface */}
           <Card className="glass border-border/50 max-w-2xl mx-auto mb-8">
             <CardHeader>
@@ -77,7 +63,7 @@ const InterpreBot = () => {
                 />
                 <Button onClick={() => setShowChat(true)}>Ask</Button>
               </div>
-
+              
               <div className="space-y-2">
                 <p className="text-sm text-muted-foreground text-left">Quick questions:</p>
                 <div className="flex flex-wrap gap-2">
@@ -128,9 +114,70 @@ const InterpreBot = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, index) => (
-              <FeatureCard key={index} {...feature} />
-            ))}
+            <Card className="glass border-border/50 hover:border-primary/50 transition-all duration-300">
+              <CardHeader>
+                <Brain className="w-12 h-12 text-primary mb-4" />
+                <CardTitle>Cognitive Analysis</CardTitle>
+                <CardDescription>
+                  Assess cognitive load, processing speed, and mental agility during interpretation.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="glass border-border/50 hover:border-primary/50 transition-all duration-300">
+              <CardHeader>
+                <Target className="w-12 h-12 text-primary mb-4" />
+                <CardTitle>Accuracy Metrics</CardTitle>
+                <CardDescription>
+                  Measure precision in terminology, context preservation, and cultural adaptation.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="glass border-border/50 hover:border-primary/50 transition-all duration-300">
+              <CardHeader>
+                <BarChart className="w-12 h-12 text-primary mb-4" />
+                <CardTitle>Performance Tracking</CardTitle>
+                <CardDescription>
+                  Monitor progress with detailed analytics and improvement suggestions.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="glass border-border/50 hover:border-primary/50 transition-all duration-300">
+              <CardHeader>
+                <Users className="w-12 h-12 text-primary mb-4" />
+                <CardTitle>Peer Comparison</CardTitle>
+                <CardDescription>
+                  Compare your performance with industry standards and peer benchmarks.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Assessment Dashboard Preview */}
+      <section className="py-20">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              Your Personalized Dashboard
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Visualize your progress and get actionable insights.
+            </p>
+          </div>
+          <div className="max-w-4xl mx-auto">
+            <Card className="glass border-border/50">
+              <CardContent className="p-4">
+                <img
+                  src={interpreHubMockup}
+                  alt="InterpreBot Assessment Dashboard"
+                  className="w-full rounded-lg"
+                />
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
@@ -246,6 +293,35 @@ const InterpreBot = () => {
               Start Your Journey Now
             </Button>
           </div>
+        </div>
+      </section>
+
+      {/* Mission & Collaboration CTA */}
+      <section className="py-20">
+        <div className="container mx-auto px-6">
+          <Card className="glass border-primary/20 max-w-4xl mx-auto">
+            <CardContent className="p-8 md:p-12 text-center space-y-6">
+              <h2 className="text-3xl font-bold">InterpreLab: A Lifeline for Interpreters</h2>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                We're not just a platform—we're working interpreters who've lived through every challenge you face. We're passionate about being conduits of information and helping people in vulnerable situations. These pain points affect us too, and we're using our skills to lighten the load. But we can't do it alone.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+                <Link to="/contact">
+                  <Button size="lg" variant="hero">
+                    Collaborate With Us
+                  </Button>
+                </Link>
+                <Link to="/interprelink">
+                  <Button size="lg" variant="glass">
+                    Join InterpreLink Community
+                  </Button>
+                </Link>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Want to discuss partnerships or broaden our reach? We're connected to this field on a deeper level—let's work together.
+              </p>
+            </CardContent>
+          </Card>
         </div>
       </section>
     </Layout>

@@ -1,17 +1,13 @@
+import { callRecords } from '@/lib/data';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
 import { Button } from '../ui/button';
 import { Phone, Video } from 'lucide-react';
-import type { CallRecord } from '@/lib/types';
 
-interface RecentCallsProps {
-  calls: CallRecord[];
-}
-
-export default function RecentCalls({ calls }: RecentCallsProps) {
-  const recentCalls = calls.slice(0, 5);
+export default function RecentCalls() {
+  const recentCalls = callRecords.slice(0, 5);
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
   };
@@ -41,12 +37,12 @@ export default function RecentCalls({ calls }: RecentCallsProps) {
           <TableBody>
             {recentCalls.map((call) => (
               <TableRow key={call.id}>
-                <TableCell className="capitalize">
-                  {call.interpretation_type === 'VRI'
+                <TableCell>
+                  {call.callType === 'VRI'
                     ? <Video className="h-4 w-4 text-muted-foreground" aria-label="VRI" />
                     : <Phone className="h-4 w-4 text-muted-foreground" aria-label="OPI" />}
                 </TableCell>
-                <TableCell>{new Date(call.start_time).toLocaleString()}</TableCell>
+                <TableCell>{call.startTime.toLocaleString()}</TableCell>
                 <TableCell>{call.duration} min</TableCell>
                 <TableCell>
                   <Badge variant="secondary">{call.platform}</Badge>

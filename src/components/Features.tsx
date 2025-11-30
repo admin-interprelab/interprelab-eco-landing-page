@@ -1,55 +1,105 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpen, Link, Bot, BarChart, UserCheck } from 'lucide-react';
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { 
+  Monitor,
+  TrendingUp,
+  BookOpen,
+  Shield,
+  Users,
+  Database,
+  Clock,
+  Award
+} from "lucide-react";
 
-const features = [
-  {
-    icon: <BookOpen className="h-12 w-12 text-primary" />,
-    title: 'InterpreStudy',
-    description: 'Master new terminology with our spaced repetition learning tool.',
-  },
-  {
-    icon: <Link className="h-12 w-12 text-primary" />,
-    title: 'InterpreLinks',
-    description: 'Connect with your peers to share experiences and build your professional network.',
-  },
-  {
-    icon: <Bot className="h-12 w-12 text-primary" />,
-    title: 'InterpreBot',
-    description: 'Practice your skills in a low-pressure environment with our AI-powered chatbot.',
-  },
-  {
-    icon: <BarChart className="h-12 w-12 text-primary" />,
-    title: 'Language Assessment',
-    description: 'Assess your language skills and identify areas for improvement.',
-  },
-  {
-    icon: <UserCheck className="h-12 w-12 text-primary" />,
-    title: 'InterpreCoach',
-    description: 'Get personalized feedback on your performance with our AI-powered coaching tool. InterpreCoach uses AI to analyze recordings of interpreting sessions and provides feedback on a variety of factors, such as accuracy, fluency, and terminology. This is a huge step forward from the current industry standard of once-every-six-months human overview, which does not in any way resemble an interpreter\'s true overall score.',
-  },
-];
+export const Features = () => {
+  const { ref, isVisible } = useScrollAnimation({ threshold: 0.2 });
 
-export function Features() {
+  const features = [
+    {
+      icon: Monitor,
+      title: "Continuous Quality Assurance",
+      description: "Real-time monitoring combines AI precision with human expertise for comprehensive quality control."
+    },
+    {
+      icon: TrendingUp,
+      title: "Performance Analytics",
+      description: "Track terminology fidelity, ethical decisions, and get session-based performance reports."
+    },
+    {
+      icon: BookOpen,
+      title: "Resource Management",
+      description: "Upload, test, and refine language resources. Integrate glossaries and experiment with custom models."
+    },
+    {
+      icon: Shield,
+      title: "Data Security & Privacy",
+      description: "Enterprise-grade security with HIPAA compliance and SOC 2 certification for sensitive environments."
+    },
+    {
+      icon: Users,
+      title: "Collaborative Platform",
+      description: "Space for linguists, developers, and educators to share insights and best practices."
+    },
+    {
+      icon: Database,
+      title: "Conversation Analytics",
+      description: "Comprehensive dashboards track logs, usage statistics, and model performance metrics."
+    },
+    {
+      icon: Clock,
+      title: "Real-time Feedback",
+      description: "Instant feedback during sessions with adaptive scenarios and AI-driven simulations."
+    },
+    {
+      icon: Award,
+      title: "Certification Support",
+      description: "Structured preparation for professional certification with graded assessments."
+    }
+  ];
+
   return (
-    <section className="py-20">
-      <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center">
-          Everything You Need to Succeed
-        </h2>
-        <p className="mt-4 text-lg text-muted-foreground text-center">
-          Interprelab is a comprehensive suite of tools that helps interpreters to be more accurate, efficient, and confident.
-        </p>
-        <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {features.map((feature) => (
-            <Card key={feature.title}>
-              <CardHeader>
-                <div className="flex items-center justify-center h-20 w-20 rounded-full bg-primary/10 mx-auto">
-                  {feature.icon}
+    <section className="py-20 px-6 relative" ref={ref} aria-labelledby="features-heading">
+      <div 
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url('/src/assets/tech-background.jpg')" }}
+        aria-hidden="true"
+      />
+      <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/90 to-background/95" />
+      
+      <div className="container mx-auto relative z-10">
+        <div className={`text-center mb-16 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <Badge className="bg-gradient-primary border-0 text-white px-4 py-2 mb-4">
+            Platform Capabilities
+          </Badge>
+          <h2 id="features-heading" className="text-3xl md:text-5xl font-bold text-white mb-6">
+            Comprehensive Features for Professional Interpreters
+          </h2>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            From continuous monitoring to collaborative learning, InterpreLab provides 
+            everything interpreters need to excel in high-stakes environments.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {features.map((feature, index) => (
+            <Card 
+              key={feature.title}
+              className={`bg-card/50 border-border/50 backdrop-blur-sm hover-lift group transition-all duration-500 ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
+              style={{ 
+                transitionDelay: isVisible ? `${index * 100}ms` : '0ms'
+              }}
+            >
+              <CardContent className="p-6 text-center space-y-4">
+                <div className="w-12 h-12 bg-gradient-primary rounded-lg flex items-center justify-center mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                  <feature.icon className="w-6 h-6 text-white" aria-hidden="true" />
                 </div>
-              </CardHeader>
-              <CardContent className="text-center">
-                <CardTitle>{feature.title}</CardTitle>
-                <p className="mt-2 text-muted-foreground">
+                <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors duration-300">
+                  {feature.title}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
                   {feature.description}
                 </p>
               </CardContent>
@@ -59,4 +109,4 @@ export function Features() {
       </div>
     </section>
   );
-}
+};

@@ -166,7 +166,7 @@ const SignIn = () => {
   };
 
   return (
-    <Layout showInterpreBot={false}>
+    <Layout>
       {/* Hero Section */}
       <section className="py-20 bg-gradient-subtle">
         <div className="container mx-auto px-6">
