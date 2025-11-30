@@ -59,7 +59,7 @@ const Waitlist = () => {
         lastName: "",
         email: "",
       });
-    } catch (error: any) {
+    } catch (error: Error) {
       if (error.errors) {
         // Zod validation errors
         toast({

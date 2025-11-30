@@ -6,7 +6,6 @@ export interface IndexPageProps {
   className?: string;
   customContent?: {
     showHero?: boolean;
-    showVideoSection?: boolean;
     showProductShowcase?: boolean;
     showStats?: boolean;
     showTestimonials?: boolean;
@@ -15,7 +14,6 @@ export interface IndexPageProps {
 
 export interface MainContentProps {
   showHero?: boolean;
-  showVideoSection?: boolean;
   showProductShowcase?: boolean;
   showStats?: boolean;
   showTestimonials?: boolean;

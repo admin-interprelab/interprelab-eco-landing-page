@@ -314,8 +314,8 @@ export const useTestimonialsAnalytics = () => {
     setViewedTestimonials(prev => new Set([...prev, testimonialId]));
 
     // Track with analytics service
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'testimonial_viewed', {
+    if (typeof window !== 'undefined' && (window as unknown).gtag) {
+      (window as unknown).gtag('event', 'testimonial_viewed', {
         testimonial_id: testimonialId,
       });
     }
@@ -329,8 +329,8 @@ export const useTestimonialsAnalytics = () => {
     }));
 
     // Track with analytics service
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', `testimonial_${type}`, {
+    if (typeof window !== 'undefined' && (window as unknown).gtag) {
+      (window as unknown).gtag('event', `testimonial_${type}`, {
         testimonial_id: testimonialId,
       });
     }

@@ -20,7 +20,7 @@ const InterpreCoach = () => {
                 InterpreCoach
               </h1>
               <p className="text-xl text-muted-foreground mb-8">
-                Chrome extension providing real-time terminology support and coaching during live interpretation sessions.
+                Chrome extension providing real-time terminology support and coaching during live interpretation sessions. InterpreCoach uses AI to analyze recordings of interpreting sessions and provides feedback on a variety of factors, such as accuracy, fluency, and terminology. This is a huge step forward from the current industry standard of once-every-six-months human overview, which does not in any way resemble an interpreter's true overall score.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button size="lg" className="glass-button">

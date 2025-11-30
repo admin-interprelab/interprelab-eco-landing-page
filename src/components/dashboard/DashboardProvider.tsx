@@ -54,63 +54,13 @@ export const DashboardProvider = ({
     setData(prev => ({ ...prev, isLoading: true }));
 
     try {
-      // Try to load data from database first
-      let stats = { totalCalls: 0, totalMinutes: 0, totalEarnings: 0 };
-      let weeklyData: WeeklyData[] = [];
-      let callTypeStats = { vri: 0, opi: 0 };
-      let recentCalls: CallRecord[] = [];
+      // Simulate API delay for realistic loading state
+      await new Promise(resolve => setTimeout(resolve, 500));
 
-      try {
-        const { supabase } = await import('@/integrations/supabase/client');
-        const { data: callLogs, error } = await supabase
-          .from('call_logs')
-          .select('*')
-          .order('created_at', { ascending: false })
-          .limit(100);
-
-        if (!error && callLogs && callLogs.length > 0) {
-          // Convert database records to CallRecord format
-          recentCalls = callLogs.slice(0, 10).map(log => ({
-            id: log.id,
-            startTime: new Date(log.start_time || log.created_at),
-            endTime: new Date(log.end_time || log.created_at),
-            duration: log.duration_minutes || 0,
-            platform: (log.platform || 'Platform A') as CallRecord['platform'],
-            callType: (log.call_type?.toUpperCase() || 'VRI') as CallRecord['callType'],
-            earnings: log.earnings || 0,
-          }));
-
-          // Calculate stats from database data
-          stats = {
-            totalCalls: callLogs.length,
-            totalMinutes: callLogs.reduce((sum, log) => sum + (log.duration_minutes || 0), 0),
-            totalEarnings: callLogs.reduce((sum, log) => sum + (log.earnings || 0), 0),
-          };
-
-          // Calculate call type stats
-          callTypeStats = callLogs.reduce((acc, log) => {
-            if (log.call_type?.toLowerCase() === 'vri') {
-              acc.vri += 1;
-            } else {
-              acc.opi += 1;
-            }
-            return acc;
-          }, { vri: 0, opi: 0 });
-
-          // Generate basic weekly data (simplified for now)
-          weeklyData = getWeeklyData(); // Use mock for now, can be enhanced later
-        }
-      } catch (dbError) {
-        console.log('Database not available, using mock data');
-      }
-
-      // Fall back to mock data if no database data
-      if (stats.totalCalls === 0) {
-        stats = getAggregatedStats();
-        weeklyData = getWeeklyData();
-        callTypeStats = getCallTypeStats();
-        recentCalls = callRecords.slice(0, 10);
-      }
+      const stats = getAggregatedStats();
+      const weeklyData = getWeeklyData();
+      const callTypeStats = getCallTypeStats();
+      const recentCalls = callRecords.slice(0, 10); // Get top 10 recent calls
 
       setData({
         stats,
@@ -121,10 +71,7 @@ export const DashboardProvider = ({
         lastUpdated: new Date(),
       });
     } catch (error) {
-      // Only log errors in development
-      if (import.meta.env.DEV) {
-        console.error('Failed to refresh dashboard data:', error);
-      }
+      console.error('Failed to refresh dashboard data:', error);
       setData(prev => ({ ...prev, isLoading: false }));
     }
   }, []);

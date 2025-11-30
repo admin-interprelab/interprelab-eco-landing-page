@@ -76,7 +76,7 @@ const SignIn = () => {
         });
         navigate('/');
       }
-    } catch (error: any) {
+    } catch (error: Error) {
       if (error.errors) {
         // Zod validation errors
         toast({
@@ -145,7 +145,7 @@ const SignIn = () => {
           confirmPassword: "",
         });
       }
-    } catch (error: any) {
+    } catch (error: Error) {
       if (error.errors) {
         // Zod validation errors
         toast({

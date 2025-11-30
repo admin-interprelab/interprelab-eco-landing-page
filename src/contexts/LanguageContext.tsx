@@ -11,7 +11,7 @@ interface Translations {
 const translations: Translations = {
   en: {
     solutions: 'Solutions',
-    interpreLink: 'InterpreLink',
+    interpreHub: 'InterpreHub',
     dashboard: 'Dashboard',
     settings: 'Settings',
     resources: 'Resources',
@@ -22,7 +22,7 @@ const translations: Translations = {
   },
   es: {
     solutions: 'Soluciones',
-    interpreLink: 'InterpreLink',
+    interpreHub: 'InterpreHub',
     dashboard: 'Panel',
     settings: 'Configuración',
     resources: 'Recursos',
@@ -33,7 +33,7 @@ const translations: Translations = {
   },
   fr: {
     solutions: 'Solutions',
-    interpreLink: 'InterpreLink',
+    interpreHub: 'InterpreHub',
     dashboard: 'Tableau de bord',
     settings: 'Paramètres',
     resources: 'Ressources',

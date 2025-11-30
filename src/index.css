@@ -226,36 +226,3 @@ All colors MUST be HSL for consistency and theming.
     transform: translateY(-10px);
   }
 }
-
-/* Dashboard Layout Fixes */
-@layer components {
-  .dashboard-grid {
-    display: grid;
-    gap: 1.5rem;
-    grid-template-columns: 1fr;
-  }
-
-  @media (min-width: 1024px) {
-    .dashboard-grid {
-      grid-template-columns: 2fr 1fr;
-    }
-  }
-
-  .dashboard-card {
-    position: relative;
-    z-index: 1;
-    overflow: hidden;
-  }
-
-  .chart-container {
-    position: relative;
-    width: 100%;
-    min-height: 200px;
-  }
-
-  .insights-container {
-    position: relative;
-    z-index: 2;
-    margin-top: 1.5rem;
-  }
-}

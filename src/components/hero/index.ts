@@ -3,7 +3,6 @@
  */
 
 // Components
-export { Hero } from '../Hero';
 export { HeroBadge } from './HeroBadge';
 export { HeroHeadline } from './HeroHeadline';
 export { HeroActions } from './HeroActions';
