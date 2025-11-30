@@ -247,7 +247,7 @@ export const isInViewport = (element: HTMLElement): boolean => {
 /**
  * Debounce function
  */
-export const debounce = <T extends (...args: any[]) => any>(
+export const debounce = <T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number
 ): ((...args: Parameters<T>) => void) => {

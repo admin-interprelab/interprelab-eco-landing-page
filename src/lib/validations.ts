@@ -57,7 +57,6 @@ export const signUpSchema = z.object({
     .max(255, { message: "Email must be less than 255 characters" }),
   password: z.string()
     .min(8, { message: "Password must be at least 8 characters" })
-    .max(128, { message: "Password must be less than 128 characters" })
     .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
     .regex(/[0-9]/, { message: "Password must contain at least one number" })
     .regex(/[^A-Za-z0-9]/, { message: "Password must contain at least one special character" }),

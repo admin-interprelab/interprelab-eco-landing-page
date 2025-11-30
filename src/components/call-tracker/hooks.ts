@@ -74,8 +74,8 @@ export const CallTrackerProvider = ({
     pausedTimeRef.current = 0;
 
     // Track analytics
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', 'call_started', {
+    if (typeof window !== 'undefined' && (window as unknown).gtag) {
+      (window as unknown).gtag('event', 'call_started', {
         session_id: session.id,
       });
     }
@@ -101,8 +101,8 @@ export const CallTrackerProvider = ({
 
     // Track analytics
     const analyticsData = generateCallAnalytics(completedSession, userSettings);
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', analyticsData.event, analyticsData);
+    if (typeof window !== 'undefined' && (window as unknown).gtag) {
+      (window as unknown).gtag('event', analyticsData.event, analyticsData);
     }
 
     // Here you would typically save to database

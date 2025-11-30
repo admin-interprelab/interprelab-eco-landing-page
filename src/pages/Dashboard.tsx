@@ -1,7 +1,18 @@
-import { Dashboard } from '@/components/dashboard';
+/**
+ * Refactored Dashboard Page
+ * Now uses modular architecture for better maintainability
+ */
 
-const DashboardPage = () => {
-  return <Dashboard />;
+import { Dashboard as ModularDashboard } from '@/components/dashboard-page';
+
+/**
+ * Dashboard Page Component
+ *
+ * Wrapper component that maintains backward compatibility
+ * while using the new modular architecture
+ */
+const Dashboard = () => {
+  return <ModularDashboard />;
 };
 
-export default DashboardPage;
+export default Dashboard;

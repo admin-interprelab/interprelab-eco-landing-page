@@ -56,8 +56,8 @@ export const useTeamMemberInteractions = () => {
     setSelectedMember(member);
 
     // Track analytics
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', 'team_member_clicked', {
+    if (typeof window !== 'undefined' && (window as unknown).gtag) {
+      (window as unknown).gtag('event', 'team_member_clicked', {
         member_id: member.id,
         member_name: member.name,
         member_role: member.role,
@@ -93,8 +93,8 @@ export const useCompanyValuesInteractions = () => {
     setSelectedValue(value);
 
     // Track analytics
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', 'company_value_clicked', {
+    if (typeof window !== 'undefined' && (window as unknown).gtag) {
+      (window as unknown).gtag('event', 'company_value_clicked', {
         value_id: value.id,
         value_title: value.title,
       });
@@ -195,8 +195,8 @@ export const useAboutAnalytics = () => {
     }));
 
     // Track with analytics service
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', 'about_section_viewed', {
+    if (typeof window !== 'undefined' && (window as unknown).gtag) {
+      (window as unknown).gtag('event', 'about_section_viewed', {
         section_id: sectionId,
       });
     }
@@ -210,8 +210,8 @@ export const useAboutAnalytics = () => {
     }));
 
     // Track with analytics service
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', 'about_interaction', {
+    if (typeof window !== 'undefined' && (window as unknown).gtag) {
+      (window as unknown).gtag('event', 'about_interaction', {
         interaction_type: type,
         item_id: itemId,
       });

@@ -318,9 +318,9 @@ export default function AIInsights({
   }
 
   return (
-    <Card className="w-full">
+    <Card className="h-full flex flex-col">
       <InsightsHeader />
-      <CardContent className="flex flex-col justify-center space-y-4 min-h-[200px]">
+      <CardContent className="flex-grow flex flex-col justify-center space-y-4">
         <InsightDisplay insight={currentInsight} isVisible={true} />
         <RotationIndicator
           currentIndex={currentIndex}

@@ -38,9 +38,17 @@ export const Navigation = ({
 
   const handleNavItemClick = (item: NavItem | NavSubItem) => {
     // Track analytics
+    const analyticsData = generateNavAnalytics(item, 'desktop');
+    trackClick(item.href || '', item.label, 'desktop');
+
+    // Call custom handler if provided
+    if (onNavItemClick) {
+      onNavItemClick(item);
+    }
+
     // Track with analytics service
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', analyticsData.event, analyticsData);
+    if (typeof window !== 'undefined' && (window as unknown).gtag) {
+      (window as unknown).gtag('event', analyticsData.event, analyticsData);
     }
   };
 
@@ -55,8 +63,8 @@ export const Navigation = ({
     }
 
     // Track with analytics service
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', analyticsData.event, analyticsData);
+    if (typeof window !== 'undefined' && (window as unknown).gtag) {
+      (window as unknown).gtag('event', analyticsData.event, analyticsData);
     }
   };
 
