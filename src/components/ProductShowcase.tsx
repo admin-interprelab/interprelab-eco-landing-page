@@ -44,7 +44,7 @@ export const ProductShowcase = () => {
   ];
 
   return (
-    <section className="py-32 px-6 relative">
+    <section className="py-32 px-6 relative" id="solutions">
       <div className="container mx-auto relative z-10">
         {/* Header - Simplified */}
         <div className="text-center mb-20 space-y-4 animate-fade-in">
@@ -52,9 +52,9 @@ export const ProductShowcase = () => {
             Complete Ecosystem
           </Badge>
           <h2 className="text-5xl md:text-6xl font-bold">
-            <span className="text-foreground">Three Tools.</span>
+            <span className="text-foreground">Our Solutions.</span>
             <br />
-            <span className="bg-gradient-primary bg-clip-text text-transparent">One Platform.</span>
+            <span className="bg-gradient-primary bg-clip-text text-transparent">Built For You.</span>
           </h2>
         </div>
 
@@ -65,6 +65,7 @@ export const ProductShowcase = () => {
             return (
               <Card 
                 key={product.id}
+                id={`${product.id}-section`}
                 className="glass border-border/30 hover-lift group transition-all duration-300 hover:border-primary/50"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
