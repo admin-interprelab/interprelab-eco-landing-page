@@ -4,6 +4,8 @@ import { StoryDrivenVideoHero } from '@/components/landing/StoryDrivenVideoHero'
 import { ProductShowcase } from '@/components/ProductShowcase';
 import { WellnessSection } from '@/components/sections/WellnessSection';
 import { QAFeedbackSection } from '@/components/sections/QAFeedbackSection';
+import { InterpreTrackSection } from '@/components/features/InterpreTrack/InterpreTrackSection';
+import { InterpreStudySection } from '@/components/features/InterpreStudy/InterpreStudySection';
 import { FAQSection } from '@/components/sections/FAQ/FAQSection';
 import { StatsSection } from '@/components/StatsSection';
 import { Testimonials } from '@/components/Testimonials';
@@ -150,6 +152,12 @@ const Index = () => {
 
         {/* QA Feedback System */}
         <QAFeedbackSection />
+
+        {/* Business Management */}
+        <InterpreTrackSection />
+
+        {/* Training Hub */}
+        <InterpreStudySection />
 
         {/* FAQ Section */}
         <FAQSection />
