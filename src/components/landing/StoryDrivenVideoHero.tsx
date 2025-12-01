@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { Play } from 'lucide-react';
 
 interface DataOverlay {
   stat: string;
@@ -41,6 +42,7 @@ export const StoryDrivenVideoHero = ({
   const [textVisible, setTextVisible] = useState(false);
   const [scenarioVisible, setScenarioVisible] = useState(false);
   const [hookVisible, setHookVisible] = useState(false);
+  const [videoError, setVideoError] = useState(false);
 
   const getEmotionalStyles = () => {
     const styles = {
@@ -50,6 +52,16 @@ export const StoryDrivenVideoHero = ({
       determined: 'from-green-500/20 to-blue-500/20 border-green-500/30',
     };
     return styles[emotionalTone];
+  };
+
+  const getBackgroundGradient = () => {
+    const gradients = {
+      urgent: 'from-red-900/40 via-orange-900/30 to-black',
+      somber: 'from-gray-900/40 via-blue-900/30 to-black',
+      frustrated: 'from-yellow-900/40 via-red-900/30 to-black',
+      determined: 'from-green-900/40 via-blue-900/30 to-black',
+    };
+    return gradients[emotionalTone];
   };
 
   const getCtaGlowClass = () => {
@@ -95,18 +107,21 @@ export const StoryDrivenVideoHero = ({
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          video.play().catch((error) => {
-            console.log('Video play failed:', error);
-            video.muted = true;
-            video.play().catch((e) => console.log('Retry failed:', e));
-          });
+          if (!videoError) {
+            video.play().catch((error) => {
+              console.log('Video play failed, using fallback background');
+              setVideoError(true);
+            });
+          }
 
           // Staggered text animations
           setTimeout(() => setTextVisible(true), 800);
           setTimeout(() => setScenarioVisible(true), 1500);
           setTimeout(() => setHookVisible(true), 3000);
         } else {
-          video.pause();
+          if (!videoError) {
+            video.pause();
+          }
           setTextVisible(false);
           setScenarioVisible(false);
           setHookVisible(false);
@@ -119,7 +134,7 @@ export const StoryDrivenVideoHero = ({
     return () => {
       observer.disconnect();
     };
-  }, []);
+  }, [videoError]);
 
   return (
     <section
@@ -128,18 +143,29 @@ export const StoryDrivenVideoHero = ({
       className="h-screen w-full relative snap-start snap-always overflow-hidden"
       aria-label={`Pain point ${index + 1}: ${title}`}
     >
-      {/* Full-screen video background */}
-      <video
-        ref={videoRef}
-        className="absolute inset-0 w-full h-full object-cover"
-        playsInline
-        muted
-        loop
-        preload="auto"
-        aria-hidden="true"
-      >
-        <source src={videoSrc} type="video/mp4" />
-      </video>
+      {/* Video background or gradient fallback */}
+      {!videoError ? (
+        <video
+          ref={videoRef}
+          className="absolute inset-0 w-full h-full object-cover"
+          playsInline
+          muted
+          loop
+          preload="auto"
+          aria-hidden="true"
+          onError={() => setVideoError(true)}
+        >
+          <source src={videoSrc} type="video/mp4" />
+        </video>
+      ) : (
+        <div
+          className={cn(
+            'absolute inset-0 w-full h-full bg-gradient-to-br',
+            getBackgroundGradient()
+          )}
+          aria-hidden="true"
+        />
+      )}
 
       {/* Dark overlay with gradient */}
       <div
