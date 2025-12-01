@@ -12,54 +12,55 @@ import { Link } from "react-router-dom";
 const InterpreCoach = () => {
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="py-20 bg-gradient-subtle">
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <Badge className="mb-6 bg-primary/10 text-primary border-primary/20">
-                Addressing Pain Points #4 & #5: Real-Time Support & Psychological Relief
-              </Badge>
-              <h1 className="text-4xl md:text-6xl font-bold mb-6 gradient-text">
+      <div className="container mx-auto px-4 py-12">
+        {/* Hero Section */}
+        <div
+          className="text-center mb-16 animate-fade-in py-20 px-4 rounded-3xl bg-cover bg-center relative"
+          style={{ backgroundImage: `url(${medicalTeam})` }}
+        >
+          <div className="absolute inset-0 bg-black/70 rounded-3xl" />
+          <div className="relative z-10">
+            <Badge className="mb-6 bg-primary/10 text-primary border-primary/20">
+              Addressing Pain Points #4 & #5: Real-Time Support & Psychological Relief
+            </Badge>
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Zap className="w-12 h-12 text-primary" />
+              <h1 className="text-4xl md:text-6xl font-bold bg-gradient-primary bg-clip-text text-transparent">
                 InterpreCoach
               </h1>
-              <p className="text-xl text-muted-foreground mb-8">
-                We know the cognitive overload of live sessions—searching for terminology while maintaining accuracy, the isolation of working alone with no backup. InterpreCoach is your AI companion during calls, reducing stress and providing the support system that's been missing from our profession.
-              </p>
-              <div className="glass p-4 rounded-lg mb-6">
-                <p className="text-sm text-muted-foreground">
-                  💙 <strong>Built by interpreters, for interpreters.</strong> We've felt the strain of high-stakes calls with no safety net. This extension lightens your cognitive load so you can focus on what matters: delivering compassionate, accurate interpretation.
-                </p>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="glass-button">
-                  <Chrome className="w-5 h-5 mr-2" />
-                  Meet InterpreCoach
-                </Button>
-                <Link to="/interprebot">
-                  <Button variant="outline" size="lg">
-                    Take the Assessment
-                    <ArrowRight className="w-5 h-5 ml-2" />
-                  </Button>
-                </Link>
-              </div>
             </div>
-            <div className="relative">
-              <div className="glass rounded-2xl p-8 border border-border/50">
-                <img
-                  src={interpreHubMockup}
-                  alt="InterpreCoach Extension Preview"
-                  className="w-full rounded-lg shadow-2xl"
-                />
-              </div>
+            <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
+              We know the cognitive overload of live sessions—searching for terminology while maintaining accuracy, the isolation of working alone with no backup. InterpreCoach is your AI companion during calls, reducing stress and providing the support system that's been missing from our profession.
+            </p>
+            <div className="glass p-6 rounded-lg max-w-2xl mx-auto mb-8">
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                💙 <strong>Built by interpreters, for interpreters.</strong> We've felt the strain of high-stakes calls with no safety net. This extension lightens your cognitive load so you can focus on what matters: delivering compassionate, accurate interpretation.
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button size="lg" className="glass-button">
+                <Chrome className="w-5 h-5 mr-2" />
+                Meet InterpreCoach
+              </Button>
+              <Link to="/interprebot">
+                <Button variant="outline" size="lg">
+                  Take the Assessment
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+              </Link>
+            </div>
+            <div className="mt-12 glass rounded-2xl p-4 border border-border/50 max-w-4xl mx-auto">
+              <img
+                src={interpreHubMockup}
+                alt="InterpreCoach Extension Preview"
+                className="w-full rounded-lg shadow-2xl"
+              />
             </div>
           </div>
         </div>
-      </section>
 
-      {/* Features Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-6">
+        {/* Features Section */}
+        <section className="py-12">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
               Key Features
@@ -136,12 +137,10 @@ const InterpreCoach = () => {
               </CardHeader>
             </Card>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Getting Started Timeline */}
-      <section className="py-20 bg-gradient-subtle">
-        <div className="container mx-auto px-6">
+        {/* Getting Started Timeline */}
+        <section className="py-20 bg-gradient-subtle rounded-3xl">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
               Get Started in 3 Steps
@@ -243,12 +242,10 @@ const InterpreCoach = () => {
               Get InterpreCoach
             </Button>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Mission & Collaboration CTA */}
-      <section className="py-20">
-        <div className="container mx-auto px-6">
+        {/* Mission & Collaboration CTA */}
+        <section className="py-20">
           <Card className="glass border-primary/20 max-w-4xl mx-auto">
             <CardContent className="p-8 md:p-12 text-center space-y-6">
               <h2 className="text-3xl font-bold">We're In This Together</h2>
@@ -272,8 +269,8 @@ const InterpreCoach = () => {
               </p>
             </CardContent>
           </Card>
-        </div>
-      </section>
+        </section>
+      </div>
     </Layout>
   );
 };

@@ -2,6 +2,7 @@ import interpreHubMockup from "@/assets/interpre-hub-mockup.png";
 import aiAssessment from "@/assets/ai-assessment.png";
 import studyingLearning from "@/assets/studying-learning.jpg";
 import communitySupport from "@/assets/community-support.jpg";
+import techBackground from "@/assets/tech-background.jpg";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -25,88 +26,95 @@ const InterpreBot = () => {
 
   return (
     <Layout>
-      {/* Hero Section with Q&A Bot */}
-      <section className="py-20 bg-gradient-subtle">
-        <div className="container mx-auto px-6 text-center">
-          <Badge className="mb-6 bg-primary/10 text-primary border-primary/20">
-            Addressing Pain Point #4: Inaccessible Professional Development
-          </Badge>
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 gradient-text">
-            InterpreBot
-          </h1>
-          <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-            Professional development shouldn't cost $100s-$1000s or require guesswork. As working interpreters, we know the struggle. InterpreBot provides instant AI-powered assessment of your interpretation skills with detailed, personalized feedback—because you deserve to know exactly where you stand and how to improve.
-          </p>
-          <div className="glass p-6 rounded-lg max-w-2xl mx-auto mb-8">
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              💡 <strong>Why We Built This:</strong> We've experienced the frustration of expensive courses with minimal support. We're working interpreters building tools that we wish existed—affordable, accessible, and actually helpful. This is our mission: to be a lifeline for interpreters like us.
+      <div className="container mx-auto px-4 py-12">
+        {/* Hero Section */}
+        <div
+          className="text-center mb-16 animate-fade-in py-20 px-4 rounded-3xl bg-cover bg-center relative"
+          style={{ backgroundImage: `url(${techBackground})` }}
+        >
+          <div className="absolute inset-0 bg-black/70 rounded-3xl" />
+          <div className="relative z-10">
+            <Badge className="mb-6 bg-primary/10 text-primary border-primary/20">
+              Addressing Pain Point #4: Inaccessible Professional Development
+            </Badge>
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Brain className="w-12 h-12 text-primary" />
+              <h1 className="text-4xl md:text-6xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+                InterpreBot
+              </h1>
+            </div>
+            <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
+              Professional development shouldn't cost $100s-$1000s or require guesswork. As working interpreters, we know the struggle. InterpreBot provides instant AI-powered assessment of your interpretation skills with detailed, personalized feedback—because you deserve to know exactly where you stand and how to improve.
             </p>
-          </div>
+            <div className="glass p-6 rounded-lg max-w-2xl mx-auto mb-8">
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                💡 <strong>Why We Built This:</strong> We've experienced the frustration of expensive courses with minimal support. We're working interpreters building tools that we wish existed—affordable, accessible, and actually helpful. This is our mission: to be a lifeline for interpreters like us.
+              </p>
+            </div>
 
-          {/* Q&A Interface */}
-          <Card className="glass border-border/50 max-w-2xl mx-auto mb-8">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 justify-center">
-                <MessageSquare className="w-5 h-5" />
-                Ask InterpreBot
-              </CardTitle>
-              <CardDescription>
-                Select a question or ask your own
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex gap-2">
-                <Input
-                  placeholder="Ask me anything about InterpreBot..."
-                  value={userQuestion}
-                  onChange={(e) => setUserQuestion(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') setShowChat(true);
-                  }}
-                />
-                <Button onClick={() => setShowChat(true)}>Ask</Button>
-              </div>
-              
-              <div className="space-y-2">
-                <p className="text-sm text-muted-foreground text-left">Quick questions:</p>
-                <div className="flex flex-wrap gap-2">
-                  {commonQuestions.map((q) => (
-                    <Button
-                      key={q}
-                      variant="outline"
-                      size="sm"
-                      onClick={() => {
-                        setUserQuestion(q);
-                        setShowChat(true);
-                      }}
-                      className="text-xs"
-                    >
-                      {q}
-                    </Button>
-                  ))}
+            {/* Q&A Interface */}
+            <Card className="glass border-border/50 max-w-2xl mx-auto mb-8 text-left">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 justify-center">
+                  <MessageSquare className="w-5 h-5" />
+                  Ask InterpreBot
+                </CardTitle>
+                <CardDescription className="text-center">
+                  Select a question or ask your own
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex gap-2">
+                  <Input
+                    placeholder="Ask me anything about InterpreBot..."
+                    value={userQuestion}
+                    onChange={(e) => setUserQuestion(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') setShowChat(true);
+                    }}
+                  />
+                  <Button onClick={() => setShowChat(true)}>Ask</Button>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+                
+                <div className="space-y-2">
+                  <p className="text-sm text-muted-foreground text-left">Quick questions:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {commonQuestions.map((q) => (
+                      <Button
+                        key={q}
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setUserQuestion(q);
+                          setShowChat(true);
+                        }}
+                        className="text-xs"
+                      >
+                        {q}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="glass-button">
-              <Play className="w-5 h-5 mr-2" />
-              Take the Assessment
-            </Button>
-            <Link to="/interprecoach">
-              <Button variant="outline" size="lg">
-                Meet InterpreCoach
-                <ArrowRight className="w-5 h-5 ml-2" />
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button size="lg" className="glass-button">
+                <Play className="w-5 h-5 mr-2" />
+                Take the Assessment
               </Button>
-            </Link>
+              <Link to="/interprecoach">
+                <Button variant="outline" size="lg">
+                  Meet InterpreCoach
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
-      </section>
 
-      {/* Features Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-6">
+        {/* Features Section */}
+        <section className="py-12">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
               What We Measure
@@ -157,12 +165,10 @@ const InterpreBot = () => {
               </CardHeader>
             </Card>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Assessment Dashboard Preview */}
-      <section className="py-20">
-        <div className="container mx-auto px-6">
+        {/* Assessment Dashboard Preview */}
+        <section className="py-20">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
               Your Personalized Dashboard
@@ -182,12 +188,10 @@ const InterpreBot = () => {
               </CardContent>
             </Card>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Getting Started Timeline */}
-      <section className="py-20 bg-gradient-subtle">
-        <div className="container mx-auto px-6">
+        {/* Getting Started Timeline */}
+        <section className="py-20 bg-gradient-subtle rounded-3xl">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
               Get Started in 3 Steps
@@ -296,12 +300,10 @@ const InterpreBot = () => {
               Start Your Journey Now
             </Button>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Mission & Collaboration CTA */}
-      <section className="py-20">
-        <div className="container mx-auto px-6">
+        {/* Mission & Collaboration CTA */}
+        <section className="py-20">
           <Card className="glass border-primary/20 max-w-4xl mx-auto">
             <CardContent className="p-8 md:p-12 text-center space-y-6">
               <h2 className="text-3xl font-bold">InterpreLab: A Lifeline for Interpreters</h2>
@@ -325,8 +327,8 @@ const InterpreBot = () => {
               </p>
             </CardContent>
           </Card>
-        </div>
-      </section>
+        </section>
+      </div>
     </Layout>
   );
 };

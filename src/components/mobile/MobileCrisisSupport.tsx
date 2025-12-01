@@ -363,7 +363,7 @@ function PeerSupportTab({ connecting, setConnecting, onResourceAccess, currentEm
       experience: '8 years',
       location: 'California',
       responseTime: '~5 min',
-      avatar: '/api/placeholder/40/40'
+      avatar: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="40" height="40"%3E%3Crect fill="%239333ea" width="40" height="40"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="16" font-family="sans-serif"%3EMR%3C/text%3E%3C/svg%3E'
     },
     {
       id: 'peer-2',
@@ -373,7 +373,7 @@ function PeerSupportTab({ connecting, setConnecting, onResourceAccess, currentEm
       experience: '5 years',
       location: 'New York',
       responseTime: '~10 min',
-      avatar: '/api/placeholder/40/40'
+      avatar: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="40" height="40"%3E%3Crect fill="%2306b6d4" width="40" height="40"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="16" font-family="sans-serif"%3EAH%3C/text%3E%3C/svg%3E'
     }
   ]);
 

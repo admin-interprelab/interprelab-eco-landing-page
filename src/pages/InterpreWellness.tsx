@@ -8,6 +8,7 @@ import { Heart, MessageCircle, Users, Sparkles, Send, Loader2, CheckCircle2 } fr
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
+import wellnessSupport from "@/assets/wellness-support.jpg";
 
 interface Message {
   role: 'user' | 'assistant';
@@ -60,7 +61,7 @@ export default function InterpreWellness() {
   const streamChat = async (userMessage: string) => {
     const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/wellness-chat`;
     const newMessages = [...chatMessages, { role: 'user' as const, content: userMessage }];
-    
+
     setChatMessages([...newMessages, { role: 'assistant' as const, content: '' }]);
     setIsLoading(true);
 
@@ -69,7 +70,7 @@ export default function InterpreWellness() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
         },
         body: JSON.stringify({ messages: newMessages }),
       });
@@ -95,7 +96,7 @@ export default function InterpreWellness() {
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-        
+
         textBuffer += decoder.decode(value, { stream: true });
 
         let newlineIndex: number;
@@ -137,7 +138,7 @@ export default function InterpreWellness() {
 
   const handleSendMessage = async () => {
     if (!chatInput.trim() || isLoading) return;
-    
+
     const message = chatInput.trim();
     setChatInput('');
     await streamChat(message);
@@ -151,7 +152,7 @@ export default function InterpreWellness() {
     }
 
     setIsAnalyzing(true);
-    
+
     try {
       const responsesText = debriefingQuestions
         .map((q, i) => debriefingResponses[i] ? `Q: ${q}\nA: ${debriefingResponses[i]}` : '')
@@ -163,7 +164,7 @@ export default function InterpreWellness() {
       });
 
       if (error) throw error;
-      
+
       setDebriefingAnalysis(data.analysis);
       toast.success('Analysis complete!');
     } catch (error) {
@@ -176,30 +177,36 @@ export default function InterpreWellness() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-b from-background to-accent/5">
+      <div className="container mx-auto px-4 py-12">
         {/* Hero Section */}
-        <section className="relative py-20 px-4 overflow-hidden bg-cover bg-center" style={{ backgroundImage: "url('/src/assets/wellness-support.jpg')" }}>
-          <div className="absolute inset-0 bg-black/60" />
-          <div className="max-w-4xl mx-auto relative z-10">
-            <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
+        <div
+          className="text-center mb-16 animate-fade-in py-20 px-4 rounded-3xl bg-cover bg-center relative"
+          style={{ backgroundImage: `url(${wellnessSupport})` }}
+        >
+          <div className="absolute inset-0 bg-black/70 rounded-3xl" />
+          <div className="relative z-10">
+            <Badge className="mb-6 bg-primary/10 text-primary border-primary/20">
               Addressing Pain Point #5: Psychological Toll & Lack of Support
             </Badge>
-            <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Interpre-Wellness
-            </h1>
-            <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
+            <div className="flex items-center justify-center gap-3 mb-4">
+               <Heart className="w-12 h-12 text-primary" />
+               <h1 className="text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                 Interpre-Wellness
+               </h1>
+            </div>
+            <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
               We understand the weight you carry. The emotional toll of absorbing trauma, speaking in first person, feeling isolated after difficult calls—we've been there. Interpre-Wellness is your compassionate companion, a safe space to process, reflect, and heal.
             </p>
-            <div className="glass p-6 rounded-lg mb-8">
-              <p className="text-sm text-muted-foreground">
+            <div className="glass p-6 rounded-lg max-w-2xl mx-auto">
+              <p className="text-sm text-muted-foreground leading-relaxed">
                 💙 <strong>Built from lived experience:</strong> As working interpreters, we know the psychological demands of this work. You verbally embody patients' pain and fear. You deserve support that understands the unique nature of medical interpreting.
               </p>
             </div>
           </div>
-        </section>
+        </div>
 
         {/* Understanding the Challenges */}
-        <section className="py-16 px-4">
+        <section className="py-12">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold mb-8 text-center">We Understand What You Face</h2>
             <div className="grid md:grid-cols-3 gap-6">
@@ -219,7 +226,7 @@ export default function InterpreWellness() {
         </section>
 
         {/* AI Support Features */}
-        <section className="py-16 px-4">
+        <section className="py-12">
           <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
             {/* AI Counselor Chat */}
             <Card className="flex flex-col">
@@ -244,7 +251,7 @@ export default function InterpreWellness() {
                   )}
                   {chatMessages.map((msg, i) => (
                     <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                      <div className={`max-w-[80%] p-3 rounded-lg ${
+                      <div className={`max-w-[80%] p-3 rounded-lg ${ 
                         msg.role === 'user'
                           ? 'bg-primary text-primary-foreground'
                           : 'bg-muted'
@@ -269,7 +276,7 @@ export default function InterpreWellness() {
                     className="min-h-[60px]"
                     disabled={isLoading}
                   />
-                  <Button 
+                  <Button
                     onClick={handleSendMessage}
                     disabled={isLoading || !chatInput.trim()}
                     size="icon"
@@ -312,7 +319,7 @@ export default function InterpreWellness() {
                     <div className="prose prose-sm max-w-none">
                       <p className="whitespace-pre-wrap text-sm">{debriefingAnalysis}</p>
                     </div>
-                    <Button 
+                    <Button
                       onClick={() => {
                         setShowDebriefing(false);
                         setDebriefingAnalysis('');
@@ -341,7 +348,7 @@ export default function InterpreWellness() {
                         />
                       </div>
                     ))}
-                    <Button 
+                    <Button
                       onClick={handleDebriefingSubmit}
                       disabled={isAnalyzing}
                       className="w-full"
@@ -357,7 +364,7 @@ export default function InterpreWellness() {
         </section>
 
         {/* Mission & Collaboration */}
-        <section className="py-16 px-4">
+        <section className="py-16">
           <div className="max-w-4xl mx-auto">
             <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-accent/5">
               <CardHeader>
@@ -388,7 +395,7 @@ export default function InterpreWellness() {
         </section>
 
         {/* Support Resources */}
-        <section className="py-16 px-4 bg-muted/30">
+        <section className="py-16 bg-muted/30 rounded-3xl mt-8">
           <div className="max-w-4xl mx-auto text-center">
             <h3 className="text-2xl font-bold mb-6">You're Not Alone</h3>
             <p className="text-muted-foreground mb-8">

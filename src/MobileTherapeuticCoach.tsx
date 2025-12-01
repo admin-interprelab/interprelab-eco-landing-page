@@ -20,7 +20,7 @@ const MobileTherapeuticCoach: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([
     { id: '1', author: 'bot', text: "Welcome. I'm here to listen. Feel free to share what's on your mind. This is a safe space, and nothing is stored.", timestamp: '10:30 AM' },
     { id: '2', author: 'user', text: "I just finished a really tough session in the ICU. The patient's family was so distressed, and I had to interpret the doctor delivering bad news. It was emotionally draining.", timestamp: '10:32 AM' },
-    { id: '3', author: 'bot', text: "That sounds incredibly difficult. It takes a lot of strength to navigate such emotionally charged situations. It's completely understandable that you feel drained.", timestamp: '10:33 AM', imageUrl: "https://via.placeholder.com/400x200.png?text=Example+Art" },
+    { id: '3', author: 'bot', text: "That sounds incredibly difficult. It takes a lot of strength to navigate such emotionally charged situations. It's completely understandable that you feel drained.", timestamp: '10:33 AM' },
   ]);
   const [newMessage, setNewMessage] = useState('');
   const [isRecording, setIsRecording] = useState(false);

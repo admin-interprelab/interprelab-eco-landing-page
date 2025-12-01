@@ -281,7 +281,7 @@ function generatePeerMatches(
     {
       id: 'peer-1',
       name: 'Maria Rodriguez',
-      avatar: '/api/placeholder/48/48',
+      avatar: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="48" height="48"%3E%3Crect fill="%239333ea" width="48" height="48"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="18" font-family="sans-serif"%3EMR%3C/text%3E%3C/svg%3E',
       experience: '8 years medical',
       specializations: ['Emergency Medicine', 'Cardiology', 'Spanish'],
       sharedChallenges: ['financial', 'psychological'],
@@ -296,7 +296,7 @@ function generatePeerMatches(
     {
       id: 'peer-2',
       name: 'Ahmed Hassan',
-      avatar: '/api/placeholder/48/48',
+      avatar: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="48" height="48"%3E%3Crect fill="%2306b6d4" width="48" height="48"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="18" font-family="sans-serif"%3EAH%3C/text%3E%3C/svg%3E',
       experience: '5 years legal',
       specializations: ['Immigration Law', 'Arabic', 'Court Interpreting'],
       sharedChallenges: ['technological', 'isolation'],

@@ -31,7 +31,7 @@ export const InteractiveChat = () => {
     setInput('');
     setIsLoading(true);
 
-    // TODO: Integrate with Lovable AI
+    // TODO: Integrate with AI backend
     setTimeout(() => {
       const assistantMessage: Message = {
         role: 'assistant',

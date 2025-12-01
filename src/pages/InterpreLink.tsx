@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import communitySupport from "@/assets/community-support.jpg";
 
 interface SidebarItem {
   icon: any;
@@ -177,27 +178,29 @@ export default function InterpreLink() {
 
           {/* Main Content */}
           <div className="flex-1 p-8 max-w-4xl">
-            {/* Header */}
-            <div className="mb-8">
-              <Badge className="mb-6 bg-primary/10 text-primary border-primary/20">
-                Addressing Pain Point #5: Professional Community & Support
-              </Badge>
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <h1 className="text-4xl font-bold mb-2">InterpreLink: Your Professional Network</h1>
-                  <p className="text-muted-foreground mb-4">
-                    We're working interpreters who understand the need for real connection, not just another social media clone. InterpreLink is where you find partnerships, share the emotional weight, and build the professional relationships that sustain your career and mental health.
-                  </p>
-                  <div className="glass p-4 rounded-lg max-w-2xl">
-                    <p className="text-sm text-muted-foreground">
-                      🤝 <strong>More than networking:</strong> This is where collaborations are born, where you find your next referral partner, and where InterpreLab connects with interpreters to broaden our reach together.
-                    </p>
-                  </div>
+            {/* Header / Hero */}
+            <div
+              className="text-center mb-8 animate-fade-in py-16 px-4 rounded-3xl bg-cover bg-center relative"
+              style={{ backgroundImage: `url(${communitySupport})` }}
+            >
+              <div className="absolute inset-0 bg-black/70 rounded-3xl" />
+              <div className="relative z-10">
+                <Badge className="mb-6 bg-primary/10 text-primary border-primary/20">
+                  Addressing Pain Point #5: Professional Community & Support
+                </Badge>
+                <div className="flex items-center justify-center gap-3 mb-4">
+                   <Users className="w-12 h-12 text-primary" />
+                   <h1 className="text-4xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+                     InterpreLink
+                   </h1>
                 </div>
+                <p className="text-xl text-muted-foreground mb-6 max-w-2xl mx-auto">
+                  We're working interpreters who understand the need for real connection. InterpreLink is where you find partnerships, share the emotional weight, and build the professional relationships that sustain your career.
+                </p>
                 <Dialog open={isCreatePostOpen} onOpenChange={setIsCreatePostOpen}>
                   <DialogTrigger asChild>
-                    <Button className="flex items-center gap-2">
-                      <Plus className="w-4 h-4" />
+                    <Button size="lg" className="flex items-center gap-2 glass-button mx-auto">
+                      <Plus className="w-5 h-5" />
                       Create Post
                     </Button>
                   </DialogTrigger>
@@ -227,7 +230,6 @@ export default function InterpreLink() {
                           Cancel
                         </Button>
                         <Button onClick={() => {
-                          // Handle post creation
                           setIsCreatePostOpen(false);
                           setNewPostContent("");
                         }}>
@@ -239,17 +241,17 @@ export default function InterpreLink() {
                   </DialogContent>
                 </Dialog>
               </div>
+            </div>
 
-              {/* Search */}
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                <Input
-                  placeholder="Search posts, people, or topics..."
-                  className="pl-10"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
+            {/* Search */}
+            <div className="relative mb-8">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+              <Input
+                placeholder="Search posts, people, or topics..."
+                className="pl-10"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
             </div>
 
             {/* Tabs */}
