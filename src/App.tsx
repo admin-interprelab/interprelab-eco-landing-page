@@ -19,7 +19,6 @@ import Resources from "./pages/Resources";
 import About from "./pages/About";
 import InterpreWellness from "./pages/InterpreWellness";
 import Contact from "./pages/Contact";
-import GetInTouch from "./pages/GetInTouch";
 import Careers from "./pages/Careers";
 import Home from "./pages/Home";
 import SignIn from "./pages/SignIn";
@@ -68,11 +67,9 @@ const App = () => (
                 <Route path="/careers" element={<Careers />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
-                <Route path="/get-in-touch" element={<GetInTouch />} />
                 <Route path="/signin" element={<SignIn />} />
                 <Route path="/waitlist" element={<Waitlist />} />
                 <Route path="/interpre-wellness" element={<InterpreWellness />} />
-                <Route path="/interprewellbeing" element={<InterpreWellness />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
