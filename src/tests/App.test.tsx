@@ -40,5 +40,3 @@ describe('Redundant Route Removal Tests', () => {
     expect(fourOhFour).toBeInTheDocument();
   });
 });
-
-
