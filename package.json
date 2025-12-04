@@ -9,6 +9,13 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview"
+    ,
+    "gcloud:deploy": "gcloud run deploy",
+    "gcloud:auth": "gcloud auth login",
+    "claude:chat": "claude chat",
+    "claude:prompt": "claude prompt \"Summarize this text...\"",
+    "codex:chat": "codex chat",
+    "codex:generate": "codex generate \"Create a React component for a login form\""
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
