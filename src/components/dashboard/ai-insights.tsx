@@ -7,13 +7,14 @@ interface AIInsightsProps {
   error?: boolean;
 }
 
+const allInsights = [
+  "You're doing great! Keep up the good work.",
+  "You've had a busy week! Make sure to take a break.",
+  "Your earnings are up this week! Congratulations!",
+];
+
 export default function AIInsights({ stats, error }: AIInsightsProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const allInsights = [
-    "You're doing great! Keep up the good work.",
-    "You've had a busy week! Make sure to take a break.",
-    "Your earnings are up this week! Congratulations!",
-  ];
 
   useEffect(() => {
     if (allInsights.length === 0) return;
@@ -23,7 +24,7 @@ export default function AIInsights({ stats, error }: AIInsightsProps) {
     }, 5000); // Switch insight every 5 seconds
 
     return () => clearInterval(intervalId);
-  }, [allInsights]);
+  }, []);
 
   if (error) {
     return (

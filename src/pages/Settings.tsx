@@ -32,24 +32,24 @@ const Settings = () => {
   ];
 
   useEffect(() => {
+    const loadSettings = async () => {
+      const { data } = await supabase
+        .from('user_settings')
+        .select('*')
+        .eq('user_id', user?.id)
+        .maybeSingle();
+
+      if (data) {
+        setPayRate(data.pay_rate?.toString() || '0');
+        setPayRateType(data.pay_rate_type || 'per_hour');
+        setCurrency(data.preferred_currency || 'USD');
+      }
+    };
+
     if (user) {
       loadSettings();
     }
   }, [user]);
-
-  const loadSettings = async () => {
-    const { data } = await supabase
-      .from('user_settings')
-      .select('*')
-      .eq('user_id', user?.id)
-      .maybeSingle();
-
-    if (data) {
-      setPayRate(data.pay_rate?.toString() || '0');
-      setPayRateType(data.pay_rate_type || 'per_hour');
-      setCurrency(data.preferred_currency || 'USD');
-    }
-  };
 
   const handleSave = async () => {
     if (!user) return;

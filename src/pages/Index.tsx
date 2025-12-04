@@ -1,14 +1,14 @@
 import { Navigation } from '@/components/Navigation';
-import { Hero } from '@/components/Hero';
+import { Hero } from '@/components/landing/Hero';
 import { StoryDrivenVideoHero } from '@/components/landing/StoryDrivenVideoHero';
-import { ProductShowcase } from '@/components/ProductShowcase';
+import { ProductShowcase } from '@/components/landing/ProductShowcase';
 import { WellnessSection } from '@/components/sections/WellnessSection';
 import { QAFeedbackSection } from '@/components/sections/QAFeedbackSection';
 import { InterpreTrackSection } from '@/components/features/InterpreTrack/InterpreTrackSection';
 import { InterpreStudySection } from '@/components/features/InterpreStudy/InterpreStudySection';
 import { FAQSection } from '@/components/sections/FAQ/FAQSection';
-import { StatsSection } from '@/components/StatsSection';
-import { Testimonials } from '@/components/Testimonials';
+import { StatsSection } from '@/components/landing/StatsSection';
+import { Testimonials } from '@/components/landing/Testimonials';
 import { Footer } from '@/components/Footer';
 import {
   ArrowRight,

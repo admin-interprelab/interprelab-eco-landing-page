@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
+import { Tables } from '@/integrations/supabase/types';
 import { useAuth } from '@/contexts/AuthContext';
 import { Calendar, DollarSign, Clock, TrendingUp, Phone } from 'lucide-react';
 import { format, startOfMonth, startOfYear, endOfMonth, endOfYear } from 'date-fns';
+import { formatCurrency as formatCurrencyUtil } from '@/utils/formatting/currency';
 
 interface Stats {
   monthTotal: number;
@@ -28,87 +30,87 @@ const Dashboard = () => {
     avgCallDuration: 0,
     totalCalls: 0,
   });
-  const [recentCalls, setRecentCalls] = useState<any[]>([]);
+  const [recentCalls, setRecentCalls] = useState<Tables<'call_logs'>[]>([]);
   const [currency, setCurrency] = useState('USD');
   const { user } = useAuth();
 
   useEffect(() => {
+    const loadDashboardData = async () => {
+      if (!user) return;
+
+      // Get user currency
+      const { data: settings } = await supabase
+        .from('user_settings')
+        .select('preferred_currency')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      if (settings) {
+        setCurrency(settings.preferred_currency);
+      }
+
+      const now = new Date();
+      const monthStart = startOfMonth(now);
+      const monthEnd = endOfMonth(now);
+      const yearStart = startOfYear(now);
+      const yearEnd = endOfYear(now);
+
+      // Get month stats
+      const { data: monthData } = await supabase
+        .from('call_logs')
+        .select('duration_seconds, earnings')
+        .eq('user_id', user.id)
+        .gte('start_time', monthStart.toISOString())
+        .lte('start_time', monthEnd.toISOString());
+
+      // Get year stats
+      const { data: yearData } = await supabase
+        .from('call_logs')
+        .select('duration_seconds, earnings')
+        .eq('user_id', user.id)
+        .gte('start_time', yearStart.toISOString())
+        .lte('start_time', yearEnd.toISOString());
+
+      // Get all time stats
+      const { data: allData } = await supabase
+        .from('call_logs')
+        .select('duration_seconds, earnings')
+        .eq('user_id', user.id);
+
+      // Get recent calls
+      const { data: recent } = await supabase
+        .from('call_logs')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('start_time', { ascending: false })
+        .limit(5);
+
+      const monthStats = calculateStats(monthData || []);
+      const yearStats = calculateStats(yearData || []);
+      const allStats = calculateStats(allData || []);
+
+      setStats({
+        monthTotal: monthStats.totalDuration,
+        monthEarnings: monthStats.totalEarnings,
+        monthCalls: monthStats.callCount,
+        yearTotal: yearStats.totalDuration,
+        yearEarnings: yearStats.totalEarnings,
+        yearCalls: yearStats.callCount,
+        avgCallDuration: allStats.avgDuration,
+        totalCalls: allStats.callCount,
+      });
+
+      setRecentCalls(recent || []);
+    };
+
     if (user) {
       loadDashboardData();
     }
   }, [user]);
 
-  const loadDashboardData = async () => {
-    if (!user) return;
-
-    // Get user currency
-    const { data: settings } = await supabase
-      .from('user_settings')
-      .select('preferred_currency')
-      .eq('user_id', user.id)
-      .maybeSingle();
-
-    if (settings) {
-      setCurrency(settings.preferred_currency);
-    }
-
-    const now = new Date();
-    const monthStart = startOfMonth(now);
-    const monthEnd = endOfMonth(now);
-    const yearStart = startOfYear(now);
-    const yearEnd = endOfYear(now);
-
-    // Get month stats
-    const { data: monthData } = await supabase
-      .from('call_logs')
-      .select('duration_seconds, earnings')
-      .eq('user_id', user.id)
-      .gte('start_time', monthStart.toISOString())
-      .lte('start_time', monthEnd.toISOString());
-
-    // Get year stats
-    const { data: yearData } = await supabase
-      .from('call_logs')
-      .select('duration_seconds, earnings')
-      .eq('user_id', user.id)
-      .gte('start_time', yearStart.toISOString())
-      .lte('start_time', yearEnd.toISOString());
-
-    // Get all time stats
-    const { data: allData } = await supabase
-      .from('call_logs')
-      .select('duration_seconds, earnings')
-      .eq('user_id', user.id);
-
-    // Get recent calls
-    const { data: recent } = await supabase
-      .from('call_logs')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('start_time', { ascending: false })
-      .limit(5);
-
-    const monthStats = calculateStats(monthData || []);
-    const yearStats = calculateStats(yearData || []);
-    const allStats = calculateStats(allData || []);
-
-    setStats({
-      monthTotal: monthStats.totalDuration,
-      monthEarnings: monthStats.totalEarnings,
-      monthCalls: monthStats.callCount,
-      yearTotal: yearStats.totalDuration,
-      yearEarnings: yearStats.totalEarnings,
-      yearCalls: yearStats.callCount,
-      avgCallDuration: allStats.avgDuration,
-      totalCalls: allStats.callCount,
-    });
-
-    setRecentCalls(recent || []);
-  };
-
-  const calculateStats = (data: any[]) => {
+  const calculateStats = (data: { duration_seconds: number | null; earnings: number | null }[]) => {
     const totalDuration = data.reduce((sum, call) => sum + (call.duration_seconds || 0), 0);
-    const totalEarnings = data.reduce((sum, call) => sum + (parseFloat(call.earnings) || 0), 0);
+    const totalEarnings = data.reduce((sum, call) => sum + (Number(call.earnings) || 0), 0);
     const callCount = data.length;
     const avgDuration = callCount > 0 ? totalDuration / callCount : 0;
 
@@ -122,10 +124,7 @@ const Dashboard = () => {
   };
 
   const formatCurrency = (amount: number): string => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: currency,
-    }).format(amount);
+    return formatCurrencyUtil(amount, { currency });
   };
 
   return (

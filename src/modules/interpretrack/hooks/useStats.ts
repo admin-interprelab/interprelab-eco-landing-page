@@ -7,14 +7,17 @@ export const useStats = () => {
 
   const stats = useMemo(() => {
     return callService.getAggregatedStats();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [calls]);
 
   const callTypeStats = useMemo(() => {
     return callService.getCallTypeStats();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [calls]);
 
   const weeklyData = useMemo(() => {
     return callService.getWeeklyData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [calls]);
 
   return {

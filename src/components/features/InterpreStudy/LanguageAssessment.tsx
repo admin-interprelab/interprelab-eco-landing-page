@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Loader2, Mic, MicOff, Play, Volume2, ThumbsUp, ThumbsDown, Activity } from 'lucide-react';
 import { callGemini } from '@/lib/gemini';
+import { useToast } from '@/hooks/use-toast';
 
 const speakText = (text: string, lang: string = 'en-US') => {
   if ('speechSynthesis' in window) {
@@ -27,39 +28,6 @@ interface Message {
   };
 }
 
-// Define minimal SpeechRecognition interfaces to avoid 'any'
-interface SpeechRecognitionEvent extends Event {
-  results: SpeechRecognitionResultList;
-}
-
-interface SpeechRecognitionResultList {
-  [index: number]: SpeechRecognitionResult;
-  length: number;
-}
-
-interface SpeechRecognitionResult {
-  [index: number]: SpeechRecognitionAlternative;
-}
-
-interface SpeechRecognitionAlternative {
-  transcript: string;
-}
-
-interface ISpeechRecognition extends EventTarget {
-  continuous: boolean;
-  interimResults: boolean;
-  lang: string;
-  start: () => void;
-  stop: () => void;
-  onresult: ((event: SpeechRecognitionEvent) => void) | null;
-  onend: (() => void) | null;
-}
-
-interface WindowWithSpeech extends Window {
-  SpeechRecognition: new () => ISpeechRecognition;
-  webkitSpeechRecognition: new () => ISpeechRecognition;
-}
-
 export const LanguageAssessment = () => {
   const [topic, setTopic] = useState("");
   const [started, setStarted] = useState(false);
@@ -67,6 +35,8 @@ export const LanguageAssessment = () => {
   const [loading, setLoading] = useState(false);
   const [userTranscript, setUserTranscript] = useState("");
   const [isListening, setIsListening] = useState(false);
+  
+  const { toast } = useToast();
   
   const [metrics, setMetrics] = useState({ 
     score: 100, 
@@ -78,9 +48,8 @@ export const LanguageAssessment = () => {
   const recognitionRef = useRef<ISpeechRecognition | null>(null);
 
   useEffect(() => {
-    const win = window as unknown as WindowWithSpeech;
-    if (win.webkitSpeechRecognition || win.SpeechRecognition) {
-      const SpeechRecognition = win.SpeechRecognition || win.webkitSpeechRecognition;
+    if (window.SpeechRecognition || window.webkitSpeechRecognition) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       recognitionRef.current = new SpeechRecognition();
       recognitionRef.current.continuous = false;
       recognitionRef.current.interimResults = true;
@@ -96,6 +65,15 @@ export const LanguageAssessment = () => {
         setIsListening(false);
       };
     }
+
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
   }, []);
 
   const toggleListening = () => {
@@ -103,6 +81,11 @@ export const LanguageAssessment = () => {
       recognitionRef.current?.stop();
     } else {
       setUserTranscript("");
+      // If last role was Doctor (English), we interpret to Patient (Spanish), so we speak Spanish? 
+      // No, usually we interpret FROM source TO target.
+      // But SpeechRecognition needs to know what language to LISTEN for.
+      // If Doctor spoke English, we interpret into Spanish. So we speak Spanish. 'es-MX'.
+      // If Patient spoke Spanish, we interpret into English. So we speak English. 'en-US'.
       const lastRole = history.length > 0 ? history[history.length-1].role : 'Doctor';
       if (recognitionRef.current) {
         recognitionRef.current.lang = lastRole === 'Doctor' ? 'es-MX' : 'en-US';
@@ -124,6 +107,18 @@ export const LanguageAssessment = () => {
     `;
     
     const firstLine = await callGemini(prompt);
+
+    if (firstLine.startsWith("Error") || firstLine.startsWith("Connection error") || firstLine.startsWith("Unexpected error")) {
+      toast({
+        title: "AI Error",
+        description: firstLine,
+        variant: "destructive",
+      });
+      setLoading(false);
+      setStarted(false); // Reset if failed
+      return;
+    }
+
     const newMsg: Message = { role: 'Doctor', text: firstLine };
     setHistory([newMsg]);
     setLoading(false);
@@ -151,11 +146,29 @@ export const LanguageAssessment = () => {
     `;
     
     let assessment = { score: 85, feedback: "Good flow", strong_point: "Flow", weak_point: "None" };
-    try {
-      const res = await callGemini(assessPrompt);
-      const cleanJson = res.replace(/```json/g, '').replace(/```/g, '').trim();
-      assessment = JSON.parse(cleanJson);
-    } catch(e) { console.error("JSON parse error", e); }
+    
+    const res = await callGemini(assessPrompt);
+    
+    if (res.startsWith("Error") || res.startsWith("Connection error") || res.startsWith("Unexpected error")) {
+       toast({
+         title: "AI Assessment Error",
+         description: "Could not assess interpretation. Using fallback metrics.",
+         variant: "destructive",
+       });
+       // We continue with fallback assessment to not break the flow, but warn user.
+    } else {
+      try {
+        const cleanJson = res.replace(/```json/g, '').replace(/```/g, '').trim();
+        assessment = JSON.parse(cleanJson);
+      } catch(e) { 
+        console.error("JSON parse error", e); 
+        toast({
+          title: "AI Parse Error",
+          description: "Received invalid data from AI. Using fallback.",
+          variant: "destructive",
+        });
+      }
+    }
 
     setMetrics(prev => {
       const newWeakness = assessment.weak_point !== 'None' && !prev.weakAreas.includes(assessment.weak_point) 
@@ -187,6 +200,20 @@ export const LanguageAssessment = () => {
     `;
     
     const nextLine = await callGemini(contextPrompt);
+
+    if (nextLine.startsWith("Error") || nextLine.startsWith("Connection error") || nextLine.startsWith("Unexpected error")) {
+      toast({
+        title: "AI Error",
+        description: "Could not generate next response.",
+        variant: "destructive",
+      });
+      setLoading(false);
+      // We add the interpretation but not the next response if it fails
+      setHistory(prev => [...prev, interpMsg]);
+      setUserTranscript("");
+      return;
+    }
+
     const nextMsg: Message = { role: nextRole, text: nextLine };
     
     setHistory(prev => [...prev, interpMsg, nextMsg]);
@@ -210,8 +237,9 @@ export const LanguageAssessment = () => {
               
               <div className="space-y-4">
                 <div>
-                  <label className="block text-xs uppercase tracking-wider text-primary font-bold mb-2">Select Scenario Topic</label>
+                  <label htmlFor="scenario-topic" className="block text-xs uppercase tracking-wider text-primary font-bold mb-2">Select Scenario Topic</label>
                   <Input 
+                    id="scenario-topic"
                     type="text"
                     value={topic}
                     onChange={(e) => setTopic(e.target.value)}
@@ -289,7 +317,11 @@ export const LanguageAssessment = () => {
                   <div className="flex items-center justify-between gap-4 mb-2 border-b border-black/5 pb-1">
                     <span className="text-xs font-bold uppercase tracking-wide opacity-70">{msg.role}</span>
                     {msg.role !== 'Interpreter' && (
-                      <button onClick={() => speakText(msg.text, msg.role === 'Doctor' ? 'en-US' : 'es-MX')} className="opacity-50 hover:opacity-100 transition-opacity">
+                      <button 
+                        onClick={() => speakText(msg.text, msg.role === 'Doctor' ? 'en-US' : 'es-MX')} 
+                        className="opacity-50 hover:opacity-100 transition-opacity"
+                        aria-label="Play audio"
+                      >
                         <Volume2 className="w-4 h-4" />
                       </button>
                     )}
@@ -316,6 +348,7 @@ export const LanguageAssessment = () => {
             variant={isListening ? "destructive" : "default"}
             size="icon"
             className={`h-14 w-14 rounded-full shadow-md transition-all ${isListening ? 'animate-pulse' : ''}`}
+            aria-label={isListening ? "Stop listening" : "Start listening"}
           >
             {isListening ? <MicOff className="w-6 h-6" /> : <Mic className="w-6 h-6" />}
           </Button>

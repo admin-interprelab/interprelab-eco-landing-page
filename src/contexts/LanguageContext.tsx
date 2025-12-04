@@ -58,22 +58,22 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
 
   useEffect(() => {
+    const loadUserLanguage = async () => {
+      const { data } = await supabase
+        .from('user_settings')
+        .select('preferred_language')
+        .eq('user_id', user?.id)
+        .maybeSingle();
+
+      if (data?.preferred_language) {
+        setLanguageState(data.preferred_language);
+      }
+    };
+
     if (user) {
       loadUserLanguage();
     }
   }, [user]);
-
-  const loadUserLanguage = async () => {
-    const { data } = await supabase
-      .from('user_settings')
-      .select('preferred_language')
-      .eq('user_id', user?.id)
-      .maybeSingle();
-
-    if (data?.preferred_language) {
-      setLanguageState(data.preferred_language);
-    }
-  };
 
   const setLanguage = async (lang: string) => {
     setLanguageState(lang);

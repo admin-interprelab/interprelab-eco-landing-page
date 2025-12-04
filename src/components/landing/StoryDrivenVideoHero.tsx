@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback, ComponentType } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
-import { Play } from 'lucide-react';
 
 interface DataOverlay {
   stat: string;
@@ -18,7 +17,7 @@ export interface StoryDrivenVideoHeroProps {
   emotionalHook: string;
   dataOverlays?: DataOverlay[];
   ctaText: string;
-  ctaIcon: React.ComponentType<{ className?: string }>;
+  ctaIcon: ComponentType<{ className?: string }>;
   targetFeature: string;
   emotionalTone: 'urgent' | 'somber' | 'frustrated' | 'determined';
   index: number;
@@ -26,7 +25,6 @@ export interface StoryDrivenVideoHeroProps {
 
 export const StoryDrivenVideoHero = ({
   id,
-  videoSrc,
   title,
   scenario,
   emotionalHook,
@@ -37,12 +35,12 @@ export const StoryDrivenVideoHero = ({
   emotionalTone,
   index,
 }: StoryDrivenVideoHeroProps) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   const [textVisible, setTextVisible] = useState(false);
   const [scenarioVisible, setScenarioVisible] = useState(false);
   const [hookVisible, setHookVisible] = useState(false);
-  const [videoError, setVideoError] = useState(false);
+  // videoError state removed as we are forcing fallback
+  const [videoError, setVideoError] = useState(true); 
 
   const getEmotionalStyles = () => {
     const styles = {
@@ -94,34 +92,31 @@ export const StoryDrivenVideoHero = ({
   }, [targetFeature]);
 
   useEffect(() => {
-    const video = videoRef.current;
+    // Force fallback immediately since we know videos are missing in this environment
+    setVideoError(true);
+  }, []);
+
+  useEffect(() => {
     const section = sectionRef.current;
-    if (!video || !section) return;
+    if (!section) return;
 
     const observerOptions = {
       root: null,
       rootMargin: '0px',
-      threshold: 0.5,
+      threshold: 0.3, // Lower threshold to trigger sooner
     };
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          if (!videoError) {
-            video.play().catch((error) => {
-              console.log('Video play failed, using fallback background');
-              setVideoError(true);
-            });
-          }
+          // If video was present, we'd play it here. 
+          // Since we're using fallback, we just trigger animations.
 
           // Staggered text animations
-          setTimeout(() => setTextVisible(true), 800);
-          setTimeout(() => setScenarioVisible(true), 1500);
-          setTimeout(() => setHookVisible(true), 3000);
+          setTimeout(() => setTextVisible(true), 300);
+          setTimeout(() => setScenarioVisible(true), 800);
+          setTimeout(() => setHookVisible(true), 1500);
         } else {
-          if (!videoError) {
-            video.pause();
-          }
           setTextVisible(false);
           setScenarioVisible(false);
           setHookVisible(false);
@@ -134,47 +129,33 @@ export const StoryDrivenVideoHero = ({
     return () => {
       observer.disconnect();
     };
-  }, [videoError]);
+  }, []); // Run once on mount
 
   return (
     <section
       ref={sectionRef}
       id={id}
-      className="h-screen w-full relative snap-start snap-always overflow-hidden"
+      className="h-screen w-full relative snap-start snap-always overflow-hidden flex items-center justify-center"
       aria-label={`Pain point ${index + 1}: ${title}`}
     >
       {/* Video background or gradient fallback */}
-      {!videoError ? (
-        <video
-          ref={videoRef}
-          className="absolute inset-0 w-full h-full object-cover"
-          playsInline
-          muted
-          loop
-          preload="auto"
-          aria-hidden="true"
-          onError={() => setVideoError(true)}
-        >
-          <source src={videoSrc} type="video/mp4" />
-        </video>
-      ) : (
-        <div
-          className={cn(
-            'absolute inset-0 w-full h-full bg-gradient-to-br',
-            getBackgroundGradient()
-          )}
-          aria-hidden="true"
-        />
-      )}
-
-      {/* Dark overlay with gradient */}
       <div
-        className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black/80 z-10"
+        className={cn(
+          'absolute inset-0 w-full h-full bg-gradient-to-br transition-opacity duration-1000',
+          getBackgroundGradient()
+        )}
+        aria-hidden="true"
+        style={{ opacity: 1 }} 
+      />
+
+      {/* Dark overlay with gradient for readability */}
+      <div
+        className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80 z-10"
         aria-hidden="true"
       />
 
       {/* Content */}
-      <div className="relative z-20 h-full flex flex-col items-center justify-center px-6">
+      <div className="relative z-20 w-full max-w-7xl mx-auto flex flex-col items-center justify-center px-6 h-full">
         {/* Data Overlays - Top */}
         {dataOverlays && textVisible && (
           <div className="absolute top-8 left-0 right-0 px-6 flex flex-wrap justify-center gap-4 max-w-7xl mx-auto">

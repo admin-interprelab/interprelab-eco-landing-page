@@ -10,7 +10,7 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import InterpreBot from "./pages/InterpreBot";
 import InterpreCoach from "./pages/InterpreCoach";
-import InterpreHub from "./pages/InterpreHub";
+import InterpreLink from "./pages/InterpreLink";
 import Dashboard from "./pages/Dashboard";
 import InterpreTrack from "./pages/InterpreTrack";
 import Settings from "./pages/Settings";
@@ -37,7 +37,7 @@ const App = () => (
               <Route path="/interprecoach" element={<InterpreCoach />} />
               <Route path="/interpre-hub" element={
                 <ProtectedRoute>
-                  <InterpreHub />
+                  <InterpreLink />
                 </ProtectedRoute>
               } />
               <Route path="/dashboard" element={

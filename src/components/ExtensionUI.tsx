@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -215,6 +216,58 @@ export const InterpreBotUI = () => {
   );
 };
 
+// Mock context windows data representing multi-agent system processing
+const mockContextWindows: ContextWindow[] = [
+  {
+    id: '1',
+    title: 'Speech-to-Text Agent',
+    content: 'Processed audio: "The patient presents with chest pain and shortness of breath..." (PII removed)',
+    type: 'translation',
+    confidence: 98,
+    timestamp: new Date()
+  },
+  {
+    id: '2', 
+    title: 'Medical Terminology Agent',
+    content: 'Detected: chest pain (dolor torácico), shortness of breath (disnea), cardiovascular assessment needed',
+    type: 'medical',
+    confidence: 96,
+    timestamp: new Date(Date.now() - 15000)
+  },
+  {
+    id: '3',
+    title: 'Cultural Context Agent', 
+    content: 'Patient communication style: Direct. Cultural background: Latin American. Adaptation recommended.',
+    type: 'cultural',
+    confidence: 92,
+    timestamp: new Date(Date.now() - 30000)
+  },
+  {
+    id: '4',
+    title: 'Ethics & QA Agent',
+    content: 'Interpretation accuracy: 95%. Completeness: 98%. Reminder: Maintain first-person speech patterns.',
+    type: 'analysis',
+    confidence: 94,
+    timestamp: new Date(Date.now() - 45000)
+  },
+  {
+    id: '5',
+    title: 'Live Assistance LLM',
+    content: 'Suggested phrase: "El paciente presenta dolor en el pecho y dificultad para respirar"',
+    type: 'translation',
+    confidence: 97,
+    timestamp: new Date(Date.now() - 60000)
+  },
+  {
+    id: '6',
+    title: 'Session Analytics',
+    content: 'Session duration: 12:34. Words interpreted: 1,247. Medical terms: 23. Overall performance: Excellent',
+    type: 'analysis',
+    confidence: 91,
+    timestamp: new Date(Date.now() - 75000)
+  }
+];
+
 export const ExtensionUI = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -223,58 +276,6 @@ export const ExtensionUI = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
-
-  // Mock context windows data representing multi-agent system processing
-  const mockContextWindows: ContextWindow[] = [
-    {
-      id: '1',
-      title: 'Speech-to-Text Agent',
-      content: 'Processed audio: "The patient presents with chest pain and shortness of breath..." (PII removed)',
-      type: 'translation',
-      confidence: 98,
-      timestamp: new Date()
-    },
-    {
-      id: '2', 
-      title: 'Medical Terminology Agent',
-      content: 'Detected: chest pain (dolor torácico), shortness of breath (disnea), cardiovascular assessment needed',
-      type: 'medical',
-      confidence: 96,
-      timestamp: new Date(Date.now() - 15000)
-    },
-    {
-      id: '3',
-      title: 'Cultural Context Agent', 
-      content: 'Patient communication style: Direct. Cultural background: Latin American. Adaptation recommended.',
-      type: 'cultural',
-      confidence: 92,
-      timestamp: new Date(Date.now() - 30000)
-    },
-    {
-      id: '4',
-      title: 'Ethics & QA Agent',
-      content: 'Interpretation accuracy: 95%. Completeness: 98%. Reminder: Maintain first-person speech patterns.',
-      type: 'analysis',
-      confidence: 94,
-      timestamp: new Date(Date.now() - 45000)
-    },
-    {
-      id: '5',
-      title: 'Live Assistance LLM',
-      content: 'Suggested phrase: "El paciente presenta dolor en el pecho y dificultad para respirar"',
-      type: 'translation',
-      confidence: 97,
-      timestamp: new Date(Date.now() - 60000)
-    },
-    {
-      id: '6',
-      title: 'Session Analytics',
-      content: 'Session duration: 12:34. Words interpreted: 1,247. Medical terms: 23. Overall performance: Excellent',
-      type: 'analysis',
-      confidence: 91,
-      timestamp: new Date(Date.now() - 75000)
-    }
-  ];
 
   useEffect(() => {
     // Initialize with mock data
@@ -339,18 +340,18 @@ export const ExtensionUI = () => {
     });
   };
 
-  const handleMouseMove = (e: MouseEvent) => {
+  const handleMouseMove = React.useCallback((e: MouseEvent) => {
     if (isDragging) {
       setPosition({
         x: e.clientX - dragOffset.x,
         y: e.clientY - dragOffset.y
       });
     }
-  };
+  }, [isDragging, dragOffset]);
 
-  const handleMouseUp = () => {
+  const handleMouseUp = React.useCallback(() => {
     setIsDragging(false);
-  };
+  }, []);
 
   useEffect(() => {
     if (isDragging) {
@@ -361,7 +362,7 @@ export const ExtensionUI = () => {
         window.removeEventListener('mouseup', handleMouseUp);
       };
     }
-  }, [isDragging, dragOffset]);
+  }, [isDragging, handleMouseMove, handleMouseUp]);
 
   if (isMinimized) {
     return (

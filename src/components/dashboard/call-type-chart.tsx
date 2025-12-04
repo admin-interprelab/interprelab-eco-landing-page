@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PieChart, Pie, ResponsiveContainer, Legend, Cell, Tooltip } from 'recharts';
+import { PieChart, Pie, ResponsiveContainer, Legend, Cell, Tooltip, TooltipProps } from 'recharts';
 import {
   Card,
   CardHeader,
@@ -40,7 +40,7 @@ export default function CallTypeChart({ data }: CallTypeChartProps) {
   
   const totalCalls = data.vri + data.opi;
 
-  const CustomTooltip = ({ active, payload }: any) => {
+  const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
     if (active && payload && payload.length) {
       const data = payload[0];
       const percentage = ((data.value / totalCalls) * 100).toFixed(1);

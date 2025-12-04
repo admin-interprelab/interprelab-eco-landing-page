@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { Tables } from '@/integrations/supabase/types';
+import { formatCurrency as formatCurrencyUtil } from '@/utils/formatting/currency';
 
 interface CallSession {
   id?: string;
@@ -16,61 +18,43 @@ export const useCallTracker = () => {
   const [isTracking, setIsTracking] = useState(false);
   const [currentSession, setCurrentSession] = useState<CallSession | null>(null);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
-  const [userSettings, setUserSettings] = useState<any>(null);
+  const [userSettings, setUserSettings] = useState<Tables<'user_settings'> | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const { user } = useAuth();
   const { toast } = useToast();
 
   useEffect(() => {
+    const loadUserSettings = async () => {
+      const { data, error } = await supabase
+        .from('user_settings')
+        .select('*')
+        .eq('user_id', user?.id)
+        .maybeSingle();
+
+      if (data) {
+        setUserSettings(data);
+      } else if (!error) {
+        // Create default settings
+        const { data: newSettings } = await supabase
+          .from('user_settings')
+          .insert({
+            user_id: user?.id,
+            pay_rate: 0,
+            pay_rate_type: 'per_hour',
+            preferred_currency: 'USD',
+            preferred_language: 'en',
+          })
+          .select()
+          .single();
+        
+        setUserSettings(newSettings);
+      }
+    };
+
     if (user) {
       loadUserSettings();
     }
   }, [user]);
-
-  useEffect(() => {
-    if (isTracking) {
-      intervalRef.current = setInterval(() => {
-        setElapsedSeconds(prev => prev + 1);
-      }, 1000);
-    } else {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    }
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, [isTracking]);
-
-  const loadUserSettings = async () => {
-    const { data, error } = await supabase
-      .from('user_settings')
-      .select('*')
-      .eq('user_id', user?.id)
-      .maybeSingle();
-
-    if (data) {
-      setUserSettings(data);
-    } else if (!error) {
-      // Create default settings
-      const { data: newSettings } = await supabase
-        .from('user_settings')
-        .insert({
-          user_id: user?.id,
-          pay_rate: 0,
-          pay_rate_type: 'per_hour',
-          preferred_currency: 'USD',
-          preferred_language: 'en',
-        })
-        .select()
-        .single();
-      
-      setUserSettings(newSettings);
-    }
-  };
 
   const calculateEarnings = (durationSeconds: number): number => {
     if (!userSettings || !userSettings.pay_rate) return 0;
@@ -150,10 +134,7 @@ export const useCallTracker = () => {
   };
 
   const formatCurrency = (amount: number, currency: string = 'USD'): string => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: currency,
-    }).format(amount);
+    return formatCurrencyUtil(amount, { currency });
   };
 
   return {

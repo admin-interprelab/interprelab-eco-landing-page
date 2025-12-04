@@ -70,7 +70,7 @@ const generateCallRecords = (count: number): CallRecord[] => {
 export const sampleCallRecords: CallRecord[] = generateCallRecords(75);
 
 // Actual user data (empty for new users)
-let userCallRecords: CallRecord[] = [];
+const userCallRecords: CallRecord[] = [];
 
 // Export the appropriate dataset
 export const callRecords: CallRecord[] = isDemoMode() ? sampleCallRecords : userCallRecords;
