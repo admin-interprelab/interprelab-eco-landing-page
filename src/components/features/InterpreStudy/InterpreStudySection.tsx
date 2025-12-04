@@ -1,21 +1,32 @@
+import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
-  BookOpen,
   GraduationCap,
   Award,
   Video,
   FileText,
-  Users,
-  Sparkles,
   CheckCircle,
+  Sparkles,
+  Users,
+  Brain,
+  MessageSquare,
+  Mic
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+// Interactive Components
+import { TerminologyTrainer } from './TerminologyTrainer';
+import { LanguageAssessment } from './LanguageAssessment';
+import { CoreDynamics } from './CoreDynamics';
+
 export const InterpreStudySection = () => {
+  const [activeTab, setActiveTab] = useState("terminology");
+
   return (
-    <section className="py-32 px-6 relative" id="interprestudy-section">
+    <section className="py-32 px-6 relative bg-slate-50/50" id="interprestudy-section">
       <div className="container mx-auto">
         <div className="text-center mb-16 space-y-4">
           <Badge className="glass px-6 py-3 border-primary/20">
@@ -31,82 +42,73 @@ export const InterpreStudySection = () => {
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             NBCMI and CCHI-approved training courses, practice scenarios, and certification prep - all in
-            one platform
+            one platform.
           </p>
         </div>
 
         {/* 60-Hour Course Highlight */}
-        <Card className="glass border-primary/30 max-w-4xl mx-auto mb-12 overflow-hidden">
+        <Card className="glass border-primary/30 max-w-5xl mx-auto mb-20 overflow-hidden shadow-2xl shadow-primary/5">
           <div className="bg-gradient-primary p-1">
-            <CardContent className="bg-background p-8">
-              <div className="grid md:grid-cols-2 gap-8 items-center">
-                <div className="space-y-4">
+            <CardContent className="bg-background p-8 md:p-12">
+              <div className="grid md:grid-cols-2 gap-12 items-center">
+                <div className="space-y-6">
                   <Badge className="bg-primary text-primary-foreground">
                     <Award className="w-4 h-4 mr-2 inline" />
                     NBCMI & CCHI Approved
                   </Badge>
-                  <h3 className="text-3xl font-bold text-foreground">
+                  <h3 className="text-4xl font-bold text-foreground leading-tight">
                     60-Hour Medical Interpreter Training
                   </h3>
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground text-lg leading-relaxed">
                     Official prerequisite course for NBCMI and CCHI certification exams. Comprehensive
                     curriculum covering medical terminology, ethics, interpretation skills, and cultural
                     competency.
                   </p>
                   
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4 text-success" />
-                      <span>Official completion certificate</span>
+                  <div className="space-y-3 text-sm">
+                    <div className="flex items-center gap-3">
+                      <CheckCircle className="w-5 h-5 text-success" />
+                      <span className="font-medium">Official completion certificate</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4 text-success" />
-                      <span>Self-paced online format</span>
+                    <div className="flex items-center gap-3">
+                      <CheckCircle className="w-5 h-5 text-success" />
+                      <span className="font-medium">Self-paced online format</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4 text-success" />
-                      <span>Live Q&A sessions included</span>
+                    <div className="flex items-center gap-3">
+                      <CheckCircle className="w-5 h-5 text-success" />
+                      <span className="font-medium">Live Q&A sessions included</span>
                     </div>
                   </div>
 
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-3xl font-bold text-foreground">$499</span>
-                    <span className="text-muted-foreground">or $183/mo</span>
+                  <div className="flex items-baseline gap-3 pt-4">
+                    <span className="text-4xl font-bold text-foreground">$499</span>
+                    <span className="text-muted-foreground text-lg">or $183/mo</span>
                   </div>
                 </div>
 
-                <div className="space-y-4">
-                  <div className="bg-muted/30 rounded-lg p-4 space-y-3">
-                    <h4 className="font-semibold text-foreground">Course Modules:</h4>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Medical Terminology</span>
-                        <span className="font-medium">15 hours</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Anatomy & Physiology</span>
-                        <span className="font-medium">10 hours</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Ethics & Standards</span>
-                        <span className="font-medium">10 hours</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Interpretation Skills</span>
-                        <span className="font-medium">15 hours</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Cultural Competency</span>
-                        <span className="font-medium">5 hours</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Practical Application</span>
-                        <span className="font-medium">5 hours</span>
-                      </div>
+                <div className="space-y-6">
+                  <div className="bg-muted/30 rounded-2xl p-6 space-y-4 border border-border/50">
+                    <h4 className="font-bold text-foreground flex items-center gap-2">
+                      <FileText className="w-4 h-4 text-primary"/> Course Modules:
+                    </h4>
+                    <div className="space-y-3 text-sm">
+                      {[
+                        { name: "Medical Terminology", hours: "15 hours" },
+                        { name: "Anatomy & Physiology", hours: "10 hours" },
+                        { name: "Ethics & Standards", hours: "10 hours" },
+                        { name: "Interpretation Skills", hours: "15 hours" },
+                        { name: "Cultural Competency", hours: "5 hours" },
+                        { name: "Practical Application", hours: "5 hours" },
+                      ].map((module, i) => (
+                        <div key={i} className="flex justify-between items-center p-2 rounded-lg hover:bg-white/50 transition-colors">
+                          <span className="text-muted-foreground font-medium">{module.name}</span>
+                          <span className="font-bold bg-white px-2 py-1 rounded shadow-sm text-xs">{module.hours}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
 
-                  <Button asChild size="lg" className="w-full bg-gradient-primary text-white">
+                  <Button asChild size="lg" className="w-full bg-gradient-primary text-white text-lg h-14 shadow-lg hover:shadow-primary/25 transition-all">
                     <Link to="/courses/medical-interpreter-60hr">
                       <GraduationCap className="w-5 h-5 mr-2" />
                       Enroll Now
@@ -118,153 +120,69 @@ export const InterpreStudySection = () => {
           </div>
         </Card>
 
-        {/* Learning Resources */}
-        <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-12">
-          {/* Practice Scenarios */}
-          <Card className="glass border-border/30 hover-lift">
-            <CardContent className="p-6 space-y-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
-                <Video className="w-6 h-6 text-white" />
-              </div>
-              
-              <h3 className="text-xl font-bold text-foreground">Practice Scenarios</h3>
-              <p className="text-sm text-muted-foreground">
-                500+ pre-recorded mock scenarios from basic to expert level
-              </p>
-              
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <div className="w-1 h-1 bg-blue-500 rounded-full mt-2" />
-                  <span>Emergency room situations</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-1 h-1 bg-blue-500 rounded-full mt-2" />
-                  <span>Legal depositions & court</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-1 h-1 bg-blue-500 rounded-full mt-2" />
-                  <span>Business meetings</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-1 h-1 bg-blue-500 rounded-full mt-2" />
-                  <span>Mental health sessions</span>
-                </li>
-              </ul>
+        {/* INTERACTIVE TRAINING LAB */}
+        <div className="mb-20">
+          <div className="text-center mb-10">
+            <h3 className="text-3xl font-bold mb-4">Interactive Training Lab</h3>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Try our advanced AI-powered training tools. Practice terminology, generate scenarios, and simulate real conversations.
+            </p>
+          </div>
 
-              <Badge variant="outline" className="text-xs">
-                10 Free • 490+ Premium
-              </Badge>
-            </CardContent>
-          </Card>
+          <Tabs defaultValue="terminology" value={activeTab} onValueChange={setActiveTab} className="max-w-6xl mx-auto">
+            <div className="flex justify-center mb-8">
+              <TabsList className="bg-white p-2 rounded-full shadow-lg border border-slate-100 h-auto">
+                <TabsTrigger value="terminology" className="px-6 py-3 rounded-full data-[state=active]:bg-primary data-[state=active]:text-white gap-2 transition-all">
+                  <Brain className="w-4 h-4" /> Terminology Trainer
+                </TabsTrigger>
+                <TabsTrigger value="scenarios" className="px-6 py-3 rounded-full data-[state=active]:bg-primary data-[state=active]:text-white gap-2 transition-all">
+                  <MessageSquare className="w-4 h-4" /> Scenario Gen
+                </TabsTrigger>
+                <TabsTrigger value="simulation" className="px-6 py-3 rounded-full data-[state=active]:bg-primary data-[state=active]:text-white gap-2 transition-all">
+                  <Mic className="w-4 h-4" /> Conversation Sim
+                </TabsTrigger>
+              </TabsList>
+            </div>
 
-          {/* Certification Prep */}
-          <Card className="glass border-border/30 hover-lift">
-            <CardContent className="p-6 space-y-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-                <Award className="w-6 h-6 text-white" />
-              </div>
-              
-              <h3 className="text-xl font-bold text-foreground">Certification Prep</h3>
-              <p className="text-sm text-muted-foreground">
-                Complete exam preparation for NBCMI and CCHI certifications
-              </p>
-              
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <div className="w-1 h-1 bg-purple-500 rounded-full mt-2" />
-                  <span>Full practice exam suites</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-1 h-1 bg-purple-500 rounded-full mt-2" />
-                  <span>Personalized study plans</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-1 h-1 bg-purple-500 rounded-full mt-2" />
-                  <span>Exam anxiety management</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-1 h-1 bg-purple-500 rounded-full mt-2" />
-                  <span>Score tracking & analytics</span>
-                </li>
-              </ul>
-
-              <Badge variant="outline" className="text-xs">
-                Premium Feature
-              </Badge>
-            </CardContent>
-          </Card>
-
-          {/* Learning Materials */}
-          <Card className="glass border-border/30 hover-lift">
-            <CardContent className="p-6 space-y-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center">
-                <FileText className="w-6 h-6 text-white" />
-              </div>
-              
-              <h3 className="text-xl font-bold text-foreground">Learning Materials</h3>
-              <p className="text-sm text-muted-foreground">
-                Comprehensive library of study resources and reference materials
-              </p>
-              
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <div className="w-1 h-1 bg-green-500 rounded-full mt-2" />
-                  <span>Terminology glossaries (5,000+ terms)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-1 h-1 bg-green-500 rounded-full mt-2" />
-                  <span>Digital & physical textbooks</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-1 h-1 bg-green-500 rounded-full mt-2" />
-                  <span>Flashcard decks</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-1 h-1 bg-green-500 rounded-full mt-2" />
-                  <span>Industry articles & research</span>
-                </li>
-              </ul>
-
-              <Badge variant="outline" className="text-xs">
-                Mixed Free/Premium
-              </Badge>
-            </CardContent>
-          </Card>
+            <div className="bg-white rounded-[2rem] border border-slate-200 shadow-xl p-4 md:p-8 min-h-[500px]">
+              <TabsContent value="terminology" className="mt-0">
+                <TerminologyTrainer />
+              </TabsContent>
+              <TabsContent value="scenarios" className="mt-0">
+                <CoreDynamics />
+              </TabsContent>
+              <TabsContent value="simulation" className="mt-0">
+                <LanguageAssessment />
+              </TabsContent>
+            </div>
+          </Tabs>
         </div>
 
         {/* Free vs Premium */}
         <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          <Card className="glass border-border/30">
+          <Card className="glass border-border/30 hover:border-border/50 transition-colors">
             <CardContent className="p-8 space-y-6">
               <div className="flex items-center justify-between">
                 <h3 className="text-2xl font-bold text-foreground">Free Tier</h3>
-                <Badge variant="outline">$0/month</Badge>
+                <Badge variant="outline" className="text-lg px-3 py-1">$0/month</Badge>
               </div>
 
-              <ul className="space-y-3 text-sm">
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
-                  <span className="text-muted-foreground">10 practice scenarios</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
-                  <span className="text-muted-foreground">Basic learning modules</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
-                  <span className="text-muted-foreground">Self-assessment quizzes</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
-                  <span className="text-muted-foreground">Community study groups</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
-                  <span className="text-muted-foreground">Free resource downloads</span>
-                </li>
+              <ul className="space-y-4 text-sm">
+                {[
+                  "10 practice scenarios",
+                  "Basic learning modules",
+                  "Self-assessment quizzes",
+                  "Community study groups",
+                  "Free resource downloads"
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
+                    <span className="text-muted-foreground">{item}</span>
+                  </li>
+                ))}
               </ul>
 
-              <Button asChild variant="outline" className="w-full">
+              <Button asChild variant="outline" className="w-full h-12 text-base mt-4">
                 <Link to="/signup">
                   <Users className="w-4 h-4 mr-2" />
                   Start Learning Free
@@ -273,48 +191,37 @@ export const InterpreStudySection = () => {
             </CardContent>
           </Card>
 
-          <Card className="glass border-primary/30 relative overflow-hidden">
-            <div className="absolute top-0 right-0 bg-primary text-primary-foreground px-4 py-1 text-xs font-bold">
+          <Card className="glass border-primary/30 relative overflow-hidden shadow-lg shadow-primary/5">
+            <div className="absolute top-0 right-0 bg-primary text-primary-foreground px-4 py-1 text-xs font-bold rounded-bl-xl">
               POPULAR
             </div>
             <CardContent className="p-8 space-y-6">
               <div className="flex items-center justify-between">
                 <h3 className="text-2xl font-bold text-foreground">Premium</h3>
-                <Badge className="bg-primary text-primary-foreground">From $29/mo</Badge>
+                <Badge className="bg-primary text-primary-foreground text-lg px-3 py-1">From $29/mo</Badge>
               </div>
 
-              <div className="text-sm text-muted-foreground mb-4">
+              <div className="text-sm text-muted-foreground mb-4 font-medium">
                 Everything in Free, plus:
               </div>
 
-              <ul className="space-y-3 text-sm">
-                <li className="flex items-start gap-3">
-                  <Sparkles className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-muted-foreground">500+ practice scenarios (all levels)</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Sparkles className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-muted-foreground">60-hour course ($499 value)</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Sparkles className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-muted-foreground">Full certification prep suite</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Sparkles className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-muted-foreground">AI-powered scenario generation</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Sparkles className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-muted-foreground">Live coaching sessions</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Sparkles className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-muted-foreground">Priority support</span>
-                </li>
+              <ul className="space-y-4 text-sm">
+                {[
+                  "500+ practice scenarios (all levels)",
+                  "60-hour course ($499 value)",
+                  "Full certification prep suite",
+                  "AI-powered scenario generation",
+                  "Live coaching sessions",
+                  "Priority support"
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <Sparkles className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                    <span className="text-muted-foreground">{item}</span>
+                  </li>
+                ))}
               </ul>
 
-              <Button asChild className="w-full bg-gradient-primary text-white">
+              <Button asChild className="w-full bg-gradient-primary text-white h-12 text-base mt-4 shadow-lg hover:shadow-primary/25">
                 <Link to="/pricing">
                   <GraduationCap className="w-4 h-4 mr-2" />
                   Upgrade to Premium

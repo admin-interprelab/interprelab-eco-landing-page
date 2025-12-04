@@ -60,7 +60,7 @@ export const InterpreTrackSection = () => {
                 </li>
                 <li className="flex items-start gap-2">
                   <div className="w-1 h-1 bg-green-500 rounded-full mt-2" />
-                  <span>Discrepancy detection vs provider statements</span>
+                  <span>Automated payment verification</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <div className="w-1 h-1 bg-green-500 rounded-full mt-2" />
@@ -141,7 +141,7 @@ export const InterpreTrackSection = () => {
 
         {/* Key Features Highlight */}
         <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-12">
-          {/* Wage Theft Protection */}
+          {/* Payment Accuracy */}
           <Card className="glass border-destructive/20 hover-lift">
             <CardContent className="p-8">
               <div className="flex items-start gap-4 mb-4">
@@ -149,10 +149,9 @@ export const InterpreTrackSection = () => {
                   <AlertTriangle className="w-6 h-6 text-destructive" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-foreground mb-2">Wage Theft Detection</h3>
+                  <h3 className="text-xl font-bold text-foreground mb-2">Payment Verification</h3>
                   <p className="text-muted-foreground text-sm">
-                    Automatic alerts when your logs don't match provider statements. Compare side-by-side and
-                    export professional dispute reports.
+                    Automatic alerts for payment discrepancies. Compare your logs with provider statements and export reports to resolve differences.
                   </p>
                 </div>
               </div>
@@ -168,7 +167,7 @@ export const InterpreTrackSection = () => {
                 </div>
                 <div className="border-t border-destructive/20 pt-2 mt-2">
                   <div className="flex justify-between text-sm font-bold">
-                    <span className="text-destructive">Discrepancy:</span>
+                    <span className="text-destructive">Difference:</span>
                     <span className="text-destructive">-2 min ($3.50)</span>
                   </div>
                 </div>

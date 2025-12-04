@@ -99,9 +99,9 @@ const Index = () => {
       emotionalTone: 'frustrated' as const,
     },
     {
-      id: 'payment-discrepancy',
-      videoSrc: '/videos/earnings-discrepancy-discovery.mp4',
-      title: 'The Payment Discrepancy',
+      id: 'payment-accuracy',
+      videoSrc: '/videos/earnings-accuracy-discovery.mp4',
+      title: 'Payment Accuracy',
       scenario:
         "Sarah compares her logs: '47 minutes.' Company statement: '45 minutes.' Two minutes, rounded down. Multiply by 20 calls/day × 5 days/week × 52 weeks... Over $2,800 stolen. Just like that. And without her own records, she has no proof.",
       emotionalHook: '2-3 minutes per day = $3,000+ lost per year. Your time deserves accurate tracking.',
@@ -113,7 +113,7 @@ const Index = () => {
         },
         {
           stat: '$3,000+',
-          label: 'Annual lost wages (est.)',
+          label: 'Potential lost earnings (est.)',
           icon: <DollarSign className="w-5 h-5" />,
         },
         {

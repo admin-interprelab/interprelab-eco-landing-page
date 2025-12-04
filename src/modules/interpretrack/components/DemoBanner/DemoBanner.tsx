@@ -13,7 +13,7 @@ export const DemoBanner = () => {
             You're viewing demo data with realistic interpreter call logs
           </p>
           <p className="text-xs text-muted-foreground">
-            Sign up to track your actual earnings, detect wage theft, and manage your business!
+            Sign up to track your actual earnings, ensure payment accuracy, and manage your business!
           </p>
         </div>
         <div className="flex gap-2">

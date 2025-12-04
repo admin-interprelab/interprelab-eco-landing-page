@@ -51,31 +51,28 @@ This document provides the core business, product, and technical architecture kn
 
 ### Frontend Code Generation
 
-- **Tech Stack:** **React** with **Next.js** (App Router). Code must be in **TypeScript**.
-- **Styling:** **Tailwind CSS** exclusively. Use utility-first classes.
-- **Architecture:** Modular, component-based structure (e.g., `HeroSection.tsx`, `FeaturesSection.tsx`). Components must be reusable.
-- **Accessibility:** Must adhere to **WCAG 2.1 AA** standards (semantic HTML, alt tags, keyboard navigation).
+- **Tech Stack:** **React** with **Vite**. Code must be in **TypeScript**.
+- **Routing:** **React Router** (SPA architecture).
+- **Styling:** **Tailwind CSS** with **shadcn/ui** components. Use utility-first classes and lucide-react for icons.
+- **State & Data Fetching:** **TanStack Query** (React Query) for server state management.
+- **Forms:** **React Hook Form** with **Zod** for schema validation.
+- **Architecture:** Modular, component-based structure. Components must be reusable and typically reside in `src/components`. Page views reside in `src/pages`.
 
-### Backend & Google Cloud Integration
+### Backend & Infrastructure
 
-- **Philosophy:** **Serverless-first architecture.**
-- **Core Services:**
-    - **Authentication:** **Firebase Authentication**.
-    - **Database:** **Cloud Firestore** (NoSQL best practices).
-    - **Backend Logic:** **Cloud Functions (2nd Gen)** using Python or Node.js.
-    - **AI/ML APIs:** Integrate with **Speech-to-Text API** and **Natural Language API**.
-    - **File Storage:** **Google Cloud Storage** (use signed URLs for security).
-- **API Design:** **RESTful principles**. Route all Cloud Functions through **API Gateway**.
-- **Security:** **NEVER** hardcode secrets. Use **Secret Manager** or environment variables.
+- **Philosophy:** **Serverless / BaaS (Backend as a Service).**
+- **Core Services:** **Supabase**.
+    - **Authentication:** **Supabase Auth**.
+    - **Database:** **PostgreSQL** (via Supabase).
+    - **Backend Logic:** **Supabase Edge Functions** (if applicable) or client-side logic using Supabase SDK.
+    - **Realtime:** Supabase Realtime for live updates (if needed).
+- **Security:** Use Row Level Security (RLS) policies in Postgres to secure data. **NEVER** expose service role keys on the client.
 
-### Deployment & DevOps (CI/CD)
+### Deployment & DevOps
 
-- **Hosting:**
-    - **Frontend:** **Firebase Hosting**.
-    - **Backend:** **Cloud Functions** or **Cloud Run** (if containerized).
-- **CI/CD:** Use **Google Cloud Build**. Generate a `cloudbuild.yaml` for automating builds and deployments.
-- **Containerization:** For complex services, provide a `Dockerfile` for deployment to **Cloud Run**.
-- **Domain Guidance:** When asked, provide steps to connect the `interprelab.com` domain to Firebase Hosting by updating DNS records (A and TXT) at the domain registrar.
+- **Build Tool:** **Vite**.
+- **Hosting:** Static site hosting (e.g., Vercel, Netlify, or similar) serving the `dist` folder.
+- **Linting:** ESLint with TypeScript support.
 
 ### Content & SEO Directives
 

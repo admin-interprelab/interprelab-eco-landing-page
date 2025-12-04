@@ -161,7 +161,7 @@ export const getWeeklyData = (): WeeklyData[] => {
   return weeklyData;
 };
 
-export const wageDetails = {
+export const paymentDetails = {
   payPerMinuteUSD: 0.75,
   payPerHourUSD: 45.00,
 };

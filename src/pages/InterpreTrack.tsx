@@ -18,7 +18,7 @@ export default function InterpreTrack() {
   const demoMode = isDemoMode();
 
   const aiStats = demoMode 
-    ? "Demo Mode: You're viewing sample data. Sign up to track your real earnings and protect yourself from wage theft!"
+    ? "Demo Mode: You're viewing sample data. Sign up to track your real earnings and ensure accurate payments!"
     : "Great week! You're 15% ahead of your average. Keep up the excellent work!";
   const aiError = false;
 
@@ -101,7 +101,7 @@ export default function InterpreTrack() {
               <Sparkles className="w-12 h-12 mx-auto mb-4 text-primary" />
               <h3 className="text-2xl font-bold mb-2">Ready to protect your earnings?</h3>
               <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-                Join thousands of interpreters using InterpreTrack to detect wage theft, 
+                Join thousands of interpreters using InterpreTrack to ensure payment accuracy, 
                 manage multiple clients, and maximize their income.
               </p>
               <div className="flex gap-4 justify-center flex-wrap">

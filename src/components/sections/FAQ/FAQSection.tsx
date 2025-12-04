@@ -152,7 +152,7 @@ const faqData: FAQItem[] = [
     id: 'q18',
     question: 'What about InterpreTrack logs - can employers see them?',
     answer:
-      'Never. InterpreTrack logs are exclusively yours. You control if and when you share comparison reports with employers (typically only for disputing discrepancies).',
+      'Never. InterpreTrack logs are exclusively yours. You control if and when you share comparison reports with employers (typically only for resolving differences).',
     category: 'privacy',
   },
 
