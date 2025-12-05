@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import {
-  BookOpen,
   Brain,
   ShieldAlert,
   Activity,
@@ -11,21 +10,15 @@ import {
   Thermometer,
   RotateCcw,
   Award,
-  ChevronRight,
   User,
   Zap,
   Sparkles,
   Loader,
   Volume2,
   Mic,
-  Play,
-  Square,
   GraduationCap,
-  FileText,
-  List,
   Heart,
-  Stethoscope,
-  PenTool
+  Stethoscope
 } from 'lucide-react';
 import { toast } from 'sonner';
 
