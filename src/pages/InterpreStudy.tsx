@@ -52,8 +52,8 @@ const InterpreStudy = () => {
 
   const handleModuleComplete = (moduleName, points) => {
     if (!completedModules.includes(moduleName)) {
-      setCompletedModules([...completedModules, moduleName]);
-      setScore(score + points);
+      setCompletedModules(prevModules => [...prevModules, moduleName]);
+      setScore(prevScore => prevScore + points);
     }
     setCurrentView('summary');
   };
