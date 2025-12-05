@@ -6,7 +6,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   GraduationCap,
   Award,
-  Video,
   FileText,
   CheckCircle,
   Sparkles,
