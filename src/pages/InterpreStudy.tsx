@@ -916,14 +916,6 @@ const RolesModule = ({ onComplete, onExit }) => {
   const [consultReply, setConsultReply] = useState(null);
   const [consultLoading, setConsultLoading] = useState(false);
 
-  const handleChoice = (choice) => {
-    if (choice === 'correct') {
-      toast.success("Correct! You maintained standard protocol.");
-    } else {
-      toast.error("Try again! Remember the protocol: Less is More. Only intervene when necessary.");
-    }
-  };
-
   const handleConsult = async () => {
     if(!consultText) return;
     setConsultLoading(true);
