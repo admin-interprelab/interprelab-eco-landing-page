@@ -253,7 +253,7 @@ When working on this repository as a GitHub Copilot coding agent:
 3. **Test your changes** with `npm run dev` and verify they work as expected
 4. **Run linting** with `npm run lint` before finalizing your work
 5. **Follow established patterns** - look at similar existing code for reference
-6. **Report progress frequently** using the report_progress tool
+6. **Commit your changes frequently** with clear, descriptive commit messages
 7. **Ask for clarification** if the task is ambiguous or seems to require breaking changes
 8. **Document your changes** in commit messages and update relevant documentation
 
