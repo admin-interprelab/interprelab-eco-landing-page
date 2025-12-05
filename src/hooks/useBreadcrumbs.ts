@@ -17,7 +17,6 @@ const routeLabels: Record<string, string> = {
   '/contact': 'Contact',
   '/signin': 'Sign In',
   '/waitlist': 'Waitlist',
-  '/get-in-touch': 'Get In Touch',
   '/careers': 'Careers',
 };
 
