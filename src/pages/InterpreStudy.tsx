@@ -47,7 +47,7 @@ if (!apiKey) {
 const InterpreStudy = () => {
   const [currentView, setCurrentView] = useState('home');
   const [score, setScore] = useState(0);
-  const [completedModules, setCompletedModules] = useState([]);
+  const [completedModules, setCompletedModules] = useState<string[]>([]);
 
   const handleModuleComplete = (moduleName, points) => {
     if (!completedModules.includes(moduleName)) {
