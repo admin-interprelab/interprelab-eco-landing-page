@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
-import { Lightbulb, TrendingUp, AlertTriangle } from 'lucide-react';
+import { Lightbulb, AlertTriangle } from 'lucide-react';
 
 interface AIInsightsProps {
   stats: string | null;
