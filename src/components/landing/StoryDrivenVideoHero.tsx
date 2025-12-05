@@ -38,9 +38,7 @@ export const StoryDrivenVideoHero = ({
   const sectionRef = useRef<HTMLDivElement>(null);
   const [textVisible, setTextVisible] = useState(false);
   const [scenarioVisible, setScenarioVisible] = useState(false);
-  const [hookVisible, setHookVisible] = useState(false);
-  // videoError state removed as we are forcing fallback
-  const [videoError, setVideoError] = useState(true); 
+  const [hookVisible, setHookVisible] = useState(false); 
 
   const getEmotionalStyles = () => {
     const styles = {
@@ -91,10 +89,7 @@ export const StoryDrivenVideoHero = ({
     }, 2000);
   }, [targetFeature]);
 
-  useEffect(() => {
-    // Force fallback immediately since we know videos are missing in this environment
-    setVideoError(true);
-  }, []);
+
 
   useEffect(() => {
     const section = sectionRef.current;
