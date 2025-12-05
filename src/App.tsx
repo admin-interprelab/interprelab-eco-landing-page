@@ -11,6 +11,7 @@ import Index from "./pages/Index";
 import InterpreBot from "./pages/InterpreBot";
 import InterpreCoach from "./pages/InterpreCoach";
 import InterpreLink from "./pages/InterpreLink";
+import InterpreStudy from "./pages/InterpreStudy";
 import Dashboard from "./pages/Dashboard";
 import InterpreTrack from "./pages/InterpreTrack";
 import Settings from "./pages/Settings";
@@ -46,6 +47,11 @@ const App = () => (
                 </ProtectedRoute>
               } />
               <Route path="/interpretrack" element={<InterpreTrack />} />
+              <Route path="/interprestudy" element={
+                <ProtectedRoute>
+                  <InterpreStudy />
+                </ProtectedRoute>
+              } />
               <Route path="/settings" element={
                 <ProtectedRoute>
                   <Settings />
