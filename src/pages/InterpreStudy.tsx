@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import {
-  BookOpen,
   Brain,
   ShieldAlert,
   Activity,
@@ -11,21 +10,15 @@ import {
   Thermometer,
   RotateCcw,
   Award,
-  ChevronRight,
   User,
   Zap,
   Sparkles,
   Loader,
   Volume2,
   Mic,
-  Play,
-  Square,
   GraduationCap,
-  FileText,
-  List,
   Heart,
-  Stethoscope,
-  PenTool
+  Stethoscope
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -44,6 +37,12 @@ import { toast } from 'sonner';
 // IMPORTANT: This key is for the Google Gemini API, not Supabase.
 // Make sure to set VITE_GEMINI_API_KEY in your .env file.
 const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+
+if (!apiKey) {
+  throw new Error(
+    "Google Gemini API key missing: Please set VITE_GEMINI_API_KEY in your .env file. This key is required for all AI features in InterpreLab."
+  );
+}
 
 const InterpreStudy = () => {
   const [currentView, setCurrentView] = useState('home');
@@ -137,80 +136,16 @@ async function generateGeminiContent(prompt) {
   }
 }
 
-function pcmToWav(base64PCM) {
-  const binaryString = window.atob(base64PCM);
-  const len = binaryString.length;
-  const bytes = new Uint8Array(len);
-  for (let i = 0; i < len; i++) {
-    bytes[i] = binaryString.charCodeAt(i);
-  }
-  const wavHeader = new ArrayBuffer(44);
-  const view = new DataView(wavHeader);
-  const sampleRate = 24000;
-  const numChannels = 1;
-  const bitsPerSample = 16;
-  writeString(view, 0, 'RIFF');
-  view.setUint32(4, 36 + len, true);
-  writeString(view, 8, 'WAVE');
-  writeString(view, 12, 'fmt ');
-  view.setUint32(16, 16, true);
-  view.setUint16(20, 1, true);
-  view.setUint16(22, numChannels, true);
-  view.setUint32(24, sampleRate, true);
-  view.setUint32(28, sampleRate * numChannels * 2, true);
-  view.setUint16(32, numChannels * 2, true);
-  view.setUint16(34, bitsPerSample, true);
-  writeString(view, 36, 'data');
-  view.setUint32(40, len, true);
-  return new Blob([view, bytes], { type: 'audio/wav' });
-}
-
-function writeString(view, offset, string) {
-  for (let i = 0; i < string.length; i++) {
-    view.setUint8(offset + i, string.charCodeAt(i));
-  }
-}
-
-async function generateGeminiAudio(text, instruction) {
-  try {
-    const prompt = `Say this text: "${text}". Instruction: ${instruction}`;
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/text-to-speech:generateAudio?key=${apiKey}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "text-to-speech-1",
-          audioConfig: {
-            audioEncoding: "LINEAR16",
-            speakingRate: 1,
-            pitch: 0,
-            volumeGainDb: 0,
-            sampleRateHertz: 24000,
-            effectsProfileId: [
-              "handset-class-device"
-            ]
-          },
-          voice: {
-            languageCode: "en-US",
-            name: "en-US-Standard-C",
-            ssmlGender: "FEMALE"
-          },
-          input: {
-            text: prompt
-          }
-        }),
-      }
-    );
-    const data = await response.json();
-    const base64Audio = data.audioContent;
-    if (base64Audio) return URL.createObjectURL(pcmToWav(base64Audio));
-    return null;
-  } catch (error) {
-    console.error("TTS Error:", error);
-    return null;
-  }
-}
+// Note: Google Gemini API does not support text-to-speech.
+// To enable audio playback, integrate Google Cloud Text-to-Speech API:
+// https://cloud.google.com/text-to-speech/docs/reference/rest
+// 
+// For now, audio features are disabled. The simulation will work without audio.
+//
+// async function generateGeminiAudio(text, instruction) {
+//   // Proper implementation requires Google Cloud TTS API key and endpoint
+//   return null;
+// }
 
 /* --- NEW COMPONENT: SCRIPT DOCTOR (AI) --- */
 
@@ -550,8 +485,11 @@ const ImmersiveSimulation = ({ onComplete, onExit }) => {
       const cleanJson = scriptJson.replace(/```json|```/g, '').trim();
       const parsedScenario = JSON.parse(cleanJson);
       setScenario(parsedScenario);
-      const audioBlobUrl = await generateGeminiAudio(parsedScenario.text, parsedScenario.audio_instruction);
-      setAudioUrl(audioBlobUrl);
+      // Audio generation is disabled - Google Gemini API doesn't support TTS
+      // To enable, integrate Google Cloud Text-to-Speech API
+      // const audioBlobUrl = await generateGeminiAudio(parsedScenario.text, parsedScenario.audio_instruction);
+      // setAudioUrl(audioBlobUrl);
+      setAudioUrl(null);
       setPhase('playing');
     } catch (e) {
       console.error("Parse Error", e);
