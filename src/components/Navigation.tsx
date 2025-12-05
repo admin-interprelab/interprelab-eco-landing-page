@@ -27,14 +27,16 @@ export const Navigation = () => {
   };
 
   const navItems = [
-    { 
-      label: t('solutions'), 
+    {
+      label: t('solutions'),
       submenu: [
         { label: 'InterpreBot', href: '/interprebot' },
         { label: 'InterpreCoach', href: '/interprecoach' },
         { label: 'InterpreStudy', href: '/interprestudy' },
         { label: 'InterpreTrack', href: '/interpretrack' },
-        { label: 'InterpreHub', href: '/interpre-hub' },
+        { label: 'InterpreStudy', href: '/interprestudy' },
+        { label: 'Interpre-Wellness', href: '/interpre-wellness' },
+        { label: 'InterpreLink', href: '/interprelink' },
       ]
     },
     { label: t('resources'), href: '/resources' },
@@ -166,10 +168,10 @@ export const Navigation = () => {
                     </Link>
                   )
                 ))}
-                
+
                 <div className="pt-6 space-y-3">
                   {user ? (
-                    <Button 
+                    <Button
                       onClick={() => {
                         handleSignOut();
                         setIsOpen(false);
@@ -195,20 +197,6 @@ export const Navigation = () => {
                       </Link>
                     </>
                   )}
-                </div>
-
-                <div className="pt-6 border-t border-border/50">
-                  <p className="text-sm text-muted-foreground mb-3">Contact</p>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center gap-2">
-                      <Phone className="w-4 h-4" />
-                      <span>+1 (555) 123-4567</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Mail className="w-4 h-4" />
-                      <span>hello@interprelab.com</span>
-                    </div>
-                  </div>
                 </div>
               </div>
             </SheetContent>

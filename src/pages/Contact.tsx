@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { PageHero } from "@/components/PageHero";
 import { contactSchema } from "@/lib/validations";
 
 const Contact = () => {
@@ -100,21 +101,11 @@ const Contact = () => {
 
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="py-20 bg-gradient-subtle">
-        <div className="container mx-auto px-6 text-center">
-          <Badge className="mb-6 bg-primary/10 text-primary border-primary/20">
-            Contact Us
-          </Badge>
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 gradient-text">
-            Get in Touch
-          </h1>
-          <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-            Have questions about our services? Want to discuss a partnership? 
-            We'd love to hear from you and explore how we can help.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        badgeText="Contact Us"
+        title="Get in Touch"
+        subtitle="Have questions about our services? Want to discuss a partnership? We'd love to hear from you and explore how we can help."
+      />
 
       {/* Contact Form & Info */}
       <section className="py-20">
@@ -209,9 +200,9 @@ const Contact = () => {
                       />
                     </div>
 
-                    <Button 
-                      type="submit" 
-                      size="lg" 
+                    <Button
+                      type="submit"
+                      size="lg"
                       className="w-full glass-button"
                       disabled={isSubmitting}
                     >
@@ -282,7 +273,7 @@ const Contact = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground mb-4">
-                    For urgent inquiries or immediate assistance, please call us directly 
+                    For urgent inquiries or immediate assistance, please call us directly
                     during business hours. We typically respond to emails within 24 hours.
                   </p>
                   <Badge className="bg-primary/10 text-primary border-primary/20">

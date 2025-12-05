@@ -1,23 +1,25 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, User, Shield, Zap } from "lucide-react";
+import { ArrowRight, User, Shield, Zap, Play } from "lucide-react";
 import { Link } from "react-router-dom";
-import heroImage from "@/assets/hero-interprelab.jpg";
+import heroBg from '../assets/hero-homepage.jpg';
 
 export const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      {/* Simplified Background */}
-      <div className="absolute inset-0 z-0 bg-background">
-        <div className="absolute inset-0 bg-gradient-glow opacity-20" />
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/5 rounded-full blur-3xl" />
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20" role="banner">
+      {/* Background Image with Parallax */}
+      <div
+        className="absolute inset-0 z-0 bg-cover bg-center transition-transform duration-700"
+        style={{ backgroundImage: `url(${heroBg})` }}
+        aria-hidden="true"
+      >
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70" />
       </div>
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-6 text-center">
         <div className="max-w-5xl mx-auto space-y-10 animate-fade-in">
-          
+
           {/* Badge */}
           <Badge className="glass px-6 py-3 text-sm font-medium border-primary/20">
             <Zap className="w-4 h-4 mr-2" />
@@ -40,51 +42,41 @@ export const Hero = () => {
             Train smarter with AI-driven assessment, real-time coaching, and automated tracking.
           </p>
 
-          {/* CTA Buttons - Prominent */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-            <Link to="/waitlist">
-              <Button size="xl" className="bg-gradient-primary hover:opacity-90 text-white shadow-glow group px-8 py-6 text-lg">
-                Start Free Trial
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
-            
-            <Link to="/signin">
-              <Button variant="outline" size="xl" className="glass border-primary/30 group px-8 py-6 text-lg">
-                <User className="w-5 h-5 mr-2" />
-                Sign In
-              </Button>
-            </Link>
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up">
+            <Button 
+              variant="hero" 
+              size="xl" 
+              className="group hover:shadow-glow transition-all duration-300 hover:scale-105" 
+              asChild
+            >
+              <Link to="/interprebot" aria-label="Start your assessment with InterpreBot">
+                Take the Assessment
+                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" aria-hidden="true" />
+              </Link>
+            </Button>
+
+            <Button 
+              variant="glass" 
+              size="xl" 
+              className="group hover:bg-white/10 transition-all duration-300 hover:scale-105" 
+              asChild
+            >
+              <Link to="/interprecoach" aria-label="Learn more about InterpreCoach AI assistant">
+                <Play className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-300" aria-hidden="true" />
+                Meet InterpreCoach
+              </Link>
+            </Button>
           </div>
 
-          {/* Trust Stats - Clean */}
-          <div className="pt-12 grid grid-cols-3 gap-8 max-w-2xl mx-auto">
-            <div className="space-y-1">
-              <div className="text-3xl md:text-4xl font-bold text-foreground">50+</div>
-              <div className="text-sm text-muted-foreground">Countries</div>
+          {/* Trust Indicators */}
+          <div className="pt-8 text-sm text-muted-foreground animate-slide-up">
+            <p>Trusted by healthcare systems and legal firms across 50+ countries</p>
+            <div className="flex justify-center gap-8 mt-4 opacity-60">
+              <span>🏥 Medical Centers</span>
+              <span>⚖️ Legal Firms</span>
+              <span>🌍 Global Organizations</span>
             </div>
-            <div className="space-y-1">
-              <div className="text-3xl md:text-4xl font-bold text-foreground">10k+</div>
-              <div className="text-sm text-muted-foreground">Interpreters</div>
-            </div>
-            <div className="space-y-1">
-              <div className="text-3xl md:text-4xl font-bold text-foreground">98%</div>
-              <div className="text-sm text-muted-foreground">Satisfaction</div>
-            </div>
-          </div>
-
-          {/* Trust Badges */}
-          <div className="flex flex-wrap justify-center gap-4 pt-8 opacity-70">
-            <Badge variant="outline" className="px-4 py-2">
-              <Shield className="w-4 h-4 mr-2" />
-              HIPAA Compliant
-            </Badge>
-            <Badge variant="outline" className="px-4 py-2">
-              SOC 2 Certified
-            </Badge>
-            <Badge variant="outline" className="px-4 py-2">
-              ISO 27001
-            </Badge>
           </div>
         </div>
       </div>

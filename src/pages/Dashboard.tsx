@@ -1,120 +1,53 @@
-import { useEffect, useState } from 'react';
 import { Layout } from '@/components/Layout';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { supabase } from '@/integrations/supabase/client';
-import { Tables } from '@/integrations/supabase/types';
+import { Button } from '@/components/ui/button';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useAuth } from '@/contexts/AuthContext';
-import { Calendar, DollarSign, Clock, TrendingUp, Phone } from 'lucide-react';
-import { format, startOfMonth, startOfYear, endOfMonth, endOfYear } from 'date-fns';
-import { formatCurrency as formatCurrencyUtil } from '@/utils/formatting/currency';
+import { usePremium } from '@/contexts/PremiumContext';
+import AIInsights from '@/components/dashboard/AiInsights';
+import CallTypeChart from '@/components/dashboard/CallTypeChart';
+import EarningsProjection from '@/components/dashboard/EarningsProjection';
+import GoalsTracker from '@/components/dashboard/GoalsTracker';
+import IntegrationStatus from '@/components/dashboard/IntegrationStatus';
+import LearningProgress from '@/components/dashboard/LearningProgress';
+import ManualLog from '@/components/dashboard/ManualLog';
+import PerformanceHeatmap from '@/components/dashboard/PerformanceHeatmap';
+import PlatformComparison from '@/components/dashboard/PlatformComparison';
+import PremiumStatsOverview from '@/components/dashboard/PremiumStatsOverview';
+import RecentCalls from '@/components/dashboard/RecentCalls';
+import StatsCards from '@/components/dashboard/StatsCards';
+import WeeklyChart from '@/components/dashboard/WeeklyChart';
+import { PremiumUpgradeCard } from '@/components/premium/PremiumUpgradeCard';
+import { useDashboardData } from '@/hooks/useDashboardData';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useGoals } from '../../useGoals';
+import { AlertTriangle } from 'lucide-react';
 
-interface Stats {
-  monthTotal: number;
-  monthEarnings: number;
-  monthCalls: number;
-  yearTotal: number;
-  yearEarnings: number;
-  yearCalls: number;
-  avgCallDuration: number;
-  totalCalls: number;
-}
+// TODO: This component should be refactored to use a custom hook (e.g., `useDashboardData`) to handle data fetching and state management.
 
 const Dashboard = () => {
-  const [stats, setStats] = useState<Stats>({
-    monthTotal: 0,
-    monthEarnings: 0,
-    monthCalls: 0,
-    yearTotal: 0,
-    yearEarnings: 0,
-    yearCalls: 0,
-    avgCallDuration: 0,
-    totalCalls: 0,
-  });
-  const [recentCalls, setRecentCalls] = useState<Tables<'call_logs'>[]>([]);
-  const [currency, setCurrency] = useState('USD');
   const { user } = useAuth();
+  const { isPremium, upgrade } = usePremium();
+  const { data, loading, error, refresh } = useDashboardData();
+  const { data: goals, isLoading: goalsLoading } = useGoals();
 
-  useEffect(() => {
-    const loadDashboardData = async () => {
-      if (!user) return;
+  const getErrorMessage = (err: any): { title: string, description: string, raw: string } => {
+    const rawError = err?.message || 'An unknown error occurred.';
 
-      // Get user currency
-      const { data: settings } = await supabase
-        .from('user_settings')
-        .select('preferred_currency')
-        .eq('user_id', user.id)
-        .maybeSingle();
-
-      if (settings) {
-        setCurrency(settings.preferred_currency);
-      }
-
-      const now = new Date();
-      const monthStart = startOfMonth(now);
-      const monthEnd = endOfMonth(now);
-      const yearStart = startOfYear(now);
-      const yearEnd = endOfYear(now);
-
-      // Get month stats
-      const { data: monthData } = await supabase
-        .from('call_logs')
-        .select('duration_seconds, earnings')
-        .eq('user_id', user.id)
-        .gte('start_time', monthStart.toISOString())
-        .lte('start_time', monthEnd.toISOString());
-
-      // Get year stats
-      const { data: yearData } = await supabase
-        .from('call_logs')
-        .select('duration_seconds, earnings')
-        .eq('user_id', user.id)
-        .gte('start_time', yearStart.toISOString())
-        .lte('start_time', yearEnd.toISOString());
-
-      // Get all time stats
-      const { data: allData } = await supabase
-        .from('call_logs')
-        .select('duration_seconds, earnings')
-        .eq('user_id', user.id);
-
-      // Get recent calls
-      const { data: recent } = await supabase
-        .from('call_logs')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('start_time', { ascending: false })
-        .limit(5);
-
-      const monthStats = calculateStats(monthData || []);
-      const yearStats = calculateStats(yearData || []);
-      const allStats = calculateStats(allData || []);
-
-      setStats({
-        monthTotal: monthStats.totalDuration,
-        monthEarnings: monthStats.totalEarnings,
-        monthCalls: monthStats.callCount,
-        yearTotal: yearStats.totalDuration,
-        yearEarnings: yearStats.totalEarnings,
-        yearCalls: yearStats.callCount,
-        avgCallDuration: allStats.avgDuration,
-        totalCalls: allStats.callCount,
-      });
-
-      setRecentCalls(recent || []);
-    };
-
-    if (user) {
-      loadDashboardData();
+    // Check for common network error messages
+    if (typeof rawError === 'string' && (rawError.toLowerCase().includes('network request failed') || rawError.toLowerCase().includes('failed to fetch'))) {
+      return {
+        title: 'Network Connection Error',
+        description: 'It seems you are offline. Please check your internet connection and try again.',
+        raw: rawError,
+      };
     }
-  }, [user]);
 
-  const calculateStats = (data: { duration_seconds: number | null; earnings: number | null }[]) => {
-    const totalDuration = data.reduce((sum, call) => sum + (call.duration_seconds || 0), 0);
-    const totalEarnings = data.reduce((sum, call) => sum + (Number(call.earnings) || 0), 0);
-    const callCount = data.length;
-    const avgDuration = callCount > 0 ? totalDuration / callCount : 0;
-
-    return { totalDuration, totalEarnings, callCount, avgDuration };
+    // Default error message
+    return {
+      title: 'Error Loading Dashboard',
+      description: "We couldn't fetch your dashboard data. Please try again.",
+      raw: rawError,
+    };
   };
 
   const formatDuration = (seconds: number): string => {
@@ -123,107 +56,102 @@ const Dashboard = () => {
     return `${hours}h ${minutes}m`;
   };
 
-  const formatCurrency = (amount: number): string => {
-    return formatCurrencyUtil(amount, { currency });
-  };
+  if (loading || goalsLoading) {
+    return (
+        <Layout>
+            <div className="container mx-auto px-4 py-8 space-y-8">
+                <div className="flex justify-between items-center">
+                    <Skeleton className="h-10 w-48" />
+                    <Skeleton className="h-10 w-24" />
+                </div>
+                <div className="grid gap-4 md:grid-cols-3">
+                    <Skeleton className="h-28" />
+                    <Skeleton className="h-28" />
+                    <Skeleton className="h-28" />
+                </div>
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div className="lg:col-span-2 space-y-8">
+                        <Skeleton className="h-64" />
+                        <Skeleton className="h-80" />
+                    </div>
+                    <div className="space-y-8">
+                        <Skeleton className="h-96" />
+                        <Skeleton className="h-64" />
+                    </div>
+                </div>
+            </div>
+        </Layout>
+    );
+  }
+
+  if (error) {
+    const { title, description, raw } = getErrorMessage(error);
+    return (
+      <Layout>
+        <div className="container mx-auto px-4 py-8">
+          <Alert variant="destructive" className="max-w-2xl mx-auto">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertTitle>{title}</AlertTitle>
+            <AlertDescription>
+              <p>{description}</p>
+              <pre className="mt-2 text-xs bg-background/50 p-2 rounded">{raw}</pre>
+              <Button onClick={() => refresh()} className="mt-4">Retry</Button>
+            </AlertDescription>
+          </Alert>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (!user || !data) {
+      return <Layout><div>Please sign in to view your dashboard.</div></Layout>;
+  }
 
   return (
     <Layout>
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold mb-8">Dashboard</h1>
-
-        {/* Monthly & Yearly Totals */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">This Month</CardTitle>
-              <Calendar className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{formatCurrency(stats.monthEarnings)}</div>
-              <p className="text-xs text-muted-foreground">
-                {stats.monthCalls} calls • {formatDuration(stats.monthTotal)}
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">This Year</CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{formatCurrency(stats.yearEarnings)}</div>
-              <p className="text-xs text-muted-foreground">
-                {stats.yearCalls} calls • {formatDuration(stats.yearTotal)}
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Avg Call Duration</CardTitle>
-              <Clock className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{formatDuration(stats.avgCallDuration)}</div>
-              <p className="text-xs text-muted-foreground">Across all calls</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Calls</CardTitle>
-              <Phone className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.totalCalls}</div>
-              <p className="text-xs text-muted-foreground">All time</p>
-            </CardContent>
-          </Card>
+      <div className="container mx-auto px-4 py-8 space-y-8">
+        <div className="flex justify-between items-center">
+            <h1 className="text-4xl font-bold">Dashboard</h1>
+            <Button onClick={upgrade}>Toggle Premium</Button>
         </div>
 
-        {/* Recent Calls */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Calls</CardTitle>
-            <CardDescription>Your latest interpretation sessions</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {recentCalls.length === 0 ? (
-                <p className="text-center text-muted-foreground py-8">
-                  No calls logged yet. Start tracking your calls to see them here.
-                </p>
-              ) : (
-                recentCalls.map((call) => (
-                  <div
-                    key={call.id}
-                    className="flex items-center justify-between p-4 border rounded-lg"
-                  >
-                    <div className="flex-1">
-                      <div className="font-medium">
-                        {format(new Date(call.start_time), 'MMM dd, yyyy • hh:mm a')}
-                      </div>
-                      {call.notes && (
-                        <div className="text-sm text-muted-foreground mt-1">{call.notes}</div>
-                      )}
-                    </div>
-                    <div className="text-right">
-                      <div className="font-semibold">{formatCurrency(parseFloat(call.earnings))}</div>
-                      <div className="text-sm text-muted-foreground">
-                        {formatDuration(call.duration_seconds)}
-                      </div>
-                    </div>
-                  </div>
-                ))
-              )}
+        {isPremium ? (
+            <PremiumStatsOverview stats={data.premiumStats} isPremium={isPremium} />
+        ) : (
+            <StatsCards stats={{ totalCalls: data.stats.totalCalls, totalMinutes: Math.round(data.stats.monthTotal / 60), totalEarnings: data.stats.monthEarnings }} />
+        )}
+
+        {!isPremium && <PremiumUpgradeCard featureName="Advanced Analytics" />}
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 space-y-8">
+                <WeeklyChart data={data.weeklyData} />
+                <RecentCalls calls={data.recentCalls} />
+                <PerformanceHeatmap data={data.heatmapData} isPremium={isPremium} />
             </div>
-          </CardContent>
-        </Card>
+            <div className="space-y-8">
+                <ManualLog />
+                <CallTypeChart data={data.callTypeData} />
+                <AIInsights stats={data.aiInsights} />
+            </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <GoalsTracker goals={goals || []} isPremium={isPremium} />
+            <EarningsProjection isPremium={isPremium} />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <PlatformComparison platforms={data.platformData} isPremium={isPremium} />
+            <LearningProgress metrics={data.learningMetrics} />
+        </div>
+
+        <IntegrationStatus integrations={data.integrations} />
+
       </div>
     </Layout>
   );
 };
+
 
 export default Dashboard;

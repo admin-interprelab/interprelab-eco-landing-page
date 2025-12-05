@@ -1,10 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* InterpreLab Design System - Advanced Medical/Legal Interpretation Platform
-All colors MUST be HSL for consistency and theming.
-*/
+/* ... (rest of the file) */
 
 @layer base {
   :root {
@@ -63,7 +63,7 @@ All colors MUST be HSL for consistency and theming.
     --gradient-primary: linear-gradient(135deg, hsl(209 46% 31%), hsl(237 26% 41%));
     --gradient-success: linear-gradient(135deg, hsl(142 71% 45%), hsl(209 46% 31%));
     --gradient-glow: radial-gradient(circle at 50% 50%, hsl(209 46% 31% / 0.3), transparent 70%);
-    
+
     /* Shadows */
     --shadow-glow: 0 0 50px hsl(209 46% 31% / 0.3);
     --shadow-card: 0 8px 32px hsl(240 10% 3.9% / 0.6);
@@ -75,41 +75,6 @@ All colors MUST be HSL for consistency and theming.
 
     --radius: 0.75rem;
 
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  /* Light mode alternative (medical/legal environments prefer dark) */
-  .light {
-    --background: 210 30% 98%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --muted: 210 15% 95%;
-    --muted-foreground: 240 10% 45%;
-    --border: 210 15% 90%;
-    --input: 210 15% 95%;
-    --glass-bg: 0 0% 100% / 0.9;
-    --glass-border: 240 10% 3.9% / 0.1;
-  }
-
-  /* Sidebar Variables */
-  :root {
     --sidebar-background: 240 12% 8%;
     --sidebar-foreground: 210 30% 98%;
     --sidebar-primary: 209 46% 31%;
@@ -118,6 +83,62 @@ All colors MUST be HSL for consistency and theming.
     --sidebar-accent-foreground: 210 30% 98%;
     --sidebar-border: 240 10% 18%;
     --sidebar-ring: 209 46% 31%;
+  }
+
+  /* Light mode variables */
+  .light {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --glass-bg: 0 0% 100% / 0.9;
+    --glass-border: 240 10% 3.9% / 0.1;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  /* Dark mode variables */
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 94.0%;
   }
 }
 
@@ -128,7 +149,33 @@ All colors MUST be HSL for consistency and theming.
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Roboto', 'Inter', system-ui, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+
+  /* Accessibility improvements */
+  *:focus-visible {
+    @apply outline-2 outline-offset-2 outline-primary ring-2 ring-primary/20;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Reduced motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 
   /* Glass morphism utilities */
@@ -139,7 +186,7 @@ All colors MUST be HSL for consistency and theming.
   }
 
   .glow {
-    text-shadow: 0 0 50px hsl(209 46% 31% / 0.3);
+    text-shadow: 0 0 50px hsl(var(--primary-glow) / 0.3);
   }
 
   /* Animation classes */
@@ -169,6 +216,37 @@ All colors MUST be HSL for consistency and theming.
     box-shadow: var(--shadow-card);
   }
 
+  /* Enhanced Button Interactions */
+  .glass-button {
+    @apply relative overflow-hidden transition-all duration-300;
+  }
+
+  .glass-button::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent;
+    @apply translate-x-[-200%] transition-transform duration-700;
+  }
+
+  .glass-button:hover::before {
+    @apply translate-x-[200%];
+  }
+
+  /* Loading skeleton */
+  .skeleton {
+    @apply animate-pulse bg-muted/50 rounded;
+  }
+
+  /* Smooth scroll snap */
+  .scroll-snap-container {
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+  }
+
+  .scroll-snap-item {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
   /* Extension window styles */
   .extension-window {
     @apply glass rounded-xl border;
@@ -184,6 +262,15 @@ All colors MUST be HSL for consistency and theming.
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 1rem;
+  }
+
+  /* 3D perspective utilities */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .transform-gpu {
+    transform: translateZ(0);
   }
 }
 
@@ -227,82 +314,321 @@ All colors MUST be HSL for consistency and theming.
   }
 }
 
-/* Landing Page Specific Animations */
-@keyframes highlight-pulse {
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, hsl(var(--muted)) 25%, hsl(var(--muted-foreground) / 0.1) 50%, hsl(var(--muted)) 75%);
+  background-size: 200px 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Stress-Aware Accessibility Styles */
+
+/* Calm focus indicators for stress-aware keyboard navigation */
+.stress-aware-focus {
+  outline: 2px solid hsl(var(--primary) / 0.6) !important;
+  outline-offset: 2px;
+  border-radius: 4px;
+  box-shadow: 0 0 0 4px hsl(var(--primary) / 0.1);
+  transition: all 0.2s ease-out;
+}
+
+/* Stress level-based styling */
+.stress-low .stress-aware-focus {
+  outline-color: hsl(var(--success) / 0.6);
+  box-shadow: 0 0 0 4px hsl(var(--success) / 0.1);
+}
+
+.stress-moderate .stress-aware-focus {
+  outline-color: hsl(var(--warning) / 0.6);
+  box-shadow: 0 0 0 4px hsl(var(--warning) / 0.1);
+}
+
+.stress-high .stress-aware-focus {
+  outline-color: hsl(var(--destructive) / 0.6);
+  box-shadow: 0 0 0 4px hsl(var(--destructive) / 0.1);
+}
+
+.stress-crisis .stress-aware-focus {
+  outline: 3px solid hsl(var(--destructive));
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px hsl(var(--destructive) / 0.2);
+  animation: crisis-pulse 1s ease-in-out infinite;
+}
+
+@keyframes crisis-pulse {
   0%, 100% {
-    box-shadow: 0 0 0 0 hsl(var(--primary) / 0);
+    box-shadow: 0 0 0 6px hsl(var(--destructive) / 0.2);
   }
   50% {
-    box-shadow: 0 0 30px 10px hsl(var(--primary) / 0.3);
+    box-shadow: 0 0 0 8px hsl(var(--destructive) / 0.3);
   }
 }
 
-.highlight-pulse {
-  animation: highlight-pulse 2s ease-in-out;
+/* Keyboard navigation active state */
+.keyboard-navigation-active {
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
 }
 
-/* Smooth scroll behavior */
-html {
-  scroll-behavior: smooth;
+.keyboard-navigation-active *:focus {
+  outline: var(--focus-ring-width) solid hsl(var(--primary) / 0.6);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: 4px;
 }
 
-/* Offset for fixed navigation */
-section[id] {
-  scroll-margin-top: 80px;
+/* Enhanced focus for interactive elements during keyboard navigation */
+.keyboard-navigation-active button:focus,
+.keyboard-navigation-active a:focus,
+.keyboard-navigation-active input:focus,
+.keyboard-navigation-active select:focus,
+.keyboard-navigation-active textarea:focus {
+  transform: scale(1.02);
+  transition: transform 0.15s ease-out;
 }
 
-/* CTA Button Glow Effects */
-.pulse-glow-urgent {
-  animation: pulseGlowUrgent 2s ease-in-out infinite;
+/* Skip to content link for keyboard users */
+.skip-to-content {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 1000;
+  transition: top 0.3s ease;
 }
 
-.warm-glow {
-  box-shadow: 0 0 20px hsl(var(--secondary) / 0.4);
-  transition: box-shadow 0.3s ease;
+.skip-to-content:focus {
+  top: 6px;
 }
 
-.warm-glow:hover {
-  box-shadow: 0 0 30px hsl(var(--secondary) / 0.6);
+/* Calming Visual Accessibility Options */
+
+/* Reduced Motion Preferences */
+.reduced-motion * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
 }
 
-.success-glow {
-  box-shadow: 0 0 20px hsl(var(--success) / 0.4);
-  transition: box-shadow 0.3s ease;
+.reduced-motion .animate-fade-in,
+.reduced-motion .animate-slide-up,
+.reduced-motion .animate-pulse-glow,
+.reduced-motion .animate-float,
+.reduced-motion .animate-shimmer {
+  animation: none !important;
 }
 
-.success-glow:hover {
-  box-shadow: 0 0 30px hsl(var(--success) / 0.6);
+/* Calming Mode - Reduced Visual Noise */
+.calming-mode {
+  --shadow-glow: none;
+  --shadow-card: 0 2px 8px hsl(var(--foreground) / 0.1);
+  --shadow-extension: 0 4px 16px hsl(var(--foreground) / 0.1);
 }
 
-.financial-glow {
-  box-shadow: 0 0 20px hsl(142 71% 45% / 0.4);
-  transition: box-shadow 0.3s ease;
+.calming-mode .glass {
+  backdrop-filter: blur(4px);
+  background: hsl(var(--background) / 0.95);
 }
 
-.financial-glow:hover {
-  box-shadow: 0 0 30px hsl(142 71% 45% / 0.6);
+.calming-mode .glow {
+  text-shadow: none;
 }
 
-@keyframes pulseGlowUrgent {
-  0%, 100% {
-    box-shadow: 0 0 15px hsl(0 62.8% 50% / 0.3);
-  }
-  50% {
-    box-shadow: 0 0 25px hsl(0 62.8% 50% / 0.5);
-  }
+.calming-mode .hover-lift:hover {
+  transform: translateY(-2px);
 }
 
-/* Snap scroll container */
-.scroll-snap-container {
-  scroll-snap-type: y mandatory;
-  overflow-y: scroll;
-  height: 100vh;
+/* High Contrast Mode with Emotional Warmth */
+.high-contrast {
+  --primary: 220 100% 40%;
+  --secondary: 0 0% 15%;
+  --background: 0 0% 100%;
+  --foreground: 0 0% 0%;
+  --border: 0 0% 20%;
+  --muted: 0 0% 95%;
+  --muted-foreground: 0 0% 30%;
 }
 
-/* Responsive typography for stories */
-@media (max-width: 768px) {
-  section[id] {
-    scroll-margin-top: 60px;
-  }
+.high-contrast.dark {
+  --primary: 220 100% 70%;
+  --secondary: 0 0% 85%;
+  --background: 0 0% 0%;
+  --foreground: 0 0% 100%;
+  --border: 0 0% 80%;
+  --muted: 0 0% 5%;
+  --muted-foreground: 0 0% 70%;
 }
 
+.high-contrast * {
+  border-color: hsl(var(--border)) !important;
+}
+
+.high-contrast button,
+.high-contrast a,
+.high-contrast input,
+.high-contrast select,
+.high-contrast textarea {
+  border: 2px solid hsl(var(--border)) !important;
+}
+
+/* Font Size Variations */
+.font-small {
+  font-size: 14px;
+}
+
+.font-medium {
+  font-size: 16px;
+}
+
+.font-large {
+  font-size: 18px;
+}
+
+.font-extra-large {
+  font-size: 20px;
+}
+
+.font-large h1, .font-extra-large h1 { font-size: 2.5rem; }
+.font-large h2, .font-extra-large h2 { font-size: 2rem; }
+.font-large h3, .font-extra-large h3 { font-size: 1.5rem; }
+.font-large h4, .font-extra-large h4 { font-size: 1.25rem; }
+
+/* Color Theme Variations */
+.theme-calming {
+  --primary: 200 50% 60%;
+  --secondary: 150 30% 70%;
+  --background: 210 20% 98%;
+  --foreground: 210 15% 20%;
+  --accent: 180 40% 65%;
+  --muted: 210 15% 95%;
+  --border: 210 20% 85%;
+}
+
+.theme-calming.dark {
+  --primary: 200 40% 70%;
+  --secondary: 150 25% 75%;
+  --background: 210 25% 8%;
+  --foreground: 210 20% 95%;
+  --accent: 180 35% 70%;
+  --muted: 210 20% 12%;
+  --border: 210 25% 20%;
+}
+
+.theme-warm {
+  --primary: 25 70% 50%;
+  --secondary: 45 60% 60%;
+  --background: 30 20% 98%;
+  --foreground: 30 15% 20%;
+  --accent: 35 65% 55%;
+  --muted: 30 15% 95%;
+  --border: 30 20% 85%;
+}
+
+.theme-warm.dark {
+  --primary: 25 60% 60%;
+  --secondary: 45 50% 70%;
+  --background: 30 25% 8%;
+  --foreground: 30 20% 95%;
+  --accent: 35 55% 65%;
+  --muted: 30 20% 12%;
+  --border: 30 25% 20%;
+}
+
+/* Focus Indicator Styles */
+.focus-subtle *:focus {
+  outline: 1px solid hsl(var(--primary) / 0.4);
+  outline-offset: 1px;
+}
+
+.focus-enhanced *:focus {
+  outline: 3px solid hsl(var(--primary));
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px hsl(var(--primary) / 0.2);
+}
+
+/* High Stress Mode - Simplified Interface */
+.high-stress-mode {
+  --transition-smooth: none;
+  --transition-bounce: none;
+}
+
+.high-stress-mode .glass {
+  background: hsl(var(--background));
+  backdrop-filter: none;
+}
+
+.high-stress-mode .hover-lift:hover {
+  transform: none;
+}
+
+.high-stress-mode * {
+  animation: none !important;
+  transition: none !important;
+}
+
+.high-stress-mode .complex-layout {
+  display: none;
+}
+
+.high-stress-mode .simplified-layout {
+  display: block;
+}
+
+/* Audio Sensitivity Settings */
+.audio-reduced audio,
+.audio-reduced video {
+  volume: 0.3;
+}
+
+.audio-none audio,
+.audio-none video {
+  volume: 0;
+  muted: true;
+}
+
+/* Therapeutic Section Styling */
+.therapeutic-section {
+  scroll-margin-top: 2rem;
+}
+
+.therapeutic-section--crisis-support {
+  border-left: 4px solid hsl(var(--destructive));
+  padding-left: 1rem;
+  background: hsl(var(--destructive) / 0.05);
+}
+
+.therapeutic-section--validation {
+  border-left: 4px solid hsl(var(--primary));
+  padding-left: 1rem;
+  background: hsl(var(--primary) / 0.05);
+}
+
+.therapeutic-section--hope-building {
+  border-left: 4px solid hsl(var(--success));
+  padding-left: 1rem;
+  background: hsl(var(--success) / 0.05);
+}
+
+.therapeutic-section--solution-exploration {
+  border-left: 4px solid hsl(var(--accent));
+  padding-left: 1rem;
+  background: hsl(var(--accent) / 0.05);
+}
+
+.therapeutic-section--empowerment {
+  border-left: 4px solid hsl(var(--warning));
+  padding-left: 1rem;
+  background: hsl(var(--warning) / 0.05);
+}

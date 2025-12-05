@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InterpreLab - Offline Support Available</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .heart-icon {
+      font-size: 48px;
+      margin-bottom: 20px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      font-weight: 300;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      opacity: 0.9;
+    }
+
+    .crisis-support {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 25px;
+      border-radius: 15px;
+      margin: 30px 0;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .crisis-title {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: #FFD700;
+    }
+
+    .phone-number {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #FFD700;
+      margin: 15px 0;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .phone-description {
+      font-size: 1rem;
+      margin-bottom: 20px;
+      opacity: 0.9;
+    }
+
+    .support-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin: 30px 0;
+    }
+
+    .support-card {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .support-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      color: #FFD700;
+    }
+
+    .support-card p {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      opacity: 0.9;
+    }
+
+    .breathing-exercise {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 12px;
+      margin: 20px 0;
+      border-left: 4px solid #4CAF50;
+    }
+
+    .breathing-steps {
+      display: flex;
+      justify-content: space-around;
+      margin: 15px 0;
+      flex-wrap: wrap;
+    }
+
+    .breathing-step {
+      text-align: center;
+      margin: 5px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      min-width: 80px;
+    }
+
+    .step-number {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #4CAF50;
+    }
+
+    .affirmations {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 12px;
+      margin: 20px 0;
+      border-left: 4px solid #FF6B6B;
+    }
+
+    .affirmation-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .affirmation-list li {
+      padding: 8px 0;
+      font-style: italic;
+      opacity: 0.9;
+    }
+
+    .affirmation-list li:before {
+      content: "💙 ";
+      margin-right: 8px;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 25px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      font-weight: 500;
+    }
+
+    .btn-primary {
+      background: #4CAF50;
+      color: white;
+      box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: #45a049;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .connection-status {
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+
+    .offline {
+      background: rgba(255, 107, 107, 0.2);
+      border: 1px solid rgba(255, 107, 107, 0.3);
+    }
+
+    .online {
+      background: rgba(76, 175, 80, 0.2);
+      border: 1px solid rgba(76, 175, 80, 0.3);
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px;
+        margin: 10px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .phone-number {
+        font-size: 1.5rem;
+      }
+
+      .breathing-steps {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .btn {
+        width: 100%;
+        max-width: 250px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="heart-icon">💙</div>
+    <h1>You're Not Alone</h1>
+    <p class="subtitle">InterpreLab is temporarily offline, but support is always available to you.</p>
+
+    <div class="crisis-support">
+      <h2 class="crisis-title">🆘 Immediate Crisis Support</h2>
+
+      <div class="phone-number">988</div>
+      <p class="phone-description">National Crisis Lifeline - Free, confidential, 24/7</p>
+
+      <div class="phone-number">Text HOME to 741741</div>
+      <p class="phone-description">Crisis Text Line - Free, confidential, 24/7</p>
+
+      <p style="margin-top: 20px; font-size: 0.9rem; opacity: 0.8;">
+        These services are specifically trained to help people in emotional distress or suicidal crisis.
+      </p>
+    </div>
+
+    <div class="support-grid">
+      <div class="support-card">
+        <h3>🫁 Breathing Exercise</h3>
+        <p>When you feel overwhelmed, try this simple breathing technique to calm your nervous system.</p>
+      </div>
+
+      <div class="support-card">
+        <h3>🌱 Grounding Technique</h3>
+        <p>Use your senses to ground yourself: 5 things you see, 4 you hear, 3 you touch, 2 you smell, 1 you taste.</p>
+      </div>
+
+      <div class="support-card">
+        <h3>💪 Your Strength</h3>
+        <p>You've overcome challenges before. This difficult moment will pass, and you have the strength to get through it.</p>
+      </div>
+    </div>
+
+    <div class="breathing-exercise">
+      <h3>🫁 Box Breathing Technique</h3>
+      <p>Follow this pattern to calm your mind and body:</p>
+      <div class="breathing-steps">
+        <div class="breathing-step">
+          <div class="step-number">4</div>
+          <div>Breathe In</div>
+        </div>
+        <div class="breathing-step">
+          <div class="step-number">4</div>
+          <div>Hold</div>
+        </div>
+        <div class="breathing-step">
+          <div class="step-number">4</div>
+          <div>Breathe Out</div>
+        </div>
+        <div class="breathing-step">
+          <div class="step-number">4</div>
+          <div>Hold</div>
+        </div>
+      </div>
+      <p style="font-size: 0.9rem; opacity: 0.8;">Repeat this cycle 4-6 times or until you feel calmer.</p>
+    </div>
+
+    <div class="affirmations">
+      <h3>💙 Affirmations for Difficult Moments</h3>
+      <ul class="affirmation-list">
+        <li>I am capable and strong, even when I don't feel it</li>
+        <li>This difficult moment will pass</li>
+        <li>I have overcome challenges before and I can do it again</li>
+        <li>I deserve support, care, and compassion</li>
+        <li>It's okay to not be okay right now</li>
+        <li>I am worthy of help and healing</li>
+      </ul>
+    </div>
+
+    <div class="action-buttons">
+      <button class="btn btn-primary" onclick="location.reload()">
+        🔄 Try Reconnecting
+      </button>
+      <a href="tel:988" class="btn btn-secondary">
+        📞 Call Crisis Line
+      </a>
+    </div>
+
+    <div class="connection-status offline" id="connectionStatus">
+      🔴 Currently offline - Crisis support numbers always work
+    </div>
+
+    <p style="margin-top: 30px; font-size: 0.9rem; opacity: 0.7;">
+      <strong>Remember:</strong> Technical difficulties are temporary. Your strength and worth are permanent.
+      You matter, and there are people who want to help you.
+    </p>
+  </div>
+
+  <script>
+    // Monitor connection status
+    function updateConnectionStatus() {
+      const statusElement = document.getElementById('connectionStatus');
+      if (navigator.onLine) {
+        statusElement.className = 'connection-status online';
+        statusElement.innerHTML = '🟢 Connection restored - You can try reloading the page';
+      } else {
+        statusElement.className = 'connection-status offline';
+        statusElement.innerHTML = '🔴 Currently offline - Crisis support numbers always work';
+      }
+    }
+
+    // Check connection status on load and when it changes
+    updateConnectionStatus();
+    window.addEventListener('online', updateConnectionStatus);
+    window.addEventListener('offline', updateConnectionStatus);
+
+    // Auto-reload when connection is restored (with a delay to ensure stability)
+    window.addEventListener('online', () => {
+      setTimeout(() => {
+        if (navigator.onLine) {
+          location.reload();
+        }
+      }, 2000);
+    });
+
+    // Add some interactivity to breathing exercise
+    const breathingSteps = document.querySelectorAll('.breathing-step');
+    let currentStep = 0;
+
+    function highlightBreathingStep() {
+      breathingSteps.forEach((step, index) => {
+        if (index === currentStep) {
+          step.style.background = 'rgba(76, 175, 80, 0.3)';
+          step.style.transform = 'scale(1.1)';
+        } else {
+          step.style.background = 'rgba(255, 255, 255, 0.1)';
+          step.style.transform = 'scale(1)';
+        }
+      });
+
+      currentStep = (currentStep + 1) % breathingSteps.length;
+    }
+
+    // Start breathing exercise animation when user clicks on it
+    document.querySelector('.breathing-exercise').addEventListener('click', () => {
+      const interval = setInterval(highlightBreathingStep, 4000);
+      setTimeout(() => clearInterval(interval), 32000); // Run for 8 cycles
+    });
+  </script>
+</body>
+</html>

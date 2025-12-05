@@ -1,9 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/contexts/AuthContext';
-import { useToast } from '@/hooks/use-toast';
-import { Tables } from '@/integrations/supabase/types';
-import { formatCurrency as formatCurrencyUtil } from '@/utils/formatting/currency';
+import { useAuth } from '../contexts/AuthContext';
+import { CallLogService, UserSettingsService } from '../integrations/supabase/services';
 
 interface CallSession {
   id?: string;
@@ -12,16 +9,24 @@ interface CallSession {
   durationSeconds?: number;
   earnings?: number;
   currency?: string;
+  callType?: 'VRI' | 'OPI';
+}
+
+interface UserSettings {
+  pay_rate: number;
+  pay_rate_type: 'per_hour' | 'per_minute';
+  preferred_currency: string;
+  preferred_language: string;
+  time_rounding_method: 'round_down' | 'roll_over' | 'actual';
 }
 
 export const useCallTracker = () => {
   const [isTracking, setIsTracking] = useState(false);
   const [currentSession, setCurrentSession] = useState<CallSession | null>(null);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
-  const [userSettings, setUserSettings] = useState<Tables<'user_settings'> | null>(null);
+  const [userSettings, setUserSettings] = useState<UserSettings | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const { user } = useAuth();
-  const { toast } = useToast();
 
   useEffect(() => {
     const loadUserSettings = async () => {
@@ -56,6 +61,59 @@ export const useCallTracker = () => {
     }
   }, [user]);
 
+  useEffect(() => {
+    if (isTracking) {
+      intervalRef.current = setInterval(() => {
+        setElapsedSeconds(prev => prev + 1);
+      }, 1000);
+    } else {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [isTracking]);
+
+  const loadUserSettings = async () => {
+    if (!user) return;
+
+    const { data, error } = await UserSettingsService.getUserSettings(user.id);
+
+    if (data && !error) {
+      setUserSettings({
+        pay_rate: data.pay_rate || 0,
+        pay_rate_type: (data.pay_rate_type as 'per_hour' | 'per_minute') || 'per_hour',
+        preferred_currency: data.preferred_currency || 'USD',
+        preferred_language: data.preferred_language || 'en',
+        time_rounding_method: (data.time_rounding_method as 'round_down' | 'roll_over' | 'actual') || 'actual',
+      });
+    } else if (!error) {
+      // Create default settings
+      const { data: newSettings } = await UserSettingsService.updateUserSettings(user.id, {
+        pay_rate: 0,
+        pay_rate_type: 'per_hour',
+        preferred_currency: 'USD',
+        preferred_language: 'en',
+        time_rounding_method: 'actual',
+      });
+
+      if (newSettings) {
+        setUserSettings({
+          pay_rate: newSettings.pay_rate || 0,
+          pay_rate_type: (newSettings.pay_rate_type as 'per_hour' | 'per_minute') || 'per_hour',
+          preferred_currency: newSettings.preferred_currency || 'USD',
+          preferred_language: newSettings.preferred_language || 'en',
+          time_rounding_method: (newSettings.time_rounding_method as 'round_down' | 'roll_over' | 'actual') || 'actual',
+        });
+      }
+    }
+  };
+
   const calculateEarnings = (durationSeconds: number): number => {
     if (!userSettings || !userSettings.pay_rate) return 0;
 
@@ -66,70 +124,98 @@ export const useCallTracker = () => {
     }
   };
 
-  const startCall = async () => {
-    const session: CallSession = {
-      startTime: new Date(),
-    };
-    
-    setCurrentSession(session);
-    setIsTracking(true);
-    setElapsedSeconds(0);
+  const calculateRoundedDuration = (durationSeconds: number): number => {
+    if (!userSettings) return durationSeconds;
 
-    toast({
-      title: 'Call Started',
-      description: 'Timer is now running',
-    });
+    switch (userSettings.time_rounding_method) {
+      case 'round_down':
+        return Math.floor(durationSeconds / 60) * 60;
+      case 'roll_over':
+        return Math.ceil(durationSeconds / 60) * 60;
+      default:
+        return durationSeconds;
+    }
   };
 
-  const endCall = async (notes?: string) => {
-    if (!currentSession || !user) return;
+  const startCall = async () => {
+    if (!user) return null;
 
-    const endTime = new Date();
-    const durationSeconds = elapsedSeconds;
-    const earnings = calculateEarnings(durationSeconds);
-
-    const { error } = await supabase
-      .from('call_logs')
-      .insert({
+    try {
+      const callLog = {
         user_id: user.id,
-        start_time: currentSession.startTime.toISOString(),
-        end_time: endTime.toISOString(),
-        duration_seconds: durationSeconds,
-        earnings: earnings,
-        currency: userSettings?.preferred_currency || 'USD',
-        notes: notes,
-      });
+        start_time: new Date().toISOString(),
+      };
 
-    if (error) {
-      toast({
-        title: 'Error',
-        description: 'Failed to save call log',
-        variant: 'destructive',
-      });
-      return;
+      const { data, error } = await CallLogService.createCallLog(callLog);
+
+      if (error) {
+        console.error('Error creating call log:', error);
+        return { error };
+      }
+
+      const session: CallSession = {
+        id: data?.id,
+        startTime: new Date(),
+      };
+
+      setCurrentSession(session);
+      setIsTracking(true);
+      setElapsedSeconds(0);
+
+      return { data, error: null };
+    } catch (error) {
+      console.error('Error starting call:', error);
+      return { error };
     }
+  };
 
-    toast({
-      title: 'Call Ended',
-      description: `Duration: ${formatDuration(durationSeconds)} | Earnings: ${formatCurrency(earnings, userSettings?.preferred_currency)}`,
-    });
+  const endCall = async (notes?: string, callType?: 'VRI' | 'OPI') => {
+    if (!currentSession || !user || !currentSession.id) return { error: 'No active call session' };
 
-    setIsTracking(false);
-    setCurrentSession(null);
-    setElapsedSeconds(0);
+    try {
+      const endTime = new Date().toISOString();
+      const earnings = calculateEarnings(elapsedSeconds);
+      const roundedDuration = calculateRoundedDuration(elapsedSeconds);
+      const roundedEarnings = calculateEarnings(roundedDuration);
+
+      const updates = {
+        end_time: endTime,
+        duration_seconds: elapsedSeconds,
+        earnings,
+        currency: userSettings?.preferred_currency || 'USD',
+        notes: notes || null,
+        call_type: callType || 'VRI',
+        rounded_duration_seconds: roundedDuration,
+        rounded_earnings: roundedEarnings,
+      };
+
+      const { data, error } = await CallLogService.updateCallLog(currentSession.id, updates);
+
+      if (error) {
+        console.error('Error updating call log:', error);
+        return { error };
+      }
+
+      setIsTracking(false);
+      setCurrentSession(null);
+      setElapsedSeconds(0);
+
+      return { data, error: null };
+    } catch (error) {
+      console.error('Error ending call:', error);
+      return { error };
+    }
   };
 
   const formatDuration = (seconds: number): string => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const secs = seconds % 60;
-    
+
     if (hours > 0) {
-      return `${hours}h ${minutes}m ${secs}s`;
-    } else if (minutes > 0) {
-      return `${minutes}m ${secs}s`;
+      return `${hours}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     } else {
-      return `${secs}s`;
+      return `${minutes}:${secs.toString().padStart(2, '0')}`;
     }
   };
 

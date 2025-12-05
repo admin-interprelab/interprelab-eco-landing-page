@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Mail, Star, Users, Bell } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { PageHero } from "@/components/PageHero";
 import { supabase } from "@/integrations/supabase/client";
 import { waitlistSchema } from "@/lib/validations";
 
@@ -59,8 +60,7 @@ const Waitlist = () => {
         lastName: "",
         email: "",
       });
-    } catch (err) {
-      const error = err as { errors?: { message: string }[]; message?: string };
+    } catch (error: Error) {
       if (error.errors) {
         // Zod validation errors
         toast({
@@ -82,21 +82,15 @@ const Waitlist = () => {
 
   return (
     <Layout>
+      <PageHero
+        badgeText="Early Access"
+        title="Join the Waitlist"
+        subtitle="Be among the first to experience the future of interpretation technology. Get exclusive early access to InterpreLab's AI-powered platform."
+        badgeIcon={<Star className="w-4 h-4 mr-2" />}
+      />
       <section className="py-20 bg-gradient-subtle">
         <div className="container mx-auto px-6 text-center">
-          <Badge className="mb-6 bg-primary/10 text-primary border-primary/20">
-            <Star className="w-4 h-4 mr-2" />
-            Early Access
-          </Badge>
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 gradient-text">
-            Join the Waitlist
-          </h1>
-          <p className="text-xl text-muted-foreground mb-12 max-w-3xl mx-auto">
-            Be among the first to experience the future of interpretation technology. 
-            Get exclusive early access to InterpreLab's AI-powered platform.
-          </p>
-
-          <div className="max-w-md mx-auto">
+          <div className="max-w-md mx-auto -mt-20">
             <Card className="glass border-border/50">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -131,7 +125,7 @@ const Waitlist = () => {
                       />
                     </div>
                   </div>
-                  
+
                   <div className="space-y-2">
                     <Label htmlFor="email">Email Address</Label>
                     <div className="relative">
@@ -148,9 +142,9 @@ const Waitlist = () => {
                     </div>
                   </div>
 
-                  <Button 
-                    type="submit" 
-                    size="lg" 
+                  <Button
+                    type="submit"
+                    size="lg"
                     className="w-full glass-button"
                     disabled={isSubmitting}
                   >

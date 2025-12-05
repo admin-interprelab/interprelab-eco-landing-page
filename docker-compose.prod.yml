@@ -1,0 +1,89 @@
+# Production Docker Compose configuration for InterpreLab
+version: '3.8'
+
+services:
+  interprelab-app:
+    image: interprelab/app:latest
+    container_name: interprelab-prod
+    restart: always
+    ports:
+      - "80:8080"
+      - "443:8080"
+    environment:
+      - NODE_ENV=production
+      - VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
+      - VITE_SUPABASE_PUBLISHABLE_KEY=${VITE_SUPABASE_PUBLISHABLE_KEY}
+      - VITE_SUPABASE_PROJECT_ID=${VITE_SUPABASE_PROJECT_ID}
+      - VITE_GOOGLE_API_KEY=${VITE_GOOGLE_API_KEY}
+    volumes:
+      - nginx_cache:/var/cache/nginx
+      - nginx_logs:/var/log/nginx
+      - ssl_certs:/etc/ssl/certs:ro
+    networks:
+      - interprelab-prod-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    labels:
+      - "com.interprelab.service=app"
+      - "com.interprelab.environment=production"
+
+  # Optional: Add a reverse proxy for SSL termination
+  nginx-proxy:
+    image: nginx:alpine
+    container_name: interprelab-proxy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx-proxy.conf:/etc/nginx/nginx.conf:ro
+      - ssl_certs:/etc/ssl/certs:ro
+      - ssl_private:/etc/ssl/private:ro
+    depends_on:
+      - interprelab-app
+    networks:
+      - interprelab-prod-network
+    healthcheck:
+      test: ["CMD", "nginx", "-t"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  nginx_cache:
+    driver: local
+  nginx_logs:
+    driver: local
+  ssl_certs:
+    driver: local
+  ssl_private:
+    driver: local
+
+networks:
+  interprelab-prod-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16

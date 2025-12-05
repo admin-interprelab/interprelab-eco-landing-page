@@ -76,8 +76,7 @@ const SignIn = () => {
         });
         navigate('/');
       }
-    } catch (err) {
-      const error = err as { errors?: { message: string }[]; message?: string };
+    } catch (error: Error) {
       if (error.errors) {
         // Zod validation errors
         toast({
@@ -135,19 +134,10 @@ const SignIn = () => {
       } else {
         toast({
           title: "Success!",
-          description: "Your account has been created successfully. You can now sign in.",
-        });
-        // Reset form
-        setSignUpData({
-          firstName: "",
-          lastName: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
+          description: "Account created! Please check your email for a confirmation link to complete your registration.",
         });
       }
-    } catch (err) {
-      const error = err as { errors?: { message: string }[]; message?: string };
+    } catch (error: Error) {
       if (error.errors) {
         // Zod validation errors
         toast({
@@ -168,7 +158,7 @@ const SignIn = () => {
   };
 
   return (
-    <Layout showInterpreBot={false}>
+    <Layout>
       {/* Hero Section */}
       <section className="py-20 bg-gradient-subtle">
         <div className="container mx-auto px-6">
@@ -254,6 +244,11 @@ const SignIn = () => {
                         {isLoading ? "Signing in..." : "Sign In"}
                       </Button>
                     </form>
+                    <Separator className="my-4" />
+                    <Button variant="outline" className="w-full" onClick={signInWithGoogle}>
+                      <Chrome className="w-4 h-4 mr-2" />
+                      Sign in with Google
+                    </Button>
                   </TabsContent>
 
                   <TabsContent value="signup" className="space-y-4 mt-6">
@@ -338,6 +333,7 @@ const SignIn = () => {
                             value={signUpData.confirmPassword}
                             onChange={(e) => setSignUpData(prev => ({ ...prev, confirmPassword: e.target.value }))}
                             required
+                            autoComplete="new-password"
                           />
                         </div>
                       </div>

@@ -1,150 +1,82 @@
-import { Navigation } from '@/components/Navigation';
-import { Hero } from '@/components/landing/Hero';
-import { StoryDrivenVideoHero } from '@/components/landing/StoryDrivenVideoHero';
-import { ProductShowcase } from '@/components/landing/ProductShowcase';
-import { WellnessSection } from '@/components/sections/WellnessSection';
-import { QAFeedbackSection } from '@/components/sections/QAFeedbackSection';
-import { InterpreTrackSection } from '@/components/features/InterpreTrack/InterpreTrackSection';
-import { InterpreStudySection } from '@/components/features/InterpreStudy/InterpreStudySection';
-import { FAQSection } from '@/components/sections/FAQ/FAQSection';
-import { StatsSection } from '@/components/landing/StatsSection';
-import { Testimonials } from '@/components/landing/Testimonials';
-import { Footer } from '@/components/Footer';
-import {
-  ArrowRight,
-  Heart,
-  TrendingUp,
-  Shield,
-  Clock,
-  AlertTriangle,
-  DollarSign,
-  FileX,
-} from 'lucide-react';
+import { Navigation } from "@/components/Navigation";
+import { Hero } from "@/components/Hero";
+import { FullScreenVideoHero } from "@/components/VideoSection";
+import { SolutionTransition } from "@/components/SolutionTransition";
+import { InteractiveInsights } from "@/components/InteractiveInsights";
+import { ProductShowcase } from "@/components/ProductShowcase";
+import { StatsSection } from "@/components/StatsSection";
+import { Testimonials } from "@/components/Testimonials";
+import { Footer } from "@/components/Footer";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { TrendingDown, Users, DollarSign, Brain, AlertTriangle, Wifi } from "lucide-react";
 
 const Index = () => {
-  const painPointStories = [
+  const painPoints = [
     {
-      id: 'terminology-crisis',
-      videoSrc: '/videos/emergency-call-crisis.mp4',
-      title: 'The Terminology Crisis',
-      scenario:
-        "Dr. Martinez needs consent for an emergency thoracentesis. The patient is deteriorating rapidly. But what's the exact term in Spanish? Toracocentesis? Punción pleural? Getting this wrong could mean the difference between informed consent and a lawsuit...",
-      emotionalHook: 'In critical moments, interpreters have seconds to make decisions that impact lives.',
+      videoSrc: "/videos/lep-statistics.mp4",
+      title: "20 Million Voices at Risk",
+      description:
+        "Despite federal mandates under Section 1557, Limited English Proficiency patients face increased health risks due to chronic interpretation quality failures and systemic gaps in care.",
       dataOverlays: [
-        { stat: '⏰ 3 sec', label: 'Decision window', icon: <Clock className="w-5 h-5" /> },
-        {
-          stat: '73%',
-          label: 'Report terminology stress',
-          icon: <AlertTriangle className="w-5 h-5" />,
-        },
-        {
-          stat: '$71M',
-          label: 'Largest malpractice settlement',
-          icon: <DollarSign className="w-5 h-5" />,
-        },
+        { stat: "20M", label: "LEP Patients in U.S.", icon: <Users className="w-5 h-5" /> },
+        { stat: "67%", label: "Annual Turnover Rate", icon: <TrendingDown className="w-5 h-5" /> },
+        { stat: "$71M", label: "Largest Malpractice Settlement", icon: <AlertTriangle className="w-5 h-5" /> },
       ],
-      ctaText: 'Find Out How InterpreCoach Helps',
-      ctaIcon: ArrowRight,
-      targetFeature: 'interprecoach-section',
-      emotionalTone: 'urgent' as const,
     },
     {
-      id: 'emotional-toll',
-      videoSrc: '/videos/family-passing-news.mp4',
-      title: 'The Emotional Toll',
-      scenario:
-        "'I'm deeply sorry to inform you... your father passed away peacefully at 3:47 AM.' The interpreter feels the family's grief wash over them like a wave. Word by word, they deliver news that shatters a world. Then, 5 minutes later, another call. Another family. Another trauma. But who's there for the interpreter?",
-      emotionalHook: 'Interpreters absorb emotional trauma daily. 73% report burnout. Who supports them?',
+      videoSrc: "/videos/interpreter-stress.mp4",
+      title: "The Compensation Crisis",
+      description:
+        "Language Service Providers charge clients $1.50-$4.95/min while paying interpreters as little as $0.10/min—an 89% pay gap enabled by global wage arbitrage and workforce misclassification.",
       dataOverlays: [
-        {
-          stat: '73%',
-          label: 'Burnout rate among interpreters',
-          icon: <TrendingUp className="w-5 h-5" />,
-        },
-        { stat: 'Daily', label: 'Traumatic calls frequency', icon: <Clock className="w-5 h-5" /> },
-        {
-          stat: '$0',
-          label: 'Typical mental health support',
-          icon: <DollarSign className="w-5 h-5" />,
-        },
+        { stat: "$4.95", label: "LSP Charge (per min)", icon: <DollarSign className="w-5 h-5" /> },
+        { stat: "$0.10", label: "Interpreter Pay (offshore)", icon: <TrendingDown className="w-5 h-5" /> },
+        { stat: "89%", label: "Pay Gap Margin", icon: <AlertTriangle className="w-5 h-5" /> },
       ],
-      ctaText: 'Discover InterpreWellness Support',
-      ctaIcon: Heart,
-      targetFeature: 'wellness-section',
-      emotionalTone: 'somber' as const,
     },
     {
-      id: 'feedback-gap',
-      videoSrc: '/videos/frustrated-feedback-review.mp4',
-      title: 'The Feedback Gap',
-      scenario:
-        "David just completed 50 calls this month. His QA feedback? 'Correct, correct, correct. Additional comments: none.' He wants to improve, to be excellent, but how? Everyone says he's 'fine'... but is fine good enough when lives depend on his words?",
-      emotionalHook: "Generic feedback doesn't build excellence. Interpreters deserve better.",
+      videoSrc: "/videos/terminology-gap.mp4",
+      title: "Technology Failures Meet Human Toll",
+      description:
+        "Interpreters battle daily tech failures—unstable connections, audio lag, frozen video—while absorbing psychological trauma with no systemic support. 73% report burnout.",
       dataOverlays: [
-        { stat: '1 call', label: 'QA reviewed per 4-6 months', icon: <FileX className="w-5 h-5" /> },
-        {
-          stat: 'Generic',
-          label: 'Feedback quality',
-          icon: <AlertTriangle className="w-5 h-5" />,
-        },
-        {
-          stat: '$1000s',
-          label: 'Cost of quality training',
-          icon: <DollarSign className="w-5 h-5" />,
-        },
+        { stat: "73%", label: "Burnout Rate", icon: <Brain className="w-5 h-5" /> },
+        { stat: "Daily", label: "Tech Disruptions", icon: <Wifi className="w-5 h-5" /> },
+        { stat: "$100s-$1000s", label: "Training Costs", icon: <DollarSign className="w-5 h-5" /> },
       ],
-      ctaText: 'See How We Provide Real Insights',
-      ctaIcon: TrendingUp,
-      targetFeature: 'qa-feedback-section',
-      emotionalTone: 'frustrated' as const,
-    },
-    {
-      id: 'payment-accuracy',
-      videoSrc: '/videos/earnings-accuracy-discovery.mp4',
-      title: 'Payment Accuracy',
-      scenario:
-        "Sarah compares her logs: '47 minutes.' Company statement: '45 minutes.' Two minutes, rounded down. Multiply by 20 calls/day × 5 days/week × 52 weeks... Over $2,800 stolen. Just like that. And without her own records, she has no proof.",
-      emotionalHook: '2-3 minutes per day = $3,000+ lost per year. Your time deserves accurate tracking.',
-      dataOverlays: [
-        {
-          stat: '2-3 min',
-          label: 'Average daily rounding loss',
-          icon: <Clock className="w-5 h-5" />,
-        },
-        {
-          stat: '$3,000+',
-          label: 'Potential lost earnings (est.)',
-          icon: <DollarSign className="w-5 h-5" />,
-        },
-        {
-          stat: 'Zero logs',
-          label: 'Most interpreters keep no records',
-          icon: <FileX className="w-5 h-5" />,
-        },
-      ],
-      ctaText: 'Take Control with InterpreTrack',
-      ctaIcon: Shield,
-      targetFeature: 'interpretrack-section',
-      emotionalTone: 'determined' as const,
     },
   ];
 
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-
+      <ThemeToggle />
+      
       <main>
         {/* Hero Section */}
         <Hero />
-
-        {/* Pain Point Stories - Full Screen Video Sections */}
-        <div className="scroll-snap-container">
-          {painPointStories.map((story, index) => (
-            <StoryDrivenVideoHero key={story.id} {...story} index={index} />
+        
+        {/* Pain Points Video Sections with Data Overlays */}
+        <div className="h-screen overflow-y-scroll snap-y snap-mandatory">
+          {painPoints.map((painPoint, index) => (
+            <FullScreenVideoHero
+              key={index}
+              videoSrc={painPoint.videoSrc}
+              title={painPoint.title}
+              description={painPoint.description}
+              index={index}
+              dataOverlays={painPoint.dataOverlays}
+            />
           ))}
         </div>
 
-        {/* Feature Solutions - Linked from Pain Points */}
+        {/* Solution Transition - Bridges pain points to solutions */}
+        <SolutionTransition />
+
+        {/* Interactive Research Insights */}
+        <InteractiveInsights />
+
+        {/* Solutions & Social Proof */}
         <ProductShowcase />
 
         {/* Wellness & Community Support */}
@@ -166,7 +98,7 @@ const Index = () => {
         <StatsSection />
         <Testimonials />
       </main>
-
+      
       <Footer />
     </div>
   );
