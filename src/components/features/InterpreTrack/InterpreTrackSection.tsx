@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import {
   Clock,
   DollarSign,
-  TrendingUp,
   AlertTriangle,
   BarChart3,
   FileText,
