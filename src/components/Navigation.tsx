@@ -37,13 +37,20 @@ export const Navigation = () => {
         { label: 'InterpreHub', href: '/interpre-hub' },
       ]
     },
-    { label: t('resources'), href: '/resources' },
+    { 
+      label: t('resources'),
+      submenu: [
+        { label: 'Resource Articles', href: '/resources' },
+        { label: 'Documentation', href: '/resources#docs' },
+        { label: 'The Interpreter Dilemma', href: '/dilemma' },
+      ]
+    },
     { label: t('about'), href: '/about' },
     { label: t('contact'), href: '/contact' },
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-border/50">
+    <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-border/50" aria-label="Main navigation">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -137,7 +144,7 @@ export const Navigation = () => {
           {/* Mobile Menu */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" aria-label="Open navigation menu">
                 <Menu className="w-5 h-5" />
               </Button>
             </SheetTrigger>

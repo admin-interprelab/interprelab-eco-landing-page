@@ -3,9 +3,21 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen, Video, FileText, Users, ExternalLink, Download, Calendar, Star, Scale } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Resources = () => {
   const resources = [
+    {
+      title: "The Interpreter Dilemma",
+      description: "A special interactive report exploring misclassification and wage theft in the medical interpretation industry. Discover the systemic issues affecting interpreters and what can be done.",
+      type: "Special Report",
+      duration: "15 min read",
+      level: "All Levels",
+      icon: Scale,
+      featured: true,
+      href: "/dilemma",
+      badge: "Featured"
+    },
     {
       title: "Interpretation Techniques Masterclass",
       description: "Advanced techniques for simultaneous and consecutive interpretation",
@@ -13,7 +25,7 @@ const Resources = () => {
       duration: "4 hours",
       level: "Advanced",
       icon: Video,
-      featured: true
+      featured: false
     },
     {
       title: "Medical Terminology Guide",
@@ -40,15 +52,6 @@ const Resources = () => {
       duration: "1 hour",
       level: "All Levels",
       icon: Users,
-      featured: true
-    },
-    {
-      title: "The Interpreter Dilemma (Interactive Report)",
-      description: "A special interactive report on misclassification and wage theft in the industry.",
-      type: "Interactive",
-      duration: "15 min read",
-      level: "All Levels",
-      icon: Scale, // Importing Scale icon
       featured: true
     }
   ];
@@ -136,7 +139,7 @@ const Resources = () => {
                         {resource.featured && (
                           <Badge className="ml-2 bg-amber-500/10 text-amber-500 border-amber-500/20">
                             <Star className="w-3 h-3 mr-1" />
-                            Featured
+                            {resource.badge || 'Featured'}
                           </Badge>
                         )}
                       </div>
@@ -154,10 +157,19 @@ const Resources = () => {
                       <span>•</span>
                       <span>{resource.level}</span>
                     </div>
-                    <Button variant="outline" size="sm">
-                      <Download className="w-4 h-4 mr-2" />
-                      Access
-                    </Button>
+                    {resource.href ? (
+                      <Link to={resource.href}>
+                        <Button variant="outline" size="sm">
+                          <ExternalLink className="w-4 h-4 mr-2" />
+                          View Report
+                        </Button>
+                      </Link>
+                    ) : (
+                      <Button variant="outline" size="sm">
+                        <Download className="w-4 h-4 mr-2" />
+                        Access
+                      </Button>
+                    )}
                   </div>
                 </CardContent>
               </Card>

@@ -6,7 +6,10 @@ import heroImage from "@/assets/hero-interprelab.jpg";
 
 export const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+    <section 
+      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
+      aria-label="Hero section"
+    >
       {/* Background with gradient overlay - matching Dilemma page */}
       <div className="absolute inset-0 z-0 bg-background">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(var(--background),0.92)_0%,rgba(var(--background),0.6)_50%,rgba(var(--background),0.3)_100%)]" />
@@ -43,46 +46,55 @@ export const Hero = () => {
           {/* CTA Buttons - Glass effects with Nobel gold accents */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4 animate-fade-in-up stagger-4">
             <Link to="/waitlist">
-              <Button size="xl" className="bg-gradient-to-r from-nobel-gold to-nobel-gold/80 hover:from-nobel-gold/90 hover:to-nobel-gold/70 text-background font-semibold shadow-lg group px-8 py-6 text-lg transition-all duration-300">
+              <Button 
+                size="xl" 
+                className="bg-gradient-to-r from-nobel-gold to-nobel-gold/80 hover:from-nobel-gold/90 hover:to-nobel-gold/70 text-background font-semibold shadow-lg group px-8 py-6 text-lg transition-all duration-300"
+                aria-label="Start your free trial on the InterpreLab platform"
+              >
                 Start Free Trial
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
               </Button>
             </Link>
             
             <Link to="/signin">
-              <Button variant="outline" size="xl" className="glass border-border hover:border-nobel-gold/30 group px-8 py-6 text-lg transition-all duration-300">
-                <User className="w-5 h-5 mr-2" />
+              <Button 
+                variant="outline" 
+                size="xl" 
+                className="glass border-border hover:border-nobel-gold/30 group px-8 py-6 text-lg transition-all duration-300"
+                aria-label="Sign in to your InterpreLab account"
+              >
+                <User className="w-5 h-5 mr-2" aria-hidden="true" />
                 Sign In
               </Button>
             </Link>
           </div>
 
           {/* Trust Stats - Glass cards with stagger animations */}
-          <div className="pt-12 grid grid-cols-3 gap-6 max-w-2xl mx-auto animate-fade-in-up stagger-5">
+          <div className="pt-12 grid grid-cols-3 gap-6 max-w-2xl mx-auto animate-fade-in-up stagger-5" role="region" aria-label="Platform statistics">
             <div className="glass rounded-lg p-6 hover:border-nobel-gold/30 transition-all duration-300">
-              <div className="text-3xl md:text-4xl font-bold text-foreground">50+</div>
+              <div className="text-3xl md:text-4xl font-bold text-foreground" aria-label="50 plus countries">50+</div>
               <div className="text-sm text-muted-foreground mt-2">Countries</div>
             </div>
             <div className="glass rounded-lg p-6 hover:border-nobel-gold/30 transition-all duration-300">
-              <div className="text-3xl md:text-4xl font-bold text-foreground">10k+</div>
+              <div className="text-3xl md:text-4xl font-bold text-foreground" aria-label="10,000 plus interpreters">10k+</div>
               <div className="text-sm text-muted-foreground mt-2">Interpreters</div>
             </div>
             <div className="glass rounded-lg p-6 hover:border-nobel-gold/30 transition-all duration-300">
-              <div className="text-3xl md:text-4xl font-bold text-foreground">98%</div>
+              <div className="text-3xl md:text-4xl font-bold text-foreground" aria-label="98 percent satisfaction rate">98%</div>
               <div className="text-sm text-muted-foreground mt-2">Satisfaction</div>
             </div>
           </div>
 
           {/* Trust Badges - Nobel gold border on hover */}
-          <div className="flex flex-wrap justify-center gap-4 pt-8 animate-fade-in-up stagger-6">
-            <Badge variant="outline" className="px-4 py-2 border-border hover:border-nobel-gold/50 transition-colors duration-300">
-              <Shield className="w-4 h-4 mr-2" />
+          <div className="flex flex-wrap justify-center gap-4 pt-8 animate-fade-in-up stagger-6" role="list" aria-label="Security and compliance certifications">
+            <Badge variant="outline" className="px-4 py-2 border-border hover:border-nobel-gold/50 transition-colors duration-300" role="listitem">
+              <Shield className="w-4 h-4 mr-2" aria-hidden="true" />
               HIPAA Compliant
             </Badge>
-            <Badge variant="outline" className="px-4 py-2 border-border hover:border-nobel-gold/50 transition-colors duration-300">
+            <Badge variant="outline" className="px-4 py-2 border-border hover:border-nobel-gold/50 transition-colors duration-300" role="listitem">
               SOC 2 Certified
             </Badge>
-            <Badge variant="outline" className="px-4 py-2 border-border hover:border-nobel-gold/50 transition-colors duration-300">
+            <Badge variant="outline" className="px-4 py-2 border-border hover:border-nobel-gold/50 transition-colors duration-300" role="listitem">
               ISO 27001
             </Badge>
           </div>
