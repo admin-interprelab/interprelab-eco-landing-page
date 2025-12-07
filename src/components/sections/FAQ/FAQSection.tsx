@@ -221,7 +221,7 @@ export const FAQSection = () => {
   const hasMoreFAQs = filteredFAQs.length > initialDisplayCount && !searchQuery && activeCategory === 'all';
 
   return (
-    <section className="py-24 px-6 bg-card/50 border-t border-border">
+    <section className="py-24 px-6 bg-card/50 border-t border-border" aria-label="Frequently asked questions">
       <div className="container mx-auto max-w-5xl">
         {/* Header - Dilemma style */}
         <div className="text-center mb-12 space-y-6">
@@ -243,24 +243,27 @@ export const FAQSection = () => {
 
         {/* Search Bar - Nobel gold focus */}
         <div className="relative mb-8 animate-fade-in-up stagger-5">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" aria-hidden="true" />
           <Input
             type="text"
             placeholder="Search questions..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-12 h-14 text-lg glass border-border focus:border-nobel-gold/50 transition-colors"
+            aria-label="Search FAQ questions"
           />
         </div>
 
         {/* Category Tabs - Nobel gold active state */}
         <Tabs value={activeCategory} onValueChange={setActiveCategory} className="mb-8 animate-fade-in-up stagger-6">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 gap-2 glass">
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 gap-2 glass" role="tablist" aria-label="Filter FAQs by category">
             {categories.map((cat) => (
               <TabsTrigger 
                 key={cat.value} 
                 value={cat.value} 
                 className="text-sm data-[state=active]:bg-nobel-gold/20 data-[state=active]:text-nobel-gold"
+                role="tab"
+                aria-label={`Show ${cat.label} questions`}
               >
                 {cat.label}
               </TabsTrigger>

@@ -68,7 +68,7 @@ export const ProductShowcase = () => {
   ];
 
   return (
-    <section className="py-32 px-6 relative bg-card/50" id="solutions">
+    <section className="py-32 px-6 relative bg-card/50" id="solutions" aria-label="Our products and solutions">
       <div className="container mx-auto relative z-10">
         {/* Header - Dilemma style with Nobel gold accent */}
         <div className="text-center mb-20 space-y-6">
