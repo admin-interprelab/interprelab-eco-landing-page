@@ -34,13 +34,14 @@ import { toast } from 'sonner';
  * - "Role Consultant": Analyzes user-submitted scenarios (Roles Module)
  */
 
+
 // IMPORTANT: This key is for the Google Gemini API, not Supabase.
 // Make sure to set VITE_GEMINI_API_KEY in your .env file.
 const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
 if (!apiKey) {
-  throw new Error(
-    "Google Gemini API key missing: Please set VITE_GEMINI_API_KEY in your .env file. This key is required for all AI features in InterpreLab."
+  console.warn(
+    "Google Gemini API key missing: Please set VITE_GEMINI_API_KEY in your .env file. AI features will be disabled."
   );
 }
 

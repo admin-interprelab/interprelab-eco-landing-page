@@ -5,7 +5,9 @@ import {
   Brain, 
   Chrome,
   Clock,
-  ArrowRight
+  ArrowRight,
+  GraduationCap,
+  Users
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -15,7 +17,11 @@ export const ProductShowcase = () => {
       id: "interprebot",
       name: "InterpreBot",
       tagline: "Skills Assessment",
-      description: "AI-powered evaluation of your interpretation skills with personalized improvement paths.",
+      features: [
+        "AI-powered linguistic analysis",
+        "Grammar & syntax feedback",
+        "Personalized learning paths"
+      ],
       icon: Brain,
       gradient: "from-primary to-primary-glow",
       link: "/interprebot",
@@ -25,21 +31,43 @@ export const ProductShowcase = () => {
       id: "interprecoach",
       name: "InterpreCoach",
       tagline: "Real-Time Assistant",
-      description: "Browser extension providing instant terminology support during live sessions.",
+      features: [
+        "Live terminology support",
+        "Voice & pitch regulation",
+        "Automatic note-taking"
+      ],
       icon: Chrome,
       gradient: "from-success to-primary",
       link: "/interprecoach",
       cta: "Install Extension"
     },
     {
-      id: "interpretrack",
-      name: "InterpreTrack",
-      tagline: "Session Tracking",
-      description: "Automated logging and earnings tracking for freelance interpreters.",
-      icon: Clock,
-      gradient: "from-secondary to-accent",
-      link: "/interpretrack",
-      cta: "Start Tracking"
+      id: "interprestudy",
+      name: "InterpreStudy",
+      tagline: "Interactive Training",
+      features: [
+        "Role-play simulations",
+        "DCS Schema training",
+        "Vicarious Trauma management"
+      ],
+      icon: GraduationCap,
+      gradient: "from-blue-500 to-indigo-500",
+      link: "/interpre-study",
+      cta: "Start Learning"
+    },
+    {
+      id: "interprelink",
+      name: "InterpreLink",
+      tagline: "Community Network",
+      features: [
+        "Professional forums",
+        "Job board access",
+        "Mock practice groups"
+      ],
+      icon: Users,
+      gradient: "from-purple-500 to-pink-500",
+      link: "/interpre-hub",
+      cta: "Join Community"
     }
   ];
 
@@ -81,11 +109,16 @@ export const ProductShowcase = () => {
                       <h3 className="text-2xl font-bold text-foreground mb-1">
                         {product.name}
                       </h3>
-                      <p className="text-sm text-primary">{product.tagline}</p>
+                      <p className="text-sm text-primary font-semibold">{product.tagline}</p>
                     </div>
-                    <p className="text-muted-foreground leading-relaxed">
-                      {product.description}
-                    </p>
+                    <ul className="space-y-2">
+                      {product.features.map((feature, i) => (
+                        <li key={i} className="flex items-start text-sm text-muted-foreground">
+                          <span className="mr-2 text-primary">•</span>
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
 
                   {/* CTA */}

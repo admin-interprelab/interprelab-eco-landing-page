@@ -70,11 +70,14 @@ export const Navigation = () => {
                         <ul className="grid w-48 gap-2 p-2">
                           {item.submenu.map((subitem) => (
                             <li key={subitem.href}>
-                              <Link to={subitem.href}>
-                                <NavigationMenuLink className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                              <NavigationMenuLink asChild>
+                                <Link
+                                  to={subitem.href}
+                                  className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                                >
                                   <div className="text-sm font-medium leading-none">{subitem.label}</div>
-                                </NavigationMenuLink>
-                              </Link>
+                                </Link>
+                              </NavigationMenuLink>
                             </li>
                           ))}
                         </ul>

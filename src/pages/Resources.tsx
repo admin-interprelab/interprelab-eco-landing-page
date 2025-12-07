@@ -2,7 +2,7 @@ import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, Video, FileText, Users, ExternalLink, Download, Calendar, Star } from "lucide-react";
+import { BookOpen, Video, FileText, Users, ExternalLink, Download, Calendar, Star, Scale } from "lucide-react";
 
 const Resources = () => {
   const resources = [
@@ -40,6 +40,15 @@ const Resources = () => {
       duration: "1 hour",
       level: "All Levels",
       icon: Users,
+      featured: true
+    },
+    {
+      title: "The Interpreter Dilemma (Interactive Report)",
+      description: "A special interactive report on misclassification and wage theft in the industry.",
+      type: "Interactive",
+      duration: "15 min read",
+      level: "All Levels",
+      icon: Scale, // Importing Scale icon
       featured: true
     }
   ];
