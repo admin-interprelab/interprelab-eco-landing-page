@@ -16,7 +16,7 @@ import { signInSchema, signUpSchema } from "@/lib/validations";
 const SignIn = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { user, signIn, signUp } = useAuth();
+  const { user, signIn, signUp, signInWithGoogle } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [signInData, setSignInData] = useState({
@@ -76,13 +76,13 @@ const SignIn = () => {
         });
         navigate('/');
       }
-    } catch (err) {
-      const error = err as { errors?: { message: string }[]; message?: string };
-      if (error.errors) {
+    } catch (error: unknown) {
+      if (error && typeof error === 'object' && 'errors' in error) {
         // Zod validation errors
+        const zodError = error as { errors: Array<{ message?: string }> };
         toast({
           title: "Validation Error",
-          description: error.errors[0]?.message || "Please check your input.",
+          description: zodError.errors[0]?.message || "Please check your input.",
           variant: "destructive",
         });
       } else {
@@ -146,13 +146,13 @@ const SignIn = () => {
           confirmPassword: "",
         });
       }
-    } catch (err) {
-      const error = err as { errors?: { message: string }[]; message?: string };
-      if (error.errors) {
+    } catch (error: unknown) {
+      if (error && typeof error === 'object' && 'errors' in error) {
         // Zod validation errors
+        const zodError = error as { errors: Array<{ message?: string }> };
         toast({
           title: "Validation Error",
-          description: error.errors[0]?.message || "Please check your input.",
+          description: zodError.errors[0]?.message || "Please check your input.",
           variant: "destructive",
         });
       } else {
