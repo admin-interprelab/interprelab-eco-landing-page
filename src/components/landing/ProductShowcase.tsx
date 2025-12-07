@@ -86,14 +86,15 @@ export const ProductShowcase = () => {
         </div>
 
         {/* Product Cards - Glass effects with Nobel gold hover */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 max-w-7xl mx-auto">
           {products.map((product, index) => {
             const Icon = product.icon;
+            const staggerClass = ['stagger-1', 'stagger-2', 'stagger-3', 'stagger-4'][index] || 'stagger-1';
             return (
               <Card 
                 key={product.id}
                 id={`${product.id}-section`}
-                className={`glass border-border hover:border-nobel-gold/50 group transition-all duration-300 hover:shadow-md animate-fade-in-up stagger-${index + 1}`}
+                className={`glass border-border hover:border-nobel-gold/50 group transition-all duration-300 hover:shadow-md animate-fade-in-up ${staggerClass}`}
               >
                 <CardContent className="p-8 space-y-6">
                   {/* Icon - Nobel gold accent */}
