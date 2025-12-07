@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Accordion,
   AccordionContent,
@@ -9,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Search, ThumbsUp, ThumbsDown, MessageCircle } from 'lucide-react';
+import { Search, ThumbsUp, ThumbsDown, MessageCircle, ChevronDown } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 interface FAQItem {
@@ -190,6 +191,8 @@ const faqData: FAQItem[] = [
 export const FAQSection = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<string>('all');
+  const [isExpanded, setIsExpanded] = useState(false);
+  const initialDisplayCount = 6;
 
   const categories = [
     { value: 'all', label: 'All Questions' },
@@ -209,6 +212,13 @@ export const FAQSection = () => {
       faq.answer.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
+
+  // Show all FAQs if searching or filtering, otherwise respect expand/collapse
+  const displayedFAQs = (searchQuery || activeCategory !== 'all' || isExpanded)
+    ? filteredFAQs
+    : filteredFAQs.slice(0, initialDisplayCount);
+
+  const hasMoreFAQs = filteredFAQs.length > initialDisplayCount && !searchQuery && activeCategory === 'all';
 
   return (
     <section className="py-24 px-6 bg-card/50 border-t border-border">
@@ -262,53 +272,79 @@ export const FAQSection = () => {
         <Card className="glass border-border hover:border-nobel-gold/30 transition-colors duration-300">
           <CardContent className="p-6">
             {filteredFAQs.length > 0 ? (
-              <Accordion type="single" collapsible className="space-y-4">
-                {filteredFAQs.map((faq) => (
-                  <AccordionItem
-                    key={faq.id}
-                    value={faq.id}
-                    className="border-b border-border/50 last:border-0"
-                  >
-                    <AccordionTrigger className="text-left hover:no-underline group">
-                      <span className="font-semibold group-hover:text-nobel-gold transition-colors">
-                        {faq.question}
-                      </span>
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      <div className="space-y-4 pt-2">
-                        <p className="text-muted-foreground leading-relaxed">{faq.answer}</p>
+              <>
+                <Accordion type="single" collapsible className="space-y-4">
+                  {displayedFAQs.map((faq) => (
+                    <AccordionItem
+                      key={faq.id}
+                      value={faq.id}
+                      className="border-b border-border/50 last:border-0"
+                    >
+                      <AccordionTrigger className="text-left hover:no-underline group">
+                        <span className="font-semibold group-hover:text-nobel-gold transition-colors">
+                          {faq.question}
+                        </span>
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <div className="space-y-4 pt-2">
+                          <p className="text-muted-foreground leading-relaxed">{faq.answer}</p>
 
-                        {/* Feedback Buttons - Nobel gold hover */}
-                        <div className="flex items-center gap-4 pt-4 border-t border-border/30">
-                          <span className="text-sm text-muted-foreground">
-                            Was this helpful?
-                          </span>
-                          <div className="flex gap-2">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="gap-2 glass hover:border-nobel-gold/50 hover:text-nobel-gold transition-colors"
-                              onClick={() => console.log('Helpful:', faq.id)}
-                            >
-                              <ThumbsUp className="w-4 h-4" />
-                              Yes
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="gap-2 glass hover:border-nobel-gold/50 hover:text-nobel-gold transition-colors"
-                              onClick={() => console.log('Not helpful:', faq.id)}
-                            >
-                              <ThumbsDown className="w-4 h-4" />
-                              No
-                            </Button>
+                          {/* Feedback Buttons - Nobel gold hover */}
+                          <div className="flex items-center gap-4 pt-4 border-t border-border/30">
+                            <span className="text-sm text-muted-foreground">
+                              Was this helpful?
+                            </span>
+                            <div className="flex gap-2">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="gap-2 glass hover:border-nobel-gold/50 hover:text-nobel-gold transition-colors"
+                                onClick={() => console.log('Helpful:', faq.id)}
+                              >
+                                <ThumbsUp className="w-4 h-4" />
+                                Yes
+                              </Button>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="gap-2 glass hover:border-nobel-gold/50 hover:text-nobel-gold transition-colors"
+                                onClick={() => console.log('Not helpful:', faq.id)}
+                              >
+                                <ThumbsDown className="w-4 h-4" />
+                                No
+                              </Button>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+                
+                {/* See More / Show Less Button */}
+                {hasMoreFAQs && (
+                  <div className="flex justify-center mt-6 pt-6 border-t border-border/30">
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      onClick={() => setIsExpanded(!isExpanded)}
+                      className="gap-2 glass hover:border-nobel-gold/50 hover:text-nobel-gold transition-all duration-300 group"
+                    >
+                      {isExpanded ? (
+                        <>
+                          Show Less
+                          <ChevronDown className="w-5 h-5 rotate-180 transition-transform group-hover:translate-y-[-2px]" />
+                        </>
+                      ) : (
+                        <>
+                          See More ({filteredFAQs.length - initialDisplayCount} more questions)
+                          <ChevronDown className="w-5 h-5 transition-transform group-hover:translate-y-[2px]" />
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                )}
+              </>
             ) : (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">
@@ -327,13 +363,15 @@ export const FAQSection = () => {
             <p className="mb-6 opacity-90">
               Our support team is ready to assist you with any questions
             </p>
-            <Button
-              variant="secondary"
-              size="lg"
-              className="bg-white text-primary hover:bg-white/90"
-            >
-              Contact Support
-            </Button>
+            <Link to="/contact">
+              <Button
+                variant="secondary"
+                size="lg"
+                className="bg-white text-primary hover:bg-white/90"
+              >
+                Contact Support
+              </Button>
+            </Link>
           </CardContent>
         </Card>
       </div>
