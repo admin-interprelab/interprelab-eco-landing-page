@@ -59,9 +59,11 @@ export const CertificatesPremium = () => {
                             </div>
                         </CardContent>
                         <CardFooter>
-                            <Button className="w-full bg-gradient-to-r from-nobel-gold to-nobel-gold/80 hover:from-nobel-gold/90 hover:to-nobel-gold/70 text-background font-semibold transition-all duration-300">
-                                Enroll Now
-                            </Button>
+                            <Link to="/waitlist" className="w-full">
+                                <Button className="w-full bg-gradient-to-r from-nobel-gold to-nobel-gold/80 hover:from-nobel-gold/90 hover:to-nobel-gold/70 text-background font-semibold transition-all duration-300">
+                                    Enroll Now
+                                </Button>
+                            </Link>
                         </CardFooter>
                     </Card>
 

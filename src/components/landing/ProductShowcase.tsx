@@ -49,7 +49,7 @@ export const ProductShowcase = () => {
         "Vicarious Trauma management"
       ],
       icon: GraduationCap,
-      link: "/interpre-study",
+      link: "/interprestudy",
       cta: "Start Learning"
     },
     {
