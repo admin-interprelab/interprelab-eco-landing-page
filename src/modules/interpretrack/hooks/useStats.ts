@@ -3,7 +3,7 @@ import { callService } from '../services/callService';
 import { useCallData } from './useCallData';
 
 export const useStats = () => {
-  const { calls, loading, error } = useCallData();
+  const { calls, loading, error, addCall } = useCallData();
 
   const stats = useMemo(() => {
     return callService.getAggregatedStats();
@@ -24,6 +24,8 @@ export const useStats = () => {
     stats,
     callTypeStats,
     weeklyData,
+    calls,
+    addCall,
     loading,
     error,
   };

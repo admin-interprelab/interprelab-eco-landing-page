@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -12,7 +12,7 @@ import InterpreBot from "./pages/InterpreBot";
 import InterpreCoach from "./pages/InterpreCoach";
 import InterpreLink from "./pages/InterpreLink";
 import Dashboard from "./pages/Dashboard";
-import InterpreTrack from "./pages/InterpreTrack";
+// import InterpreTrack from "./pages/InterpreTrack"; // Replaced with lazy load
 import Settings from "./pages/Settings";
 import Resources from "./pages/Resources";
 import About from "./pages/About";
@@ -20,6 +20,8 @@ import Contact from "./pages/Contact";
 import SignIn from "./pages/SignIn";
 import Waitlist from "./pages/Waitlist";
 import NotFound from "./pages/NotFound";
+
+const InterpreTrack = React.lazy(() => import("./pages/InterpreTrack"));
 
 const queryClient = new QueryClient();
 
@@ -31,34 +33,36 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/interprebot" element={<InterpreBot />} />
-              <Route path="/interprecoach" element={<InterpreCoach />} />
-              <Route path="/interpre-hub" element={
-                <ProtectedRoute>
-                  <InterpreLink />
-                </ProtectedRoute>
-              } />
-              <Route path="/dashboard" element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              } />
-              <Route path="/interpretrack" element={<InterpreTrack />} />
-              <Route path="/settings" element={
-                <ProtectedRoute>
-                  <Settings />
-                </ProtectedRoute>
-              } />
-              <Route path="/resources" element={<Resources />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/signin" element={<SignIn />} />
-              <Route path="/waitlist" element={<Waitlist />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <Suspense fallback={<div className="flex items-center justify-center h-screen">Loading...</div>}>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/interprebot" element={<InterpreBot />} />
+                <Route path="/interprecoach" element={<InterpreCoach />} />
+                <Route path="/interpre-hub" element={
+                  <ProtectedRoute>
+                    <InterpreLink />
+                  </ProtectedRoute>
+                } />
+                <Route path="/dashboard" element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                } />
+                <Route path="/interpretrack" element={<InterpreTrack />} />
+                <Route path="/settings" element={
+                  <ProtectedRoute>
+                    <Settings />
+                  </ProtectedRoute>
+                } />
+                <Route path="/resources" element={<Resources />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/signin" element={<SignIn />} />
+                <Route path="/waitlist" element={<Waitlist />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
           </BrowserRouter>
         </TooltipProvider>
       </LanguageProvider>
