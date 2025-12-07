@@ -14,4 +14,28 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  // Performance Optimization: Manual Chunk Splitting
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Isolate React core
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          // Isolate UI Library (Shadcn/Radix)
+          'ui-vendor': [
+            '@radix-ui/react-dialog',
+            '@radix-ui/react-slot',
+            '@radix-ui/react-dropdown-menu',
+            '@radix-ui/react-toast',
+            '@radix-ui/react-tooltip',
+            'framer-motion'
+          ],
+          // Isolate Heavy Backends (Supabase/Firebase)
+          'backend-vendor': ['@supabase/supabase-js', 'firebase'],
+          // Isolate 3D Graphics (if used)
+          'three-vendor': ['three', '@react-three/fiber', '@react-three/drei'],
+        },
+      },
+    },
+  },
 }));
