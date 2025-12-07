@@ -6,29 +6,34 @@ import { Link } from "react-router-dom";
 
 export const CertificatesPremium = () => {
     return (
-        <section className="py-24 px-6 relative" id="certificates">
+        <section className="py-24 px-6 relative bg-card/30 border-y border-border" id="certificates">
             <div className="container mx-auto">
-                <div className="text-center mb-16 space-y-4 animate-fade-in">
-                    <Badge variant="outline" className="px-4 py-2 border-primary/50 text-primary">
+                <div className="text-center mb-16 space-y-6">
+                    <div className="inline-block mb-3 text-xs font-bold tracking-widest text-muted-foreground uppercase animate-fade-in-up stagger-1">
                         Elevate Your Career
-                    </Badge>
-                    <h2 className="text-4xl md:text-5xl font-bold">
-                        <span className="text-foreground">Certification &</span> <span className="text-primary">Premium Access</span>
+                    </div>
+                    <h2 className="font-serif text-4xl md:text-5xl leading-tight text-foreground animate-fade-in-up stagger-2">
+                        Certification &
+                        <br />
+                        <span className="text-muted-foreground italic font-normal text-3xl md:text-4xl block mt-4">
+                            Premium Access
+                        </span>
                     </h2>
-                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                    <div className="w-16 h-1 bg-nobel-gold mx-auto animate-fade-in-up stagger-3"></div>
+                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed animate-fade-in-up stagger-4">
                         Get accredited training and unlock advanced AI tools to accelerate your professional growth.
                     </p>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
                     {/* Certification Course */}
-                    <Card className="glass relative overflow-hidden border-border/30 hover:border-primary/50 transition-all shadow-lg hover:shadow-xl group">
+                    <Card className="glass border-border hover:border-nobel-gold/50 transition-all duration-300 shadow-lg hover:shadow-xl group animate-fade-in-up stagger-1 relative overflow-hidden">
                         <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                            <Award className="w-32 h-32 text-primary" />
+                            <Award className="w-32 h-32 text-nobel-gold" />
                         </div>
                         <CardHeader>
-                            <CardTitle className="text-2xl font-bold flex items-center text-foreground">
-                                <Award className="w-6 h-6 mr-3 text-primary" />
+                            <CardTitle className="font-serif text-2xl font-semibold flex items-center text-foreground">
+                                <Award className="w-6 h-6 mr-3 text-nobel-gold" />
                                 40-60hr Medical Course
                             </CardTitle>
                             <CardDescription className="text-base text-muted-foreground">NBCMI & CCHI Approved Prerequisite</CardDescription>
@@ -42,8 +47,8 @@ export const CertificatesPremium = () => {
                                     "Final Exam & Certificate",
                                     "Lifetime Access to Material"
                                 ].map((item, i) => (
-                                    <li key={i} className="flex items-center text-sm text-foreground/80">
-                                        <Check className="w-4 h-4 mr-3 text-success shrink-0" />
+                                    <li key={i} className="flex items-center text-sm text-muted-foreground">
+                                        <Check className="w-4 h-4 mr-3 text-nobel-gold shrink-0" />
                                         {item}
                                     </li>
                                 ))}
@@ -54,20 +59,22 @@ export const CertificatesPremium = () => {
                             </div>
                         </CardContent>
                         <CardFooter>
-                            <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
-                                Enroll Now
-                            </Button>
+                            <Link to="/waitlist" className="w-full">
+                                <Button className="w-full bg-gradient-to-r from-nobel-gold to-nobel-gold/80 hover:from-nobel-gold/90 hover:to-nobel-gold/70 text-background font-semibold transition-all duration-300">
+                                    Enroll Now
+                                </Button>
+                            </Link>
                         </CardFooter>
                     </Card>
 
                     {/* Premium Membership */}
-                    <Card className="glass relative overflow-hidden border-warning/30 hover:border-warning/50 transition-all shadow-lg hover:shadow-xl">
-                        <div className="absolute top-4 right-4 animate-pulse">
-                            <Crown className="w-8 h-8 text-warning" />
+                    <Card className="glass border-nobel-gold/30 hover:border-nobel-gold/50 transition-all duration-300 shadow-lg hover:shadow-xl animate-fade-in-up stagger-2 relative overflow-hidden">
+                        <div className="absolute top-4 right-4">
+                            <Crown className="w-8 h-8 text-nobel-gold animate-pulse" />
                         </div>
                         <CardHeader>
-                            <CardTitle className="text-2xl font-bold flex items-center text-foreground">
-                                <Star className="w-6 h-6 mr-3 text-warning fill-warning" />
+                            <CardTitle className="font-serif text-2xl font-semibold flex items-center text-foreground">
+                                <Star className="w-6 h-6 mr-3 text-nobel-gold fill-nobel-gold" />
                                 InterpreLab Premium
                             </CardTitle>
                             <CardDescription className="text-base text-muted-foreground">All-Access Pass to AI Tools</CardDescription>
@@ -81,8 +88,8 @@ export const CertificatesPremium = () => {
                                     "Priority Job Board Access",
                                     "Weekly Live Group Practice"
                                 ].map((item, i) => (
-                                    <li key={i} className="flex items-center text-sm text-foreground/80">
-                                        <Check className="w-4 h-4 mr-3 text-warning shrink-0" />
+                                    <li key={i} className="flex items-center text-sm text-muted-foreground">
+                                        <Check className="w-4 h-4 mr-3 text-nobel-gold shrink-0" />
                                         {item}
                                     </li>
                                 ))}
@@ -94,7 +101,7 @@ export const CertificatesPremium = () => {
                         </CardContent>
                         <CardFooter>
                             <Link to="/waitlist" className="w-full">
-                                <Button className="w-full bg-gradient-to-r from-warning to-orange-500 hover:opacity-90 text-black border-0 font-bold">
+                                <Button className="w-full bg-gradient-to-r from-nobel-gold to-nobel-gold/80 hover:from-nobel-gold/90 hover:to-nobel-gold/70 text-background border-0 font-semibold transition-all duration-300">
                                     Start Free Trial
                                 </Button>
                             </Link>

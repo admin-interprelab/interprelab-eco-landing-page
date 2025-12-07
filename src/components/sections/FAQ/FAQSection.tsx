@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Accordion,
   AccordionContent,
@@ -9,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Search, ThumbsUp, ThumbsDown, MessageCircle } from 'lucide-react';
+import { Search, ThumbsUp, ThumbsDown, MessageCircle, ChevronDown } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 interface FAQItem {
@@ -190,6 +191,8 @@ const faqData: FAQItem[] = [
 export const FAQSection = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<string>('all');
+  const [isExpanded, setIsExpanded] = useState(false);
+  const initialDisplayCount = 6;
 
   const categories = [
     { value: 'all', label: 'All Questions' },
@@ -210,96 +213,141 @@ export const FAQSection = () => {
     return matchesCategory && matchesSearch;
   });
 
+  // Show all FAQs if searching or filtering, otherwise respect expand/collapse
+  const displayedFAQs = (searchQuery || activeCategory !== 'all' || isExpanded)
+    ? filteredFAQs
+    : filteredFAQs.slice(0, initialDisplayCount);
+
+  const hasMoreFAQs = filteredFAQs.length > initialDisplayCount && !searchQuery && activeCategory === 'all';
+
   return (
-    <section className="py-24 px-6 bg-gradient-to-b from-background to-muted/20">
+    <section className="py-24 px-6 bg-card/50 border-t border-border" aria-label="Frequently asked questions">
       <div className="container mx-auto max-w-5xl">
-        {/* Header */}
-        <div className="text-center mb-12 space-y-4">
-          <Badge className="glass px-6 py-3 border-primary/20">FAQ</Badge>
-          <h2 className="text-4xl md:text-5xl font-bold">
-            <span className="text-foreground">Frequently Asked</span>
+        {/* Header - Dilemma style */}
+        <div className="text-center mb-12 space-y-6">
+          <div className="inline-block mb-3 text-xs font-bold tracking-widest text-muted-foreground uppercase animate-fade-in-up stagger-1">
+            FAQ
+          </div>
+          <h2 className="font-serif text-4xl md:text-5xl leading-tight text-foreground animate-fade-in-up stagger-2">
+            Frequently Asked
             <br />
-            <span className="bg-gradient-primary bg-clip-text text-transparent">Questions</span>
+            <span className="text-muted-foreground italic font-normal text-3xl md:text-4xl block mt-4">
+              Questions
+            </span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <div className="w-16 h-1 bg-nobel-gold mx-auto animate-fade-in-up stagger-3"></div>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed animate-fade-in-up stagger-4">
             Find answers to common questions about InterpreLab features, pricing, and support
           </p>
         </div>
 
-        {/* Search Bar */}
-        <div className="relative mb-8">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+        {/* Search Bar - Nobel gold focus */}
+        <div className="relative mb-8 animate-fade-in-up stagger-5">
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" aria-hidden="true" />
           <Input
             type="text"
             placeholder="Search questions..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-12 h-14 text-lg"
+            className="pl-12 h-14 text-lg glass border-border focus:border-nobel-gold/50 transition-colors"
+            aria-label="Search FAQ questions"
           />
         </div>
 
-        {/* Category Tabs */}
-        <Tabs value={activeCategory} onValueChange={setActiveCategory} className="mb-8">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 gap-2 bg-muted/50">
+        {/* Category Tabs - Nobel gold active state */}
+        <Tabs value={activeCategory} onValueChange={setActiveCategory} className="mb-8 animate-fade-in-up stagger-6">
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 gap-2 glass" role="tablist" aria-label="Filter FAQs by category">
             {categories.map((cat) => (
-              <TabsTrigger key={cat.value} value={cat.value} className="text-sm">
+              <TabsTrigger 
+                key={cat.value} 
+                value={cat.value} 
+                className="text-sm data-[state=active]:bg-nobel-gold/20 data-[state=active]:text-nobel-gold"
+                role="tab"
+                aria-label={`Show ${cat.label} questions`}
+              >
                 {cat.label}
               </TabsTrigger>
             ))}
           </TabsList>
         </Tabs>
 
-        {/* FAQ Accordion */}
-        <Card className="bg-card/50 border-border/50 backdrop-blur-sm">
+        {/* FAQ Accordion - Glass card with Nobel gold accents */}
+        <Card className="glass border-border hover:border-nobel-gold/30 transition-colors duration-300">
           <CardContent className="p-6">
             {filteredFAQs.length > 0 ? (
-              <Accordion type="single" collapsible className="space-y-4">
-                {filteredFAQs.map((faq) => (
-                  <AccordionItem
-                    key={faq.id}
-                    value={faq.id}
-                    className="border-b border-border/50 last:border-0"
-                  >
-                    <AccordionTrigger className="text-left hover:no-underline group">
-                      <span className="font-semibold group-hover:text-primary transition-colors">
-                        {faq.question}
-                      </span>
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      <div className="space-y-4 pt-2">
-                        <p className="text-muted-foreground leading-relaxed">{faq.answer}</p>
+              <>
+                <Accordion type="single" collapsible className="space-y-4">
+                  {displayedFAQs.map((faq) => (
+                    <AccordionItem
+                      key={faq.id}
+                      value={faq.id}
+                      className="border-b border-border/50 last:border-0"
+                    >
+                      <AccordionTrigger className="text-left hover:no-underline group">
+                        <span className="font-semibold group-hover:text-nobel-gold transition-colors">
+                          {faq.question}
+                        </span>
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <div className="space-y-4 pt-2">
+                          <p className="text-muted-foreground leading-relaxed">{faq.answer}</p>
 
-                        {/* Feedback Buttons */}
-                        <div className="flex items-center gap-4 pt-4 border-t border-border/30">
-                          <span className="text-sm text-muted-foreground">
-                            Was this helpful?
-                          </span>
-                          <div className="flex gap-2">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="gap-2"
-                              onClick={() => console.log('Helpful:', faq.id)}
-                            >
-                              <ThumbsUp className="w-4 h-4" />
-                              Yes
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="gap-2"
-                              onClick={() => console.log('Not helpful:', faq.id)}
-                            >
-                              <ThumbsDown className="w-4 h-4" />
-                              No
-                            </Button>
+                          {/* Feedback Buttons - Nobel gold hover */}
+                          <div className="flex items-center gap-4 pt-4 border-t border-border/30">
+                            <span className="text-sm text-muted-foreground">
+                              Was this helpful?
+                            </span>
+                            <div className="flex gap-2">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="gap-2 glass hover:border-nobel-gold/50 hover:text-nobel-gold transition-colors"
+                                onClick={() => console.log('Helpful:', faq.id)}
+                              >
+                                <ThumbsUp className="w-4 h-4" />
+                                Yes
+                              </Button>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="gap-2 glass hover:border-nobel-gold/50 hover:text-nobel-gold transition-colors"
+                                onClick={() => console.log('Not helpful:', faq.id)}
+                              >
+                                <ThumbsDown className="w-4 h-4" />
+                                No
+                              </Button>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+                
+                {/* See More / Show Less Button */}
+                {hasMoreFAQs && (
+                  <div className="flex justify-center mt-6 pt-6 border-t border-border/30">
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      onClick={() => setIsExpanded(!isExpanded)}
+                      className="gap-2 glass hover:border-nobel-gold/50 hover:text-nobel-gold transition-all duration-300 group"
+                    >
+                      {isExpanded ? (
+                        <>
+                          Show Less
+                          <ChevronDown className="w-5 h-5 rotate-180 transition-transform group-hover:translate-y-[-2px]" />
+                        </>
+                      ) : (
+                        <>
+                          See More ({filteredFAQs.length - initialDisplayCount} more questions)
+                          <ChevronDown className="w-5 h-5 transition-transform group-hover:translate-y-[2px]" />
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                )}
+              </>
             ) : (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">
@@ -318,13 +366,15 @@ export const FAQSection = () => {
             <p className="mb-6 opacity-90">
               Our support team is ready to assist you with any questions
             </p>
-            <Button
-              variant="secondary"
-              size="lg"
-              className="bg-white text-primary hover:bg-white/90"
-            >
-              Contact Support
-            </Button>
+            <Link to="/contact">
+              <Button
+                variant="secondary"
+                size="lg"
+                className="bg-white text-primary hover:bg-white/90"
+              >
+                Contact Support
+              </Button>
+            </Link>
           </CardContent>
         </Card>
       </div>
