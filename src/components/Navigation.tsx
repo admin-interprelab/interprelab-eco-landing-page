@@ -37,7 +37,14 @@ export const Navigation = () => {
         { label: 'InterpreHub', href: '/interpre-hub' },
       ]
     },
-    { label: t('resources'), href: '/resources' },
+    { 
+      label: t('resources'),
+      submenu: [
+        { label: 'Resource Articles', href: '/resources' },
+        { label: 'Documentation', href: '/resources#docs' },
+        { label: 'The Interpreter Dilemma', href: '/dilemma' },
+      ]
+    },
     { label: t('about'), href: '/about' },
     { label: t('contact'), href: '/contact' },
   ];

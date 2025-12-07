@@ -57,7 +57,7 @@ const App = () => (
                   {/* Heavy Feature Routes - Loaded on Demand */}
                   <Route path="/interprebot" element={<InterpreBot />} />
                   <Route path="/interprecoach" element={<InterpreCoach />} />
-                  <Route path="/interpre-study" element={<InterpreStudy />} />
+                  <Route path="/interprestudy" element={<InterpreStudy />} />
 
                   {/* Protected Routes */}
                   <Route path="/interpre-hub" element={
