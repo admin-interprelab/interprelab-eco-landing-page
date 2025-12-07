@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PieChart, Pie, ResponsiveContainer, Legend, Cell, Tooltip, TooltipProps } from 'recharts';
+import { PieChart, Pie, ResponsiveContainer, Cell, Tooltip, TooltipProps } from 'recharts';
 import {
   Card,
   CardHeader,

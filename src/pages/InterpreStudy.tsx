@@ -34,7 +34,6 @@ import { toast } from 'sonner';
  * - "Role Consultant": Analyzes user-submitted scenarios (Roles Module)
  */
 
-
 // IMPORTANT: This key is for the Google Gemini API, not Supabase.
 // Make sure to set VITE_GEMINI_API_KEY in your .env file.
 const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
