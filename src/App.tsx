@@ -7,6 +7,7 @@ import { ThemeProvider } from "next-themes";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Suspense, lazy } from "react";
 
 // --- 1. STATIC IMPORT (Fastest for Landing Page) ---
@@ -42,57 +43,59 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-      <AuthProvider>
-        <LanguageProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              {/* Wrap lazy routes in Suspense */}
-              <Suspense fallback={<PageLoader />}>
-                <Routes>
-                  {/* Public Landing Page - Loads Instantly */}
-                  <Route path="/" element={<Index />} />
+      <ErrorBoundary>
+        <AuthProvider>
+          <LanguageProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                {/* Wrap lazy routes in Suspense */}
+                <Suspense fallback={<PageLoader />}>
+                  <Routes>
+                    {/* Public Landing Page - Loads Instantly */}
+                    <Route path="/" element={<Index />} />
 
-                  {/* Heavy Feature Routes - Loaded on Demand */}
-                  <Route path="/interprebot" element={<InterpreBot />} />
-                  <Route path="/interprecoach" element={<InterpreCoach />} />
-                  <Route path="/interprestudy" element={<InterpreStudy />} />
+                    {/* Heavy Feature Routes - Loaded on Demand */}
+                    <Route path="/interprebot" element={<InterpreBot />} />
+                    <Route path="/interprecoach" element={<InterpreCoach />} />
+                    <Route path="/interprestudy" element={<InterpreStudy />} />
 
-                  {/* Protected Routes */}
-                  <Route path="/interpre-hub" element={
-                    <ProtectedRoute>
-                      <InterpreLink />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/interpretrack" element={<InterpreTrack />} />
-                  <Route path="/dashboard" element={
-                    <ProtectedRoute>
-                      <Dashboard />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/settings" element={
-                    <ProtectedRoute>
-                      <Settings />
-                    </ProtectedRoute>
-                  } />
+                    {/* Protected Routes */}
+                    <Route path="/interpre-hub" element={
+                      <ProtectedRoute>
+                        <InterpreLink />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/interpretrack" element={<InterpreTrack />} />
+                    <Route path="/dashboard" element={
+                      <ProtectedRoute>
+                        <Dashboard />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/settings" element={
+                      <ProtectedRoute>
+                        <Settings />
+                      </ProtectedRoute>
+                    } />
 
-                  {/* Utility Pages */}
-                  <Route path="/resources" element={<Resources />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/contact" element={<Contact />} />
-                  <Route path="/signin" element={<SignIn />} />
-                  <Route path="/waitlist" element={<Waitlist />} />
-                  <Route path="/dilemma" element={<Dilemma />} />
+                    {/* Utility Pages */}
+                    <Route path="/resources" element={<Resources />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/signin" element={<SignIn />} />
+                    <Route path="/waitlist" element={<Waitlist />} />
+                    <Route path="/dilemma" element={<Dilemma />} />
 
-                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </Suspense>
-            </BrowserRouter>
-          </TooltipProvider>
-        </LanguageProvider>
-      </AuthProvider>
+                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </Suspense>
+              </BrowserRouter>
+            </TooltipProvider>
+          </LanguageProvider>
+        </AuthProvider>
+      </ErrorBoundary>
     </ThemeProvider>
   </QueryClientProvider>
 );
