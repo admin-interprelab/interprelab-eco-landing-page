@@ -165,12 +165,12 @@ export const StoryDrivenVideoHero = ({
                 style={{ transitionDelay: `${idx * 200}ms` }}
               >
                 <div className="flex items-center gap-3">
-                  {overlay.icon && <div className="text-white">{overlay.icon}</div>}
+                  {overlay.icon && <div className="text-foreground dark:text-white">{overlay.icon}</div>}
                   <div>
-                    <div className="text-2xl md:text-3xl font-bold text-white">
+                    <div className="text-2xl md:text-3xl font-bold text-foreground dark:text-white">
                       {overlay.stat}
                     </div>
-                    <div className="text-xs md:text-sm text-white/80">{overlay.label}</div>
+                    <div className="text-xs md:text-sm text-muted-foreground dark:text-white/80">{overlay.label}</div>
                   </div>
                 </div>
               </div>

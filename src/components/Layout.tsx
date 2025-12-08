@@ -1,6 +1,6 @@
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
-import { InterpreBotUI } from "@/components/ExtensionUI";
+import { InterpreBotUI } from "@/components/interprecoach/ExtensionUI";
 import { ReactNode } from "react";
 
 interface LayoutProps {

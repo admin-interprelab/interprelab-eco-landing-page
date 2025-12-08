@@ -1,3 +1,9 @@
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+import React, { useState, useEffect } from 'react';
 import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
 import StatsCards from '@/modules/interpretrack/components/StatsCards';
@@ -26,7 +32,7 @@ export default function InterpreTrack() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <div className="w-16 h-16 border-4 border-nobel-gold border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-muted-foreground">Loading dashboard...</p>
         </div>
       </div>
@@ -40,11 +46,11 @@ export default function InterpreTrack() {
       <main className="pt-24 bg-gradient-to-b from-background to-muted/20">
         <div className="p-4 md:p-8 space-y-6 max-w-7xl mx-auto">
           {/* Header */}
-          <header className="space-y-2">
+          <header className="space-y-2 animate-fade-in-up">
             <div className="flex items-center gap-3">
-              <div className="w-1 h-10 bg-gradient-to-b from-primary to-success rounded-full" />
+              <div className="w-1 h-10 bg-gradient-to-b from-nobel-gold to-success rounded-full" />
               <div>
-                <h1 className="text-3xl md:text-4xl font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                <h1 className="font-serif text-4xl md:text-5xl font-medium tracking-tight text-foreground">
                   InterpreTrack Dashboard
                 </h1>
                 <p className="text-muted-foreground mt-1">
@@ -97,18 +103,20 @@ export default function InterpreTrack() {
 
           {/* Footer CTA for Demo Users */}
           {demoMode && (
-            <div className="mt-12 p-8 rounded-2xl bg-gradient-to-br from-primary/20 via-success/20 to-primary/20 border border-border/50 text-center animate-fade-in">
-              <Sparkles className="w-12 h-12 mx-auto mb-4 text-primary" />
-              <h3 className="text-2xl font-bold mb-2">Ready to protect your earnings?</h3>
-              <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+            <div className="mt-12 p-8 rounded-2xl glass border border-nobel-gold/20 text-center animate-fade-in">
+              <div className="w-16 h-16 bg-nobel-gold/10 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-nobel-gold/20">
+                <Sparkles className="w-8 h-8 text-nobel-gold" />
+              </div>
+              <h3 className="font-serif text-3xl font-bold mb-2 text-foreground">Ready to protect your earnings?</h3>
+              <p className="text-muted-foreground mb-6 max-w-2xl mx-auto leading-relaxed">
                 Join thousands of interpreters using InterpreTrack to ensure payment accuracy, 
                 manage multiple clients, and maximize their income.
               </p>
               <div className="flex gap-4 justify-center flex-wrap">
-                <Button asChild size="lg" variant="outline">
+                <Button asChild size="lg" variant="outline" className="border-nobel-gold/50 hover:bg-nobel-gold/10">
                   <Link to="/signup">Start Free Trial</Link>
                 </Button>
-                <Button asChild size="lg" className="bg-gradient-to-r from-primary to-success text-white">
+                <Button asChild size="lg" className="bg-nobel-gold hover:bg-nobel-gold/90 text-white">
                   <Link to="/pricing">
                     <TrendingUp className="w-5 h-5 mr-2" />
                     View Plans & Pricing

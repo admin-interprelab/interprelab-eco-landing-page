@@ -281,7 +281,7 @@ export const FAQSection = () => {
                     <AccordionItem
                       key={faq.id}
                       value={faq.id}
-                      className="border-b border-border/50 last:border-0"
+                      className="border-b border-border/50 last:border-0 animate-in fade-in slide-in-from-top-2 duration-500"
                     >
                       <AccordionTrigger className="text-left hover:no-underline group">
                         <span className="font-semibold group-hover:text-nobel-gold transition-colors">

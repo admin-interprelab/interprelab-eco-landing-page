@@ -28,6 +28,16 @@ export const CertificatesPremium = () => {
                 <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
                     {/* Certification Course */}
                     <Card className="glass border-border hover:border-nobel-gold/50 transition-all duration-300 shadow-lg hover:shadow-xl group animate-fade-in-up stagger-1 relative overflow-hidden">
+                        {/* Coming Soon Overlay */}
+                        <div className="absolute inset-0 z-20 bg-background/60 backdrop-blur-[2px] flex flex-col items-center justify-center transition-all duration-300 group-hover:bg-background/40">
+                            <Badge className="px-8 py-3 text-lg bg-nobel-gold text-white border-none shadow-glow mb-4 animate-pulse">
+                                Coming Soon
+                            </Badge>
+                            <p className="text-foreground font-serif font-medium text-lg tracking-wide bg-background/50 px-4 py-1 rounded-full backdrop-blur-md">
+                                Enrollment Opens Fall 2025
+                            </p>
+                        </div>
+
                         <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                             <Award className="w-32 h-32 text-nobel-gold" />
                         </div>
@@ -59,11 +69,9 @@ export const CertificatesPremium = () => {
                             </div>
                         </CardContent>
                         <CardFooter>
-                            <Link to="/waitlist" className="w-full">
-                                <Button className="w-full bg-gradient-to-r from-nobel-gold to-nobel-gold/80 hover:from-nobel-gold/90 hover:to-nobel-gold/70 text-background font-semibold transition-all duration-300">
-                                    Enroll Now
-                                </Button>
-                            </Link>
+                            <Button disabled className="w-full bg-muted text-muted-foreground cursor-not-allowed border-0 font-semibold opacity-50">
+                                Enrollment Closed
+                            </Button>
                         </CardFooter>
                     </Card>
 

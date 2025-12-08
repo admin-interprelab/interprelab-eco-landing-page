@@ -18,7 +18,9 @@ import {
   Mic,
   GraduationCap,
   Heart,
-  Stethoscope
+  Stethoscope,
+  Menu,
+  X
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -48,6 +50,7 @@ const InterpreStudy = () => {
   const [currentView, setCurrentView] = useState('home');
   const [score, setScore] = useState(0);
   const [completedModules, setCompletedModules] = useState<string[]>([]);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleModuleComplete = (moduleName, points) => {
     if (!completedModules.includes(moduleName)) {
@@ -71,37 +74,52 @@ const InterpreStudy = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-teal-100">
+    <div className="min-h-screen bg-background text-foreground font-sans selection:bg-nobel-gold selection:text-white">
       {/* Header */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
+      <header className="bg-card/50 border-b border-border/50 sticky top-0 z-10 backdrop-blur-md">
         <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setCurrentView('home')}>
-            <div className="bg-teal-600 p-2 rounded-lg">
+            <div className="bg-nobel-gold p-2 rounded-lg">
               <Brain className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-slate-900 tracking-tight">InterpreLab<span className="text-teal-600">.</span></h1>
-              <p className="text-xs text-slate-500 font-medium">Core Dynamics Training</p>
+              <h1 className="font-serif text-xl font-bold text-foreground tracking-tight">InterpreLab<span className="text-nobel-gold">.</span></h1>
+              <p className="text-xs text-muted-foreground font-medium">Core Dynamics Training</p>
             </div>
           </div>
           <div className="flex items-center space-x-4">
             <button
                 onClick={() => setCurrentView('academy')}
-                className="hidden md:flex items-center px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-semibold transition-colors"
+                className="hidden md:flex items-center px-4 py-2 bg-card hover:bg-nobel-gold/10 text-foreground rounded-lg text-sm font-semibold transition-colors border border-border/50"
             >
                 <GraduationCap className="w-4 h-4 mr-2" />
                 The Academy
             </button>
             <div className="hidden md:flex flex-col items-end">
-              <span className="text-xs text-slate-400 uppercase tracking-wider font-semibold">Current Score</span>
-              <span className="text-lg font-bold text-teal-600">{score} XP</span>
+              <span className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Current Score</span>
+              <span className="font-serif text-lg font-bold text-nobel-gold">{score} XP</span>
             </div>
-            <div className="h-10 w-10 bg-slate-100 rounded-full flex items-center justify-center border border-slate-200">
-              <User className="w-5 h-5 text-slate-500" />
+            <div className="h-10 w-10 bg-card rounded-full flex items-center justify-center border border-border/50">
+              <User className="w-5 h-5 text-muted-foreground" />
             </div>
+            <button className="md:hidden text-foreground p-2" onClick={() => setMenuOpen(!menuOpen)}>
+              {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
           </div>
         </div>
       </header>
+
+      {/* Mobile Menu */}
+      {menuOpen && (
+        <div className="fixed inset-0 z-40 bg-background flex flex-col items-center justify-center gap-8 text-xl font-serif animate-fade-in text-foreground">
+          <button onClick={() => { setCurrentView('home'); setMenuOpen(false); }} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">Home</button>
+          <button onClick={() => { setCurrentView('academy'); setMenuOpen(false); }} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">Academy</button>
+          <div className="text-center">
+            <p className="text-sm text-muted-foreground mb-2">Current Score</p>
+            <p className="font-serif text-3xl font-bold text-nobel-gold">{score} XP</p>
+          </div>
+        </div>
+      )}
 
       {/* Main Content */}
       <main className="max-w-6xl mx-auto px-4 py-8">
@@ -398,14 +416,14 @@ const HomeView = ({ onNavigate, completed }) => {
   return (
     <div className="space-y-8 animate-fadeIn">
       <div className="text-center space-y-4 py-8">
-        <h2 className="text-4xl font-extrabold text-slate-900">Welcome to your <span className="text-teal-600">AI-Guided</span> Training</h2>
-        <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+        <h2 className="font-serif text-4xl md:text-5xl font-medium text-foreground">Welcome to your <span className="italic text-nobel-gold">AI-Guided</span> Training</h2>
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
           InterpreBot has prepared four modules to optimize your human skills.
           Start with the <strong>Academy</strong> to learn the basics, then test your skills.
         </p>
         <button
             onClick={() => onNavigate('academy')}
-            className="inline-flex items-center px-8 py-4 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-lg font-bold shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1"
+            className="inline-flex items-center px-8 py-4 bg-nobel-gold hover:bg-nobel-gold/90 text-white rounded-xl text-lg font-bold shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1"
         >
             <GraduationCap className="w-6 h-6 mr-3" />
             Enter The Academy (Start Here)
@@ -425,7 +443,7 @@ const HomeView = ({ onNavigate, completed }) => {
                 {mod.icon}
                 </div>
                 <div>
-                    <h3 className="text-xl font-bold text-slate-900">{mod.title}</h3>
+                    <h3 className="font-serif text-xl font-bold text-foreground">{mod.title}</h3>
                     <div className="text-xs text-slate-400 font-medium uppercase tracking-wide mt-1">
                     Source: {mod.source}
                     </div>
