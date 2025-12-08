@@ -4,9 +4,9 @@
 */
 
 import React, { useState, useEffect } from 'react';
-import { HeroScene, NetworkScene } from '../components/dilemma/QuantumScene';
-import { ClassificationDiagram, WageGapDiagram, WageComparisonChart, IndustryContrast, ExploitationInfographic } from '../components/dilemma/Diagrams';
-import { AudioPlayer } from '../components/dilemma/MediaPlayer';
+import { HeroScene, NetworkScene } from '../../The-interpreter-dilemma/components/QuantumScene';
+import { ClassificationDiagram, WageGapDiagram, WageComparisonChart, IndustryContrast, ExploitationInfographic } from '../../The-interpreter-dilemma/components/Diagrams';
+import { AudioPlayer } from '../../The-interpreter-dilemma/components/MediaPlayer';
 import { ArrowDown, Menu, X, Headphones, Scale } from 'lucide-react';
 
 const SourceCard = ({ title, detail, delay }: { title: string, detail: string, delay: string }) => {
@@ -47,7 +47,7 @@ const Dilemma: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-nobel-gold selection:text-white">
-      
+
       {/* Navigation */}
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-background/90 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'}`}>
         <div className="container mx-auto px-6 flex justify-between items-center">
@@ -57,7 +57,7 @@ const Dilemma: React.FC = () => {
               USMCA REPORT <span className="font-normal text-muted-foreground">2025</span>
             </span>
           </div>
-          
+
           <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide text-muted-foreground">
             <a href="#summary" onClick={scrollToSection('summary')} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">Summary</a>
             <a href="#dilemma" onClick={scrollToSection('dilemma')} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">The Dilemma</a>
@@ -65,7 +65,7 @@ const Dilemma: React.FC = () => {
             <a href="#classification" onClick={scrollToSection('classification')} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">Classification</a>
             <a href="#economics" onClick={scrollToSection('economics')} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">Economics</a>
             <a href="#policy" onClick={scrollToSection('policy')} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">Policy Gap</a>
-            <a 
+            <a
               href="#sources"
               onClick={scrollToSection('sources')}
               className="px-5 py-2 bg-foreground text-background rounded-full hover:bg-foreground/90 transition-colors shadow-sm cursor-pointer"
@@ -95,7 +95,7 @@ const Dilemma: React.FC = () => {
       {/* Hero Section */}
       <header className="relative h-screen flex items-center justify-center overflow-hidden">
         <HeroScene />
-        
+
         {/* Gradient Overlay */}
         <div className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(var(--background),0.92)_0%,rgba(var(--background),0.6)_50%,rgba(var(--background),0.3)_100%)]" />
         {/* Fallback gradient if vars don't work in rgba like that without values. Assuming tailwind config handles vars correctly or we use opacity classes */}
@@ -112,7 +112,7 @@ const Dilemma: React.FC = () => {
           <p className="max-w-2xl mx-auto text-lg md:text-xl text-muted-foreground font-light leading-relaxed mb-12">
             How USMCA liberalized remote services but left workers behind, creating a regulatory gap that exploits skilled labor and creates digital sweatshops.
           </p>
-          
+
           <div className="flex justify-center">
              <a href="#summary" onClick={scrollToSection('summary')} className="group flex flex-col items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
                 <span>READ REPORT</span>
@@ -157,7 +157,7 @@ const Dilemma: React.FC = () => {
                     <div className="p-2 bg-stone-800 rounded-full text-nobel-gold"><Headphones size={20} /></div>
                     <span className="text-xs font-bold tracking-widest uppercase text-stone-400">Audio Report</span>
                  </div>
-                 
+
                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                     <div>
                         <h2 className="font-serif text-4xl md:text-5xl mb-6 text-white leading-tight">The Interpreter's Dilemma</h2>
@@ -188,7 +188,7 @@ const Dilemma: React.FC = () => {
                              </div>
                         </div>
                     </div>
-                    
+
                     <div className="relative">
                         <AudioPlayer />
                     </div>
@@ -203,7 +203,7 @@ const Dilemma: React.FC = () => {
                      <div className="inline-block mb-3 text-xs font-bold tracking-widest text-muted-foreground uppercase">Systemic Breakdown</div>
                      <h2 className="font-serif text-4xl md:text-5xl mb-6 text-foreground">Visualizing the Crisis</h2>
                      <p className="text-lg text-muted-foreground leading-relaxed">
-                        The current USMCA framework unintentionally fosters a system where high-value work is compensated at sweatshop rates. This infographic illustrates the flow of exploitation, the legal gaps, and the stark contrast between industries. 
+                        The current USMCA framework unintentionally fosters a system where high-value work is compensated at sweatshop rates. This infographic illustrates the flow of exploitation, the legal gaps, and the stark contrast between industries.
                      </p>
                 </div>
                 <ExploitationInfographic />
@@ -281,7 +281,7 @@ const Dilemma: React.FC = () => {
                         Why does USMCA explicitly protect manufacturing wages while leaving service professionals exposed? The contrast is stark.
                     </p>
                 </div>
-                
+
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16">
                     <div className="lg:col-span-5">
                          <IndustryContrast />
@@ -320,7 +320,7 @@ const Dilemma: React.FC = () => {
                     <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
                          The race to the bottom hurts everyone—US-based interpreters face depressed wages, and international interpreters face exploitation. Recognizing this "digital sweatshop" model is the first step toward demanding fair compensation for vital work.
                     </p>
-                    
+
                     <div className="p-6 bg-card border border-border rounded-lg border-l-4 border-l-nobel-gold shadow-sm">
                         <p className="font-serif italic text-xl text-foreground mb-4">
                             "Is a race to the bottom, fueled by digital exploitation, the future you're willing to accept? Or is it time to fight for the value of what you do?"
@@ -339,37 +339,37 @@ const Dilemma: React.FC = () => {
                     <h2 className="font-serif text-3xl md:text-5xl mb-4 text-foreground">Sources & Data</h2>
                     <p className="text-muted-foreground max-w-2xl mx-auto">Based on official USMCA texts, IRS guidelines, and industry data.</p>
                 </div>
-                
+
                 <div className="flex flex-col md:flex-row gap-8 justify-center items-center flex-wrap">
-                    <SourceCard 
-                        title="USMCA Text" 
-                        detail="Chapter 15 (Services), Chapter 19 (Digital Trade), Chapter 23 (Labor)" 
-                        delay="0s" 
+                    <SourceCard
+                        title="USMCA Text"
+                        detail="Chapter 15 (Services), Chapter 19 (Digital Trade), Chapter 23 (Labor)"
+                        delay="0s"
                     />
-                    <SourceCard 
-                        title="IRS Form SS-8" 
-                        detail="Determination of Worker Status for Purposes of Federal Employment Taxes" 
-                        delay="0.1s" 
+                    <SourceCard
+                        title="IRS Form SS-8"
+                        detail="Determination of Worker Status for Purposes of Federal Employment Taxes"
+                        delay="0.1s"
                     />
-                    <SourceCard 
-                        title="NOM-037-STPS" 
-                        detail="Mexican Official Standard for Telework (2023)" 
-                        delay="0.2s" 
+                    <SourceCard
+                        title="NOM-037-STPS"
+                        detail="Mexican Official Standard for Telework (2023)"
+                        delay="0.2s"
                     />
-                    <SourceCard 
-                        title="Bureau of Labor Statistics" 
-                        detail="Occupational Outlook: Interpreters and Translators (2023)" 
-                        delay="0.3s" 
+                    <SourceCard
+                        title="Bureau of Labor Statistics"
+                        detail="Occupational Outlook: Interpreters and Translators (2023)"
+                        delay="0.3s"
                     />
-                    <SourceCard 
-                        title="ZipRecruiter Data" 
-                        detail="Remote Medical Interpreter Salary Surveys (2025)" 
-                        delay="0.4s" 
+                    <SourceCard
+                        title="ZipRecruiter Data"
+                        detail="Remote Medical Interpreter Salary Surveys (2025)"
+                        delay="0.4s"
                     />
-                    <SourceCard 
-                        title="Industry Reports" 
-                        detail="CSA Research & Slator on Language Service Provider pricing" 
-                        delay="0.5s" 
+                    <SourceCard
+                        title="Industry Reports"
+                        detail="CSA Research & Slator on Language Service Provider pricing"
+                        delay="0.5s"
                     />
                 </div>
            </div>

@@ -21,7 +21,7 @@
   - Add quick start checklist
   - _Requirements: 10.1, 10.2, 10.3, 10.4, 10.5_
 
-- [ ] 3. Set up Firestore Collections and Services
+- [x] 3. Set up Firestore Collections and Services
   - Create `src/services/faqService.ts` for FAQ operations
   - Create `src/services/resourceService.ts` for resource operations
   - Create `src/services/certificateService.ts` for certificate operations
@@ -36,7 +36,7 @@
   - Test caching mechanism
   - Test error handling
 
-- [ ] 4. Redesign Hero Component
+- [x] 4. Redesign Hero Component
   - Update Hero component with new layout structure
   - Apply glass effects and Nobel gold styling
   - Implement staggered fade-in animations
