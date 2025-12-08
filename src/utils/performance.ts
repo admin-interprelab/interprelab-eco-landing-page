@@ -36,7 +36,7 @@ export const reportWebVitals = (onPerfEntry?: (metric: PerformanceMetrics) => vo
       try {
         const lcpObserver = new PerformanceObserver((list) => {
           const entries = list.getEntries();
-          const lastEntry = entries[entries.length - 1] as any;
+          const lastEntry = entries[entries.length - 1] as LargestContentfulPaintEntry;
           onPerfEntry({ lcp: lastEntry.renderTime || lastEntry.loadTime });
         });
         lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
@@ -48,7 +48,7 @@ export const reportWebVitals = (onPerfEntry?: (metric: PerformanceMetrics) => vo
       try {
         const fidObserver = new PerformanceObserver((list) => {
           for (const entry of list.getEntries()) {
-            onPerfEntry({ fid: (entry as any).processingStart - entry.startTime });
+            onPerfEntry({ fid: (entry as PerformanceEventTiming).processingStart - entry.startTime });
             fidObserver.disconnect();
           }
         });
@@ -62,8 +62,8 @@ export const reportWebVitals = (onPerfEntry?: (metric: PerformanceMetrics) => vo
         let clsValue = 0;
         const clsObserver = new PerformanceObserver((list) => {
           for (const entry of list.getEntries()) {
-            if (!(entry as any).hadRecentInput) {
-              clsValue += (entry as any).value;
+            if (!(entry as LayoutShift).hadRecentInput) {
+              clsValue += (entry as LayoutShift).value;
               onPerfEntry({ cls: clsValue });
             }
           }

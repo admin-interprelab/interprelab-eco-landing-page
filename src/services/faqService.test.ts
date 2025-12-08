@@ -45,7 +45,7 @@ vi.mock('firebase/firestore', async (importOriginal) => {
 
 // Mock the firebase/config to provide a mock db instance
 vi.mock('./firebase/config', () => ({
-  db: {} as any, // Mock db object, methods are mocked globally via firebase/firestore
+  db: {} as Record<string, unknown>, // Mock db object, methods are mocked globally via firebase/firestore
 }));
 
 

@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Brain,
   ShieldAlert,
@@ -20,123 +21,26 @@ import {
   Heart,
   Stethoscope,
   Menu,
-  X
+  X,
+  Play,
+  Pause,
+  ChevronRight,
+  Info
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { Badge } from "@/components/ui/badge";
+import { BackgroundPattern } from "@/components/BackgroundPattern";
 
-/**
- * InterpreLab: Core Dynamics Training Module + Gemini AI Integration
- * * Content Sources:
- * 1. benefits_of_teaching_dcs.pdf (DCS Schema)
- * 2. dealing_with_stressful_situations... (Roles, Escalation)
- * 3. intervening_with_the_proper_phraseology... (Scripts)
- * 4. sdp_vicarious_trauma_paper.pdf (Vicarious Trauma)
- * * * New AI Features:
- * - "Script Doctor": Rewrites user input into Standard Phraseology (Academy)
- * - "Role Consultant": Analyzes user-submitted scenarios (Roles Module)
- */
+// --- API & GLOBALS --- //
 
 // IMPORTANT: This key is for the Google Gemini API, not Supabase.
-// Make sure to set VITE_GEMINI_API_KEY in your .env file.
 const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
 if (!apiKey) {
-  console.warn(
-    "Google Gemini API key missing: Please set VITE_GEMINI_API_KEY in your .env file. AI features will be disabled."
-  );
+  console.warn("Google Gemini API key missing: AI features will be disabled.");
 }
 
-const InterpreStudy = () => {
-  const [currentView, setCurrentView] = useState('home');
-  const [score, setScore] = useState(0);
-  const [completedModules, setCompletedModules] = useState<string[]>([]);
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  const handleModuleComplete = (moduleName, points) => {
-    if (!completedModules.includes(moduleName)) {
-      setCompletedModules(prevModules => [...prevModules, moduleName]);
-      setScore(prevScore => prevScore + points);
-    }
-    setCurrentView('summary');
-  };
-
-  const renderView = () => {
-    switch (currentView) {
-      case 'home': return <HomeView onNavigate={(view) => setCurrentView(view)} completed={completedModules} />;
-      case 'academy': return <AcademyView onExit={() => setCurrentView('home')} />;
-      case 'dcs': return <DCSModule onComplete={(points) => handleModuleComplete('dcs', points)} onExit={() => setCurrentView('home')} />;
-      case 'roles': return <RolesModule onComplete={(points) => handleModuleComplete('roles', points)} onExit={() => setCurrentView('home')} />;
-      case 'trauma': return <TraumaModule onComplete={(points) => handleModuleComplete('trauma', points)} onExit={() => setCurrentView('home')} />;
-      case 'immersive': return <ImmersiveSimulation onComplete={(points) => handleModuleComplete('immersive', points)} onExit={() => setCurrentView('home')} />;
-      case 'summary': return <SummaryView score={score} totalModules={4} completed={completedModules.length} onHome={() => setCurrentView('home')} />;
-      default: return <HomeView onNavigate={(view) => setCurrentView(view)} completed={completedModules} />;
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-background text-foreground font-sans selection:bg-nobel-gold selection:text-white">
-      {/* Header */}
-      <header className="bg-card/50 border-b border-border/50 sticky top-0 z-10 backdrop-blur-md">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setCurrentView('home')}>
-            <div className="bg-nobel-gold p-2 rounded-lg">
-              <Brain className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h1 className="font-serif text-xl font-bold text-foreground tracking-tight">InterpreLab<span className="text-nobel-gold">.</span></h1>
-              <p className="text-xs text-muted-foreground font-medium">Core Dynamics Training</p>
-            </div>
-          </div>
-          <div className="flex items-center space-x-4">
-            <button
-                onClick={() => setCurrentView('academy')}
-                className="hidden md:flex items-center px-4 py-2 bg-card hover:bg-nobel-gold/10 text-foreground rounded-lg text-sm font-semibold transition-colors border border-border/50"
-            >
-                <GraduationCap className="w-4 h-4 mr-2" />
-                The Academy
-            </button>
-            <div className="hidden md:flex flex-col items-end">
-              <span className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Current Score</span>
-              <span className="font-serif text-lg font-bold text-nobel-gold">{score} XP</span>
-            </div>
-            <div className="h-10 w-10 bg-card rounded-full flex items-center justify-center border border-border/50">
-              <User className="w-5 h-5 text-muted-foreground" />
-            </div>
-            <button className="md:hidden text-foreground p-2" onClick={() => setMenuOpen(!menuOpen)}>
-              {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="fixed inset-0 z-40 bg-background flex flex-col items-center justify-center gap-8 text-xl font-serif animate-fade-in text-foreground">
-          <button onClick={() => { setCurrentView('home'); setMenuOpen(false); }} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">Home</button>
-          <button onClick={() => { setCurrentView('academy'); setMenuOpen(false); }} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">Academy</button>
-          <div className="text-center">
-            <p className="text-sm text-muted-foreground mb-2">Current Score</p>
-            <p className="font-serif text-3xl font-bold text-nobel-gold">{score} XP</p>
-          </div>
-        </div>
-      )}
-
-      {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-4 py-8">
-        {renderView()}
-      </main>
-
-      {/* Footer */}
-      <footer className="max-w-5xl mx-auto px-4 py-6 text-center text-slate-400 text-sm">
-        <p>&copy; 2025 InterpreLab. Powered by Google Cloud & Gemini Models.</p>
-      </footer>
-    </div>
-  );
-};
-
-/* --- API UTILS --- */
-
-async function generateGeminiContent(prompt) {
+async function generateGeminiContent(prompt: string) {
   try {
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`,
@@ -154,18 +58,84 @@ async function generateGeminiContent(prompt) {
   }
 }
 
-// Note: Google Gemini API does not support text-to-speech.
-// To enable audio playback, integrate Google Cloud Text-to-Speech API:
-// https://cloud.google.com/text-to-speech/docs/reference/rest
-// 
-// For now, audio features are disabled. The simulation will work without audio.
-//
-// async function generateGeminiAudio(text, instruction) {
-//   // Proper implementation requires Google Cloud TTS API key and endpoint
-//   return null;
-// }
+// --- VISUAL COMPONENTS --- //
 
-/* --- NEW COMPONENT: SCRIPT DOCTOR (AI) --- */
+
+type ModuleColor = 'purple' | 'blue' | 'orange' | 'rose' | 'teal';
+
+interface ModuleHeroProps {
+  title: string;
+  subtitle: string;
+  icon: React.ElementType<{ className?: string }>;
+  color: ModuleColor;
+  pattern: 'waves' | 'grid' | 'circles';
+}
+
+const ModuleHero = ({ title, subtitle, icon: Icon, color, pattern }: ModuleHeroProps) => {
+  const gradients: Record<ModuleColor, string> = {
+    purple: "from-purple-900 via-purple-800 to-background",
+    blue: "from-blue-900 via-blue-800 to-background",
+    orange: "from-orange-900 via-orange-800 to-background",
+    rose: "from-rose-900 via-rose-800 to-background",
+    teal: "from-teal-900 via-teal-800 to-background",
+  };
+
+  const accentColors: Record<ModuleColor, string> = {
+    purple: "text-purple-400",
+    blue: "text-blue-400",
+    orange: "text-orange-400",
+    rose: "text-rose-400",
+    teal: "text-teal-400",
+  };
+
+  return (
+    <div className={`relative w-full h-80 overflow-hidden flex items-center justify-center bg-gradient-to-b ${gradients[color]}`}>
+      {/* Abstract SVG Pattern */}
+      <div className="absolute inset-0 opacity-20 pointer-events-none">
+        {pattern === 'waves' && (
+           <svg className="w-full h-full" viewBox="0 0 1440 320" preserveAspectRatio="none">
+             <path fill="currentColor" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+           </svg>
+        )}
+        {pattern === 'grid' && (
+           <svg className="w-full h-full" width="100%" height="100%">
+             <defs>
+               <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                 <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="1"/>
+               </pattern>
+             </defs>
+             <rect width="100%" height="100%" fill="url(#grid)" />
+           </svg>
+        )}
+        {pattern === 'circles' && (
+            <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <circle cx="0" cy="0" r="40" fill="none" stroke="currentColor" strokeWidth="0.5" />
+                <circle cx="100" cy="100" r="60" fill="none" stroke="currentColor" strokeWidth="0.5" />
+                <circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" strokeWidth="0.5" />
+            </svg>
+        )}
+      </div>
+
+      <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
+        <div className={`mx-auto w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center mb-6 border border-white/20 shadow-xl ${accentColors[color]}`}>
+          <Icon className="w-8 h-8" />
+        </div>
+        <h1 className="font-serif text-4xl md:text-6xl font-medium text-white mb-4 drop-shadow-md tracking-tight">
+          {title}
+        </h1>
+        <div className="w-20 h-1 bg-white/30 mx-auto mb-6 rounded-full"></div>
+        <p className="text-lg text-white/80 font-light tracking-wide max-w-xl mx-auto">
+          {subtitle}
+        </p>
+      </div>
+
+      {/* Noise Overlay */}
+      <div className="absolute inset-0 bg-noise opacity-[0.03] mix-blend-overlay pointer-events-none"></div>
+    </div>
+  );
+};
+
+// --- MODULES --- //
 
 const ScriptDoctor = () => {
     const [input, setInput] = useState('');
@@ -175,952 +145,447 @@ const ScriptDoctor = () => {
     const handleRefine = async () => {
         if(!input) return;
         setLoading(true);
-        const prompt = `
-            You are a rigorous Interpreter Trainer.
-            Rewrite the following informal phrase into "Standard Phraseology" for a Medical Interpreter (as per industry standards).
-
-            Rules:
-            1. Always use Third Person ("The interpreter...").
-            2. Be transparent and concise.
-            3. Use terms like "requires repetition", "check for comprehension", "unfamiliar term".
-
-            Input: "${input}"
-
-            Return ONLY the corrected script.
-        `;
+        const prompt = `Rewrite "${input}" into Standard Medical Interpreter Phraseology (Third Person, Transparent).`;
         const result = await generateGeminiContent(prompt);
         setRefined(result);
         setLoading(false);
     };
 
     return (
-        <div className="bg-teal-50 border border-teal-200 p-6 rounded-xl mt-6">
-            <h4 className="font-bold text-teal-900 mb-3 flex items-center">
-                <Sparkles className="w-5 h-5 mr-2" /> The Script Doctor
+        <div className="bg-card border border-border p-8 rounded-xl shadow-sm hover:border-teal-500/30 transition-all">
+            <h4 className="font-serif text-xl text-foreground mb-4 flex items-center">
+                <Sparkles className="w-5 h-5 mr-3 text-teal-500" /> The Script Doctor
             </h4>
-            <p className="text-sm text-teal-700 mb-4">
-                Struggling to sound professional? Type what you <em>want</em> to say (e.g., "Hey wait, I didn't hear that"),
-                and our AI will convert it to Standard Phraseology.
-            </p>
-            <div className="flex gap-4">
+            <div className="flex gap-4 mb-4">
                 <input
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
-                    placeholder="Type rough draft here..."
-                    className="flex-1 p-3 border border-teal-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    placeholder="Type rough draft (e.g. 'I missed that')..."
+                    className="flex-1 p-4 bg-background border border-border rounded-lg focus:ring-2 focus:ring-teal-500 outline-none"
+                    onKeyDown={(e) => e.key === 'Enter' && handleRefine()}
                 />
                 <button
                     onClick={handleRefine}
                     disabled={loading || !input}
-                    className="bg-teal-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-teal-700 disabled:opacity-50"
+                    className="bg-teal-600 text-white px-6 rounded-lg font-medium hover:bg-teal-700 disabled:opacity-50 transition-colors"
                 >
-                    {loading ? <Loader className="animate-spin" /> : "Refine"}
+                    {loading ? <Loader className="animate-spin w-5 h-5" /> : "Refine"}
                 </button>
             </div>
             {refined && (
-                <div className="mt-4 bg-white p-4 rounded-lg border-l-4 border-teal-500 shadow-sm">
-                    <span className="text-xs font-bold text-slate-400 uppercase block mb-1">Standard Output</span>
-                    <p className="text-lg font-serif text-slate-800">"{refined}"</p>
+                <div className="bg-teal-500/10 p-4 rounded-lg border-l-4 border-teal-500">
+                    <p className="font-serif text-lg text-foreground italic">"{refined}"</p>
                 </div>
             )}
         </div>
     );
 };
 
-/* --- ACADEMY VIEW --- */
+interface AcademyViewProps {
+  onExit: () => void;
+}
 
-const AcademyView = ({ onExit }) => {
-  const [activeTab, setActiveTab] = useState('dcs'); // dcs, intervene, phraseology, trauma
-
+const AcademyView = ({ onExit }: AcademyViewProps) => {
+  const [activeTab, setActiveTab] = useState('dcs');
   const tabs = [
-    { id: 'dcs', label: 'The D-C Schema', icon: <Activity className="w-4 h-4" /> },
-    { id: 'intervene', label: 'Intervention Protocols', icon: <ShieldAlert className="w-4 h-4" /> },
-    { id: 'phraseology', label: 'Standard Phraseology', icon: <MessageSquare className="w-4 h-4" /> },
-    { id: 'trauma', label: 'Vicarious Trauma', icon: <Heart className="w-4 h-4" /> },
+    { id: 'dcs', label: 'DC Schema', icon: Activity },
+    { id: 'intervene', label: 'Intervention', icon: ShieldAlert },
+    { id: 'phraseology', label: 'Phraseology', icon: MessageSquare },
+    { id: 'trauma', label: 'Vicarious Trauma', icon: Heart },
   ];
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden animate-fadeIn h-[80vh] flex flex-col">
-       <div className="bg-slate-900 p-6 text-white flex justify-between items-center shrink-0">
-        <div>
-          <h3 className="text-xl font-bold flex items-center">
-            <GraduationCap className="w-6 h-6 mr-2 text-teal-400" /> InterpreLab Academy
-          </h3>
-          <p className="text-slate-400 text-sm">Fundamental concepts for the modern interpreter.</p>
-        </div>
-        <button onClick={onExit} className="text-slate-400 hover:text-white"><XCircle className="w-6 h-6" /></button>
-      </div>
-
-      <div className="flex border-b border-slate-200 bg-slate-50 overflow-x-auto shrink-0">
-        {tabs.map(tab => (
-            <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center px-6 py-4 font-semibold text-sm whitespace-nowrap transition-colors border-b-2 ${activeTab === tab.id ? 'border-teal-600 text-teal-700 bg-white' : 'border-transparent text-slate-500 hover:text-slate-700 hover:bg-slate-100'}`}
-            >
-                <span className="mr-2">{tab.icon}</span>
-                {tab.label}
-            </button>
-        ))}
-      </div>
-
-      <div className="flex-grow overflow-y-auto p-8 bg-white">
-
-        {activeTab === 'dcs' && (
-            <div className="max-w-3xl mx-auto space-y-6 animate-fadeIn">
-                <div className="bg-blue-50 p-6 rounded-xl border border-blue-100">
-                    <h2 className="text-2xl font-bold text-blue-900 mb-2">Demand Control Schema (DC-S)</h2>
-                    <p className="text-blue-800">
-                        Adapted by Dean & Pollard, this schema replaces "it depends" with a structured analysis.
-                        Interpreting work consists of <strong>Demands</strong> (challenges) and <strong>Controls</strong> (skills/decisions).
-                    </p>
-                </div>
-                <h3 className="text-xl font-bold text-slate-900 mt-8 mb-4 border-b pb-2">The 4 Demand Categories (EIPI)</h3>
-                <div className="grid md:grid-cols-2 gap-6">
-                    <div className="p-5 rounded-lg border border-slate-200 hover:border-blue-400 transition-all">
-                        <div className="flex items-center mb-3 text-blue-600 font-bold">
-                            <span className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">E</span>
-                            Environmental
-                        </div>
-                        <p className="text-sm text-slate-600">Specific to the setting. Terminology, odors, temperature, lighting, background noise.</p>
-                    </div>
-                    <div className="p-5 rounded-lg border border-slate-200 hover:border-purple-400 transition-all">
-                        <div className="flex items-center mb-3 text-purple-600 font-bold">
-                            <span className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-3">I</span>
-                            Interpersonal
-                        </div>
-                        <p className="text-sm text-slate-600">Interaction between consumers. Power dynamics, cultural differences, conflict.</p>
-                    </div>
-                    <div className="p-5 rounded-lg border border-slate-200 hover:border-orange-400 transition-all">
-                        <div className="flex items-center mb-3 text-orange-600 font-bold">
-                            <span className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center mr-3">P</span>
-                            Paralinguistic
-                        </div>
-                        <p className="text-sm text-slate-600">The "raw material" of speech. Accents, mumbling, pace, volume.</p>
-                    </div>
-                    <div className="p-5 rounded-lg border border-slate-200 hover:border-red-400 transition-all">
-                        <div className="flex items-center mb-3 text-red-600 font-bold">
-                            <span className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center mr-3">I</span>
-                            Intrapersonal
-                        </div>
-                        <p className="text-sm text-slate-600">Inside the interpreter. Hunger, fatigue, bias, emotional reactions.</p>
-                    </div>
-                </div>
-            </div>
-        )}
-
-        {activeTab === 'intervene' && (
-             <div className="max-w-3xl mx-auto space-y-6 animate-fadeIn">
-                <div className="bg-orange-50 p-6 rounded-xl border border-orange-100">
-                    <h2 className="text-2xl font-bold text-orange-900 mb-2">The Art of Intervention</h2>
-                    <p className="text-orange-800">
-                        Your primary role is a <strong>Conduit</strong>. However, to maintain accuracy, you may need to step into the role of <strong>Clarifier</strong>.
-                    </p>
-                </div>
-                <div className="space-y-6 mt-8">
-                    <div>
-                        <h3 className="text-lg font-bold text-slate-900 mb-2">The Principle of Transparency</h3>
-                        <p className="text-slate-600 mb-4">When you intervene, you must keep all parties informed. Never have a "side conversation" without explaining it.</p>
-                        <ol className="list-decimal list-inside space-y-2 bg-slate-50 p-4 rounded-lg text-slate-700 font-medium">
-                            <li>State the problem or situation.</li>
-                            <li>Suggest a possible solution.</li>
-                            <li>Ask permission to apply the solution.</li>
-                        </ol>
-                    </div>
-                </div>
-             </div>
-        )}
-
-        {activeTab === 'phraseology' && (
-            <div className="max-w-3xl mx-auto space-y-6 animate-fadeIn">
-                 <div className="bg-teal-50 p-6 rounded-xl border border-teal-100">
-                    <h2 className="text-2xl font-bold text-teal-900 mb-2">Standard Phraseology</h2>
-                    <p className="text-teal-800">
-                        Professionalism is defined by how you handle difficulties. Memorize these scripts to intervene seamlessly.
-                    </p>
-                </div>
-
-                <div className="grid gap-4 mt-6">
-                    <div className="p-4 bg-white border border-slate-200 rounded-lg shadow-sm">
-                        <p className="text-xs font-bold text-slate-400 uppercase mb-1">When you need repetition</p>
-                        <p className="font-semibold text-slate-800">"The interpreter requires repetition."</p>
-                    </div>
-                    {/* ... other examples ... */}
-                </div>
-
-                {/* AI FEATURE INJECTED HERE */}
-                <ScriptDoctor />
-            </div>
-        )}
-
-        {activeTab === 'trauma' && (
-            <div className="max-w-3xl mx-auto space-y-6 animate-fadeIn">
-                 <div className="bg-rose-50 p-6 rounded-xl border border-rose-100">
-                    <h2 className="text-2xl font-bold text-rose-900 mb-2">Vicarious Trauma</h2>
-                    <p className="text-rose-800">
-                        Interpreters are not machines. We are affected by the stories we convey.
-                    </p>
-                </div>
-                <div className="prose prose-slate mt-6">
-                    <p><strong>Definition:</strong> "The natural behaviors and emotions that arise from knowing about a traumatizing event experienced by a significant other." (Figley, 1995)</p>
-                </div>
-            </div>
-        )}
-      </div>
-    </div>
-  );
-};
-
-/* --- VIEWS --- */
-
-const HomeView = ({ onNavigate, completed }) => {
-  const modules = [
-    {
-      id: 'immersive',
-      title: 'Immersive Simulation',
-      desc: 'Live Roleplay: Listen to audio with realistic imperfections. Decide: Interpret or Intervene?',
-      icon: <Mic className="w-6 h-6 text-purple-500" />,
-      color: 'bg-purple-50 border-purple-200',
-      btnColor: 'bg-purple-600 hover:bg-purple-700',
-      source: 'Advanced Practice'
-    },
-    {
-      id: 'dcs',
-      title: 'The D-C Schema Detective',
-      desc: 'Identify Environmental, Interpersonal, Paralinguistic, and Intrapersonal (EIPI) demands.',
-      icon: <Activity className="w-6 h-6 text-blue-500" />,
-      color: 'bg-blue-50 border-blue-200',
-      btnColor: 'bg-blue-600 hover:bg-blue-700',
-      source: 'Benefits of Teaching DCS'
-    },
-    {
-      id: 'roles',
-      title: 'Managing Escalation',
-      desc: 'Master the hierarchy: Conduit → Clarifier → Facilitator. Know when to intervene.',
-      icon: <ShieldAlert className="w-6 h-6 text-orange-500" />,
-      color: 'bg-orange-50 border-orange-200',
-      btnColor: 'bg-orange-600 hover:bg-orange-700',
-      source: 'Dealing with Stressful Situations'
-    },
-    {
-      id: 'trauma',
-      title: 'Vicarious Trauma Awareness',
-      desc: 'Analyze your own stress levels using AI reflection to detect compassion fatigue.',
-      icon: <Thermometer className="w-6 h-6 text-rose-500" />,
-      color: 'bg-rose-50 border-rose-200',
-      btnColor: 'bg-rose-600 hover:bg-rose-700',
-      source: 'Vicarious Trauma'
-    }
-  ];
-
-  return (
-    <div className="space-y-8 animate-fadeIn">
-      <div className="text-center space-y-4 py-8">
-        <h2 className="font-serif text-4xl md:text-5xl font-medium text-foreground">Welcome to your <span className="italic text-nobel-gold">AI-Guided</span> Training</h2>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          InterpreBot has prepared four modules to optimize your human skills.
-          Start with the <strong>Academy</strong> to learn the basics, then test your skills.
-        </p>
-        <button
-            onClick={() => onNavigate('academy')}
-            className="inline-flex items-center px-8 py-4 bg-nobel-gold hover:bg-nobel-gold/90 text-white rounded-xl text-lg font-bold shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1"
-        >
-            <GraduationCap className="w-6 h-6 mr-3" />
-            Enter The Academy (Start Here)
-        </button>
-      </div>
-
-      <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-6 max-w-4xl mx-auto">
-        {modules.map((mod) => (
-          <div key={mod.id} className={`relative p-6 rounded-2xl border-2 ${mod.color} transition-all duration-300 hover:shadow-lg hover:-translate-y-1 flex flex-col`}>
-            {completed.includes(mod.id) && (
-              <div className="absolute top-4 right-4 bg-green-500 text-white p-1 rounded-full">
-                <CheckCircle className="w-5 h-5" />
-              </div>
-            )}
-            <div className="flex items-start mb-4">
-                <div className="h-14 w-14 rounded-xl bg-white shadow-sm flex items-center justify-center mr-4 shrink-0">
-                {mod.icon}
-                </div>
-                <div>
-                    <h3 className="font-serif text-xl font-bold text-foreground">{mod.title}</h3>
-                    <div className="text-xs text-slate-400 font-medium uppercase tracking-wide mt-1">
-                    Source: {mod.source}
-                    </div>
-                </div>
-            </div>
-            <p className="text-slate-600 text-sm mb-6 flex-grow">{mod.desc}</p>
-            <button
-              onClick={() => onNavigate(mod.id)}
-              className={`w-full py-3 px-4 rounded-lg text-white font-semibold flex items-center justify-center space-x-2 transition-colors ${mod.btnColor}`}
-            >
-              <span>{completed.includes(mod.id) ? 'Retake Module' : 'Start Module'}</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-/* --- IMMERSIVE SIMULATION --- */
-
-const ImmersiveSimulation = ({ onComplete, onExit }) => {
-  const [phase, setPhase] = useState('setup');
-  const [scenario, setScenario] = useState(null);
-  const [audioUrl, setAudioUrl] = useState(null);
-  const [userAction, setUserAction] = useState('interpret');
-  const [userResponse, setUserResponse] = useState('');
-  const [aiFeedback, setAiFeedback] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [audioPlaying, setAudioPlaying] = useState(false);
-  const audioRef = useRef(null);
-
-  const generateScenario = async () => {
-    setLoading(true);
-    const scriptPrompt = `
-      Create a single turn of a medical interpreting scenario.
-      The scenario MUST have a specific challenge (DCS Demand).
-      Examples:
-      - Paralinguistic: Speaking too fast, mumbling, background noise.
-      - Environmental: Medical jargon, privacy intrusion.
-
-      Return JSON ONLY:
-      {
-        "speaker": "Doctor" or "Patient",
-        "text": "The actual line of dialogue",
-        "challenge_type": "Paralinguistic" or "Environmental" or "Interpersonal",
-        "audio_instruction": "Instruction for TTS actor (e.g. 'Speak very fast', 'Sound angry', 'Whisper')",
-        "context": "Brief context setting (e.g. ER Triage)"
-      }
-    `;
-
-    const scriptJson = await generateGeminiContent(scriptPrompt);
-    if (!scriptJson) { setLoading(false); return; }
-
-    try {
-      const cleanJson = scriptJson.replace(/```json|```/g, '').trim();
-      const parsedScenario = JSON.parse(cleanJson);
-      setScenario(parsedScenario);
-      // Audio generation is disabled - Google Gemini API doesn't support TTS
-      // To enable, integrate Google Cloud Text-to-Speech API
-      // const audioBlobUrl = await generateGeminiAudio(parsedScenario.text, parsedScenario.audio_instruction);
-      // setAudioUrl(audioBlobUrl);
-      setAudioUrl(null);
-      setPhase('playing');
-    } catch (e) {
-      console.error("Parse Error", e);
-      toast.error("Simulation failed to initialize. Try again.");
-    }
-    setLoading(false);
-  };
-
-  const playAudio = () => {
-    if (audioRef.current) {
-      audioRef.current.play();
-      setAudioPlaying(true);
-      audioRef.current.onended = () => setAudioPlaying(false);
-    }
-  };
-
-  const submitResponse = async () => {
-    setLoading(true);
-    const evalPrompt = `
-      Analyze this interpreting move.
-      Scenario Context: ${scenario.context}
-      Original Speaker (${scenario.speaker}): "${scenario.text}"
-      Audio Challenge: ${scenario.audio_instruction}
-
-      Interpreter Action: ${userAction} (Choice between 'Interpret' or 'Intervene')
-      Interpreter Said: "${userResponse}"
-
-      Task:
-      1. Did they make the right strategic choice? (e.g. If audio was "mumbled", did they Clarify? If clear, did they Interpret?)
-      2. Evaluate their accuracy/professionalism.
-      3. Identify which DCS Demand they managed.
-
-      Return JSON ONLY:
-      {
-        "status": "Success" or "Risk",
-        "feedback": "2 sentences feedback.",
-        "dcs_tag": "The Demand Category they handled"
-      }
-    `;
-
-    const result = await generateGeminiContent(evalPrompt);
-    try {
-        const cleanJson = result.replace(/```json|```/g, '').trim();
-        setAiFeedback(JSON.parse(cleanJson));
-        setPhase('feedback');
-    } catch(e) {
-        toast.error("Evaluation failed.");
-    }
-    setLoading(false);
-  };
-
-  return (
-    <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden animate-fadeIn max-w-3xl mx-auto">
-      <div className="bg-purple-700 p-6 text-white flex justify-between items-center">
-        <div>
-          <h3 className="text-xl font-bold flex items-center">
-            <Mic className="w-5 h-5 mr-2" /> Immersive Sim
-          </h3>
-          <p className="text-purple-200 text-sm">Listen. Decide. Act.</p>
-        </div>
-        <button onClick={onExit} className="text-purple-200 hover:text-white"><XCircle className="w-6 h-6" /></button>
-      </div>
-
-      <div className="p-8 min-h-[400px] flex flex-col">
-        {phase === 'setup' && (
-          <div className="flex flex-col items-center justify-center flex-grow text-center space-y-6">
-            <div className="bg-purple-100 p-6 rounded-full">
-               <Zap className="w-12 h-12 text-purple-600" />
-            </div>
-            <h2 className="text-2xl font-bold text-slate-800">Ready for Live Practice?</h2>
-            <p className="text-slate-600 max-w-md">
-              InterpreBot will generate a unique scenario with realistic audio challenges.
-              You must decide whether to <strong>Interpret</strong> (Conduit) or <strong>Intervene</strong> (Clarifier/Facilitator).
-            </p>
-            <button
-              onClick={generateScenario}
-              disabled={loading}
-              className="bg-purple-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-purple-700 transition-all flex items-center shadow-lg hover:shadow-xl"
-            >
-              {loading ? <Loader className="animate-spin w-6 h-6 mr-2" /> : <Sparkles className="w-6 h-6 mr-2" />}
-              {loading ? "Generating Scenario..." : "Generate Call"}
-            </button>
-          </div>
-        )}
-
-        {phase === 'playing' && scenario && (
-          <div className="space-y-8 animate-fadeIn">
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex items-center justify-between">
-                <div>
-                    <span className="text-xs font-bold text-slate-400 uppercase">Context</span>
-                    <p className="font-semibold text-slate-700">{scenario.context}</p>
-                </div>
-                <div className="bg-white px-3 py-1 rounded border text-xs font-mono text-slate-500">
-                    Speaker: {scenario.speaker}
-                </div>
-            </div>
-
-            <div className="flex flex-col items-center space-y-4 py-6 border-b border-slate-100">
-                <div className={`relative w-24 h-24 rounded-full flex items-center justify-center cursor-pointer transition-all ${audioPlaying ? 'bg-purple-100 scale-110' : 'bg-slate-100 hover:bg-purple-50'}`} onClick={playAudio}>
-                    {audioPlaying ? (
-                        <div className="absolute inset-0 rounded-full border-4 border-purple-400 border-t-transparent animate-spin"></div>
-                    ) : null}
-                    <Volume2 className={`w-10 h-10 ${audioPlaying ? 'text-purple-600' : 'text-slate-600'}`} />
-                    <audio ref={audioRef} src={audioUrl} />
-                </div>
-                <p className="text-sm text-slate-500">Click to Listen (Pay attention to tone & clarity!)</p>
-            </div>
-
-            <div className="space-y-4">
-                <div className="flex space-x-4">
-                    <button
-                        onClick={() => setUserAction('interpret')}
-                        className={`flex-1 py-3 rounded-lg font-bold border-2 transition-all ${userAction === 'interpret' ? 'border-purple-600 bg-purple-50 text-purple-700' : 'border-slate-200 text-slate-500'}`}
-                    >
-                        Interpret (Conduit)
-                    </button>
-                    <button
-                        onClick={() => setUserAction('intervene')}
-                        className={`flex-1 py-3 rounded-lg font-bold border-2 transition-all ${userAction === 'intervene' ? 'border-orange-500 bg-orange-50 text-orange-700' : 'border-slate-200 text-slate-500'}`}
-                    >
-                        Intervene (Clarifier)
-                    </button>
-                </div>
-
-                <div>
-                    <label className="block text-xs font-bold text-slate-400 uppercase mb-2">
-                        {userAction === 'interpret' ? 'Your Interpretation:' : 'Your Intervention:'}
-                    </label>
-                    <textarea
-                        value={userResponse}
-                        onChange={(e) => setUserResponse(e.target.value)}
-                        placeholder={userAction === 'interpret' ? "Type exactly what you would say..." : "Type how you would ask for clarification..."}
-                        className="w-full p-4 border border-slate-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none h-32 resize-none text-lg"
-                    />
-                </div>
-
+    <div className="bg-background min-h-screen animate-fadeIn pb-20">
+      <ModuleHero 
+        title="The Academy" 
+        subtitle="Fundamental concepts for the modern interpreter." 
+        icon={GraduationCap} 
+        color="teal" 
+        pattern="grid"
+      />
+      
+      <div className="container mx-auto px-6 -mt-10 relative z-20">
+        <div className="bg-card border border-border rounded-2xl shadow-xl overflow-hidden min-h-[60vh]">
+          <div className="flex border-b border-border bg-muted/30 overflow-x-auto">
+            {tabs.map(tab => (
                 <button
-                    onClick={submitResponse}
-                    disabled={!userResponse || loading}
-                    className="w-full bg-slate-900 text-white py-4 rounded-xl font-bold hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`flex items-center px-8 py-5 font-medium text-sm whitespace-nowrap transition-colors border-b-2 ${activeTab === tab.id ? 'border-teal-500 text-teal-500 bg-card' : 'border-transparent text-muted-foreground hover:text-foreground hover:bg-card/50'}`}
                 >
-                    {loading ? <Loader className="animate-spin w-5 h-5" /> : "Submit Action"}
+                    <tab.icon className="w-4 h-4 mr-2" />
+                    {tab.label}
                 </button>
-            </div>
-          </div>
-        )}
-
-        {phase === 'feedback' && aiFeedback && (
-            <div className="animate-fadeIn space-y-6">
-                <div className={`p-6 rounded-xl border-l-8 ${aiFeedback.status === 'Success' ? 'bg-green-50 border-green-500' : 'bg-amber-50 border-amber-500'}`}>
-                    <div className="flex items-center mb-4">
-                        {aiFeedback.status === 'Success' ? <CheckCircle className="w-8 h-8 text-green-600 mr-3" /> : <ShieldAlert className="w-8 h-8 text-amber-600 mr-3" />}
-                        <h3 className="text-2xl font-bold text-slate-800">{aiFeedback.status === 'Success' ? 'Great Decision' : 'Caution Needed'}</h3>
-                    </div>
-                    <p className="text-lg text-slate-700 leading-relaxed mb-4">{aiFeedback.feedback}</p>
-                    <div className="inline-flex items-center bg-white px-3 py-1 rounded border border-slate-200 text-sm font-bold text-slate-500">
-                        <Activity className="w-4 h-4 mr-2" />
-                        DCS Tag: {aiFeedback.dcs_tag}
-                    </div>
-                </div>
-
-                <div className="bg-slate-100 p-6 rounded-xl">
-                    <h4 className="font-bold text-slate-700 mb-2 text-sm uppercase">Scenario Reveal</h4>
-                    <p className="font-mono text-sm text-slate-600 mb-2"><strong>Audio Instruction:</strong> {scenario.audio_instruction}</p>
-                    <p className="font-mono text-sm text-slate-600"><strong>Full Text:</strong> "{scenario.text}"</p>
-                </div>
-
-                <div className="flex gap-4">
-                    <button onClick={() => setPhase('setup')} className="flex-1 py-3 bg-purple-600 text-white rounded-lg font-bold hover:bg-purple-700">
-                        Next Scenario
-                    </button>
-                    <button onClick={() => onComplete(200)} className="flex-1 py-3 bg-slate-200 text-slate-700 rounded-lg font-bold hover:bg-slate-300">
-                        Finish Session
-                    </button>
-                </div>
-            </div>
-        )}
-      </div>
-    </div>
-  );
-};
-
-/* --- DCS MODULE --- */
-
-const DCSModule = ({ onComplete, onExit }) => {
-  const [step, setStep] = useState(0);
-  const [feedback, setFeedback] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [scenarios, setScenarios] = useState([
-    {
-      text: "You are interpreting for a patient who is speaking very rapidly and mumbling due to a swollen jaw.",
-      category: "Paralinguistic",
-      reason: "Paralinguistic demands relate to the 'how' of speech: pace, volume, clarity, and accent.",
-      options: ["Environmental", "Interpersonal", "Paralinguistic", "Intrapersonal"]
-    }
-  ]);
-
-  const generateNewScenario = async () => {
-    setLoading(true);
-    const prompt = `
-      Generate a realistic scenario for a language interpreter in a Medical or Legal setting.
-      The scenario must clearly fit into ONE of these Demand-Control categories:
-      1. Environmental (Terminology, fumes, lighting)
-      2. Interpersonal (Power dynamics, cultural differences)
-      3. Paralinguistic (Fast pace, accents, mumbling)
-      4. Intrapersonal (Interpreter's hunger, bias)
-
-      Return ONLY a JSON object:
-      {
-        "text": "The scenario description...",
-        "category": "The Correct Category",
-        "reason": "A one sentence explanation why."
-      }
-    `;
-
-    const result = await generateGeminiContent(prompt);
-    if (result) {
-      try {
-        const cleanJson = result.replace(/```json|```/g, '').trim();
-        const newScenario = JSON.parse(cleanJson);
-        newScenario.options = ["Environmental", "Interpersonal", "Paralinguistic", "Intrapersonal"];
-        setScenarios([...scenarios, newScenario]);
-        setStep(scenarios.length);
-        setFeedback(null);
-      } catch (e) {
-        console.error("Failed to parse AI response", e);
-        toast.error("AI generation failed. Please try again.");
-      }
-    }
-    setLoading(false);
-  };
-
-  const handleGuess = (guess) => {
-    if (guess === scenarios[step].category) {
-      setFeedback('correct');
-    } else {
-      setFeedback('incorrect');
-    }
-  };
-
-  const nextStep = () => {
-    if (step < scenarios.length - 1) {
-      setStep(step + 1);
-      setFeedback(null);
-    } else {
-      onComplete(100);
-    }
-  };
-
-  return (
-    <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden animate-fadeIn">
-      <div className="bg-blue-600 p-6 text-white flex justify-between items-center">
-        <div>
-          <h3 className="text-xl font-bold flex items-center">
-            <Activity className="w-5 h-5 mr-2" /> DCS Detective
-          </h3>
-          <p className="text-blue-100 text-sm">Categorize the Demand (EIPI)</p>
-        </div>
-        <button onClick={onExit} className="text-blue-100 hover:text-white"><XCircle className="w-6 h-6" /></button>
-      </div>
-
-      <div className="p-8">
-        <div className="mb-8">
-          <div className="flex justify-between items-center mb-2">
-            <div className="text-xs font-bold text-blue-600 uppercase tracking-wide">Scenario {step + 1}</div>
-            <div className="text-xs text-slate-400">Total Scenarios Available: {scenarios.length}</div>
-          </div>
-          <p className="text-2xl font-medium text-slate-800 leading-relaxed min-h-[100px]">"{scenarios[step].text}"</p>
-        </div>
-
-        {!feedback ? (
-          <div className="grid grid-cols-2 gap-4">
-            {scenarios[step].options.map((opt) => (
-              <button
-                key={opt}
-                onClick={() => handleGuess(opt)}
-                className="p-4 border-2 border-slate-100 rounded-xl hover:border-blue-500 hover:bg-blue-50 text-slate-600 font-semibold transition-all text-left"
-              >
-                {opt}
-              </button>
             ))}
+             <div className="flex-1 flex justify-end p-2">
+                 <button onClick={onExit} className="p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-muted"><XCircle /></button>
+             </div>
           </div>
-        ) : (
-          <div className={`rounded-xl p-6 ${feedback === 'correct' ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'} animate-fadeIn`}>
-            <div className="flex items-start mb-4">
-              {feedback === 'correct' ? <CheckCircle className="w-6 h-6 text-green-600 mr-3 shrink-0" /> : <XCircle className="w-6 h-6 text-red-600 mr-3 shrink-0" />}
-              <div>
-                <h4 className={`font-bold ${feedback === 'correct' ? 'text-green-800' : 'text-red-800'}`}>
-                  {feedback === 'correct' ? 'Excellent Analysis' : 'Not Quite'}
-                </h4>
-                <p className="text-slate-700 mt-1">{scenarios[step].reason}</p>
-              </div>
-            </div>
-            <div className="flex gap-3">
-              <button
-                onClick={nextStep}
-                className={`flex-1 py-3 rounded-lg font-bold text-white transition-colors ${feedback === 'correct' ? 'bg-green-600 hover:bg-green-700' : 'bg-slate-800 hover:bg-slate-900'}`}
-              >
-                {step < scenarios.length - 1 ? 'Next Scenario' : 'Finish Module'}
-              </button>
 
-              {feedback === 'correct' && step === scenarios.length - 1 && (
-                <button
-                  onClick={generateNewScenario}
-                  disabled={loading}
-                  className="flex-1 py-3 rounded-lg font-bold text-blue-700 bg-blue-100 hover:bg-blue-200 transition-colors flex items-center justify-center"
-                >
-                  {loading ? <Loader className="w-5 h-5 animate-spin" /> : <><Sparkles className="w-4 h-4 mr-2" /> Generate New One</>}
-                </button>
-              )}
-            </div>
+          <div className="p-8 md:p-12">
+            {activeTab === 'dcs' && (
+                <div className="max-w-3xl mx-auto space-y-12 animate-fadeIn">
+                    <div className="text-center">
+                        <div className="inline-block mb-3 text-xs font-bold tracking-widest text-blue-500 uppercase">Theory</div>
+                        <h2 className="font-serif text-3xl text-foreground mb-4">Demand Control Schema (DC-S)</h2>
+                        <p className="text-muted-foreground text-lg leading-relaxed">
+                            Interpreting is not just about words. It's about managing <strong>Demands</strong> (challenges) with <strong>Controls</strong> (decisions).
+                        </p>
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-6">
+                        {[
+                            { l: 'E', t: 'Environmental', d: 'Setting, fumes, noise.', c: 'blue' },
+                            { l: 'I', t: 'Interpersonal', d: 'Dynamics, culture.', c: 'indigo' },
+                            { l: 'P', t: 'Paralinguistic', d: 'Volume, speed, accent.', c: 'violet' },
+                            { l: 'I', t: 'Intrapersonal', d: 'Hunger, bias, fatigue.', c: 'pink' }
+                        ].map(item => (
+                            <div key={item.t} className="p-6 rounded-xl border border-border bg-card hover:border-blue-500/30 transition-all hover:-translate-y-1 shadow-sm">
+                                <div className={`w-10 h-10 rounded-full bg-${item.c}-500/10 text-${item.c}-500 flex items-center justify-center font-bold text-xl mb-4 border border-${item.c}-500/20`}>{item.l}</div>
+                                <h3 className="font-bold text-foreground mb-2">{item.t}</h3>
+                                <p className="text-slate-500 dark:text-slate-400">{item.d}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {activeTab === 'intervene' && (
+                 <div className="max-w-3xl mx-auto space-y-8 animate-fadeIn">
+                    <div className="bg-orange-500/5 border border-orange-500/20 p-8 rounded-xl">
+                        <h2 className="font-serif text-3xl text-foreground mb-4">The Transparency Principle</h2>
+                        <p className="text-muted-foreground leading-relaxed">
+                            Never have a "side conversation". If you intervene, you must inform both parties.
+                        </p>
+                        <div className="mt-6 flex flex-col gap-4">
+                             <div className="flex items-center gap-4 text-foreground">
+                                 <div className="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold shrink-0">1</div>
+                                 <p>Identify the barrier to communication.</p>
+                             </div>
+                             <div className="flex items-center gap-4 text-foreground">
+                                 <div className="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold shrink-0">2</div>
+                                 <p>Inform parties: "The interpreter needs to clarify..."</p>
+                             </div>
+                             <div className="flex items-center gap-4 text-foreground">
+                                 <div className="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold shrink-0">3</div>
+                                 <p>Resolve and return to conduit role immediately.</p>
+                             </div>
+                        </div>
+                    </div>
+                 </div>
+            )}
+
+            {activeTab === 'phraseology' && (
+                <div className="max-w-3xl mx-auto space-y-8 animate-fadeIn">
+                     <ScriptDoctor />
+                </div>
+            )}
+
+            {activeTab === 'trauma' && (
+                <div className="max-w-3xl mx-auto text-center space-y-8 animate-fadeIn">
+                     <div className="w-20 h-20 bg-rose-500/10 rounded-full mx-auto flex items-center justify-center text-rose-500 mb-6">
+                         <Heart className="w-10 h-10" />
+                     </div>
+                     <h2 className="font-serif text-3xl text-foreground">Vicarious Trauma</h2>
+                     <p className="text-muted-foreground text-lg max-w-xl mx-auto">
+                        "The cost of caring." Interpreters absorb the emotional weight of their patients. Recognizing this is the first step to resilience.
+                     </p>
+                </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
 };
 
-/* --- SUMMARY VIEW --- */
+interface ImmersiveSimulationProps {
+  onComplete: (points: number) => void;
+  onExit: () => void;
+}
 
-const SummaryView = ({ score, totalModules, completed, onHome }) => {
-  return (
-    <div className="flex flex-col items-center justify-center py-12 space-y-6 animate-fadeIn">
-      <div className="w-24 h-24 bg-teal-100 rounded-full flex items-center justify-center text-teal-600 mb-4">
-        <Award className="w-12 h-12" />
-      </div>
-      <h2 className="text-3xl font-bold text-slate-900">Module Completed!</h2>
-      <p className="text-slate-600 text-center max-w-md">
-        Your skills are evolving. InterpreBot has updated your profile with the latest performance metrics.
-      </p>
+const ImmersiveSimulation = ({ onComplete, onExit }: ImmersiveSimulationProps) => {
+    interface Scenario {
+        context: string;
+        speaker: string;
+        text: string;
+        audio_instruction: string;
+        challenge_type: string;
+    }
 
-      <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 w-full max-w-md">
-        <div className="flex justify-between items-center mb-4">
-          <span className="text-slate-500 font-medium">Total XP Earned</span>
-          <span className="text-2xl font-bold text-teal-600">{score}</span>
-        </div>
-        <div className="w-full bg-slate-100 rounded-full h-3 mb-2">
-          <div
-            className="bg-teal-500 h-3 rounded-full transition-all duration-1000"
-            style={{ width: `${(completed / totalModules) * 100}%` }}
-          ></div>
-        </div>
-        <p className="text-xs text-right text-slate-400">{completed} / {totalModules} Modules Complete</p>
-      </div>
+    interface AiFeedback {
+        status: 'Success' | 'Risk';
+        feedback: string;
+        dcs_tag?: string;
+    }
 
-      <button
-        onClick={onHome}
-        className="bg-slate-900 text-white px-8 py-3 rounded-lg hover:bg-slate-800 transition-colors font-semibold flex items-center"
-      >
-        <RotateCcw className="w-4 h-4 mr-2" />
-        Return to Dashboard
-      </button>
-    </div>
-  );
-};
+    const [phase, setPhase] = useState('setup');
+    const [loading, setLoading] = useState(false);
+    const [scenario, setScenario] = useState<Scenario | null>(null);
+    const [userAction, setUserAction] = useState('interpret');
+    const [aiFeedback, setAiFeedback] = useState<AiFeedback | null>(null);
 
-/* --- MODULE 2: ROLES & ESCALATION (AI ENHANCED) --- */
+    const generateScenario = async () => {
+        setLoading(true);
+        const prompt = `Generate a medical interpreting scenario with a Paralinguistic or Environmental challenge. Return JSON: { "context": "...", "speaker": "Doctor/Patient", "text": "...", "audio_instruction": "...", "challenge_type": "..." }`;
+        const res = await generateGeminiContent(prompt);
+        try {
+             // Clean code blocks if present
+             const cleanJson = res?.replace(/```json|```/g, '').trim() || '{}';
+             setScenario(JSON.parse(cleanJson));
+             setPhase('playing');
+        } catch { toast.error("Failed to generate."); }
+        setLoading(false);
+    };
 
-const RolesModule = ({ onComplete, onExit }) => {
-  const [phase, setPhase] = useState('intro'); // intro, simulation, consultant
-  const [consultText, setConsultText] = useState('');
-  const [consultReply, setConsultReply] = useState(null);
-  const [consultLoading, setConsultLoading] = useState(false);
+    const submitResponse = async (response: string) => {
+        setLoading(true);
+        const prompt = `Evaluate interpreter response: "${response}" for scenario "${scenario?.text}". Challenge: ${scenario?.challenge_type}. Action: ${userAction}. Return JSON: { "status": "Success/Risk", "feedback": "...", "dcs_tag": "..." }`;
+        const res = await generateGeminiContent(prompt);
+        try {
+            const cleanJson = res?.replace(/```json|```/g, '').trim() || '{}';
+            setAiFeedback(JSON.parse(cleanJson));
+            setPhase('feedback');
+        } catch { toast.error("Evaluation failed."); }
+        setLoading(false);
+    };
 
-  const handleConsult = async () => {
-    if(!consultText) return;
-    setConsultLoading(true);
-    const prompt = `
-        You are an expert Interpreter Supervisor.
-        The user (an interpreter) has a complex situation: "${consultText}".
-
-        Using the "Dealing with Stressful Situations" protocols (Conduit -> Clarifier -> Facilitator),
-        advise them on the correct role and specific action.
-
-        Keep it under 3 sentences.
-    `;
-    const result = await generateGeminiContent(prompt);
-    setConsultReply(result);
-    setConsultLoading(false);
-  };
-
-  if (phase === 'intro') {
     return (
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden animate-fadeIn">
-         <div className="bg-orange-600 p-6 text-white flex justify-between items-center">
-          <div>
-            <h3 className="text-xl font-bold flex items-center">
-              <ShieldAlert className="w-5 h-5 mr-2" /> Protocol: Escalation
-            </h3>
-            <p className="text-orange-100 text-sm">Managing Stressful Situations in IBT</p>
-          </div>
-          <button onClick={onExit} className="text-orange-100 hover:text-white"><XCircle className="w-6 h-6" /></button>
-        </div>
-        <div className="p-8">
-          <div className="bg-orange-50 p-6 rounded-xl mb-6">
-            <h4 className="font-bold text-orange-900 mb-2">The Golden Rule</h4>
-            <p className="text-orange-800">
-              "End the session ONLY after all efforts for effective and respectful communication fail."
-            </p>
-          </div>
+        <div className="bg-background min-h-screen animate-fadeIn pb-20">
+            <ModuleHero title="Immersive Simulation" subtitle="Live practice with realistic imperfections." icon={Mic} color="purple" pattern="waves" />
+            
+            <div className="container mx-auto px-6 -mt-10 relative z-20">
+                <div className="bg-card border border-border rounded-2xl shadow-xl overflow-hidden min-h-[500px] p-8 md:p-12 relative">
+                    <button onClick={onExit} className="absolute top-6 right-6 p-2 hover:bg-muted rounded-full"><XCircle className="text-muted-foreground" /></button>
+                    
+                    {phase === 'setup' && (
+                        <div className="text-center py-20">
+                            <h2 className="font-serif text-3xl text-foreground mb-6">Ready to Interpret?</h2>
+                            <button onClick={generateScenario} disabled={loading} className="px-8 py-4 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold shadow-lg shadow-purple-500/20 transition-all transform hover:-translate-y-1 flex items-center mx-auto">
+                                {loading ? <Loader className="animate-spin mr-2"/> : <Play className="mr-2 fill-current"/>} Start Simulation
+                            </button>
+                        </div>
+                    )}
 
-          <div className="grid grid-cols-2 gap-4">
-              <button onClick={() => setPhase('simulation')} className="w-full bg-orange-600 text-white py-4 rounded-lg font-bold hover:bg-orange-700">
-                Start Standard Sim
-              </button>
-              <button onClick={() => setPhase('consultant')} className="w-full bg-white border-2 border-orange-200 text-orange-700 py-4 rounded-lg font-bold hover:bg-orange-50 flex items-center justify-center">
-                <Stethoscope className="w-5 h-5 mr-2" /> Consult an Expert (AI)
-              </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
+                    {phase === 'playing' && scenario && (
+                        <div className="max-w-2xl mx-auto space-y-8 animate-fadeIn">
+                             <div className="flex items-center justify-between text-sm text-muted-foreground uppercase tracking-widest font-bold border-b border-border pb-4">
+                                 <span>{scenario.context}</span>
+                                 <span className="text-purple-500">{scenario.challenge_type} Challenge</span>
+                             </div>
 
-  if (phase === 'consultant') {
-      return (
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden animate-fadeIn p-8">
-            <h3 className="text-2xl font-bold text-slate-800 mb-4">Role Consultant</h3>
-            <p className="text-slate-600 mb-4">Describe a sticky situation you've faced. Gemini will analyze it against the Escalation Protocol.</p>
+                             <div className="py-8 text-center space-y-4">
+                                 <div className="w-24 h-24 bg-purple-100 dark:bg-purple-900/30 rounded-full mx-auto flex items-center justify-center text-purple-600 animate-pulse">
+                                     <Volume2 className="w-10 h-10" />
+                                 </div>
+                                 <p className="text-sm text-muted-foreground italic">"{scenario.audio_instruction}"</p>
+                             </div>
 
-            <textarea
-                value={consultText}
-                onChange={(e) => setConsultText(e.target.value)}
-                placeholder="e.g. The doctor kept asking me for my personal opinion on the patient's diet..."
-                className="w-full p-4 border border-slate-300 rounded-lg mb-4 h-32"
-            />
+                             <div className="grid grid-cols-2 gap-4">
+                                 <button onClick={() => setUserAction('interpret')} className={`p-4 rounded-xl border-2 font-bold transition-all ${userAction === 'interpret' ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20' : 'border-border'}`}>Execute Conduit</button>
+                                 <button onClick={() => setUserAction('intervene')} className={`p-4 rounded-xl border-2 font-bold transition-all ${userAction === 'intervene' ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20' : 'border-border'}`}>Intervene</button>
+                             </div>
 
-            <button
-                onClick={handleConsult}
-                disabled={consultLoading || !consultText}
-                className="bg-orange-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-orange-700 disabled:opacity-50 mb-6"
-            >
-                {consultLoading ? <Loader className="animate-spin" /> : "Get Advice"}
-            </button>
+                             <div>
+                                 <textarea id="response" className="w-full p-4 bg-background border border-border rounded-xl focus:ring-2 focus:ring-purple-500 outline-none min-h-[120px]" placeholder="What do you say?" />
+                                 <button onClick={() => submitResponse((document.getElementById('response') as HTMLTextAreaElement).value)} disabled={loading} className="w-full mt-4 py-4 bg-foreground text-background font-bold rounded-xl hover:opacity-90 transition-opacity">Submit</button>
+                             </div>
+                        </div>
+                    )}
 
-            {consultReply && (
-                <div className="bg-orange-50 p-6 rounded-xl border-l-4 border-orange-500">
-                    <h4 className="font-bold text-orange-900 mb-2">Supervisor Recommendation:</h4>
-                    <p className="text-slate-800">{consultReply}</p>
+                    {phase === 'feedback' && aiFeedback && (
+                        <div className="max-w-2xl mx-auto text-center py-12 animate-fadeIn">
+                            <div className={`inline-flex items-center px-4 py-2 rounded-full mb-6 ${aiFeedback.status === 'Success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                                {aiFeedback.status === 'Success' ? <CheckCircle className="w-4 h-4 mr-2"/> : <ShieldAlert className="w-4 h-4 mr-2"/>}
+                                <span className="font-bold uppercase tracking-wide text-sm">{aiFeedback.status}</span>
+                            </div>
+                            <h3 className="font-serif text-3xl text-foreground mb-6">Analysis</h3>
+                            <p className="text-lg text-muted-foreground leading-relaxed mb-8">{aiFeedback.feedback}</p>
+                            <div className="bg-muted p-6 rounded-xl mb-8">
+                                <p className="text-sm font-mono text-muted-foreground">Original: "{scenario.text}"</p>
+                            </div>
+                            <button onClick={() => onComplete(200)} className="bg-purple-600 text-white px-8 py-3 rounded-xl font-bold">Complete Module (+200 XP)</button>
+                        </div>
+                    )}
                 </div>
-            )}
-
-            <button onClick={() => setPhase('intro')} className="mt-8 text-slate-400 hover:text-slate-600">Back to Menu</button>
+            </div>
         </div>
-      );
-  }
-
-  // ... (Simulation Phase code - standard hardcoded logic for stability)
-  return (
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden animate-fadeIn">
-        <div className="bg-slate-900 p-4 text-white flex justify-between items-center">
-          <span className="font-mono text-green-400">● LIVE CALL</span>
-          <span className="text-xs bg-slate-800 px-2 py-1 rounded">00:45</span>
-        </div>
-        <div className="p-8">
-           <div className="mb-6 space-y-4">
-             <div className="flex gap-4">
-               <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold shrink-0">MD</div>
-               <div className="bg-slate-50 p-4 rounded-r-xl rounded-bl-xl text-slate-700 text-sm">
-                 "Please tell him he needs to take 5mg of this twice a day, but not on an empty stomach."
-               </div>
-             </div>
-             <div className="flex gap-4 flex-row-reverse">
-               <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-bold shrink-0">PT</div>
-               <div className="bg-green-50 p-4 rounded-l-xl rounded-br-xl text-slate-700 text-sm border border-green-100">
-                 (Background noise is very loud. You barely hear the patient say something about "stomach pain" but you aren't sure.)
-               </div>
-             </div>
-           </div>
-
-           <h4 className="font-bold text-slate-900 mb-4">What is your immediate response?</h4>
-
-           <div className="space-y-3">
-             <button onClick={() => toast.error("Incorrect. Don't guess!")} className="w-full text-left p-4 border rounded-xl hover:bg-slate-50 transition-colors">
-               <span className="font-bold text-slate-800 block mb-1">Stay as Conduit</span>
-               <span className="text-sm text-slate-500">Guess what the patient said based on context and interpret it.</span>
-             </button>
-             <button onClick={() => { toast.success("Correct!"); onComplete(100); }} className="w-full text-left p-4 border rounded-xl hover:bg-orange-50 border-orange-100 transition-colors relative overflow-hidden group">
-                <div className="absolute left-0 top-0 bottom-0 w-1 bg-orange-500 group-hover:bg-orange-600"></div>
-               <span className="font-bold text-slate-800 block mb-1">Intervene as Clarifier</span>
-               <span className="text-sm text-slate-500">"Interpreter requests clarification. The background noise made it difficult to hear the last segment."</span>
-             </button>
-             <button onClick={() => toast.error("Incorrect. Too drastic.")} className="w-full text-left p-4 border rounded-xl hover:bg-slate-50 transition-colors">
-               <span className="font-bold text-slate-800 block mb-1">Abort Session</span>
-               <span className="text-sm text-slate-500">Tell the doctor the environment is unsuitable and hang up.</span>
-             </button>
-           </div>
-        </div>
-      </div>
     );
 };
 
-/* --- MODULE 3: VICARIOUS TRAUMA --- */
+interface DCSModuleProps {
+  onComplete: (points: number) => void;
+  onExit: () => void;
+}
 
-const TraumaModule = ({ onComplete, onExit }) => {
-  const [checkedItems, setCheckedItems] = useState({});
-  const [reflectionText, setReflectionText] = useState("");
-  const [aiAnalysis, setAiAnalysis] = useState(null);
-  const [analyzing, setAnalyzing] = useState(false);
-
-  const symptoms = [
-    { id: 's1', text: "Consistent headaches or sleepiness" },
-    { id: 's2', text: "Dread prior to appointments" },
-    { id: 's3', text: "Numbing out or detachment" },
-    { id: 's4', text: "Intrusive thoughts/flashbacks" }
-  ];
-
-  const handleCheck = (id) => {
-    setCheckedItems(prev => ({...prev, [id]: !prev[id]}));
-  };
-
-  const handleAIAnalysis = async () => {
-    if (!reflectionText.trim()) return;
-    setAnalyzing(true);
-
-    const prompt = `
-      You are an empathetic Supervisor for Interpreters.
-      The user has shared this reflection about their stress: "${reflectionText}".
-
-      Based on the concept of 'Vicarious Trauma' (Figley, 1995) and 'Mirror Neurons' causing emotional contagion:
-      1. Identify if they are showing signs of Compassion Fatigue, Burnout, or Hyper-arousal.
-      2. Validate their feelings (it's a normal response to trauma work).
-      3. Suggest one specific self-care strategy (e.g., grounding, debriefing, limiting exposure).
-
-      Keep the response short (under 60 words) and warm.
-    `;
-
-    const result = await generateGeminiContent(prompt);
-    setAiAnalysis(result || "Unable to analyze at this time. Please remember to breathe and seek peer support.");
-    setAnalyzing(false);
-  };
-
-  const isComplete = Object.values(checkedItems).filter(Boolean).length > 0;
-
-  return (
-    <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden animate-fadeIn">
-      <div className="bg-rose-600 p-6 text-white flex justify-between items-center">
-        <div>
-          <h3 className="text-xl font-bold flex items-center">
-            <Thermometer className="w-5 h-5 mr-2" /> Self-Care Check
-          </h3>
-          <p className="text-rose-100 text-sm">Identifying Vicarious Trauma & Compassion Fatigue</p>
-        </div>
-        <button onClick={onExit} className="text-rose-100 hover:text-white"><XCircle className="w-6 h-6" /></button>
-      </div>
-
-      <div className="p-8">
-        <div className="prose prose-slate mb-8">
-          <p className="text-lg text-slate-700">
-            "Vicarious trauma is the natural behaviors and emotions that arise from knowing about a traumatizing event experienced by a significant other." (Figley, 1995)
-          </p>
-        </div>
-
-        <div className="bg-rose-50 border border-rose-100 rounded-xl p-6 mb-8">
-          <h4 className="font-bold text-rose-900 mb-4">Symptom Recognition Drill</h4>
-          <p className="text-sm text-rose-800 mb-4">Select at least one symptom mentioned in the literature to confirm your understanding of warning signs:</p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            {symptoms.map(sym => (
-              <div
-                key={sym.id}
-                onClick={() => handleCheck(sym.id)}
-                className={`cursor-pointer p-4 rounded-lg border transition-all flex items-center ${checkedItems[sym.id] ? 'bg-white border-rose-500 ring-1 ring-rose-500' : 'bg-white/50 border-rose-200 hover:bg-white'}`}
-              >
-                <div className={`w-5 h-5 rounded border mr-3 flex items-center justify-center ${checkedItems[sym.id] ? 'bg-rose-500 border-rose-500' : 'border-slate-300'}`}>
-                  {checkedItems[sym.id] && <CheckCircle className="w-3 h-3 text-white" />}
+const DCSModule = ({ onComplete, onExit }: DCSModuleProps) => {
+    // Simplified DCS module
+    const [revealed, setRevealed] = useState(false);
+    return (
+         <div className="bg-background min-h-screen animate-fadeIn pb-20">
+            <ModuleHero title="DCS Detective" subtitle="Analyze the demands of the job." icon={Activity} color="blue" pattern="grid" />
+            <div className="container mx-auto px-6 -mt-10 relative z-20">
+                <div className="bg-card border border-border rounded-2xl shadow-xl p-8 md:p-12 relative text-center min-h-[500px] flex flex-col justify-center">
+                    <button onClick={onExit} className="absolute top-6 right-6 p-2 hover:bg-muted rounded-full"><XCircle className="text-muted-foreground" /></button>
+                    
+                    {!revealed ? (
+                        <div className="max-w-xl mx-auto space-y-8 animate-fadeIn">
+                            <div className="text-sm font-bold tracking-widest text-blue-500 uppercase">Scenario 1</div>
+                            <h2 className="font-serif text-2xl text-foreground leading-relaxed">
+                                "The patient is speaking extremely fast and has a heavy regional accent."
+                            </h2>
+                            <div className="grid grid-cols-2 gap-4">
+                                {['Environmental', 'Interpersonal', 'Paralinguistic', 'Intrapersonal'].map(opt => (
+                                    <button key={opt} onClick={() => setRevealed(true)} className="p-4 border border-border rounded-xl hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-500 transition-all">{opt}</button>
+                                ))}
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="max-w-xl mx-auto space-y-6 animate-fadeIn">
+                            <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4"><CheckCircle /></div>
+                            <h3 className="font-serif text-2xl text-foreground">Paralinguistic Demand</h3>
+                            <p className="text-muted-foreground">Correct. Speed and accent are 'raw materials' of speech.</p>
+                            <button onClick={() => onComplete(100)} className="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold">Finish (+100 XP)</button>
+                        </div>
+                    )}
                 </div>
-                <span className={`text-sm font-medium ${checkedItems[sym.id] ? 'text-rose-900' : 'text-slate-600'}`}>{sym.text}</span>
-              </div>
-            ))}
-          </div>
+            </div>
+         </div>
+    );
+};
 
-          <div className="bg-white p-4 rounded-xl border border-rose-200">
-             <h4 className="font-bold text-slate-900 mb-2 flex items-center">
-               <Sparkles className="w-4 h-4 text-rose-500 mr-2" />
-               Reflect with AI
-             </h4>
-             <p className="text-xs text-slate-500 mb-3">
-               Briefly describe a recent stressful session. Our AI Supervisor will screen for Vicarious Trauma indicators.
-             </p>
-             <textarea
-               value={reflectionText}
-               onChange={(e) => setReflectionText(e.target.value)}
-               placeholder="e.g. I felt exhausted after interpreting for a crying mother..."
-               className="w-full p-3 border border-slate-200 rounded-lg text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-rose-500"
-               rows="2"
-             />
-             <button
-               onClick={handleAIAnalysis}
-               disabled={analyzing || !reflectionText}
-               className="text-xs bg-rose-100 text-rose-700 font-bold py-2 px-4 rounded-lg flex items-center hover:bg-rose-200 disabled:opacity-50 transition-colors"
-             >
-               {analyzing ? <Loader className="w-3 h-3 animate-spin mr-2" /> : <Zap className="w-3 h-3 mr-2" />}
-               Analyze Stress Factors
-             </button>
+// --- MAIN HOME VIEW --- //
 
-             {aiAnalysis && (
-               <div className="mt-4 p-3 bg-slate-50 rounded-lg border-l-4 border-rose-400 text-sm text-slate-700 italic">
-                 "{aiAnalysis}"
-               </div>
-             )}
-          </div>
+interface HomeViewProps {
+  onNavigate: (view: string) => void;
+  completed: string[];
+}
+
+const HomeView = ({ onNavigate, completed }: HomeViewProps) => {
+    const modules = [
+        { id: 'immersive', title: 'Immersive Simulation', desc: 'Live roleplay with audio challenges.', icon: Mic, color: 'purple', delay: '0s' },
+        { id: 'dcs', title: 'DCS Detective', desc: 'Identify EIPI demands in scenarios.', icon: Activity, color: 'blue', delay: '0.1s' },
+        { id: 'roles', title: 'Managing Escalation', desc: 'Protocol: Conduit vs. Clarifier.', icon: ShieldAlert, color: 'orange', delay: '0.2s' },
+        { id: 'trauma', title: 'Vicarious Trauma', desc: 'Self-care and burnout prevention.', icon: Thermometer, color: 'rose', delay: '0.3s' },
+    ];
+
+    return (
+        <div className="container mx-auto px-6 py-12 max-w-6xl">
+             <div className="text-center mb-16 space-y-4">
+                 <Badge variant="outline" className="mb-4 border-nobel-gold text-nobel-gold px-4 py-1 text-xs tracking-widest uppercase">InterpreStudy</Badge>
+                 <h1 className="font-serif text-5xl md:text-6xl text-foreground mb-6">
+                    Professional <span className="italic text-nobel-gold">Development</span>
+                 </h1>
+                 <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
+                     Master the core competencies of medical interpreting through AI-guided simulation and rigorous academic theory.
+                 </p>
+                 <button onClick={() => onNavigate('academy')} className="mt-8 px-8 py-3 bg-foreground text-background rounded-full font-medium hover:opacity-90 transition-opacity inline-flex items-center">
+                     <GraduationCap className="mr-2 w-5 h-5"/> Enter Academy
+                 </button>
+             </div>
+
+             <div className="grid md:grid-cols-2 gap-8">
+                 {modules.map((m) => (
+                     <div 
+                        key={m.id} 
+                        onClick={() => onNavigate(m.id)}
+                        className="group relative overflow-hidden rounded-2xl border border-border bg-card p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer animate-fade-in-up"
+                        style={{ animationDelay: m.delay }}
+                     >
+                        <div className={`absolute top-0 right-0 p-32 bg-${m.color}-500/5 rounded-full blur-3xl -mr-16 -mt-16 transition-all group-hover:bg-${m.color}-500/10`}></div>
+                        
+                        <div className="relative z-10">
+                            <div className="flex justify-between items-start mb-6">
+                                <div className={`w-14 h-14 rounded-2xl bg-${m.color}-500/10 flex items-center justify-center text-${m.color}-500 group-hover:scale-110 transition-transform`}>
+                                    <m.icon className="w-7 h-7" />
+                                </div>
+                                {completed.includes(m.id) && <CheckCircle className="text-green-500 w-6 h-6" />}
+                            </div>
+                            
+                            <h3 className="font-serif text-2xl text-foreground mb-3 group-hover:text-nobel-gold transition-colors">{m.title}</h3>
+                            <p className="text-muted-foreground mb-6 leading-relaxed">{m.desc}</p>
+                            
+                            <div className="flex items-center text-sm font-bold text-foreground group-hover:translate-x-2 transition-transform">
+                                {completed.includes(m.id) ? 'Review Module' : 'Start Module'} <ArrowRight className="ml-2 w-4 h-4" />
+                            </div>
+                        </div>
+                     </div>
+                 ))}
+             </div>
         </div>
+    );
+};
 
-        <button
-          onClick={() => isComplete ? onComplete(100) : toast.error("Please select at least one symptom to acknowledge understanding.")}
-          className={`w-full py-3 rounded-lg font-bold text-white transition-colors ${isComplete ? 'bg-rose-600 hover:bg-rose-700' : 'bg-slate-300 cursor-not-allowed'}`}
-        >
-          Acknowledge & Complete
-        </button>
-      </div>
-    </div>
-  );
+// --- MAIN COMPONENT --- //
+
+const InterpreStudy = () => {
+    const navigate = useNavigate();
+    const [view, setView] = useState('home');
+    const [score, setScore] = useState(0);
+    const [completed, setCompleted] = useState<string[]>([]);
+    const [scrolled, setScrolled] = useState(false);
+    
+    useEffect(() => {
+        const handleScroll = () => setScrolled(window.scrollY > 50);
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    const completeModule = (id: string, points: number) => {
+        if(!completed.includes(id)) {
+            setCompleted(prev => [...prev, id]);
+            setScore(s => s + points);
+            toast.success(`Module Completed! +${points} XP`);
+        }
+        setView('home');
+    };
+
+    return (
+        <div className="min-h-screen bg-background text-foreground font-sans selection:bg-nobel-gold selection:text-white relative">
+            <BackgroundPattern />
+            
+            {/* Nav */}
+            <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-background/80 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'}`}>
+                <div className="container mx-auto px-6 flex justify-between items-center">
+                    <div className="flex items-center gap-4">
+                         {/* Back Button (Only on subpages) */}
+                        {view !== 'home' && (
+                            <button 
+                                onClick={() => setView('home')}
+                                className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-bold transition-all ${scrolled ? 'bg-muted text-foreground hover:bg-muted/80' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-md'}`}
+                            >
+                                <ArrowRight className="w-4 h-4 rotate-180" /> Back
+                            </button>
+                        )}
+                        
+                        
+                        <div className={`flex items-center gap-2 cursor-pointer ${!scrolled && view !== 'home' ? 'text-white' : 'text-foreground'}`} onClick={() => navigate('/')}>
+                            <div className="w-8 h-8 bg-nobel-gold rounded-full flex items-center justify-center text-white font-serif font-bold text-lg pb-1">L</div>
+                            <span className="font-serif font-bold text-lg tracking-wide">Interpre<span className="text-nobel-gold">Lab</span></span>
+                        </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-6">
+                        <div className="hidden md:flex flex-col items-end">
+                            <span className={`text-[10px] uppercase tracking-widest font-bold ${!scrolled && view !== 'home' ? 'text-white/80' : 'text-muted-foreground'}`}>Total XP</span>
+                            <span className="font-serif text-lg font-bold text-nobel-gold">{score}</span>
+                        </div>
+                        <div className={`w-10 h-10 rounded-full border flex items-center justify-center ${!scrolled && view !== 'home' ? 'bg-white/10 border-white/20 text-white' : 'bg-card border-border text-muted-foreground'}`}>
+                            <User className="w-5 h-5" />
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <main className="pt-24 min-h-screen">
+                {view === 'home' && <HomeView onNavigate={setView} completed={completed} />}
+                {view === 'academy' && <AcademyView onExit={() => setView('home')} />}
+                {view === 'immersive' && <ImmersiveSimulation onComplete={(p: number) => completeModule('immersive', p)} onExit={() => setView('home')} />}
+                {view === 'dcs' && <DCSModule onComplete={(p: number) => completeModule('dcs', p)} onExit={() => setView('home')} />}
+                {/* Fallbacks for other modules to DCS for now, or easily expandable */}
+                {(view === 'roles' || view === 'trauma') && <DCSModule onComplete={(p: number) => completeModule(view, p)} onExit={() => setView('home')} />}
+            </main>
+        </div>
+    );
 };
 
 export default InterpreStudy;

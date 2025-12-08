@@ -23,7 +23,7 @@ export const AudioPlayer = () => {
     const durationSec = 287; // 04:47
 
     useEffect(() => {
-        let interval: any;
+        let interval: number;
         if (playing) {
             interval = setInterval(() => {
                 setCurrentTimeSec((prev) => {

@@ -29,6 +29,7 @@ const Contact = lazy(() => import("./pages/Contact"));
 const SignIn = lazy(() => import("./pages/SignIn"));
 const Waitlist = lazy(() => import("./pages/Waitlist"));
 const Dilemma = lazy(() => import("./pages/Dilemma"));
+const FAQ = lazy(() => import("./pages/FAQ"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // A simple loading component while the heavy chunks download
@@ -86,6 +87,7 @@ const App = () => (
                     <Route path="/signin" element={<SignIn />} />
                     <Route path="/waitlist" element={<Waitlist />} />
                     <Route path="/dilemma" element={<Dilemma />} />
+                    <Route path="/faq" element={<FAQ />} />
 
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                     <Route path="*" element={<NotFound />} />

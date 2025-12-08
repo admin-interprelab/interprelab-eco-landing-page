@@ -25,6 +25,7 @@ export interface StoryDrivenVideoHeroProps {
 
 export const StoryDrivenVideoHero = ({
   id,
+  videoSrc, // Destructure videoSrc here
   title,
   scenario,
   emotionalHook,
@@ -36,9 +37,17 @@ export const StoryDrivenVideoHero = ({
   index,
 }: StoryDrivenVideoHeroProps) => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null); // Ref for video element
   const [textVisible, setTextVisible] = useState(false);
   const [scenarioVisible, setScenarioVisible] = useState(false);
   const [hookVisible, setHookVisible] = useState(false); 
+
+  // Effect to set video playback rate
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 0.7; // Slower than normal speed
+    }
+  }, []);
 
   const getEmotionalStyles = () => {
     const styles = {
@@ -104,14 +113,19 @@ export const StoryDrivenVideoHero = ({
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          // If video was present, we'd play it here. 
-          // Since we're using fallback, we just trigger animations.
-
+          // Play video when section is in view
+          if (videoRef.current) {
+            videoRef.current.play();
+          }
           // Staggered text animations
           setTimeout(() => setTextVisible(true), 300);
           setTimeout(() => setScenarioVisible(true), 800);
           setTimeout(() => setHookVisible(true), 1500);
         } else {
+          // Pause video when section is out of view
+          if (videoRef.current) {
+            videoRef.current.pause();
+          }
           setTextVisible(false);
           setScenarioVisible(false);
           setHookVisible(false);
@@ -133,24 +147,36 @@ export const StoryDrivenVideoHero = ({
       className="h-screen w-full relative snap-start snap-always overflow-hidden flex items-center justify-center"
       aria-label={`Pain point ${index + 1}: ${title}`}
     >
-      {/* Video background or gradient fallback */}
+      {/* Video background */}
+      <video
+        ref={videoRef}
+        className="absolute inset-0 w-full h-full object-cover z-0"
+        src={videoSrc}
+        loop
+        muted
+        autoPlay
+        playsInline
+        preload="auto"
+      />
+
+      {/* Dark overlay with gradient for readability - kept for consistent styling */}
       <div
         className={cn(
-          'absolute inset-0 w-full h-full bg-gradient-to-br transition-opacity duration-1000',
+          'absolute inset-0 w-full h-full transition-opacity duration-1000 z-[1]',
           getBackgroundGradient()
         )}
         aria-hidden="true"
         style={{ opacity: 1 }} 
       />
 
-      {/* Dark overlay with gradient for readability */}
+      {/* Another dark overlay for deeper contrast, if needed (adjust z-index as necessary) */}
       <div
-        className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80 z-10"
+        className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80 z-[2]"
         aria-hidden="true"
       />
 
       {/* Content */}
-      <div className="relative z-20 w-full max-w-7xl mx-auto flex flex-col items-center justify-center px-6 h-full">
+      <div className="relative z-[3] w-full max-w-7xl mx-auto flex flex-col items-center justify-center px-6 h-full">
         {/* Data Overlays - Top */}
         {dataOverlays && textVisible && (
           <div className="absolute top-8 left-0 right-0 px-6 flex flex-wrap justify-center gap-4 max-w-7xl mx-auto">
@@ -165,12 +191,12 @@ export const StoryDrivenVideoHero = ({
                 style={{ transitionDelay: `${idx * 200}ms` }}
               >
                 <div className="flex items-center gap-3">
-                  {overlay.icon && <div className="text-foreground dark:text-white">{overlay.icon}</div>}
+                  {overlay.icon && <div className="text-white">{overlay.icon}</div>}
                   <div>
-                    <div className="text-2xl md:text-3xl font-bold text-foreground dark:text-white">
+                    <div className="text-2xl md:text-3xl font-bold text-white">
                       {overlay.stat}
                     </div>
-                    <div className="text-xs md:text-sm text-muted-foreground dark:text-white/80">{overlay.label}</div>
+                    <div className="text-xs md:text-white/80">{overlay.label}</div>
                   </div>
                 </div>
               </div>
@@ -190,7 +216,7 @@ export const StoryDrivenVideoHero = ({
             <Badge className="glass px-6 py-3 text-sm font-medium border-primary/20 mb-4">
               Pain Point {index + 1} of 4
             </Badge>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white leading-tight drop-shadow-2xl">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white leading-tight drop-shadow-2xl">
               {title}
             </h1>
           </div>
@@ -243,7 +269,7 @@ export const StoryDrivenVideoHero = ({
 
         {/* Scroll indicator (only on first section) */}
         {index === 0 && (
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-[3] animate-bounce">
             <div className="w-6 h-10 border-2 border-white/50 rounded-full flex items-start justify-center p-2">
               <div className="w-1 h-3 bg-white/50 rounded-full" />
             </div>

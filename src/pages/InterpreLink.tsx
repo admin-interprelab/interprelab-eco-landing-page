@@ -126,7 +126,7 @@ export default function InterpreHub() {
 
       <div className="flex pt-20">
         {/* Sidebar */}
-        <div className="hidden lg:block w-72 bg-card/50 min-h-screen p-6 border-r border-border/50">
+        <div className="hidden lg:block w-72 bg-card min-h-screen p-6 border-r border-border fixed left-0 top-20 bottom-0 overflow-y-auto">
           <div className="mb-8">
             <h1 className="font-serif text-2xl font-bold mb-2 text-foreground">InterpreLab Hub</h1>
           </div>
@@ -143,8 +143,8 @@ export default function InterpreHub() {
                       key={itemIndex}
                       className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-colors ${
                         item.active
-                          ? "bg-nobel-gold/10 text-nobel-gold border border-nobel-gold/20"
-                          : "text-muted-foreground hover:bg-card hover:text-foreground"
+                          ? "bg-nobel-gold/10 text-nobel-gold border border-nobel-gold/20 font-bold"
+                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
                       }`}
                     >
                       <item.icon className="w-5 h-5" />
@@ -197,7 +197,7 @@ export default function InterpreHub() {
               {discussions.map((discussion, index) => (
                 <Card 
                   key={discussion.id} 
-                  className={`glass border-border/50 hover:border-nobel-gold/50 transition-all duration-300 animate-fade-in-up ${discussion.isReply ? "ml-12" : ""}`}
+                  className={`glass border-border/50 hover:border-nobel-gold/50 transition-all duration-300 animate-fade-in-up md:p-6 ${discussion.isReply ? "ml-12 border-l-4 border-l-nobel-gold/30" : ""}`}
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   <CardHeader>

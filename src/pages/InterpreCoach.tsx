@@ -122,7 +122,7 @@ const InterpreCoach = () => {
             {features.map((feature, index) => (
               <Card 
                 key={index} 
-                className="glass border-border/50 hover:border-nobel-gold/50 transition-all duration-300 animate-fade-in-up"
+                className="glass border-border hover:border-nobel-gold/50 transition-all duration-300 animate-fade-in-up bg-card/40 backdrop-blur-md"
                 style={{ animationDelay: feature.delay }}
               >
                 <CardHeader>
@@ -193,11 +193,11 @@ const InterpreCoach = () => {
                     Set your language pairs, specialty areas, and preferences for personalized coaching suggestions.
                   </p>
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="p-4 glass rounded-lg border border-nobel-gold/20">
+                    <div className="p-4 bg-card border border-border rounded-lg shadow-sm">
                       <p className="text-sm font-semibold mb-1 text-foreground">Language Pairs</p>
                       <p className="text-xs text-muted-foreground">EN ↔ ES, EN ↔ FR</p>
                     </div>
-                    <div className="p-4 glass rounded-lg border border-nobel-gold/20">
+                    <div className="p-4 bg-card border border-border rounded-lg shadow-sm">
                       <p className="text-sm font-semibold mb-1 text-foreground">Specialty</p>
                       <p className="text-xs text-muted-foreground">Medical, Legal</p>
                     </div>

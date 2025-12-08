@@ -15,6 +15,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import { BadgeDisplay } from "@/components/gamification/BadgeDisplay";
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -60,7 +61,7 @@ export const Navigation = () => {
               <Shield className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold">InterpreLab</h1>
+              <h1 className="text-xl font-bold font-serif">InterpreLab</h1>
               <p className="text-xs text-muted-foreground">Advanced Interpretation</p>
             </div>
           </Link>
@@ -115,6 +116,7 @@ export const Navigation = () => {
           <div className="hidden md:flex items-center gap-3">
             {user ? (
               <>
+                <BadgeDisplay />
                 <Link to="/dashboard">
                   <Button variant="ghost" size="sm">
                     Dashboard
