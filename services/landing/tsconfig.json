@@ -1,0 +1,46 @@
+{
+    "extends": "../../packages/config/tsconfig/base.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@/*": [
+                "./src/*"
+            ],
+            "@interprelab/ui": [
+                "../../packages/ui/src"
+            ],
+            "@interprelab/utils": [
+                "../../packages/utils/src"
+            ],
+            "@interprelab/types": [
+                "../../packages/types/src"
+            ]
+        },
+        "jsx": "react-jsx",
+        "lib": [
+            "ES2020",
+            "DOM",
+            "DOM.Iterable"
+        ],
+        "target": "ES2020",
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "resolveJsonModule": true,
+        "allowImportingTsExtensions": true,
+        "noEmit": true
+    },
+    "include": [
+        "src"
+    ],
+    "references": [
+        {
+            "path": "../../packages/ui"
+        },
+        {
+            "path": "../../packages/utils"
+        },
+        {
+            "path": "../../packages/types"
+        }
+    ]
+}
