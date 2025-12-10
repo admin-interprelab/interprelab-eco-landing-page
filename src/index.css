@@ -9,10 +9,17 @@ All colors MUST be HSL for consistency and theming.
 @layer base {
   :root {
     /* Core Background & Text */
-    --background: 240 10% 3.9%;
-    --foreground: 210 30% 98%;
+    /* Nobel Dark Theme (Default) */
+    --background: 0 0% 10%;
+    /* #1a1a1a */
+    --foreground: 48 15% 97%;
+    /* #F9F8F4 */
 
-    /* Cards & Surfaces */
+    /* Nobel Gold Primary */
+    --primary: 39 48% 56%;
+    /* #C5A059 */
+    --primary-foreground: 0 0% 10%;
+    --primary-glow: 39 48% 56%;
     --card: 240 10% 6%;
     --card-foreground: 210 30% 98%;
 
@@ -63,7 +70,7 @@ All colors MUST be HSL for consistency and theming.
     --gradient-primary: linear-gradient(135deg, hsl(209 46% 31%), hsl(237 26% 41%));
     --gradient-success: linear-gradient(135deg, hsl(142 71% 45%), hsl(209 46% 31%));
     --gradient-glow: radial-gradient(circle at 50% 50%, hsl(209 46% 31% / 0.3), transparent 70%);
-    
+
     /* Shadows */
     --shadow-glow: 0 0 50px hsl(209 46% 31% / 0.3);
     --shadow-card: 0 8px 32px hsl(240 10% 3.9% / 0.6);
@@ -147,6 +154,19 @@ All colors MUST be HSL for consistency and theming.
     animation: fadeIn 0.6s ease-out;
   }
 
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
+  }
+
+  /* Stagger animation delays */
+  .stagger-1 { animation-delay: 0.1s; }
+  .stagger-2 { animation-delay: 0.2s; }
+  .stagger-3 { animation-delay: 0.3s; }
+  .stagger-4 { animation-delay: 0.4s; }
+  .stagger-5 { animation-delay: 0.5s; }
+  .stagger-6 { animation-delay: 0.6s; }
+
   .animate-slide-up {
     animation: slideUp 0.8s ease-out;
   }
@@ -192,6 +212,19 @@ All colors MUST be HSL for consistency and theming.
     opacity: 0;
     transform: translateY(20px);
   }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -203,6 +236,7 @@ All colors MUST be HSL for consistency and theming.
     opacity: 0;
     transform: translateY(40px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -210,18 +244,24 @@ All colors MUST be HSL for consistency and theming.
 }
 
 @keyframes pulseGlow {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.02);
   }
 }
 
 @keyframes float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px);
   }
+
   50% {
     transform: translateY(-10px);
   }
@@ -229,9 +269,12 @@ All colors MUST be HSL for consistency and theming.
 
 /* Landing Page Specific Animations */
 @keyframes highlight-pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 0 0 0 hsl(var(--primary) / 0);
   }
+
   50% {
     box-shadow: 0 0 30px 10px hsl(var(--primary) / 0.3);
   }
@@ -284,9 +327,12 @@ section[id] {
 }
 
 @keyframes pulseGlowUrgent {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 0 15px hsl(0 62.8% 50% / 0.3);
   }
+
   50% {
     box-shadow: 0 0 25px hsl(0 62.8% 50% / 0.5);
   }
@@ -305,4 +351,3 @@ section[id] {
     scroll-margin-top: 60px;
   }
 }
-

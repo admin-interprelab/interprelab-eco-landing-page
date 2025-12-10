@@ -8,13 +8,13 @@ import RecentCalls from '@/modules/interpretrack/components/RecentCalls';
 import AIInsights from '@/modules/interpretrack/components/AIInsights';
 import DemoBanner from '@/modules/interpretrack/components/DemoBanner';
 import { useStats } from '@/modules/interpretrack/hooks/useStats';
-import { isDemoMode } from '@/lib/data';
+import { isDemoMode } from '@/lib/utils';
 import { Sparkles, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
 export default function InterpreTrack() {
-  const { stats, callTypeStats, weeklyData, loading } = useStats();
+  const { stats, callTypeStats, weeklyData, calls, addCall, loading } = useStats();
   const demoMode = isDemoMode();
 
   const aiStats = demoMode 
@@ -70,7 +70,7 @@ export default function InterpreTrack() {
           <div className="grid gap-6 lg:grid-cols-3">
             {/* Left Column - Compact Manual Log */}
             <div className="lg:col-span-1 animate-slide-up" style={{ animationDelay: '100ms' }}>
-              <ManualLog />
+              <ManualLog onCallAdded={addCall} />
             </div>
 
             {/* Right Column - Charts */}
@@ -92,7 +92,7 @@ export default function InterpreTrack() {
 
           {/* Recent Calls Table */}
           <div className="animate-slide-up" style={{ animationDelay: '300ms' }}>
-            <RecentCalls />
+            <RecentCalls calls={calls} />
           </div>
 
           {/* Footer CTA for Demo Users */}

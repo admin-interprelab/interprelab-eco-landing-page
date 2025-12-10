@@ -37,13 +37,20 @@ export const Navigation = () => {
         { label: 'InterpreHub', href: '/interpre-hub' },
       ]
     },
-    { label: t('resources'), href: '/resources' },
+    { 
+      label: t('resources'),
+      submenu: [
+        { label: 'Resource Articles', href: '/resources' },
+        { label: 'Documentation', href: '/resources#docs' },
+        { label: 'The Interpreter Dilemma', href: '/dilemma' },
+      ]
+    },
     { label: t('about'), href: '/about' },
     { label: t('contact'), href: '/contact' },
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-border/50">
+    <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-border/50" aria-label="Main navigation">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -71,11 +78,14 @@ export const Navigation = () => {
                         <ul className="grid w-48 gap-2 p-2">
                           {item.submenu.map((subitem) => (
                             <li key={subitem.href}>
-                              <Link to={subitem.href}>
-                                <NavigationMenuLink className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                              <NavigationMenuLink asChild>
+                                <Link
+                                  to={subitem.href}
+                                  className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                                >
                                   <div className="text-sm font-medium leading-none">{subitem.label}</div>
-                                </NavigationMenuLink>
-                              </Link>
+                                </Link>
+                              </NavigationMenuLink>
                             </li>
                           ))}
                         </ul>
@@ -134,7 +144,7 @@ export const Navigation = () => {
           {/* Mobile Menu */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" aria-label="Open navigation menu">
                 <Menu className="w-5 h-5" />
               </Button>
             </SheetTrigger>

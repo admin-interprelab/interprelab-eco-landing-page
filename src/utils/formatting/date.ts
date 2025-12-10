@@ -30,7 +30,7 @@ export const formatDurationSeconds = (seconds: number): string => {
   const secs = seconds % 60;
 
   if (hours > 0) {
-    return `${hours}h ${minutes}m`;
+    return `${hours}h ${minutes}m ${secs}s`;
   }
   if (minutes > 0) {
     return `${minutes}m ${secs}s`;

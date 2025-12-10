@@ -2,12 +2,8 @@ import { Navigation } from '@/components/Navigation';
 import { Hero } from '@/components/landing/Hero';
 import { StoryDrivenVideoHero } from '@/components/landing/StoryDrivenVideoHero';
 import { ProductShowcase } from '@/components/landing/ProductShowcase';
-import { WellnessSection } from '@/components/sections/WellnessSection';
-import { QAFeedbackSection } from '@/components/sections/QAFeedbackSection';
-import { InterpreTrackSection } from '@/components/features/InterpreTrack/InterpreTrackSection';
-import { InterpreStudySection } from '@/components/features/InterpreStudy/InterpreStudySection';
+import { CertificatesPremium } from '@/components/landing/CertificatesPremium';
 import { FAQSection } from '@/components/sections/FAQ/FAQSection';
-import { StatsSection } from '@/components/landing/StatsSection';
 import { Testimonials } from '@/components/landing/Testimonials';
 import { Footer } from '@/components/Footer';
 import {
@@ -147,24 +143,15 @@ const Index = () => {
         {/* Feature Solutions - Linked from Pain Points */}
         <ProductShowcase />
 
-        {/* Wellness & Community Support */}
-        <WellnessSection />
+        {/* Certification & Premium */}
+        <CertificatesPremium />
 
-        {/* QA Feedback System */}
-        <QAFeedbackSection />
-
-        {/* Business Management */}
-        <InterpreTrackSection />
-
-        {/* Training Hub */}
-        <InterpreStudySection />
+        {/* Testimonials */}
+        <Testimonials />
 
         {/* FAQ Section */}
         <FAQSection />
 
-        {/* Social Proof */}
-        <StatsSection />
-        <Testimonials />
       </main>
 
       <Footer />

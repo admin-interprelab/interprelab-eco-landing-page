@@ -1,4 +1,3 @@
-import { callRecords } from '@/lib/data';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
@@ -7,8 +6,14 @@ import { Button } from '@/components/ui/button';
 import { Phone, Video } from 'lucide-react';
 import { formatCurrency } from '@/utils/formatting/currency';
 
-export default function RecentCalls() {
-  const recentCalls = callRecords.slice(0, 5);
+import type { CallRecord } from '../../types';
+
+interface RecentCallsProps {
+  calls: CallRecord[];
+}
+
+export default function RecentCalls({ calls }: RecentCallsProps) {
+  const recentCalls = calls.slice(0, 5);
 
   return (
     <Card>
@@ -37,8 +42,8 @@ export default function RecentCalls() {
               <TableRow key={call.id}>
                 <TableCell>
                   {call.callType === 'VRI'
-                    ? <Video className="h-4 w-4 text-muted-foreground" title="VRI" />
-                    : <Phone className="h-4 w-4 text-muted-foreground" title="OPI" />}
+                    ? <Video className="h-4 w-4 text-muted-foreground" />
+                    : <Phone className="h-4 w-4 text-muted-foreground" />}
                 </TableCell>
                 <TableCell>{call.startTime.toLocaleString()}</TableCell>
                 <TableCell>{call.duration} min</TableCell>

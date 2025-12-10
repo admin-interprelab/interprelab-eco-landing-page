@@ -39,8 +39,8 @@ import { toast } from 'sonner';
 const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
 if (!apiKey) {
-  throw new Error(
-    "Google Gemini API key missing: Please set VITE_GEMINI_API_KEY in your .env file. This key is required for all AI features in InterpreLab."
+  console.warn(
+    "Google Gemini API key missing: Please set VITE_GEMINI_API_KEY in your .env file. AI features will be disabled."
   );
 }
 
