@@ -1,16 +1,19 @@
-import { callRecords } from '@/lib/data';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@interprelab/ui';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@interprelab/uitable';
-import { Badge } from '@interprelab/uibadge';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@interprelab/ui';
+import { Badge } from '@interprelab/ui';
 import { Link } from 'react-router-dom';
-import { Button } from '@interprelab/uibutton';
+import { Button } from '@interprelab/ui';
 import { Phone, Video } from 'lucide-react';
+import { formatCurrency } from '../../utils';
 
-export default function RecentCalls() {
-  const recentCalls = callRecords.slice(0, 5);
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
-  };
+import type { CallRecord } from '../../types';
+
+interface RecentCallsProps {
+  calls: CallRecord[];
+}
+
+export default function RecentCalls({ calls }: RecentCallsProps) {
+  const recentCalls = calls.slice(0, 5);
 
   return (
     <Card>
@@ -39,8 +42,8 @@ export default function RecentCalls() {
               <TableRow key={call.id}>
                 <TableCell>
                   {call.callType === 'VRI'
-                    ? <Video className="h-4 w-4 text-muted-foreground" aria-label="VRI" />
-                    : <Phone className="h-4 w-4 text-muted-foreground" aria-label="OPI" />}
+                    ? <Video className="h-4 w-4 text-muted-foreground" />
+                    : <Phone className="h-4 w-4 text-muted-foreground" />}
                 </TableCell>
                 <TableCell>{call.startTime.toLocaleString()}</TableCell>
                 <TableCell>{call.duration} min</TableCell>
@@ -56,5 +59,6 @@ export default function RecentCalls() {
     </Card>
   );
 }
+
 
 

@@ -1,8 +1,8 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@interprelab/ui';
+import { Badge } from '@interprelab/uibadge';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip } from 'recharts';
 import { TrendingUp, DollarSign, Calendar } from 'lucide-react';
-import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
+import { ChartContainer, ChartTooltipContent } from '@interprelab/uichart';
 
 interface ProjectionData {
   month: string;
@@ -194,3 +194,5 @@ export default function EarningsProjection({ data, isPremium }: EarningsProjecti
     </Card>
   );
 }
+
+

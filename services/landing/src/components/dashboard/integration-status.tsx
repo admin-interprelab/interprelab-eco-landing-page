@@ -1,6 +1,6 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@interprelab/ui';
+import { Badge } from '@interprelab/uibadge';
+import { Button } from '@interprelab/uibutton';
 import { CheckCircle2, XCircle, AlertCircle, RefreshCw, BookOpen, MessageSquare, Chrome } from 'lucide-react';
 
 interface Integration {
@@ -93,3 +93,5 @@ export default function IntegrationStatus({ integrations }: IntegrationStatusPro
     </Card>
   );
 }
+
+

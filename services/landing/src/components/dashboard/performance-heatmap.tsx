@@ -1,5 +1,5 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@interprelab/ui';
+import { Badge } from '@interprelab/uibadge';
 import { TrendingUp, Flame } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -152,3 +152,5 @@ export default function PerformanceHeatmap({ data, isPremium }: PerformanceHeatm
     </Card>
   );
 }
+
+

@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '@interprelab/ui';
 import { Phone, Clock, DollarSign } from 'lucide-react';
 
 interface StatsCardsProps {
@@ -53,3 +53,5 @@ const StatsCards = ({ stats }: StatsCardsProps) => {
 };
 
 export default StatsCards;
+
+

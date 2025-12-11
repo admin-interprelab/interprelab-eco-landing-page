@@ -1,16 +1,20 @@
 import { useState, useEffect, useRef } from 'react';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@interprelab/ui';
-import { Button } from '@interprelab/uibutton';
+import { Button } from '@interprelab/ui';
 import { Play, Square, Timer } from 'lucide-react';
-import { addCallRecord, getRoundedDuration } from '@/lib/data';
-import { useToast } from '@/hooks/use-toast';
-import { Label } from '@interprelab/uilabel';
-import { RadioGroup, RadioGroupItem } from '@interprelab/uiradio-group';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@interprelab/uiselect';
-import type { CallRecord } from '@/lib/types';
+import { getRoundedDuration } from '../../utils';
+import { useToast } from '@interprelab/ui';
+import { Label } from '@interprelab/ui';
+import { RadioGroup, RadioGroupItem } from '@interprelab/ui';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@interprelab/ui';
+import type { CallRecord } from '../../types';
+
+interface ManualLogProps {
+  onCallAdded: (call: Omit<CallRecord, 'id' | 'earnings'>) => Promise<CallRecord>;
+}
 
 
-export default function ManualLog() {
+export default function ManualLog({ onCallAdded }: ManualLogProps) {
   const [isActive, setIsActive] = useState(false);
   const [startTime, setStartTime] = useState<Date | null>(null);
   const [elapsedTime, setElapsedTime] = useState(0);
@@ -57,14 +61,12 @@ export default function ManualLog() {
             callType,
         };
 
-        addCallRecord(newRecord);
-
-        toast({
-            title: "Call Logged",
-            description: `Your ${callType} call on ${platform} has been logged with a duration of ${duration} minutes.`,
+        onCallAdded(newRecord).then(() => {
+            toast({
+                title: "Call Logged",
+                description: `Your ${callType} call on ${platform} has been logged with a duration of ${duration} minutes.`,
+            });
         });
-
-        window.location.reload();
     }
     setElapsedTime(0);
     setStartTime(null);
@@ -79,23 +81,23 @@ export default function ManualLog() {
   };
 
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
         <CardTitle>Manual Call Log</CardTitle>
-        <CardDescription>Manually start and stop a timer to log your calls.</CardDescription>
+        <CardDescription>Start and stop timer to log your calls</CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="flex items-center justify-center bg-muted/50 rounded-lg p-6">
-            <Timer className="mr-4 h-10 w-10 text-primary" />
-            <div className="text-4xl font-bold font-mono w-48 text-center">
+      <CardContent className="space-y-6">
+        <div className="flex items-center justify-center bg-gradient-to-br from-nobel-gold/5 to-nobel-gold/10 rounded-xl p-8 border border-nobel-gold/20">
+            <Timer className="mr-4 h-8 w-8 text-nobel-gold" />
+            <div className="text-5xl font-bold font-mono tracking-wider text-foreground">
                 {formatTime(elapsedTime)}
             </div>
         </div>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-4">
             <div className="space-y-2">
-                <Label>Platform</Label>
-                 <Select onValueChange={(value) => setPlatform(value as CallRecord['platform'])} defaultValue={platform} disabled={isActive}>
-                      <SelectTrigger>
+                <Label className="text-sm font-medium">Platform</Label>
+                 <Select value={platform} onValueChange={(value) => setPlatform(value as CallRecord['platform'])} disabled={isActive}>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder="Select Platform" />
                       </SelectTrigger>
                       <SelectContent>
@@ -106,15 +108,15 @@ export default function ManualLog() {
                     </Select>
             </div>
             <div className="space-y-2">
-                <Label>Call Type</Label>
-                <RadioGroup defaultValue={callType} onValueChange={(value) => setCallType(value as CallRecord['callType'])} className="flex items-center space-x-2 pt-2" disabled={isActive}>
+                <Label className="text-sm font-medium">Call Type</Label>
+                <RadioGroup value={callType} onValueChange={(value) => setCallType(value as CallRecord['callType'])} className="flex gap-4 pt-1" disabled={isActive}>
                     <div className="flex items-center space-x-2">
                         <RadioGroupItem value="VRI" id="vri" />
-                        <Label htmlFor="vri">VRI</Label>
+                        <Label htmlFor="vri" className="font-normal cursor-pointer">VRI (Video)</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                         <RadioGroupItem value="OPI" id="opi" />
-                        <Label htmlFor="opi">OPI</Label>
+                        <Label htmlFor="opi" className="font-normal cursor-pointer">OPI (Phone)</Label>
                     </div>
                 </RadioGroup>
             </div>
@@ -136,5 +138,6 @@ export default function ManualLog() {
     </Card>
   );
 }
+
 
 

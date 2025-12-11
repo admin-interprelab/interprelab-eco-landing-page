@@ -1,7 +1,7 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@interprelab/ui';
+import { Badge } from '@interprelab/uibadge';
 import { BookOpen, Brain, MessageSquare, Award } from 'lucide-react';
-import { Progress } from '@/components/ui/progress';
+import { Progress } from '@interprelab/uiprogress';
 
 interface LearningMetrics {
   studyHours: number;
@@ -118,3 +118,5 @@ export default function LearningProgress({ metrics }: LearningProgressProps) {
     </Card>
   );
 }
+
+

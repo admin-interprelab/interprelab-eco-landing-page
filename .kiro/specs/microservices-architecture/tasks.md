@@ -136,12 +136,13 @@
   - **Property 20: Multi-Stage Build Usage**
   - **Validates: Requirements 5.2**
 
-- [ ] 13. Deploy Landing Service to Vercel/Netlify
-  - Create Vercel/Netlify configuration
+- [ ] 13. Deploy Landing Service to Google Cloud Run
+  - Build Docker image for Landing Service
+  - Push image to Google Container Registry
+  - Deploy to Cloud Run
   - Set up environment variables
-  - Deploy to staging
-  - Test deployment
   - Configure custom domain
+  - Test deployment
   - _Requirements: 1.1, 1.2, 1.3_
 
 - [ ] 14. Verify Landing Service performance

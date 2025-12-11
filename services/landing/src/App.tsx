@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
-import { Navigation, Footer } from '@interprelab/ui';
+import { Navigation } from './components/Navigation';
+import { Footer } from './components/Footer';
 import { AuthProvider } from './contexts/AuthContext';
 import { LanguageProvider } from './contexts/LanguageContext';
 
@@ -20,7 +21,9 @@ const InterpreBot = lazy(() => import('./pages/InterpreBot'));
 const InterpreCoach = lazy(() => import('./pages/InterpreCoach'));
 const InterpreLink = lazy(() => import('./pages/InterpreLink'));
 const InterpreStudy = lazy(() => import('./pages/InterpreStudy'));
+const InterpreTrack = lazy(() => import('./pages/InterpreTrack'));
 const InterpreWellness = lazy(() => import('./pages/InterpreWellness'));
+// const Dilemma = lazy(() => import('./pages/Dilemma')); // TODO: Create Dilemma page
 
 // Lazy load: Feature pages
 const Dashboard = lazy(() => import('./pages/Dashboard'));
@@ -62,7 +65,9 @@ function App() {
                 <Route path="/interprecoach" element={<InterpreCoach />} />
                 <Route path="/interprelink" element={<InterpreLink />} />
                 <Route path="/interprestudy" element={<InterpreStudy />} />
+                <Route path="/interpretrack" element={<InterpreTrack />} />
                 <Route path="/interprewellness" element={<InterpreWellness />} />
+                {/* <Route path="/dilemma" element={<Dilemma />} /> */} {/* TODO: Create Dilemma page */}
                 
                 {/* Feature Pages */}
                 <Route path="/dashboard" element={<Dashboard />} />

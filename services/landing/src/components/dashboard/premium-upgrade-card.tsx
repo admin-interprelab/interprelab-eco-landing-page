@@ -1,6 +1,6 @@
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@interprelab/ui';
+import { Button } from '@interprelab/uibutton';
+import { Badge } from '@interprelab/uibadge';
 import { Zap, Crown, Check, TrendingUp, Target, BarChart3, Flame } from 'lucide-react';
 
 export default function PremiumUpgradeCard() {
@@ -91,3 +91,5 @@ export default function PremiumUpgradeCard() {
     </Card>
   );
 }
+
+

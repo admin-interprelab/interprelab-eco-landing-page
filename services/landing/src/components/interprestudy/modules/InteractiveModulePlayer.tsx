@@ -162,17 +162,17 @@ export function InteractiveModulePlayer() {
     const { data, error } = await supabase
       .from('study_modules')
       .select('*')
-      .eq('category', 'reproductive-systems')
-      .order('order_index');
+      .order('order', { ascending: true });
 
     if (error) {
-      console.error('Error loading modules:', error);
-      // Use fallback data
+      console.warn('Database table study_modules not found, using demo modules:', error.message);
+      // Fallback to demo modules when table doesn't exist
       setModules([
         { id: '1', module_id: 'male-reproductive', title: 'Male Reproductive System', description: 'Anatomy, Spermatogenesis, and Pathology.', category: 'reproductive-systems', icon: 'mars', order_index: 1, is_active: true },
         { id: '2', module_id: 'female-reproductive', title: 'Female Reproductive System', description: 'Gestation, Hormonal Cycles, and Anatomy.', category: 'reproductive-systems', icon: 'venus', order_index: 2, is_active: true },
         { id: '3', module_id: 'obstetrics-neonatal', title: 'Obstetrics & Neonatal', description: 'Labor stages, Fertilization, and Care.', category: 'reproductive-systems', icon: 'baby-carriage', order_index: 3, is_active: true },
       ]);
+      return;
     } else {
       setModules(data || []);
     }

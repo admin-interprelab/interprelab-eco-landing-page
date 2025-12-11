@@ -18,7 +18,7 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from '@interprelab/uichart';
+} from '@interprelab/ui';
 
 interface WeeklyChartProps {
   data: {
@@ -31,11 +31,11 @@ interface WeeklyChartProps {
 const chartConfig = {
   calls: {
     label: 'Calls',
-    color: 'hsl(var(--primary))',
+    color: '#D4AF37', // Rich gold
   },
   earnings: {
     label: 'Earnings',
-    color: 'hsl(var(--accent))',
+    color: '#F59E0B', // Amber
   },
 };
 
@@ -66,7 +66,7 @@ export default function WeeklyChart({ data }: WeeklyChartProps) {
               <YAxis
                 yAxisId="left"
                 orientation="left"
-                stroke="hsl(var(--primary))"
+                stroke="#D4AF37"
                 tickLine={false}
                 axisLine={false}
                 fontSize={12}
@@ -74,7 +74,7 @@ export default function WeeklyChart({ data }: WeeklyChartProps) {
               <YAxis
                 yAxisId="right"
                 orientation="right"
-                stroke="hsl(var(--accent))"
+                stroke="#F59E0B"
                 tickLine={false}
                 axisLine={false}
                 fontSize={12}
@@ -103,5 +103,6 @@ export default function WeeklyChart({ data }: WeeklyChartProps) {
     </Card>
   );
 }
+
 
 

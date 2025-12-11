@@ -1,7 +1,7 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@interprelab/ui';
+import { Badge } from '@interprelab/uibadge';
 import { TrendingUp, TrendingDown, BarChart3 } from 'lucide-react';
-import { Progress } from '@/components/ui/progress';
+import { Progress } from '@interprelab/uiprogress';
 
 interface PlatformStats {
   name: string;
@@ -130,3 +130,5 @@ export default function PlatformComparison({ platforms, isPremium }: PlatformCom
     </Card>
   );
 }
+
+

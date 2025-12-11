@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@interprelab/ui';
+import { Badge } from '@interprelab/uibadge';
 import { TrendingUp, TrendingDown, DollarSign, Clock, Phone, Target, Zap, Award } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -166,3 +166,5 @@ export default function PremiumStatsOverview({ stats, isPremium }: PremiumStatsO
     </div>
   );
 }
+
+

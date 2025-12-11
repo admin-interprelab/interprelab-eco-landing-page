@@ -6,12 +6,12 @@ import {
   CardTitle,
   CardContent,
   CardDescription,
-} from '@/components/ui/card';
+} from '@interprelab/ui';
 import {
   ChartContainer,
   ChartTooltipContent,
   ChartConfig,
-} from '@/components/ui/chart';
+} from '@interprelab/uichart';
 import type { CallTypeStats } from '@/lib/types';
 import { Video, Phone } from 'lucide-react';
 
@@ -100,3 +100,5 @@ export default function CallTypeChart({ data }: CallTypeChartProps) {
     </Card>
   );
 }
+
+

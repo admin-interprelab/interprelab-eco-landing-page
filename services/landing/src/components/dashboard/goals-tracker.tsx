@@ -1,8 +1,8 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@interprelab/ui';
+import { Progress } from '@interprelab/uiprogress';
+import { Button } from '@interprelab/uibutton';
 import { Target, TrendingUp, DollarSign, Clock, Plus } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@interprelab/uibadge';
 
 interface Goal {
   id: string;
@@ -155,3 +155,5 @@ export default function GoalsTracker({ goals, isPremium }: GoalsTrackerProps) {
     </Card>
   );
 }
+
+

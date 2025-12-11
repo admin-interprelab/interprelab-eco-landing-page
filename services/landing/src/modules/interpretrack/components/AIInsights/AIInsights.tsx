@@ -1,19 +1,20 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@interprelab/ui';
-import { Lightbulb, TrendingUp, AlertTriangle } from 'lucide-react';
+import { Lightbulb, AlertTriangle } from 'lucide-react';
 
 interface AIInsightsProps {
   stats: string | null;
   error?: boolean;
 }
 
+const allInsights = [
+  "You're doing great! Keep up the good work.",
+  "You've had a busy week! Make sure to take a break.",
+  "Your earnings are up this week! Congratulations!",
+];
+
 export default function AIInsights({ stats, error }: AIInsightsProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const allInsights = useMemo(() => [
-    "You're doing great! Keep up the good work.",
-    "You've had a busy week! Make sure to take a break.",
-    "Your earnings are up this week! Congratulations!",
-  ], []);
 
   useEffect(() => {
     if (allInsights.length === 0) return;
@@ -23,7 +24,7 @@ export default function AIInsights({ stats, error }: AIInsightsProps) {
     }, 5000); // Switch insight every 5 seconds
 
     return () => clearInterval(intervalId);
-  }, [allInsights]);
+  }, []);
 
   if (error) {
     return (
@@ -64,7 +65,7 @@ export default function AIInsights({ stats, error }: AIInsightsProps) {
   }
 
   return (
-    <Card className="h-full flex flex-col">
+    <Card className="h-full">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Lightbulb className="text-primary" />
@@ -82,5 +83,6 @@ export default function AIInsights({ stats, error }: AIInsightsProps) {
     </Card>
   );
 }
+
 
 
