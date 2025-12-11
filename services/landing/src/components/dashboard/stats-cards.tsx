@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardTitle, CardContent } from '@interprelab/ui';
+import { Card, CardHeader, CardTitle, CardContent } from '@/lib/ui';
 import { Phone, Clock, DollarSign } from 'lucide-react';
 
 interface StatsCardsProps {

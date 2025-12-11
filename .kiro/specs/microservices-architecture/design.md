@@ -25,7 +25,6 @@ This design document outlines the transformation of the InterpreLab monolithic R
 
 ### High-Level System Architecture
 
-
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                         CDN (Cloudflare)                         │
@@ -57,12 +56,14 @@ This design document outlines the transformation of the InterpreLab monolithic R
 ### Service Breakdown
 
 **Landing Service** (Static Site)
+
 - Pages: Index, About, Contact, Resources, Waitlist
 - Bundle: <150KB gzipped
 - Deployment: Static hosting (Vercel/Netlify) or CDN
 - No authentication required
 
 **Feature Services** (Dynamic Apps)
+
 - InterpreBot Service: AI assessment and training
 - InterpreCoach Service: Real-time browser extension
 - InterpreStudy Service: Interactive training hub (1100+ lines)
@@ -70,18 +71,18 @@ This design document outlines the transformation of the InterpreLab monolithic R
 - InterpreHub Service: Community network (protected)
 
 **Auth Service** (Centralized)
+
 - JWT token issuance and validation
 - Session management
 - OAuth integration (Google, etc.)
 - User profile management
 
 **Shared Packages**
+
 - @interprelab/ui: Component library (shadcn/ui)
 - @interprelab/utils: Common utilities
 - @interprelab/types: TypeScript definitions
 - @interprelab/config: Shared configuration
-
-
 
 ## Components and Interfaces
 
@@ -189,13 +190,12 @@ interprelab-monorepo/
 └── README.md
 ```
 
-
-
 ### 2. API Gateway Configuration
 
 **Technology Choice**: Kong Gateway (open-source, production-ready)
 
 **Gateway Responsibilities**:
+
 - Route requests to appropriate services
 - JWT token validation
 - Rate limiting (per-user, per-IP)
@@ -293,8 +293,6 @@ plugins:
       credentials: true
 ```
 
-
-
 ### 3. Landing Service (Static Site)
 
 **Technology**: Vite + React (Static Build)
@@ -335,6 +333,7 @@ export default defineConfig({
 ```
 
 **Performance Optimizations**:
+
 1. **Image Optimization**: WebP with JPEG fallback, lazy loading
 2. **Font Loading**: Preload critical fonts, font-display: swap
 3. **Critical CSS**: Inline above-the-fold styles
@@ -342,8 +341,6 @@ export default defineConfig({
 5. **Service Worker**: Cache static assets for repeat visits
 
 **Deployment**: Vercel or Netlify (edge network, automatic HTTPS, instant rollbacks)
-
-
 
 ### 4. Feature Services (Dynamic Apps)
 
@@ -413,8 +410,6 @@ EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
 ```
-
-
 
 ### 5. Auth Service (Centralized Authentication)
 
@@ -511,8 +506,6 @@ router.post('/refresh', async (req, res) => {
 export default router;
 ```
 
-
-
 ### 6. Shared Component Library (@interprelab/ui)
 
 **Package Structure**:
@@ -594,8 +587,6 @@ export default function Home() {
   );
 }
 ```
-
-
 
 ## Data Models
 
@@ -688,8 +679,6 @@ pubsub.subscribe('user.updated', async (message) => {
 });
 ```
 
-
-
 ## Cross-Service Navigation
 
 ### Client-Side Routing Strategy
@@ -760,13 +749,12 @@ export default defineConfig({
 });
 ```
 
-
-
 ## Deployment Architecture
 
 ### Container Orchestration (Google Cloud Run)
 
 **Why Cloud Run**:
+
 - Serverless (no cluster management)
 - Auto-scaling (0 to N instances)
 - Pay-per-use (cost-effective for variable traffic)
@@ -896,8 +884,6 @@ jobs:
             --allow-unauthenticated
 ```
 
-
-
 ## Local Development Environment
 
 ### Docker Compose Setup
@@ -1023,8 +1009,6 @@ echo "  Auth API:    http://localhost:3006"
 # Tail logs
 docker-compose logs -f
 ```
-
-
 
 ## Monitoring and Observability
 
@@ -1193,8 +1177,6 @@ app.get('/health', async (req, res) => {
 });
 ```
 
-
-
 ## Error Handling and Resilience
 
 ### Circuit Breaker Pattern
@@ -1342,8 +1324,6 @@ function getFallbackContent(prompt: string): string {
   return 'AI features are temporarily unavailable. Please try again later.';
 }
 ```
-
-
 
 ## Correctness Properties
 
@@ -1627,8 +1607,6 @@ function getFallbackContent(prompt: string): string {
 *For any* code change in development mode, the service should automatically reload without manual restart.
 **Validates: Requirements 15.3**
 
-
-
 ## Testing Strategy
 
 ### Unit Testing
@@ -1754,19 +1732,19 @@ describe('Landing Service Bundle Size', () => {
    - Verify circuit breaker opens
    - Verify fallback content is served
 
-
-
 ## Migration Strategy
 
 ### Phase 1: Setup Monorepo and Shared Packages (Week 1-2)
 
 **Goals**:
+
 - Create monorepo structure
 - Extract shared UI components into @interprelab/ui
 - Extract utilities into @interprelab/utils
 - Set up build tooling (Turborepo)
 
 **Steps**:
+
 1. Initialize monorepo with pnpm workspaces
 2. Create packages/ui with all shadcn/ui components
 3. Create packages/utils with formatting and validation utilities
@@ -1775,6 +1753,7 @@ describe('Landing Service Bundle Size', () => {
 6. Verify all packages build successfully
 
 **Success Criteria**:
+
 - All shared packages build without errors
 - Services can import from shared packages
 - Build times are optimized with caching
@@ -1782,11 +1761,13 @@ describe('Landing Service Bundle Size', () => {
 ### Phase 2: Extract Landing Service (Week 3)
 
 **Goals**:
+
 - Create standalone Landing Service
 - Optimize for performance (<150KB bundle)
 - Deploy to Vercel/Netlify
 
 **Steps**:
+
 1. Create services/landing directory
 2. Move Index, About, Contact, Resources, Waitlist pages
 3. Move landing-specific components
@@ -1796,6 +1777,7 @@ describe('Landing Service Bundle Size', () => {
 7. Verify performance metrics
 
 **Success Criteria**:
+
 - Landing bundle < 150KB gzipped
 - FCP < 1.2s on 3G
 - TTI < 2.5s on 3G
@@ -1804,11 +1786,13 @@ describe('Landing Service Bundle Size', () => {
 ### Phase 3: Extract Auth Service (Week 4)
 
 **Goals**:
+
 - Create centralized Auth Service
 - Implement JWT token issuance
 - Set up secure cookie handling
 
 **Steps**:
+
 1. Create services/auth directory
 2. Implement Express server with auth routes
 3. Integrate with Supabase Auth
@@ -1818,6 +1802,7 @@ describe('Landing Service Bundle Size', () => {
 7. Test authentication flow
 
 **Success Criteria**:
+
 - Auth Service responds to /api/auth/* routes
 - JWT tokens are issued correctly
 - Cookies have correct security attributes
@@ -1826,11 +1811,13 @@ describe('Landing Service Bundle Size', () => {
 ### Phase 4: Extract Feature Services (Week 5-8)
 
 **Goals**:
+
 - Create independent services for each feature
 - Implement lazy loading
 - Deploy to Cloud Run
 
 **Steps** (repeat for each feature):
+
 1. Create services/{feature} directory
 2. Move feature-specific pages and components
 3. Configure Vite with basename for routing
@@ -1839,6 +1826,7 @@ describe('Landing Service Bundle Size', () => {
 6. Test navigation and functionality
 
 **Features to Extract**:
+
 - InterpreBot (Week 5)
 - InterpreCoach (Week 6)
 - InterpreStudy (Week 7)
@@ -1846,6 +1834,7 @@ describe('Landing Service Bundle Size', () => {
 - InterpreHub (Week 8)
 
 **Success Criteria**:
+
 - Each service deploys independently
 - Navigation between services works
 - Authentication persists across services
@@ -1854,11 +1843,13 @@ describe('Landing Service Bundle Size', () => {
 ### Phase 5: Implement API Gateway (Week 9)
 
 **Goals**:
+
 - Set up Kong Gateway
 - Configure routing rules
 - Implement rate limiting and auth
 
 **Steps**:
+
 1. Deploy Kong Gateway to Cloud Run
 2. Configure routing to all services
 3. Implement JWT validation plugin
@@ -1867,6 +1858,7 @@ describe('Landing Service Bundle Size', () => {
 6. Test all routes
 
 **Success Criteria**:
+
 - All services accessible through gateway
 - JWT validation works
 - Rate limiting enforces limits
@@ -1875,11 +1867,13 @@ describe('Landing Service Bundle Size', () => {
 ### Phase 6: Implement Monitoring and Observability (Week 10)
 
 **Goals**:
+
 - Set up centralized logging
 - Implement distributed tracing
 - Configure metrics collection
 
 **Steps**:
+
 1. Integrate Winston logger in all services
 2. Set up Google Cloud Logging
 3. Implement OpenTelemetry tracing
@@ -1888,6 +1882,7 @@ describe('Landing Service Bundle Size', () => {
 6. Set up alerting
 
 **Success Criteria**:
+
 - All services send logs to Cloud Logging
 - Correlation IDs appear in all logs
 - Traces show request flows
@@ -1897,11 +1892,13 @@ describe('Landing Service Bundle Size', () => {
 ### Phase 7: Implement Resilience Patterns (Week 11)
 
 **Goals**:
+
 - Add circuit breakers
 - Implement retry logic
 - Add graceful degradation
 
 **Steps**:
+
 1. Implement circuit breaker library
 2. Add retry logic with exponential backoff
 3. Implement fallback content for failures
@@ -1909,6 +1906,7 @@ describe('Landing Service Bundle Size', () => {
 5. Test fault injection scenarios
 
 **Success Criteria**:
+
 - Circuit breakers open on failures
 - Retries work with backoff
 - Fallback content is served
@@ -1918,11 +1916,13 @@ describe('Landing Service Bundle Size', () => {
 ### Phase 8: Optimize and Fine-Tune (Week 12)
 
 **Goals**:
+
 - Optimize bundle sizes
 - Improve performance metrics
 - Fine-tune autoscaling
 
 **Steps**:
+
 1. Analyze bundle sizes and optimize
 2. Implement code splitting improvements
 3. Optimize images and assets
@@ -1931,6 +1931,7 @@ describe('Landing Service Bundle Size', () => {
 6. Optimize database queries
 
 **Success Criteria**:
+
 - All performance targets met
 - Autoscaling works efficiently
 - Load tests pass
@@ -2030,6 +2031,7 @@ describe('Landing Service Bundle Size', () => {
 - Alerts only for critical issues
 
 **Estimated Monthly Costs**:
+
 - Cloud Run: $50-100 (with free tier)
 - Firestore: $25-50
 - Cloud Logging: $10-20
@@ -2106,4 +2108,3 @@ describe('Landing Service Bundle Size', () => {
 ## Conclusion
 
 This microservices architecture transformation will dramatically improve InterpreLab's performance, scalability, and developer experience. The phased migration approach minimizes risk while delivering incremental value. With proper monitoring, resilience patterns, and operational practices, the system will be production-ready and maintainable for years to come.
-

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useCallback, ComponentType } from 'react';
-import { Button, Badge } from '@interprelab/ui';
-import { cn } from '@interprelab/utils';
+import { Button, Badge } from '@/lib/ui';
+import { cn } from '@/utils/shared';
 
 interface DataOverlay {
   stat: string;

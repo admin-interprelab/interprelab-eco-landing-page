@@ -1,6 +1,6 @@
-import { cn } from "@interprelab/utils";
+import { cn } from "@/utils/shared";
 import { Achievement } from "../../types/badges";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@interprelab/ui";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/lib/ui";
 
 interface BadgeProps {
   badge: Achievement;

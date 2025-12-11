@@ -1,6 +1,6 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@interprelab/ui';
-import { Badge } from '@interprelab/uibadge';
-import { Button } from '@interprelab/uibutton';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/lib/ui';
+import { Badge } from '@/lib/uibadge';
+import { Button } from '@/lib/uibutton';
 import { CheckCircle2, XCircle, AlertCircle, RefreshCw, BookOpen, MessageSquare, Chrome } from 'lucide-react';
 
 interface Integration {

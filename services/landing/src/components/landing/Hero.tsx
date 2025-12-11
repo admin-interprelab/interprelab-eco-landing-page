@@ -1,5 +1,5 @@
-import { Button } from "@interprelab/ui";
-import { Badge } from "@interprelab/ui";
+import { Button } from "@/lib/ui";
+import { Badge } from "@/lib/ui";
 import { ArrowRight, User, Shield, Zap, Globe, Users, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 

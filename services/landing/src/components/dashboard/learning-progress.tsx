@@ -1,7 +1,7 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@interprelab/ui';
-import { Badge } from '@interprelab/uibadge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/lib/ui';
+import { Badge } from '@/lib/uibadge';
 import { BookOpen, Brain, MessageSquare, Award } from 'lucide-react';
-import { Progress } from '@interprelab/uiprogress';
+import { Progress } from '@/lib/uiprogress';
 
 interface LearningMetrics {
   studyHours: number;

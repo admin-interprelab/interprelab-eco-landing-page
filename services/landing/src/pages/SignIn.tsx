@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Input, Label, Separator, Tabs, TabsContent, TabsList, TabsTrigger, Badge } from "@interprelab/ui";
+import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Input, Label, Separator, Tabs, TabsContent, TabsList, TabsTrigger, Badge } from "@/lib/ui";
 import { Eye, EyeOff, Mail, Lock, User, Shield, Chrome, ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";

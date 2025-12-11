@@ -1,9 +1,9 @@
 import { useBadges } from "../../hooks/useBadges";
 import { BadgeItem } from "./Badge";
-import { Popover, PopoverContent, PopoverTrigger } from "@interprelab/ui";
-import { Button } from "@interprelab/ui";
+import { Popover, PopoverContent, PopoverTrigger } from "@/lib/ui";
+import { Button } from "@/lib/ui";
 import { Trophy, Loader2 } from "lucide-react";
-import { ScrollArea } from "@interprelab/ui";
+import { ScrollArea } from "@/lib/ui";
 
 export const BadgeDisplay = () => {
   const { badges, earnedBadges, isLoading } = useBadges();

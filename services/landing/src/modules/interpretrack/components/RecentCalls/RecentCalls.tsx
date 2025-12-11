@@ -1,8 +1,8 @@
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@interprelab/ui';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@interprelab/ui';
-import { Badge } from '@interprelab/ui';
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/lib/ui';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/lib/ui';
+import { Badge } from '@/lib/ui';
 import { Link } from 'react-router-dom';
-import { Button } from '@interprelab/ui';
+import { Button } from '@/lib/ui';
 import { Phone, Video } from 'lucide-react';
 import { formatCurrency } from '../../utils';
 

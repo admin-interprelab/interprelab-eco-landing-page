@@ -13,12 +13,12 @@ import {
   CardTitle,
   CardContent,
   CardDescription,
-} from '@interprelab/ui';
+} from '@/lib/ui';
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from '@interprelab/uichart';
+} from '@/lib/uichart';
 
 interface WeeklyChartProps {
   data: {

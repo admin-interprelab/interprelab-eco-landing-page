@@ -1,4 +1,4 @@
-import { Navigation, Footer } from '@interprelab/ui';
+import { Navigation, Footer } from '@/lib/ui';
 import { Hero } from '@/components/landing/Hero';
 import { StoryDrivenVideoHero } from '@/components/landing/StoryDrivenVideoHero';
 import { ProductShowcase } from '@/components/landing/ProductShowcase';

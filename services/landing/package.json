@@ -11,9 +11,6 @@
         "test": "vitest"
     },
     "dependencies": {
-        "@interprelab/ui": "*",
-        "@interprelab/utils": "*",
-        "@interprelab/types": "*",
         "@supabase/supabase-js": "^2.58.0",
         "react": "^19.2.1",
         "react-dom": "^19.2.1",

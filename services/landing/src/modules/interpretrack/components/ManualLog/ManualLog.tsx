@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
-import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@interprelab/ui';
-import { Button } from '@interprelab/ui';
+import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/lib/ui';
+import { Button } from '@/lib/ui';
 import { Play, Square, Timer } from 'lucide-react';
 import { getRoundedDuration } from '../../utils';
-import { useToast } from '@interprelab/ui';
-import { Label } from '@interprelab/ui';
-import { RadioGroup, RadioGroupItem } from '@interprelab/ui';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@interprelab/ui';
+import { useToast } from '@/lib/ui';
+import { Label } from '@/lib/ui';
+import { RadioGroup, RadioGroupItem } from '@/lib/ui';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/lib/ui';
 import type { CallRecord } from '../../types';
 
 interface ManualLogProps {

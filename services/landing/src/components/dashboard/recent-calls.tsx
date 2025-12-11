@@ -1,9 +1,9 @@
 import { callRecords } from '@/lib/data';
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@interprelab/ui';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@interprelab/uitable';
-import { Badge } from '@interprelab/uibadge';
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/lib/ui';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/lib/uitable';
+import { Badge } from '@/lib/uibadge';
 import { Link } from 'react-router-dom';
-import { Button } from '@interprelab/uibutton';
+import { Button } from '@/lib/uibutton';
 import { Phone, Video } from 'lucide-react';
 
 export default function RecentCalls() {

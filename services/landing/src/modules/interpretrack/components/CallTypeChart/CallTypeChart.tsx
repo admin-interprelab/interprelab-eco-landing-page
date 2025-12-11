@@ -6,7 +6,7 @@ import {
   CardTitle,
   CardContent,
   CardDescription,
-} from '@interprelab/ui';
+} from '@/lib/ui';
 import type { CallTypeStats } from '@/modules/interpretrack/types';
 import { Video, Phone } from 'lucide-react';
 

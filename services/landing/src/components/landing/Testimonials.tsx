@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Card, CardContent } from "@interprelab/ui";
-import { Badge } from "@interprelab/ui";
-import { Avatar, AvatarFallback, AvatarImage } from "@interprelab/ui";
+import { Card, CardContent } from "@/lib/ui";
+import { Badge } from "@/lib/ui";
+import { Avatar, AvatarFallback, AvatarImage } from "@/lib/ui";
 import { Quote } from "lucide-react";
 
 export const Testimonials = () => {

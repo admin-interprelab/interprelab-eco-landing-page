@@ -1,6 +1,6 @@
-import { Badge } from "@interprelab/ui";
-import { Button } from "@interprelab/ui";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@interprelab/ui";
+import { Badge } from "@/lib/ui";
+import { Button } from "@/lib/ui";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/lib/ui";
 import { Check, Star, Crown, Award, Building2, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 

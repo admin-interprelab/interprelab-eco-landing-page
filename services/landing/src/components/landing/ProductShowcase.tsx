@@ -1,6 +1,6 @@
-import { Button } from "@interprelab/ui";
-import { Card, CardContent } from "@interprelab/ui";
-import { Badge } from "@interprelab/ui";
+import { Button } from "@/lib/ui";
+import { Card, CardContent } from "@/lib/ui";
+import { Badge } from "@/lib/ui";
 import { 
   Brain, 
   Chrome,

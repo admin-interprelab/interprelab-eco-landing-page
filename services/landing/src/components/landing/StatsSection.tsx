@@ -1,4 +1,4 @@
-import { Badge } from "@interprelab/ui";
+import { Badge } from "@/lib/ui";
 import { TrendingUp, Users, Globe, Award } from "lucide-react";
 
 export const StatsSection = () => {

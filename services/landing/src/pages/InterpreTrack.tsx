@@ -15,7 +15,7 @@ import DemoBanner from '../modules/interpretrack/components/DemoBanner';
 import { useStats } from '../modules/interpretrack/hooks/useStats';
 import { isDemoMode } from '../modules/interpretrack/utils';
 import { Sparkles, TrendingUp } from 'lucide-react';
-import { Button } from '@interprelab/ui';
+import { Button } from '@/lib/ui';
 import { Link } from 'react-router-dom';
 
 export default function InterpreTrack() {

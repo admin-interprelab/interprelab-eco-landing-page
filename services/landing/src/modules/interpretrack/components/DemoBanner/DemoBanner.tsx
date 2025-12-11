@@ -1,5 +1,5 @@
-import { Alert, AlertDescription } from '@interprelab/ui';
-import { Button } from '@interprelab/ui';
+import { Alert, AlertDescription } from '@/lib/ui';
+import { Button } from '@/lib/ui';
 import { Sparkles, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 

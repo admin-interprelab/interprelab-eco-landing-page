@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@interprelab/ui';
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/lib/ui';
 import { Lightbulb, TrendingUp, AlertTriangle } from 'lucide-react';
 
 interface AIInsightsProps {

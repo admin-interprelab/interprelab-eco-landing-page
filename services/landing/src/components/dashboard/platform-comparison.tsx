@@ -1,7 +1,7 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@interprelab/ui';
-import { Badge } from '@interprelab/uibadge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/lib/ui';
+import { Badge } from '@/lib/uibadge';
 import { TrendingUp, TrendingDown, BarChart3 } from 'lucide-react';
-import { Progress } from '@interprelab/uiprogress';
+import { Progress } from '@/lib/uiprogress';
 
 interface PlatformStats {
   name: string;

@@ -1,8 +1,8 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@interprelab/ui';
-import { Progress } from '@interprelab/uiprogress';
-import { Button } from '@interprelab/uibutton';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/lib/ui';
+import { Progress } from '@/lib/uiprogress';
+import { Button } from '@/lib/uibutton';
 import { Target, TrendingUp, DollarSign, Clock, Plus } from 'lucide-react';
-import { Badge } from '@interprelab/uibadge';
+import { Badge } from '@/lib/uibadge';
 
 interface Goal {
   id: string;

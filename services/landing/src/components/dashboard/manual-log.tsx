@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
-import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@interprelab/ui';
-import { Button } from '@interprelab/uibutton';
+import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/lib/ui';
+import { Button } from '@/lib/uibutton';
 import { Play, Square, Timer } from 'lucide-react';
 import { addCallRecord, getRoundedDuration } from '@/lib/data';
 import { useToast } from '@/hooks/use-toast';
-import { Label } from '@interprelab/uilabel';
-import { RadioGroup, RadioGroupItem } from '@interprelab/uiradio-group';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@interprelab/uiselect';
+import { Label } from '@/lib/uilabel';
+import { RadioGroup, RadioGroupItem } from '@/lib/uiradio-group';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/lib/uiselect';
 import type { CallRecord } from '@/lib/types';
 
 

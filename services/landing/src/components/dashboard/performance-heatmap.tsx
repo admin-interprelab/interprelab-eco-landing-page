@@ -1,5 +1,5 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@interprelab/ui';
-import { Badge } from '@interprelab/uibadge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/lib/ui';
+import { Badge } from '@/lib/uibadge';
 import { TrendingUp, Flame } from 'lucide-react';
 import { cn } from '@/lib/utils';
 

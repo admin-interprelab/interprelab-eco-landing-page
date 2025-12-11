@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@interprelab/ui';
+import { Card, CardContent, CardHeader, CardTitle } from '@/lib/ui';
 import { Phone, Clock, DollarSign } from 'lucide-react';
 import { formatCurrency, formatNumber } from '../../utils';
 

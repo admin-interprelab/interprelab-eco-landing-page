@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Badge } from "@interprelab/ui";
+import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Badge } from "@/lib/ui";
 import { BookOpen, Video, FileText, Users, ExternalLink, Download, Calendar, Star, Scale, Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
 

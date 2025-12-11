@@ -6,12 +6,12 @@ import {
   CardTitle,
   CardContent,
   CardDescription,
-} from '@interprelab/ui';
+} from '@/lib/ui';
 import {
   ChartContainer,
   ChartTooltipContent,
   ChartConfig,
-} from '@interprelab/uichart';
+} from '@/lib/uichart';
 import type { CallTypeStats } from '@/lib/types';
 import { Video, Phone } from 'lucide-react';
 

@@ -1,8 +1,8 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@interprelab/ui';
-import { Badge } from '@interprelab/uibadge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/lib/ui';
+import { Badge } from '@/lib/uibadge';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip } from 'recharts';
 import { TrendingUp, DollarSign, Calendar } from 'lucide-react';
-import { ChartContainer, ChartTooltipContent } from '@interprelab/uichart';
+import { ChartContainer, ChartTooltipContent } from '@/lib/uichart';
 
 interface ProjectionData {
   month: string;
