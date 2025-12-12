@@ -1,6 +1,6 @@
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Badge } from "@/lib/ui/components/ui/badge";
+import { Card, CardContent } from "@/lib/ui/components/ui/card";
+import { Button } from "@/lib/ui/components/ui/button";
 import { 
   Play,
   Users,

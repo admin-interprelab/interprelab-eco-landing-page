@@ -1,4 +1,4 @@
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/lib/ui/components/ui/badge";
 import { Shield } from "lucide-react";
 
 export const TrustedPartners = () => {

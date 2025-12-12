@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Card, CardContent, CardHeader, CardTitle } from '@/lib/ui/components/ui/card';
+import { Button } from '@/lib/ui/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/lib/ui/components/ui/select';
 import { FlashcardDeck } from './FlashcardDeck';
 import { Plus, Layers } from 'lucide-react';
 

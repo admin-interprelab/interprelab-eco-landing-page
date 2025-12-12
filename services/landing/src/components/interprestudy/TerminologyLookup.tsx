@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardHeader, CardTitle } from '@/lib/ui/components/ui/card';
+import { Button } from '@/lib/ui/components/ui/button';
+import { Input } from '@/lib/ui/components/ui/input';
 import { Search, Plus, BookMarked, Volume2, Trash2 } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@/lib/ui/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';

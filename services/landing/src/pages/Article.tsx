@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { Layout } from "@/components/Layout";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Badge } from "@/lib/ui/components/ui/badge";
+import { Button } from "@/lib/ui/components/ui/button";
 import { Calendar, Clock, Share2, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 

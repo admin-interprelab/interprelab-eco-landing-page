@@ -1,6 +1,6 @@
 import { Layout } from "@/components/Layout";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/lib/ui/components/ui/button";
+import { Card, CardContent } from "@/lib/ui/components/ui/card";
 import { Chrome, Zap, Shield, Globe, Download, Star, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { PainPointBadge } from "@/components/PainPointBadge";

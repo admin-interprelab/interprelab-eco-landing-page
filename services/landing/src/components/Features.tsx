@@ -1,5 +1,5 @@
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/lib/ui/components/ui/badge";
+import { Card, CardContent } from "@/lib/ui/components/ui/card";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { 
   Monitor,

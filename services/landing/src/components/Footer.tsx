@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Button } from "@/lib/ui/components/ui/button";
+import { Badge } from "@/lib/ui/components/ui/badge";
 import { Link } from "react-router-dom";
 import {
   Shield,

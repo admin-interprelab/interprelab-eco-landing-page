@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card, CardContent } from "@/lib/ui/components/ui/card";
+import { Badge } from "@/lib/ui/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/lib/ui/components/ui/avatar";
 import { Quote } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 

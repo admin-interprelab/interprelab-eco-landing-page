@@ -1,7 +1,7 @@
 import { Layout } from "@/components/Layout";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/lib/ui/components/ui/card";
+import { Badge } from "@/lib/ui/components/ui/badge";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/lib/ui/components/ui/accordion";
 import { DollarSign, UserX, Wifi, GraduationCap, Brain, AlertTriangle } from "lucide-react";
 
 const painPoints = [

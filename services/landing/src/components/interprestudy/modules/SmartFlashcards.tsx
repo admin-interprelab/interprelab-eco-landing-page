@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Book, Check, RotateCcw, ChevronRight, X, Trophy, Sparkles, Loader2, Play } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { cn } from '@/lib/utils';
+import { Button } from '@/lib/ui/components/ui/button';
+import { Card, CardContent } from '@/lib/ui/components/ui/card';
+import { cn } from '@/utils/shared';
 
 // --- GEMINI API UTILITIES ---
 const apiKey = ""; // API Key injected at runtime

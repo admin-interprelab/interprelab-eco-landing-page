@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardHeader, CardTitle } from '@/lib/ui/components/ui/card';
+import { Button } from '@/lib/ui/components/ui/button';
+import { Textarea } from '@/lib/ui/components/ui/textarea';
+import { Input } from '@/lib/ui/components/ui/input';
 import { Plus, Play, Clock } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@/lib/ui/components/ui/badge';
 
 export const MockScenarios = () => {
   const [isCreating, setIsCreating] = useState(false);

@@ -20,8 +20,8 @@
         "dev": "tsup src/index.ts --format cjs,esm --dts --watch"
     },
     "peerDependencies": {
-        "react": "^18.0.0",
-        "react-dom": "^18.0.0"
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0"
     },
     "devDependencies": {
         "tsup": "^8.0.0",

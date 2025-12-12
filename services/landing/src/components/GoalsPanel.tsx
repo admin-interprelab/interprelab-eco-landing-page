@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/lib/ui/components/ui/card';
+import { Button } from '@/lib/ui/components/ui/button';
+import { Input } from '@/lib/ui/components/ui/input';
+import { Label } from '@/lib/ui/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/lib/ui/components/ui/select';
+import { Textarea } from '@/lib/ui/components/ui/textarea';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { Target, Plus, Trash2 } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@/lib/ui/components/ui/badge';
 
 interface Goal {
   id: string;

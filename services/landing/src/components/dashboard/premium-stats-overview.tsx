@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/lib/ui';
-import { Badge } from '@/lib/uibadge';
+import { Badge } from '@/lib/ui';
 import { TrendingUp, TrendingDown, DollarSign, Clock, Phone, Target, Zap, Award } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/shared';
 
 interface StatCardProps {
   title: string;

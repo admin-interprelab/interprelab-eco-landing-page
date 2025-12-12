@@ -1,11 +1,11 @@
 import { Layout } from "@/components/Layout";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from "@/lib/ui/components/ui/button";
+import { Input } from "@/lib/ui/components/ui/input";
+import { Textarea } from "@/lib/ui/components/ui/textarea";
+import { Card, CardContent, CardHeader } from "@/lib/ui/components/ui/card";
+import { Avatar, AvatarFallback } from "@/lib/ui/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/lib/ui/components/ui/tabs";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/lib/ui/components/ui/dialog";
 import { LucideIcon } from "lucide-react";
 import {
   Search, Plus, MessageCircle, Heart, Share2, MoreHorizontal,
@@ -15,7 +15,7 @@ import {
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { PainPointBadge } from "@/components/PainPointBadge";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/lib/ui/components/ui/badge";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";

@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/lib/ui';
-import { Badge } from '@/lib/uibadge';
+import { Badge } from '@/lib/ui';
 import { TrendingUp, Flame } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/shared';
 
 interface HeatmapData {
   hour: number;

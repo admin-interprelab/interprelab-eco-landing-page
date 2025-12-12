@@ -3,8 +3,8 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Badge } from "@/components/ui/badge";
+} from "@/lib/ui/components/ui/accordion";
+import { Badge } from "@/lib/ui/components/ui/badge";
 
 export const FAQ = () => {
   const faqs = [

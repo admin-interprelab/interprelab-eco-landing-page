@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/lib/ui/components/ui/badge";
 import { TrendingDown, Users, DollarSign, Brain } from "lucide-react";
 
 interface DataOverlay {

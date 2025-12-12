@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card } from '@/lib/ui/components/ui/card';
+import { Button } from '@/lib/ui/components/ui/button';
 import { ChevronLeft, ChevronRight, RotateCw } from 'lucide-react';
 import './flashcard-animations.css';
 

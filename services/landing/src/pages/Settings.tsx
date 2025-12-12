@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Layout } from '@/components/Layout';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Button } from '@/lib/ui/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/lib/ui/components/ui/card';
+import { Input } from '@/lib/ui/components/ui/input';
+import { Label } from '@/lib/ui/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/lib/ui/components/ui/select';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
 import { DollarSign, Globe, Settings2, Clock } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@/lib/ui/components/ui/badge';
 
 const Settings = () => {
   const [payRate, setPayRate] = useState('0');

@@ -115,6 +115,26 @@ All colors MUST be HSL for consistency and theming.
     --glass-border: 240 10% 3.9% / 0.1;
   }
 
+  /* Dark sections in light mode for visual variety */
+  .light .dark-section {
+    background: linear-gradient(135deg, hsl(0 0% 10%), hsl(240 10% 12%));
+    color: hsl(48 15% 97%);
+  }
+
+  .light .dark-section .glass {
+    background: hsl(240 10% 8% / 0.8);
+    border-color: hsl(39 48% 56% / 0.2);
+  }
+
+  .light .dark-section .text-muted-foreground {
+    color: hsl(210 20% 75%);
+  }
+
+  .light .gold-accent-section {
+    background: linear-gradient(135deg, hsl(39 48% 96%), hsl(45 40% 98%));
+    border: 2px solid hsl(39 48% 56% / 0.2);
+  }
+
   /* Sidebar Variables */
   :root {
     --sidebar-background: 240 12% 8%;

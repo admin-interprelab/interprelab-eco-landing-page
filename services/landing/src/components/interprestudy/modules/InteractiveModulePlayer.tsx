@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
+import { Card, CardContent, CardHeader, CardTitle } from '@/lib/ui/components/ui/card';
+import { Button } from '@/lib/ui/components/ui/button';
+import { Badge } from '@/lib/ui/components/ui/badge';
+import { Progress } from '@/lib/ui/components/ui/progress';
 import { 
   ChevronLeft, ChevronRight, Star, Layers, MessageCircle, X,
   Send, Sparkles, CheckCircle, Lock
@@ -10,7 +10,7 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/shared';
 
 interface ModuleData {
   id: string;
@@ -165,8 +165,7 @@ export function InteractiveModulePlayer() {
       .order('order', { ascending: true });
 
     if (error) {
-      console.warn('Database table study_modules not found, using demo modules:', error.message);
-      // Fallback to demo modules when table doesn't exist
+      // Database table not found - using demo modules (expected in development)
       setModules([
         { id: '1', module_id: 'male-reproductive', title: 'Male Reproductive System', description: 'Anatomy, Spermatogenesis, and Pathology.', category: 'reproductive-systems', icon: 'mars', order_index: 1, is_active: true },
         { id: '2', module_id: 'female-reproductive', title: 'Female Reproductive System', description: 'Gestation, Hormonal Cycles, and Anatomy.', category: 'reproductive-systems', icon: 'venus', order_index: 2, is_active: true },

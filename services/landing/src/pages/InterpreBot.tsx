@@ -1,39 +1,26 @@
 import interpreHubMockup from "@/assets/interpre-hub-mockup.png";
 import { Layout } from "@/components/Layout";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Brain, Target, BarChart, Users, ArrowRight, Play, MessageSquare, CheckCircle, TrendingUp } from "lucide-react";
+import { Button } from "@/lib/ui/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/lib/ui/components/ui/card";
+import { Brain, Target, BarChart, Users, ArrowRight, Play, CheckCircle, TrendingUp, Mic, Award, Clock, Languages } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useState } from "react";
 import { PainPointBadge } from "@/components/PainPointBadge";
 import { GetStartedSteps } from "@/components/GetStartedSteps";
 import { MissionCollaborationCTA } from "@/components/MissionCollaborationCTA";
 import { FeatureGrid } from "@/components/FeatureGrid";
 
 const InterpreBot = () => {
-  const [userQuestion, setUserQuestion] = useState("");
-  const [showChat, setShowChat] = useState(false);
-
-  const commonQuestions = [
-    "How does the assessment work?",
-    "What skills does InterpreBot measure?",
-    "How long does the assessment take?",
-    "How do I get personalized training?",
-    "What languages are supported?",
-  ];
-
   return (
     <Layout>
-      {/* Hero Section with Q&A Bot */}
+      {/* Hero Section */}
       <section className="py-20 bg-gradient-subtle">
         <div className="container mx-auto px-6 text-center">
           <PainPointBadge painPoint="Addressing Pain Point #4: Inaccessible Professional Development" />
           <h1 className="text-4xl md:text-6xl font-bold mb-6 gradient-text">
-            InterpreBot
+            InterpreTest
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-            Professional development shouldn't cost $100s-$1000s or require guesswork. As working interpreters, we know the struggle. InterpreBot provides instant AI-powered assessment of your interpretation skills with detailed, personalized feedback—because you deserve to know exactly where you stand and how to improve.
+            Professional development shouldn't cost $100s-$1000s or require guesswork. As working interpreters, we know the struggle. InterpreTest provides instant AI-powered assessment of your interpretation skills with detailed, personalized feedback—because you deserve to know exactly where you stand and how to improve.
           </p>
           <div className="glass p-6 rounded-lg max-w-2xl mx-auto mb-8">
             <p className="text-sm text-muted-foreground leading-relaxed">
@@ -41,56 +28,12 @@ const InterpreBot = () => {
             </p>
           </div>
 
-          {/* Q&A Interface */}
-          <Card className="glass border-border/50 max-w-2xl mx-auto mb-8">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 justify-center">
-                <MessageSquare className="w-5 h-5" />
-                Ask InterpreBot
-              </CardTitle>
-              <CardDescription>
-                Select a question or ask your own
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex gap-2">
-                <Input
-                  placeholder="Ask me anything about InterpreBot..."
-                  value={userQuestion}
-                  onChange={(e) => setUserQuestion(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') setShowChat(true);
-                  }}
-                />
-                <Button onClick={() => setShowChat(true)}>Ask</Button>
-              </div>
-              
-              <div className="space-y-2">
-                <p className="text-sm text-muted-foreground text-left">Quick questions:</p>
-                <div className="flex flex-wrap gap-2">
-                  {commonQuestions.map((q) => (
-                    <Button
-                      key={q}
-                      variant="outline"
-                      size="sm"
-                      onClick={() => {
-                        setUserQuestion(q);
-                        setShowChat(true);
-                      }}
-                      className="text-xs"
-                    >
-                      {q}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="glass-button">
-              <Play className="w-5 h-5 mr-2" />
-              Take the Assessment
+            <Button size="lg" className="glass-button" asChild>
+              <Link to="/interprestudy">
+                <Play className="w-5 h-5 mr-2" />
+                Start Assessment Now
+              </Link>
             </Button>
             <Link to="/interprecoach">
               <Button variant="outline" size="lg">
@@ -102,44 +45,111 @@ const InterpreBot = () => {
         </div>
       </section>
 
+      {/* Voice Simulator Preview Section */}
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              Premium Voice Simulator
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Immerse yourself in realistic medical scenarios. Our AI-powered simulator creates dynamic conversations, grades your interpretations in real-time, and provides instant professional feedback.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-12">
+            <Card className="glass border-border/50">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Mic className="w-5 h-5 text-primary" />
+                  Voice Recognition
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">
+                  Real-time speech recognition in English and Spanish. Practice interpreting with natural voice input.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="glass border-border/50">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Clock className="w-5 h-5 text-primary" />
+                  Instant Feedback
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">
+                  AI evaluates each interpretation immediately, scoring accuracy, terminology, and cultural competence.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="glass border-border/50">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Award className="w-5 h-5 text-primary" />
+                  Live Scoring
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">
+                  Track your performance with a dynamic score that updates as you progress through the scenario.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="text-center">
+            <Button size="lg" variant="outline" asChild>
+              <Link to="/interprestudy">
+                <Languages className="w-5 h-5 mr-2" />
+                Try the Simulator
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
       {/* Features Section */}
       <FeatureGrid
-        title="What We Measure"
-        subtitle="Comprehensive analysis of linguistics, terminology, and communication effectiveness."
+        title="What We Assess"
+        subtitle="Comprehensive evaluation covering every aspect of professional medical interpretation."
         columns="4"
         features={[
           {
             icon: Brain,
-            title: "Cognitive Analysis",
-            description: "Assess cognitive load, processing speed, and mental agility during interpretation.",
+            title: "Linguistic Accuracy",
+            description: "Deep analysis of grammar, syntax, tense, and linguistic precision in both languages.",
           },
           {
             icon: Target,
-            title: "Accuracy Metrics",
-            description: "Measure precision in terminology, context preservation, and cultural adaptation.",
+            title: "Medical Terminology",
+            description: "Evaluate correct usage of complex medical terms, including medications, procedures, and diagnoses.",
           },
           {
             icon: BarChart,
-            title: "Performance Tracking",
-            description: "Monitor progress with detailed analytics and improvement suggestions.",
+            title: "Cultural Competence",
+            description: "Assess cultural adaptation, context preservation, and appropriate communication style.",
           },
           {
             icon: Users,
-            title: "Peer Comparison",
-            description: "Compare your performance with industry standards and peer benchmarks.",
+            title: "Professional Standards",
+            description: "Measure adherence to NCIHC standards, ethics, and professional interpreter protocols.",
           },
         ]}
       />
 
-      {/* Assessment Dashboard Preview */}
-      <section className="py-20">
+      {/* Assessment Results Dashboard */}
+      <section className="py-20 bg-gradient-subtle">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Your Personalized Dashboard
+              Detailed Performance Analytics
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Visualize your progress and get actionable insights.
+              After each assessment, receive a comprehensive breakdown of your performance with actionable insights for improvement.
             </p>
           </div>
           <div className="max-w-4xl mx-auto">
@@ -147,7 +157,7 @@ const InterpreBot = () => {
               <CardContent className="p-4">
                 <img
                   src={interpreHubMockup}
-                  alt="InterpreBot Assessment Dashboard"
+                  alt="InterpreTest Assessment Results Dashboard"
                   className="w-full rounded-lg"
                 />
               </CardContent>

@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Badge } from "@/components/ui/badge";
+import { Button } from "@/lib/ui/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/lib/ui/components/ui/sheet";
+import { Badge } from "@/lib/ui/components/ui/badge";
 import { Menu, Chrome, Shield, Phone, Mail, ArrowRight, User, LogOut } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -13,7 +13,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
+} from "@/lib/ui/components/ui/navigation-menu";
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,12 +49,12 @@ export const Navigation = () => {
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3">
-            <div className="p-2 bg-gradient-primary rounded-lg">
-              <Shield className="w-6 h-6 text-white" />
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="p-2 bg-gradient-to-br from-nobel-gold via-nobel-gold/90 to-nobel-gold/80 rounded-lg shadow-md group-hover:shadow-lg group-hover:shadow-nobel-gold/30 transition-all duration-300">
+              <Shield className="w-6 h-6 text-nobel-dark" />
             </div>
             <div>
-              <h1 className="text-xl font-bold">InterpreLab</h1>
+              <h1 className="text-xl font-bold font-serif">InterpreLab</h1>
               <p className="text-xs text-muted-foreground">Advanced Interpretation</p>
             </div>
           </Link>
@@ -89,7 +89,7 @@ export const Navigation = () => {
                 <Link
                   key={item.label}
                   to={item.href}
-                  className="text-sm font-medium text-foreground hover:text-primary transition-colors"
+                  className="text-sm font-medium text-foreground/80 hover:text-nobel-gold transition-colors"
                 >
                   {item.label}
                 </Link>
@@ -118,12 +118,12 @@ export const Navigation = () => {
               </>
             ) : (
               <>
-                <Button variant="glass" size="sm" className="flex items-center gap-2" asChild>
+                <Button variant="glass" size="sm" className="flex items-center gap-2 hover:border-nobel-gold/50 hover:bg-nobel-gold/5 transition-all" asChild>
                   <Link to="/waitlist">
                     Join Waitlist
                   </Link>
                 </Button>
-                <Button variant="hero" size="sm" asChild>
+                <Button size="sm" className="bg-nobel-gold hover:bg-nobel-gold/90 text-nobel-dark font-semibold shadow-md hover:shadow-lg hover:shadow-nobel-gold/30 transition-all" asChild>
                   <Link to="/signin">
                     <User className="w-4 h-4 mr-2" />
                     {t('signIn')}

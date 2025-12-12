@@ -1,19 +1,18 @@
 {
-    "extends": "../../packages/config/tsconfig/base.json",
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {
             "@/*": [
                 "./src/*"
             ],
-            "@interprelab/ui": [
-                "../../packages/ui/src"
+            "@/lib/*": [
+                "./src/lib/*"
             ],
-            "@interprelab/utils": [
-                "../../packages/utils/src"
+            "@/utils/*": [
+                "./src/utils/*"
             ],
-            "@interprelab/types": [
-                "../../packages/types/src"
+            "@/types/*": [
+                "./src/types/*"
             ]
         },
         "jsx": "react-jsx",
@@ -27,20 +26,11 @@
         "moduleResolution": "bundler",
         "resolveJsonModule": true,
         "allowImportingTsExtensions": true,
-        "noEmit": true
+        "noEmit": true,
+        "strict": true,
+        "skipLibCheck": true
     },
     "include": [
         "src"
-    ],
-    "references": [
-        {
-            "path": "../../packages/ui"
-        },
-        {
-            "path": "../../packages/utils"
-        },
-        {
-            "path": "../../packages/types"
-        }
     ]
 }

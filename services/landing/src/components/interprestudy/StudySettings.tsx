@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
-import { Switch } from '@/components/ui/switch';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/lib/ui/components/ui/card';
+import { Label } from '@/lib/ui/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/lib/ui/components/ui/select';
+import { Input } from '@/lib/ui/components/ui/input';
+import { Switch } from '@/lib/ui/components/ui/switch';
+import { Button } from '@/lib/ui/components/ui/button';
 import { Settings as SettingsIcon, Save } from 'lucide-react';
 
 export const StudySettings = () => {

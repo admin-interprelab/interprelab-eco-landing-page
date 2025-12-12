@@ -21,15 +21,10 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@/components/ui': path.resolve(__dirname, '../../packages/ui/src/components/ui'),
-      '@/lib/utils': path.resolve(__dirname, '../../packages/utils/src'),
       '@': path.resolve(__dirname, './src'),
-      '@interprelab/ui': path.resolve(__dirname, '../../packages/ui/src'),
-      '@interprelab/utils': path.resolve(__dirname, '../../packages/utils/src'),
-      '@interprelab/types': path.resolve(__dirname, '../../packages/types/src'),
-      react: path.resolve(__dirname, './node_modules/react'),
-      'react-dom': path.resolve(__dirname, './node_modules/react-dom'),
-      'react/jsx-runtime': path.resolve(__dirname, './node_modules/react/jsx-runtime'),
+      '@/lib': path.resolve(__dirname, './src/lib'),
+      '@/utils': path.resolve(__dirname, './src/utils'),
+      '@/types': path.resolve(__dirname, './src/types'),
     },
   },
   build: {
@@ -52,10 +47,6 @@ export default defineConfig({
           // Lucide icons - separate chunk
           if (id.includes('node_modules/lucide-react')) {
             return 'icons';
-          }
-          // UI components from shared package
-          if (id.includes('packages/ui')) {
-            return 'ui-components';
           }
           // Landing-specific components
           if (id.includes('src/components/landing')) {
@@ -87,8 +78,6 @@ export default defineConfig({
   // Tree-shaking optimization
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],
-    // Exclude large dependencies from pre-bundling
-    exclude: ['@interprelab/ui'],
   },
   // Server configuration for development
   server: {

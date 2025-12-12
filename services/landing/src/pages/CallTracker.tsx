@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Layout } from '@/components/Layout';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
+import { Button } from '@/lib/ui/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/lib/ui/components/ui/card';
+import { Textarea } from '@/lib/ui/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/lib/ui/components/ui/select';
+import { Badge } from '@/lib/ui/components/ui/badge';
 import { useCallTracker } from '@/hooks/useCallTracker';
 import { Phone, PhoneOff, Clock, Video, Monitor, DollarSign, TrendingUp, Calendar, AlertCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';

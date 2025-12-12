@@ -1,4 +1,4 @@
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/lib/ui/components/ui/badge";
 import { TrendingUp, Users, Globe, Award } from "lucide-react";
 import CountUp from 'react-countup';
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";

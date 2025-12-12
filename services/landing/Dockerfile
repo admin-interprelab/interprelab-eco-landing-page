@@ -1,65 +1,53 @@
-# Multi-stage build for landing service
+# Multi-stage build for Landing Service - Optimized for Google Cloud Run
+# Stage 1: Build the React application
 FROM node:20-alpine AS builder
 
+# Set working directory
 WORKDIR /app
 
-# Copy workspace files
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY packages/ ./packages/
-COPY services/landing/ ./services/landing/
+# Copy package files
+COPY package*.json ./
 
-# Install pnpm and dependencies
-RUN npm install -g pnpm
-RUN pnpm install --frozen-lockfile
+# Install dependencies
+RUN npm ci
 
-# Build the landing service
-WORKDIR /app/services/landing
-RUN pnpm build
+# Copy source code
+COPY . .
 
-# Production stage
+# Build the application
+RUN npm run build
+
+# Stage 2: Production image with nginx
 FROM nginx:alpine
 
-# Copy built assets
-COPY --from=builder /app/services/landing/dist /usr/share/nginx/html
+# Install curl for health checks
+RUN apk add --no-cache curl
 
-# Copy nginx config for SPA routing
-COPY <<EOF /etc/nginx/conf.d/default.conf
-server {
-    listen 80;
-    server_name _;
-    root /usr/share/nginx/html;
-    index index.html;
+# Copy custom nginx configuration
+COPY nginx.conf /etc/nginx/nginx.conf
 
-    # Gzip compression
-    gzip on;
-    gzip_vary on;
-    gzip_min_length 1024;
-    gzip_types text/plain text/css text/xml text/javascript application/javascript application/xml+rss application/json;
+# Copy built assets from builder stage
+COPY --from=builder /app/dist /usr/share/nginx/html
 
-    # Cache static assets
-    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
-        expires 1y;
-        add_header Cache-Control "public, immutable";
-    }
+# Create a non-root user for nginx
+RUN addgroup -g 1001 -S nginx-group && \
+    adduser -S nginx-user -u 1001 -G nginx-group && \
+    chown -R nginx-user:nginx-group /usr/share/nginx/html && \
+    chown -R nginx-user:nginx-group /var/cache/nginx && \
+    chown -R nginx-user:nginx-group /var/log/nginx && \
+    chown -R nginx-user:nginx-group /etc/nginx/conf.d && \
+    touch /var/run/nginx.pid && \
+    chown -R nginx-user:nginx-group /var/run/nginx.pid
 
-    # SPA routing - serve index.html for all routes
-    location / {
-        try_files \$uri \$uri/ /index.html;
-    }
+# Switch to non-root user
+USER nginx-user
 
-    # Health check endpoint
-    location /health {
-        access_log off;
-        return 200 "healthy\n";
-        add_header Content-Type text/plain;
-    }
-}
-EOF
-
-EXPOSE 80
+# Expose port 8080 (Cloud Run requirement)
+EXPOSE 8080
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost/health || exit 1
+    CMD curl -f http://localhost:8080/health || exit 1
 
+# Start nginx
 CMD ["nginx", "-g", "daemon off;"]

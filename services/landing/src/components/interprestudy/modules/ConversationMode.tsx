@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Mic, MicOff, Play, Volume2, Loader2, ThumbsUp, ThumbsDown, User, Smile, Languages, ClipboardList, Clock, FileText, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/lib/ui/components/ui/button';
+import { Card } from '@/lib/ui/components/ui/card';
+import { Input } from '@/lib/ui/components/ui/input';
 
 // --- GEMINI API UTILITIES ---
 const apiKey = ""; // API Key injected at runtime

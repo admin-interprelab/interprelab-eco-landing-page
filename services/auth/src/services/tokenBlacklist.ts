@@ -2,14 +2,12 @@ import { createClient } from '@supabase/supabase-js';
 import { config } from '../config/env.js';
 import crypto from 'crypto';
 
-// Create Firestore-compatible client (using Supabase for now as the spec uses Firestore)
-// Note: This implementation uses a simple in-memory cache for demo
-// In production, this should use Firestore or a Redis cache
-
-const blacklistCache = new Map<string, { userId: string; expiresAt: Date }>();
+// Create Supabase client for token blacklist management
+const supabase = createClient(config.SUPABASE_URL, config.SUPABASE_SERVICE_KEY);
 
 /**
  * Generate a hash of the token for storage
+ * Using SHA-256 to avoid storing actual tokens in the database
  */
 function hashToken(token: string): string {
   return crypto.createHash('sha256').update(token).digest('hex');
@@ -28,19 +26,23 @@ export async function addToBlacklist(
 ): Promise<void> {
   const tokenHash = hashToken(token);
   
-  // Store in cache (in production, this would be Firestore)
-  blacklistCache.set(tokenHash, {
-    userId,
-    expiresAt,
-  });
+  try {
+    const { error } = await supabase
+      .from('token_blacklist')
+      .insert({
+        token_hash: tokenHash,
+        user_id: userId,
+        expires_at: expiresAt.toISOString(),
+      });
 
-  // TODO: Implement Firestore storage
-  // await firestore.collection('auth').doc('blacklist').collection('tokens').doc(tokenHash).set({
-  //   userId,
-  //   tokenHash,
-  //   expiresAt: Timestamp.fromDate(expiresAt),
-  //   blacklistedAt: Timestamp.now(),
-  // });
+    if (error) {
+      console.error('Failed to blacklist token:', error);
+      throw new Error('Failed to blacklist token');
+    }
+  } catch (error) {
+    console.error('Error adding token to blacklist:', error);
+    throw error;
+  }
 }
 
 /**
@@ -51,28 +53,38 @@ export async function addToBlacklist(
 export async function isBlacklisted(token: string): Promise<boolean> {
   const tokenHash = hashToken(token);
   
-  // Check cache
-  const entry = blacklistCache.get(tokenHash);
-  if (entry) {
-    // Remove expired entries
-    if (entry.expiresAt < new Date()) {
-      blacklistCache.delete(tokenHash);
+  try {
+    const { data, error } = await supabase
+      .from('token_blacklist')
+      .select('expires_at')
+      .eq('token_hash', tokenHash)
+      .maybeSingle();
+
+    if (error) {
+      console.error('Error checking token blacklist:', error);
       return false;
     }
+
+    if (!data) {
+      return false;
+    }
+
+    // Check if the token has expired
+    const expiresAt = new Date(data.expires_at);
+    if (expiresAt < new Date()) {
+      // Token has expired, clean it up
+      await supabase
+        .from('token_blacklist')
+        .delete()
+        .eq('token_hash', tokenHash);
+      return false;
+    }
+
     return true;
+  } catch (error) {
+    console.error('Error checking token blacklist:', error);
+    return false;
   }
-
-  // TODO: Implement Firestore lookup
-  // const doc = await firestore
-  //   .collection('auth')
-  //   .doc('blacklist')
-  //   .collection('tokens')
-  //   .doc(tokenHash)
-  //   .get();
-  
-  // return doc.exists && doc.data()?.expiresAt.toDate() > new Date();
-
-  return false;
 }
 
 /**
@@ -82,25 +94,24 @@ export async function isBlacklisted(token: string): Promise<boolean> {
 export async function cleanupExpiredTokens(): Promise<void> {
   const now = new Date();
   
-  // Clean up in-memory cache
-  for (const [hash, entry] of blacklistCache.entries()) {
-    if (entry.expiresAt < now) {
-      blacklistCache.delete(hash);
-    }
-  }
+  try {
+    const { error } = await supabase
+      .from('token_blacklist')
+      .delete()
+      .lt('expires_at', now.toISOString());
 
-  // TODO: Implement Firestore cleanup
-  // const expiredTokens = await firestore
-  //   .collection('auth')
-  //   .doc('blacklist')
-  //   .collection('tokens')
-  //   .where('expiresAt', '<', Timestamp.fromDate(now))
-  //   .get();
-  
-  // const batch = firestore.batch();
-  // expiredTokens.docs.forEach(doc => batch.delete(doc.ref));
-  // await batch.commit();
+    if (error) {
+      console.error('Failed to cleanup expired tokens:', error);
+    } else {
+      console.log('Successfully cleaned up expired tokens');
+    }
+  } catch (error) {
+    console.error('Error during token cleanup:', error);
+  }
 }
 
 // Schedule cleanup every hour
 setInterval(cleanupExpiredTokens, 60 * 60 * 1000);
+
+// Run initial cleanup on startup
+cleanupExpiredTokens().catch(console.error);

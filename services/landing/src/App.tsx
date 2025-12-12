@@ -23,7 +23,7 @@ const InterpreLink = lazy(() => import('./pages/InterpreLink'));
 const InterpreStudy = lazy(() => import('./pages/InterpreStudy'));
 const InterpreTrack = lazy(() => import('./pages/InterpreTrack'));
 const InterpreWellness = lazy(() => import('./pages/InterpreWellness'));
-// const Dilemma = lazy(() => import('./pages/Dilemma')); // TODO: Create Dilemma page
+const Dilemma = lazy(() => import('./pages/Dilemma'));
 
 // Lazy load: Feature pages
 const Dashboard = lazy(() => import('./pages/Dashboard'));
@@ -66,8 +66,8 @@ function App() {
                 <Route path="/interprelink" element={<InterpreLink />} />
                 <Route path="/interprestudy" element={<InterpreStudy />} />
                 <Route path="/interpretrack" element={<InterpreTrack />} />
-                <Route path="/interprewellness" element={<InterpreWellness />} />
-                {/* <Route path="/dilemma" element={<Dilemma />} /> */} {/* TODO: Create Dilemma page */}
+                <Route path="/interpre-wellness" element={<InterpreWellness />} />
+                <Route path="/dilemma" element={<Dilemma />} />
                 
                 {/* Feature Pages */}
                 <Route path="/dashboard" element={<Dashboard />} />

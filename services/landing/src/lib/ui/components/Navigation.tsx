@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Badge } from "@/components/ui/badge";
+import { Button } from "@/lib/ui/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/lib/ui/components/ui/sheet";
+import { Badge } from "@/lib/ui/components/ui/badge";
 import { Menu, Chrome, Shield, Phone, Mail, ArrowRight, User, LogOut } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -14,7 +14,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
+} from "@/lib/ui/components/ui/navigation-menu";
 import { BadgeDisplay } from "@/components/gamification/BadgeDisplay";
 
 export const Navigation = () => {

@@ -1,7 +1,7 @@
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/lib/ui/components/ui/card";
+import { Button } from "@/lib/ui/components/ui/button";
 
 const Careers = () => {
   const jobOpenings = [
