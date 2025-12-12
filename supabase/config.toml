@@ -1,1 +1,16 @@
 project_id = "ggyzlvbtkibqnkfhgnbe"
+
+[functions.generate-interpreter-feedback]
+verify_jwt = true
+
+[functions.wellness-chat]
+verify_jwt = false
+
+[functions.debriefing-questionnaire]
+verify_jwt = false
+
+[functions.study-chat]
+verify_jwt = false
+
+[functions.generate-flashcards]
+verify_jwt = false

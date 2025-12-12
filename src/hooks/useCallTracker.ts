@@ -9,6 +9,7 @@ interface CallSession {
   durationSeconds?: number;
   earnings?: number;
   currency?: string;
+  callType?: 'VRI' | 'OPI';
 }
 
 interface UserSettings {
@@ -16,6 +17,7 @@ interface UserSettings {
   pay_rate_type: 'per_hour' | 'per_minute';
   preferred_currency: string;
   preferred_language: string;
+  time_rounding_method: 'round_down' | 'roll_over' | 'actual';
 }
 
 export const useCallTracker = () => {
@@ -61,6 +63,7 @@ export const useCallTracker = () => {
         pay_rate_type: (data.pay_rate_type as 'per_hour' | 'per_minute') || 'per_hour',
         preferred_currency: data.preferred_currency || 'USD',
         preferred_language: data.preferred_language || 'en',
+        time_rounding_method: (data.time_rounding_method as 'round_down' | 'roll_over' | 'actual') || 'actual',
       });
     } else if (!error) {
       // Create default settings
@@ -69,6 +72,7 @@ export const useCallTracker = () => {
         pay_rate_type: 'per_hour',
         preferred_currency: 'USD',
         preferred_language: 'en',
+        time_rounding_method: 'actual',
       });
 
       if (newSettings) {
@@ -77,6 +81,7 @@ export const useCallTracker = () => {
           pay_rate_type: (newSettings.pay_rate_type as 'per_hour' | 'per_minute') || 'per_hour',
           preferred_currency: newSettings.preferred_currency || 'USD',
           preferred_language: newSettings.preferred_language || 'en',
+          time_rounding_method: (newSettings.time_rounding_method as 'round_down' | 'roll_over' | 'actual') || 'actual',
         });
       }
     }
@@ -89,6 +94,19 @@ export const useCallTracker = () => {
       return (durationSeconds / 3600) * userSettings.pay_rate;
     } else {
       return (durationSeconds / 60) * userSettings.pay_rate;
+    }
+  };
+
+  const calculateRoundedDuration = (durationSeconds: number): number => {
+    if (!userSettings) return durationSeconds;
+
+    switch (userSettings.time_rounding_method) {
+      case 'round_down':
+        return Math.floor(durationSeconds / 60) * 60;
+      case 'roll_over':
+        return Math.ceil(durationSeconds / 60) * 60;
+      default:
+        return durationSeconds;
     }
   };
 
@@ -124,12 +142,14 @@ export const useCallTracker = () => {
     }
   };
 
-  const endCall = async (notes?: string) => {
+  const endCall = async (notes?: string, callType?: 'VRI' | 'OPI') => {
     if (!currentSession || !user || !currentSession.id) return { error: 'No active call session' };
 
     try {
       const endTime = new Date().toISOString();
       const earnings = calculateEarnings(elapsedSeconds);
+      const roundedDuration = calculateRoundedDuration(elapsedSeconds);
+      const roundedEarnings = calculateEarnings(roundedDuration);
 
       const updates = {
         end_time: endTime,
@@ -137,6 +157,9 @@ export const useCallTracker = () => {
         earnings,
         currency: userSettings?.preferred_currency || 'USD',
         notes: notes || null,
+        call_type: callType || 'VRI',
+        rounded_duration_seconds: roundedDuration,
+        rounded_earnings: roundedEarnings,
       };
 
       const { data, error } = await CallLogService.updateCallLog(currentSession.id, updates);

@@ -115,13 +115,20 @@ If you want to use a custom domain (e.g., `interprelab.com`) with your Cloud Run
 1.  **Add a custom domain mapping:**
 
     ```bash
-    gcloud run domains add interprelab.com \
+    gcloud run services update-traffic interprelab-frontend \
+      --to-latest \
+      --region us-central1 \
+      --project interprelab-eco-landing-page
+    
+    gcloud beta run domain-mappings create \
       --service interprelab-frontend \
-      --platform managed \
+      --domain interprelab.com \
       --region us-central1 \
       --project interprelab-eco-landing-page
     ```
 
-2.  **Update DNS records:** `gcloud` will provide you with the necessary DNS records (A and TXT records) that you need to add to your domain registrar (e.g., GoDaddy, Namecheap). Follow their instructions to update your DNS settings.
+2.  **Update DNS records:** `gcloud` will provide you with the necessary DNS records (CNAME or A and AAAA records) that you need to add to your domain registrar (e.g., GoDaddy, Namecheap, Cloudflare). Follow their instructions to update your DNS settings.
 
-    It might take some time for DNS changes to propagate.
+    It might take some time for DNS changes to propagate (typically 15 minutes to 48 hours).
+
+**Note:** The `gcloud run domains` command has been deprecated. Use `gcloud beta run domain-mappings` instead. Alternatively, you can configure custom domains directly through the Google Cloud Console under Cloud Run > Manage Custom Domains.

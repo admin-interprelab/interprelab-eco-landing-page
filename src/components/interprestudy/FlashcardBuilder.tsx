@@ -18,6 +18,10 @@ export const FlashcardBuilder = () => {
     { value: 'custom', label: 'Custom Flashcards' },
   ];
 
+  const generateDeck = async () => {
+    setShowDeck(true);
+  };
+
   return (
     <div className="space-y-8">
       <Card className="glass border-border/50">
@@ -46,11 +50,11 @@ export const FlashcardBuilder = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Button
-              onClick={() => setShowDeck(true)}
+              onClick={generateDeck}
               className="w-full"
             >
               <Plus className="w-4 h-4 mr-2" />
-              Create New Deck
+              Generate AI Deck
             </Button>
             <Button variant="outline" className="w-full">
               <Layers className="w-4 h-4 mr-2" />
