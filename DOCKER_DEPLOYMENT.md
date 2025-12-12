@@ -46,33 +46,7 @@ NODE_ENV=production
 
 ## 🚀 Deployment Methods
 
-### Method 1: Quick Deployment Script
-
-#### Linux/macOS
-```bash
-# Make script executable
-chmod +x deploy.sh
-
-# Deploy with latest tag
-./deploy.sh
-
-# Deploy with specific version
-./deploy.sh v1.0.0
-
-# Deploy and push to registry
-./deploy.sh latest --push
-```
-
-#### Windows
-```cmd
-# Deploy with latest tag
-deploy.bat
-
-# Deploy with specific version
-deploy.bat v1.0.0
-```
-
-### Method 2: Docker Compose
+### Method 1: Docker Compose
 
 #### Development
 ```bash
@@ -99,7 +73,7 @@ docker-compose -f docker-compose.prod.yml pull
 docker-compose -f docker-compose.prod.yml up -d
 ```
 
-### Method 3: Manual Docker Commands
+### Method 2: Manual Docker Commands
 
 #### Build Image
 ```bash
