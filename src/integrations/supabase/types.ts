@@ -14,75 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
-      call_records: {
-        Row: {
-          id: string
-          user_id: string
-          start_time: string
-          end_time: string
-          duration: number
-          earnings: number
-          platform: string | null
-          call_type: string
-          created_at: string | null
-        }
-        Insert: {
-          id?: string
-          user_id: string
-          start_time: string
-          end_time: string
-          duration: number
-          earnings: number
-          platform?: string | null
-          call_type: string
-          created_at?: string | null
-        }
-        Update: {
-          id?: string
-          user_id?: string
-          start_time?: string
-          end_time?: string
-          duration?: number
-          earnings?: number
-          platform?: string | null
-          call_type?: string
-          created_at?: string | null
-        }
-        Relationships: []
-      }
       call_logs: {
         Row: {
+          call_type: string | null
           created_at: string
           currency: string
           duration_seconds: number | null
           earnings: number | null
           end_time: string | null
           id: string
+          import_source: string | null
+          is_imported: boolean
           notes: string | null
+          platform_name: string | null
+          rounded_duration_seconds: number | null
+          rounded_earnings: number | null
           start_time: string
           updated_at: string
           user_id: string
         }
         Insert: {
+          call_type?: string | null
           created_at?: string
           currency?: string
           duration_seconds?: number | null
           earnings?: number | null
           end_time?: string | null
           id?: string
+          import_source?: string | null
+          is_imported?: boolean
           notes?: string | null
+          platform_name?: string | null
+          rounded_duration_seconds?: number | null
+          rounded_earnings?: number | null
           start_time: string
           updated_at?: string
           user_id: string
         }
         Update: {
+          call_type?: string | null
           created_at?: string
           currency?: string
           duration_seconds?: number | null
           earnings?: number | null
           end_time?: string | null
           id?: string
+          import_source?: string | null
+          is_imported?: boolean
           notes?: string | null
+          platform_name?: string | null
+          rounded_duration_seconds?: number | null
+          rounded_earnings?: number | null
           start_time?: string
           updated_at?: string
           user_id?: string
@@ -125,6 +107,39 @@ export type Database = {
         }
         Relationships: []
       }
+      platform_rates: {
+        Row: {
+          created_at: string
+          currency: string
+          id: string
+          is_active: boolean
+          platform_name: string
+          rate_per_minute: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          id?: string
+          is_active?: boolean
+          platform_name: string
+          rate_per_minute?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          id?: string
+          is_active?: boolean
+          platform_name?: string
+          rate_per_minute?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -149,6 +164,84 @@ export type Database = {
         }
         Relationships: []
       }
+      user_goals: {
+        Row: {
+          created_at: string
+          description: string | null
+          goal_type: string
+          id: string
+          is_active: boolean
+          platform_name: string | null
+          target_amount: number
+          target_currency: string | null
+          target_period: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          goal_type: string
+          id?: string
+          is_active?: boolean
+          platform_name?: string | null
+          target_amount: number
+          target_currency?: string | null
+          target_period: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          goal_type?: string
+          id?: string
+          is_active?: boolean
+          platform_name?: string | null
+          target_amount?: number
+          target_currency?: string | null
+          target_period?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_insights: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          insight_type: string
+          is_read: boolean
+          metadata: Json | null
+          priority: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: string
+          insight_type: string
+          is_read?: boolean
+          metadata?: Json | null
+          priority?: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          insight_type?: string
+          is_read?: boolean
+          metadata?: Json | null
+          priority?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -170,27 +263,6 @@ export type Database = {
         }
         Relationships: []
       }
-      user_preferences: {
-        Row: {
-          user_id: string
-          pay_per_minute_usd: number | null
-          target_currency: string | null
-          rounding: string | null
-        }
-        Insert: {
-          user_id: string
-          pay_per_minute_usd?: number | null
-          target_currency?: string | null
-          rounding?: string | null
-        }
-        Update: {
-          user_id?: string
-          pay_per_minute_usd?: number | null
-          target_currency?: string | null
-          rounding?: string | null
-        }
-        Relationships: []
-      }
       user_settings: {
         Row: {
           created_at: string
@@ -199,6 +271,7 @@ export type Database = {
           pay_rate_type: string
           preferred_currency: string
           preferred_language: string
+          time_rounding_method: string | null
           updated_at: string
           user_id: string
         }
@@ -209,6 +282,7 @@ export type Database = {
           pay_rate_type?: string
           preferred_currency?: string
           preferred_language?: string
+          time_rounding_method?: string | null
           updated_at?: string
           user_id: string
         }
@@ -219,6 +293,7 @@ export type Database = {
           pay_rate_type?: string
           preferred_currency?: string
           preferred_language?: string
+          time_rounding_method?: string | null
           updated_at?: string
           user_id?: string
         }
@@ -253,6 +328,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      calculate_rounded_duration: {
+        Args: { actual_seconds: number; rounding_method: string }
+        Returns: number
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

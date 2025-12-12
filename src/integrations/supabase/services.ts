@@ -55,59 +55,8 @@ export const UserSettingsService = {
   }
 };
 
-// Call Records Service (for the newer table structure)
-export const CallRecordsService = {
-  async createCallRecord(record: TablesInsert<'call_records'>) {
-    return await supabase
-      .from('call_records')
-      .insert(record)
-      .select()
-      .single();
-  },
-
-  async getCallRecords(userId: string) {
-    return await supabase
-      .from('call_records')
-      .select('*')
-      .eq('user_id', userId)
-      .order('created_at', { ascending: false });
-  },
-
-  async updateCallRecord(id: string, updates: TablesUpdate<'call_records'>) {
-    return await supabase
-      .from('call_records')
-      .update(updates)
-      .eq('id', id)
-      .select()
-      .single();
-  },
-
-  async deleteCallRecord(id: string) {
-    return await supabase
-      .from('call_records')
-      .delete()
-      .eq('id', id);
-  }
-};
-
-// User Preferences Service
-export const UserPreferencesService = {
-  async getUserPreferences(userId: string) {
-    return await supabase
-      .from('user_preferences')
-      .select('*')
-      .eq('user_id', userId)
-      .single();
-  },
-
-  async updateUserPreferences(userId: string, preferences: Partial<TablesUpdate<'user_preferences'>>) {
-    return await supabase
-      .from('user_preferences')
-      .upsert({ user_id: userId, ...preferences })
-      .select()
-      .single();
-  }
-};
+// Note: CallRecordsService and UserPreferencesService removed as these tables don't exist
+// Use CallLogService and UserSettingsService instead
 
 // Contacts Service
 export const ContactsService = {

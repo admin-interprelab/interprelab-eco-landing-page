@@ -1,102 +1,213 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from 'react';
+import { Play, Pause } from 'lucide-react';
 
-interface FullScreenVideoHeroProps {
-  videoSrc: string;
+interface VideoData {
+  id: string;
   title: string;
   description: string;
-  index: number;
+  videoUrl: string;
+  posterUrl?: string;
 }
 
-export const FullScreenVideoHero = ({
-  videoSrc,
-  title,
-  description,
-  index,
-}: FullScreenVideoHeroProps) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
+const VideoSection = () => {
+  const [currentVideo, setCurrentVideo] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const sectionRef = useRef<HTMLDivElement>(null);
-  const [textVisible, setTextVisible] = useState(false);
+
+  const videos: VideoData[] = [
+    {
+      id: 'intro',
+      title: 'Welcome to InterpreLab',
+      description: 'Discover how our comprehensive platform transforms interpreter training and practice.',
+      videoUrl: '/videos/interprelab-intro.mp4',
+      posterUrl: '/images/video-poster-1.jpg'
+    },
+    {
+      id: 'training',
+      title: 'Advanced Training Modules',
+      description: 'Experience our cutting-edge training system with real-world scenarios.',
+      videoUrl: '/videos/training-demo.mp4',
+      posterUrl: '/images/video-poster-2.jpg'
+    },
+    {
+      id: 'tracking',
+      title: 'Professional Call Tracking',
+      description: 'See how InterpreTrack helps you manage your interpretation business.',
+      videoUrl: '/videos/tracking-demo.mp4',
+      posterUrl: '/images/video-poster-3.jpg'
+    }
+  ];
 
   useEffect(() => {
-    const video = videoRef.current;
-    const section = sectionRef.current;
-    if (!video || !section) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry, index) => {
+          if (entry.isIntersecting) {
+            setCurrentVideo(index);
+            // Auto-play video when it comes into view
+            const video = videoRefs.current[index];
+            if (video) {
+              video.play().catch(() => {
+                // Auto-play failed, user interaction required
+                setIsPlaying(false);
+              });
+              setIsPlaying(true);
+            }
+          } else {
+            // Pause video when it goes out of view
+            const video = videoRefs.current[index];
+            if (video) {
+              video.pause();
+              if (index === currentVideo) {
+                setIsPlaying(false);
+              }
+            }
+          }
+        });
+      },
+      {
+        threshold: 0.5,
+        rootMargin: '-10% 0px -10% 0px'
+      }
+    );
 
-    const observerOptions = {
-      root: null,
-      rootMargin: "0px",
-      threshold: 0.5,
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          video.play().catch((error) => {
-            console.log("Video play failed:", error);
-            video.muted = true;
-            video.play().catch((e) => console.log("Retry failed:", e));
-          });
-          // Fade in text after 800ms
-          setTimeout(() => setTextVisible(true), 800);
-        } else {
-          video.pause();
-          setTextVisible(false);
-        }
-      });
-    }, observerOptions);
-
-    observer.observe(section);
+    videoRefs.current.forEach((video) => {
+      if (video) {
+        observer.observe(video);
+      }
+    });
 
     return () => {
-      observer.disconnect();
+      videoRefs.current.forEach((video) => {
+        if (video) {
+          observer.unobserve(video);
+        }
+      });
     };
-  }, []);
+  }, [currentVideo]);
+
+  const togglePlayPause = (index: number) => {
+    const video = videoRefs.current[index];
+    if (video) {
+      if (video.paused) {
+        video.play();
+        setIsPlaying(true);
+      } else {
+        video.pause();
+        setIsPlaying(false);
+      }
+    }
+  };
 
   return (
-    <section
+    <div
       ref={sectionRef}
-      className="h-screen w-full relative snap-start snap-always overflow-hidden"
+      className="relative w-full"
+      style={{ scrollSnapType: 'y mandatory' }}
     >
-      {/* Full-screen video background */}
-      <video
-        ref={videoRef}
-        className="absolute inset-0 w-full h-full object-cover"
-        playsInline
-        muted
-        loop
-        preload="auto"
-        poster={index === 0 ? "/videos/lep-statistics-poster.jpg" : index === 1 ? "/videos/interpreter-stress-poster.jpg" : "/videos/terminology-gap-poster.jpg"}
-      >
-        <source src={videoSrc} type="video/mp4" />
-      </video>
-
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/60 z-10" />
-
-      {/* Content */}
-      <div className="relative z-20 h-full flex items-center justify-center px-6">
+      {videos.map((video, index) => (
         <div
-          className={`max-w-4xl text-center space-y-6 transition-all duration-1000 ${
-            textVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
+          key={video.id}
+          className="relative w-full h-screen flex items-center justify-center"
+          style={{ scrollSnapAlign: 'start' }}
         >
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white leading-tight">
-            {title}
-          </h1>
-          <p className="text-xl md:text-2xl text-white/90 leading-relaxed font-sans max-w-3xl mx-auto">
-            Despite legal requirements under Title VI and Section 1557 of the ACA, Limited English Proficiency (LEP) patients face increased health risks due to interpretation quality issues.
-          </p>
-        </div>
-      </div>
+          {/* Video Background */}
+          <video
+            ref={(el) => (videoRefs.current[index] = el)}
+            className="absolute inset-0 w-full h-full object-cover"
+            poster={video.posterUrl}
+            muted
+            loop
+            playsInline
+            onPlay={() => setIsPlaying(true)}
+            onPause={() => setIsPlaying(false)}
+          >
+            <source src={video.videoUrl} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
 
-      {/* Scroll indicator (only on first section) */}
-      {index === 0 && (
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
-          <div className="w-6 h-10 border-2 border-white/50 rounded-full flex items-start justify-center p-2">
-            <div className="w-1 h-3 bg-white/50 rounded-full" />
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-black bg-opacity-40" />
+
+          {/* Content */}
+          <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
+            <h2 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
+              {video.title}
+            </h2>
+            <p className="text-xl md:text-2xl mb-8 opacity-90 animate-fade-in-delay">
+              {video.description}
+            </p>
+
+            {/* Play/Pause Button */}
+            <button
+              onClick={() => togglePlayPause(index)}
+              className="group relative inline-flex items-center justify-center w-20 h-20 bg-white bg-opacity-20 backdrop-blur-sm rounded-full border-2 border-white border-opacity-30 hover:bg-opacity-30 transition-all duration-300 animate-fade-in-delay-2"
+            >
+              {currentVideo === index && isPlaying ? (
+                <Pause className="w-8 h-8 text-white group-hover:scale-110 transition-transform" />
+              ) : (
+                <Play className="w-8 h-8 text-white ml-1 group-hover:scale-110 transition-transform" />
+              )}
+            </button>
           </div>
+
+          {/* Video Progress Indicator */}
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2">
+            {videos.map((_, i) => (
+              <div
+                key={i}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  i === currentVideo
+                    ? 'bg-white scale-125'
+                    : 'bg-white bg-opacity-50 hover:bg-opacity-75'
+                }`}
+              />
+            ))}
+          </div>
+
+          {/* Scroll Indicator (only on first video) */}
+          {index === 0 && (
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 animate-bounce">
+              <div className="w-6 h-10 border-2 border-white border-opacity-50 rounded-full flex justify-center">
+                <div className="w-1 h-3 bg-white bg-opacity-50 rounded-full mt-2 animate-pulse" />
+              </div>
+            </div>
+          )}
         </div>
-      )}
-    </section>
+      ))}
+
+      <style jsx>{`
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .animate-fade-in {
+          animation: fade-in 1s ease-out;
+        }
+
+        .animate-fade-in-delay {
+          animation: fade-in 1s ease-out 0.3s both;
+        }
+
+        .animate-fade-in-delay-2 {
+          animation: fade-in 1s ease-out 0.6s both;
+        }
+
+        /* Smooth scrolling for snap */
+        html {
+          scroll-behavior: smooth;
+        }
+      `}</style>
+    </div>
   );
 };
+
+export default VideoSection;
