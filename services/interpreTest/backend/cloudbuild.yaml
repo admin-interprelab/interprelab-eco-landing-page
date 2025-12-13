@@ -4,47 +4,51 @@ steps:
     args:
       - "build"
       - "-t"
-      - "gcr.io/$PROJECT_ID/interpretest:latest"
+      - "gcr.io/$PROJECT_ID/interpretest-backend:latest"
       - "."
 
   # Push the container image
   - name: "gcr.io/cloud-builders/docker"
     args:
       - "push"
-      - "gcr.io/$PROJECT_ID/interpretest:latest"
+      - "gcr.io/$PROJECT_ID/interpretest-backend:latest"
 
-  # Deploy container image to Cloud Run
+  # Deploy to Cloud Run
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: gcloud
     args:
       - "run"
       - "deploy"
-      - "interpretest"
+      - "interpretest-backend"
       - "--image"
-      - "gcr.io/$PROJECT_ID/interpretest:latest"
+      - "gcr.io/$PROJECT_ID/interpretest-backend:latest"
       - "--region"
       - "us-central1"
       - "--platform"
       - "managed"
       - "--allow-unauthenticated"
       - "--memory"
-      - "512Mi"
+      - "2Gi"
       - "--cpu"
-      - "1"
+      - "2"
+      - "--timeout"
+      - "300"
       - "--min-instances"
       - "0"
       - "--max-instances"
       - "10"
       - "--port"
-      - "80"
+      - "8080"
       - "--set-env-vars"
       - "NODE_ENV=production"
+      - "--set-secrets"
+      - "OPENAI_API_KEY=openai-key:latest,ANTHROPIC_API_KEY=anthropic-key:latest,GOOGLE_AI_API_KEY=google-ai-key:latest,SUPABASE_URL=supabase-url:latest,SUPABASE_KEY=supabase-key:latest"
 
 images:
-  - "gcr.io/$PROJECT_ID/interpretest:latest"
+  - "gcr.io/$PROJECT_ID/interpretest-backend:latest"
 
 options:
   machineType: "N1_HIGHCPU_8"
   logging: CLOUD_LOGGING_ONLY
 
-timeout: "1200s"
+timeout: "1800s" # 30 minutes for model downloads
