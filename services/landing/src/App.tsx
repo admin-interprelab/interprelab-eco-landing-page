@@ -16,16 +16,9 @@ const Waitlist = lazy(() => import('./pages/Waitlist'));
 const SignIn = lazy(() => import('./pages/SignIn'));
 const SignUp = lazy(() => import('./pages/SignUp'));
 
-// Lazy load: Product pages
-const InterpreBot = lazy(() => import('./pages/InterpreBot'));
-const InterpreCoach = lazy(() => import('./pages/InterpreCoach'));
-const InterpreLink = lazy(() => import('./pages/InterpreLink'));
-const InterpreStudy = lazy(() => import('./pages/InterpreStudy'));
-const InterpreTrack = lazy(() => import('./pages/InterpreTrack'));
-const InterpreWellness = lazy(() => import('./pages/InterpreWellness'));
+// Lazy load: Feature pages (kept in landing)
 const Dilemma = lazy(() => import('./pages/Dilemma'));
-
-// Lazy load: Feature pages
+const InterpreWellness = lazy(() => import('./pages/InterpreWellness'));
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const CallTracker = lazy(() => import('./pages/CallTracker'));
 const Settings = lazy(() => import('./pages/Settings'));
@@ -35,6 +28,48 @@ const Article = lazy(() => import('./pages/Article'));
 const IndustryInsights = lazy(() => import('./pages/IndustryInsights'));
 const ASLTeacher = lazy(() => import('./pages/ASLTeacher'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+
+// Microservice redirect component
+const MicroserviceRedirect = ({ servicePath }: { servicePath: string }) => {
+  // In development, redirect to local service
+  // In production, this would redirect to the deployed service URL
+  const isDev = import.meta.env.DEV;
+  
+  if (isDev) {
+    // Local development - show instructions
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted p-8">
+        <div className="max-w-2xl text-center space-y-6">
+          <h1 className="text-4xl font-bold text-foreground">Service Unavailable in Development</h1>
+          <p className="text-xl text-muted-foreground">
+            This feature has been extracted to a microservice.
+          </p>
+          <div className="bg-card p-6 rounded-lg border border-border">
+            <p className="text-sm text-muted-foreground mb-4">To access this service locally:</p>
+            <code className="block bg-muted p-4 rounded text-left text-sm">
+              cd services/{servicePath}<br/>
+              npm run dev
+            </code>
+          </div>
+          <a 
+            href="/"
+            className="inline-block px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity"
+          >
+            Return to Home
+          </a>
+        </div>
+      </div>
+    );
+  }
+  
+  // Production - redirect to deployed service
+  window.location.href = `/${servicePath}`;
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-nobel-gold"></div>
+    </div>
+  );
+};
 
 // Loading fallback component
 const PageLoader = () => (
@@ -60,16 +95,17 @@ function App() {
                 <Route path="/signin" element={<SignIn />} />
                 <Route path="/signup" element={<SignUp />} />
                 
-                {/* Product Pages */}
-                <Route path="/interprebot" element={<InterpreBot />} />
-                <Route path="/interprecoach" element={<InterpreCoach />} />
-                <Route path="/interprelink" element={<InterpreLink />} />
-                <Route path="/interprestudy" element={<InterpreStudy />} />
-                <Route path="/interpretrack" element={<InterpreTrack />} />
+                {/* Microservices - Redirect to independent services */}
+                <Route path="/interprebot/*" element={<MicroserviceRedirect servicePath="interprebot" />} />
+                <Route path="/interprecoach/*" element={<MicroserviceRedirect servicePath="interprecoach" />} />
+                <Route path="/interprehub/*" element={<MicroserviceRedirect servicePath="interprehub" />} />
+                <Route path="/interprelink/*" element={<MicroserviceRedirect servicePath="interprehub" />} />
+                <Route path="/interprestudy/*" element={<MicroserviceRedirect servicePath="interprestudy" />} />
+                <Route path="/interpretrack/*" element={<MicroserviceRedirect servicePath="interpretrack" />} />
+                
+                {/* Pages kept in landing service */}
                 <Route path="/interpre-wellness" element={<InterpreWellness />} />
                 <Route path="/dilemma" element={<Dilemma />} />
-                
-                {/* Feature Pages */}
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/calltracker" element={<CallTracker />} />
                 <Route path="/settings" element={<Settings />} />
@@ -92,3 +128,4 @@ function App() {
 }
 
 export default App;
+
