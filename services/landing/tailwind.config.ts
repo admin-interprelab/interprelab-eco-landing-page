@@ -9,6 +9,11 @@ export default {
   theme: {
   	extend: {
   		colors: {
+  			nobel: {
+  				gold: '#C5A059',
+  				dark: '#1a1a1a',
+  				cream: '#F9F8F4',
+  			},
   			border: "hsl(var(--border))",
   			input: "hsl(var(--input))",
   			ring: "hsl(var(--ring))",

@@ -1,6 +1,5 @@
 import { Layout } from '@/components/Layout';
-import { Card, CardContent, CardHeader, CardTitle } from '@/lib/ui/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/lib/ui/components/ui/tabs';
+import { Card, CardContent, CardHeader, CardTitle, Tabs, TabsContent, TabsList, TabsTrigger } from '@interprelab/ui';
 import { BookOpen, MessageSquare, Layers, Settings, Brain, Languages, Accessibility, GraduationCap, HelpCircle, PlayCircle } from 'lucide-react';
 import { InteractiveChat } from '@/components/interprestudy/InteractiveChat';
 import { TerminologyLookup } from '@/components/interprestudy/TerminologyLookup';
@@ -13,6 +12,7 @@ import { ScenarioGenerator } from '@/components/interprestudy/modules/ScenarioGe
 import { AiQuiz } from '@/components/interprestudy/modules/AiQuiz';
 import { CoreDynamicsTraining } from '@/components/interprestudy/modules/CoreDynamicsTraining';
 import { InteractiveModulePlayer } from '@/components/interprestudy/modules/InteractiveModulePlayer';
+import { PainPointBadge } from '@/components/PainPointBadge';
 
 export default function InterpreStudy() {
   return (
@@ -20,31 +20,26 @@ export default function InterpreStudy() {
       <div className="container mx-auto px-4 py-12">
         {/* Hero Section */}
         <div
-          className="text-center mb-16 animate-fade-in py-32 px-4 rounded-3xl bg-cover bg-center relative overflow-hidden"
+          className="text-center mb-16 animate-fade-in py-20 px-4 rounded-3xl bg-cover bg-center relative overflow-hidden"
           style={{ 
             backgroundImage: "url('https://images.unsplash.com/photo-1516534775068-ba3e7458af70?w=1200&h=600&fit=crop&q=80')",
             backgroundPosition: 'center'
           }}
         >
-          {/* Dark gradient overlay with gold accent */}
-          <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/70 to-nobel-dark/80 -z-10" />
-          <div className="absolute inset-0 bg-gradient-radial from-nobel-gold/10 via-transparent to-transparent -z-10" />
+          {/* Dark overlay */}
+          <div className="absolute inset-0 bg-black/70 rounded-3xl" />
           
-          <div className="relative max-w-4xl mx-auto">
-            {/* Centered Brain Icon with glow */}
-            <div className="flex justify-center mb-6">
-              <div className="w-20 h-20 rounded-full bg-nobel-gold/10 border-2 border-nobel-gold/30 flex items-center justify-center">
-                <Brain className="w-12 h-12 text-nobel-gold drop-shadow-[0_0_20px_rgba(197,160,89,0.6)]" />
-              </div>
+          <div className="relative z-10 max-w-4xl mx-auto">
+            <PainPointBadge painPoint="Addressing Pain Point #4: Accessible, Specialized Training" />
+            
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Brain className="w-12 h-12 text-primary" />
+              <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-white via-primary/80 to-white bg-clip-text text-transparent">
+                InterpreStudy
+              </h1>
             </div>
             
-            {/* Title with serif font */}
-            <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6 bg-gradient-to-r from-foreground via-nobel-gold to-foreground bg-clip-text text-transparent">
-              InterpreStudy
-            </h1>
-            
-            {/* Subtitle */}
-            <p className="text-xl md:text-2xl text-foreground/90 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-6">
               Specialized training shouldn't be a luxury. Access AI-powered learning, ethics training, and interactive scenarios tailored to your specialty.
             </p>
           </div>
@@ -136,7 +131,7 @@ export default function InterpreStudy() {
           </TabsContent>
         </Tabs>
 
-        {/* Quick Actions - Only show if not on Training tab ideally, but keeping for footer access */}
+        {/* Quick Actions */}
         <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="glass border-border/50 hover:border-primary/50 transition-all duration-300">
             <CardHeader>
@@ -181,7 +176,13 @@ export default function InterpreStudy() {
           </Card>
         </div>
 
-        {/* Removed MissionCollaborationCTA to avoid double footer - Layout already includes footer */}
+        {/* Mission & Collaboration CTA */}
+        <MissionCollaborationCTA
+          title="InterpreLab: Your Lifeline in the Field"
+          description="We're not building tools from an ivory tower. We're interpreters who've experienced the frustration of inaccessible training, the anxiety of specialized terminology, and the weight of serving vulnerable patients. Our mission is to use our skills to create solutions that actually help—but we need your partnership to reach every interpreter who needs these resources."
+          secondaryButtonText="Join Our Community"
+          footerText="Have connections to interpreter networks? Want to discuss bulk training programs? Let's talk—together we can make professional development accessible to all."
+        />
       </div>
     </Layout>
   );

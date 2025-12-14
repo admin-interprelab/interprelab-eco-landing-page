@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Badge } from "@/components/ui/badge";
-import { Menu, Chrome, Shield, Phone, Mail, ArrowRight, User, LogOut } from "lucide-react";
+// import { Badge } from "@/components/ui/badge";
+import { Menu, Shield, Phone, Mail, User, LogOut } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -15,7 +15,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { BadgeDisplay } from "@/components/gamification/BadgeDisplay";
+// import { BadgeDisplay } from "@/components/gamification/BadgeDisplay";
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,8 +29,8 @@ export const Navigation = () => {
   };
 
   const navItems = [
-    { 
-      label: t('solutions'), 
+    {
+      label: t('solutions'),
       submenu: [
         { label: 'InterpreBot', href: '/interprebot' },
         { label: 'InterpreCoach', href: '/interprecoach' },
@@ -39,7 +39,7 @@ export const Navigation = () => {
         { label: 'InterpreHub', href: '/interpre-hub' },
       ]
     },
-    { 
+    {
       label: t('resources'),
       submenu: [
         { label: 'Resource Articles', href: '/resources' },
@@ -116,8 +116,9 @@ export const Navigation = () => {
           <div className="hidden md:flex items-center gap-3">
             {user ? (
               <>
-                <BadgeDisplay />
+                {/* <BadgeDisplay /> */}
                 <Link to="/dashboard">
+
                   <Button variant="ghost" size="sm">
                     Dashboard
                   </Button>

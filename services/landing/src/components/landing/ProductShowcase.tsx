@@ -1,8 +1,8 @@
 import { Button } from "@/lib/ui";
 import { Card, CardContent } from "@/lib/ui";
 import { Badge } from "@/lib/ui";
-import { 
-  Brain, 
+import {
+  Brain,
   Chrome,
   Clock,
   ArrowRight,
@@ -62,7 +62,7 @@ export const ProductShowcase = () => {
         "Mock practice groups"
       ],
       icon: Users,
-      link: "/interpre-hub",
+      link: "/interprelink",
       cta: "Join Community"
     }
   ];
@@ -91,7 +91,7 @@ export const ProductShowcase = () => {
             const Icon = product.icon;
             const staggerClass = ['stagger-1', 'stagger-2', 'stagger-3', 'stagger-4'][index] || 'stagger-1';
             return (
-              <Card 
+              <Card
                 key={product.id}
                 id={`${product.id}-section`}
                 className={`glass border-border hover:border-nobel-gold/50 group transition-all duration-300 hover:shadow-md animate-fade-in-up ${staggerClass}`}

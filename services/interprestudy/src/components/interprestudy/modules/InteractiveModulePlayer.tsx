@@ -1,16 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/lib/ui/components/ui/card';
-import { Button } from '@/lib/ui/components/ui/button';
-import { Badge } from '@/lib/ui/components/ui/badge';
-import { Progress } from '@/lib/ui/components/ui/progress';
-import { 
-  ChevronLeft, ChevronRight, Star, Layers, MessageCircle, X,
-  Send, Sparkles, CheckCircle, Lock
-} from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/contexts/AuthContext';
-import { toast } from 'sonner';
-import { cn } from '@/utils/shared';
+import { Card, Button, Badge, Progress } from '@interprelab/ui';
+import { cn } from '@interprelab/utils';
 
 interface ModuleData {
   id: string;

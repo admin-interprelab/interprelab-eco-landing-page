@@ -9,16 +9,16 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-glow",
+        default: "bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-glow hover:scale-[1.02] active:scale-95",
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        outline: "border-2 border-primary/20 bg-background hover:bg-primary/5 hover:text-primary hover:border-primary/50",
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:shadow-lg",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
+        ghost: "hover:bg-primary/10 hover:text-primary",
         link: "text-primary underline-offset-4 hover:underline",
-        hero: "bg-gradient-primary text-primary-foreground hover:scale-105 hover:shadow-glow font-semibold",
-        glass: "bg-card/80 backdrop-blur-sm border border-border/50 text-card-foreground hover:bg-card/90 hover:border-primary/30",
+        hero: "bg-gradient-primary text-primary-foreground hover:scale-105 hover:shadow-glow font-bold tracking-wide",
+        glass: "bg-card/60 backdrop-blur-md border border-white/10 text-card-foreground hover:bg-card/80 hover:border-primary/40 hover:shadow-glow",
         success: "bg-success text-success-foreground hover:bg-success/90 hover:shadow-lg",
-        premium: "bg-gradient-to-r from-primary to-secondary text-primary-foreground hover:from-primary/90 hover:to-secondary/90 hover:shadow-glow font-semibold",
+        premium: "bg-gradient-to-r from-nobel-gold via-[#D4AF37] to-nobel-gold text-white hover:shadow-[0_0_20px_rgba(197,160,89,0.4)] hover:scale-105 font-serif tracking-wide",
       },
       size: {
         default: "h-11 px-6 py-2.5",

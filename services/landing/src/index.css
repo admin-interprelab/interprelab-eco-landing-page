@@ -44,21 +44,22 @@ All colors MUST be HSL for consistency and theming.
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 9%;
 
-    /* Muted Surfaces */
-    --muted: 240 10% 12%;
-    --muted-foreground: 210 20% 65%;
+    /* Warm/Stone Muted Tones (Dilemma Style) */
+    --muted: 30 10% 12%;
+    --muted-foreground: 30 15% 65%;
+    /* Stone-400/500 equivalent */
 
     /* Accent for Highlights */
-    --accent: 237 26% 41%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 30 15% 20%;
+    --accent-foreground: 39 48% 56%;
 
     /* Destructive States */
     --destructive: 0 62.8% 50%;
     --destructive-foreground: 210 40% 98%;
 
     /* Borders & Inputs */
-    --border: 240 10% 18%;
-    --input: 240 12% 15%;
+    --border: 30 10% 18%;
+    --input: 30 10% 15%;
     --ring: 209 46% 31%;
 
     /* Glass Effect Variables */
@@ -81,6 +82,7 @@ All colors MUST be HSL for consistency and theming.
     --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
     --radius: 0.75rem;
+    /* Matches rounded-xl */
 
     --sidebar-background: 0 0% 98%;
 
@@ -157,7 +159,12 @@ All colors MUST be HSL for consistency and theming.
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Playfair Display', serif;
+  }
+
+  ::selection {
+    background-color: hsl(var(--primary));
+    color: white;
   }
 
   /* Glass morphism utilities */

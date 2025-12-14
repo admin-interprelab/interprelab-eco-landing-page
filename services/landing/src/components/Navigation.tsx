@@ -45,7 +45,7 @@ export const Navigation = () => {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-border/50">
+    <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-nobel-gold/30 shadow-sm backdrop-blur-xl">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -54,8 +54,8 @@ export const Navigation = () => {
               <Shield className="w-6 h-6 text-nobel-dark" />
             </div>
             <div>
-              <h1 className="text-xl font-bold font-serif">InterpreLab</h1>
-              <p className="text-xs text-muted-foreground">Advanced Interpretation</p>
+              <h1 className="text-xl font-bold font-serif text-nobel-gold tracking-wide">InterpreLab</h1>
+              <p className="text-xs text-muted-foreground tracking-widest">Advanced Interpretation</p>
             </div>
           </Link>
 

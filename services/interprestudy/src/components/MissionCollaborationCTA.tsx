@@ -1,5 +1,4 @@
-import { Button } from "@/lib/ui/components/ui/button";
-import { Card, CardContent } from "@/lib/ui/components/ui/card";
+import { Button, Card, CardContent } from "@interprelab/ui";
 import { Link } from "react-router-dom";
 
 interface MissionCollaborationCTAProps {

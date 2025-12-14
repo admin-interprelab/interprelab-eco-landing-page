@@ -1,49 +1,8 @@
 import React, { useState } from 'react';
-import { Book, Check, RotateCcw, ChevronRight, X, Trophy, Sparkles, Loader2, Play } from 'lucide-react';
-import { Button } from '@/lib/ui/components/ui/button';
-import { Card, CardContent } from '@/lib/ui/components/ui/card';
-import { cn } from '@/utils/shared';
-
-// --- GEMINI API UTILITIES ---
-const apiKey = ""; // API Key injected at runtime
-
-const callGemini = async (prompt: string) => {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-  const payload = {
-    contents: [{ parts: [{ text: prompt }] }]
-  };
-
-  let attempt = 0;
-  const maxRetries = 3;
-  const delays = [1000, 2000, 4000];
-
-  while (attempt < maxRetries) {
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-
-      if (!response.ok) {
-         if (response.status === 429) {
-            throw new Error("Rate limit exceeded");
-         }
-         throw new Error(`API Error: ${response.status}`);
-      }
-
-      const data = await response.json();
-      return data.candidates?.[0]?.content?.parts?.[0]?.text || "No content generated.";
-
-    } catch (error) {
-      attempt++;
-      if (attempt >= maxRetries) {
-        return "Connection error. Please try again later.";
-      }
-      await new Promise(resolve => setTimeout(resolve, delays[attempt - 1]));
-    }
-  }
-};
+import { Book, Check, RotateCcw, ChevronRight, X, Trophy, Sparkles, Loader2 } from 'lucide-react';
+import { Button, Card } from '@interprelab/ui';
+import { cn } from '@interprelab/utils';
+import { studyApi } from '@/api/studyApi';
 
 // --- DATA ---
 const INITIAL_VOCABULARY_DATA = [
@@ -98,15 +57,16 @@ export const SmartFlashcards = () => {
   const fetchAIInsight = async (e: React.MouseEvent) => {
     e.stopPropagation();
     setLoadingAi(true);
-    const prompt = `
-      For the medical root "${currentCard.root}" (meaning: ${currentCard.en_meaning}):
-      1. Provide a 1-sentence etymology (origin).
-      2. Create a short, funny or memorable mnemonic to help remember it.
-      Keep it concise.
-    `;
-    const result = await callGemini(prompt);
-    setAiInsight(result);
-    setLoadingAi(false);
+    try {
+      const result = await studyApi.getMnemonic(currentCard.root, currentCard.en_meaning);
+      // Format the result nicely
+      const formattedText = `**Origin:** ${result.etymology}\n\n**Mnemonic:** ${result.mnemonic}`;
+      setAiInsight(formattedText);
+    } catch (error) {
+      setAiInsight("Sorry, I couldn't generate a mnemonic at this time. Please try again.");
+    } finally {
+      setLoadingAi(false);
+    }
   };
 
   if (finished) {

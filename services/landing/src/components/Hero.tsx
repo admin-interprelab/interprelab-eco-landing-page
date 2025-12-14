@@ -14,6 +14,7 @@ export const Hero = () => {
         aria-hidden="true"
       >
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70" />
+        <div className="absolute inset-0 bg-gradient-to-tr from-nobel-gold/20 via-transparent to-nobel-gold/10 pointer-events-none mix-blend-overlay" />
       </div>
 
       {/* Content */}
@@ -28,11 +29,10 @@ export const Hero = () => {
 
           {/* Main Headline - Simplified */}
           <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-tight">
-            <span className="bg-gradient-primary bg-clip-text text-transparent">
+            <span className="bg-gradient-primary bg-clip-text text-transparent inline-block mb-2">
               Master Medical
             </span>
-            <br />
-            <span className="text-foreground">
+            <span className="block text-white drop-shadow-md">
               Interpretation
             </span>
           </h1>

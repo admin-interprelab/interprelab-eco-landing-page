@@ -61,7 +61,7 @@ export const CertificatesPremium = () => {
                     </Card>
 
                     {/* Premium Membership - Highlighted */}
-                    <Card className="glass border-nobel-gold shadow-glow hover:shadow-[0_0_40px_rgba(197,160,89,0.2)] transition-all duration-300 transform scale-105 z-10 animate-fade-in-up stagger-2 flex flex-col relative overflow-hidden">
+                    <Card className="glass border-2 border-nobel-gold shadow-glow hover:shadow-[0_0_40px_rgba(197,160,89,0.4)] transition-all duration-300 transform scale-105 z-10 animate-fade-in-up stagger-2 flex flex-col relative overflow-hidden">
                         <div className="absolute top-0 right-0 p-1 bg-nobel-gold text-white text-xs font-bold px-3 rounded-bl-lg">
                             POPULAR
                         </div>
@@ -160,12 +160,19 @@ export const CertificatesPremium = () => {
                     {/* Certification Course Card */}
                     <Card className="glass border-border hover:border-nobel-gold/50 transition-all duration-300 shadow-lg hover:shadow-xl group animate-fade-in-up stagger-4 relative overflow-hidden">
                         {/* Coming Soon Overlay */}
-                        <div className="absolute inset-0 z-20 bg-background/60 backdrop-blur-[2px] flex flex-col items-center justify-center transition-all duration-300 group-hover:bg-background/40">
-                            <Badge className="px-8 py-3 text-lg bg-nobel-gold text-white border-none shadow-glow mb-4 animate-pulse">
-                                Coming Soon
+                        <div className="absolute inset-0 z-20 bg-background/60 backdrop-blur-[4px] flex flex-col items-center justify-center transition-all duration-300 group-hover:bg-background/40">
+                            <div className="relative mb-6">
+                                <div className="absolute inset-0 bg-nobel-gold blur-2xl opacity-20 animate-pulse-glow"></div>
+                                <Award className="w-24 h-24 text-nobel-gold drop-shadow-[0_0_15px_rgba(197,160,89,0.5)] fill-nobel-gold/10" />
+                                <div className="absolute -bottom-2 -right-2 bg-nobel-gold text-nobel-dark text-[10px] font-bold px-2 py-0.5 rounded-full border border-white/20 shadow-sm">
+                                    OFFICIAL
+                                </div>
+                            </div>
+                            <Badge className="px-8 py-2 text-lg bg-gradient-to-r from-nobel-gold via-[#D4AF37] to-nobel-gold text-white border-2 border-white/10 shadow-[0_0_20px_rgba(197,160,89,0.3)] mb-4 animate-pulse uppercase tracking-widest font-serif">
+                                Coming Late 2025
                             </Badge>
-                            <p className="text-foreground font-serif font-medium text-lg tracking-wide bg-background/50 px-4 py-1 rounded-full backdrop-blur-md">
-                                Enrollment Opens Fall 2025
+                            <p className="text-foreground font-serif font-medium text-lg tracking-wide bg-background/80 px-6 py-2 rounded-full border border-nobel-gold/30 backdrop-blur-md shadow-sm">
+                                Join the Waitlist
                             </p>
                         </div>
 

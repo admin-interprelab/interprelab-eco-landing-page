@@ -1,10 +1,5 @@
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/lib/ui/components/ui/card';
-import { Button } from '@/lib/ui/components/ui/button';
-import { Textarea } from '@/lib/ui/components/ui/textarea';
-import { ScrollArea } from '@/lib/ui/components/ui/scroll-area';
-import { MessageSquare, Send, Mic, StopCircle } from 'lucide-react';
-import { Badge } from '@/lib/ui/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, Button, Textarea, ScrollArea, Badge } from '@interprelab/ui';
 
 interface Message {
   role: 'user' | 'assistant';

@@ -36,27 +36,34 @@ const MicroserviceRedirect = ({ servicePath }: { servicePath: string }) => {
   const isDev = import.meta.env.DEV;
   
   if (isDev) {
-    // Local development - show instructions
+    const portMap: Record<string, number> = {
+      'interprebot': 3001,
+      'interprestudy': 3002,
+      'interprecoach': 3004,
+      'interpretrack': 3005,
+      'interprehub': 3007,
+      'interprelink': 3007, // Alias for hub
+    };
+
+    const targetPort = portMap[servicePath.toLowerCase()];
+    
+    if (targetPort) {
+       // Redirect to the local microservice
+       window.location.href = `http://localhost:${targetPort}/${servicePath}`;
+       return (
+        <div className="min-h-screen flex items-center justify-center flex-col gap-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-nobel-gold"></div>
+          <p className="text-muted-foreground">Redirecting to local service...</p>
+        </div>
+       );
+    }
+    
+    // Fallback if port not found
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted p-8">
         <div className="max-w-2xl text-center space-y-6">
-          <h1 className="text-4xl font-bold text-foreground">Service Unavailable in Development</h1>
-          <p className="text-xl text-muted-foreground">
-            This feature has been extracted to a microservice.
-          </p>
-          <div className="bg-card p-6 rounded-lg border border-border">
-            <p className="text-sm text-muted-foreground mb-4">To access this service locally:</p>
-            <code className="block bg-muted p-4 rounded text-left text-sm">
-              cd services/{servicePath}<br/>
-              npm run dev
-            </code>
-          </div>
-          <a 
-            href="/"
-            className="inline-block px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity"
-          >
-            Return to Home
-          </a>
+          <h1 className="text-4xl font-bold text-foreground">Service Not Configured</h1>
+           {/* ... existing fallback ... */}
         </div>
       </div>
     );

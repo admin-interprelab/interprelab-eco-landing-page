@@ -4,6 +4,7 @@ import { StoryDrivenVideoHero } from '@/components/landing/StoryDrivenVideoHero'
 import { ProductShowcase } from '@/components/landing/ProductShowcase';
 import { CertificatesPremium } from '@/components/landing/CertificatesPremium';
 import { Testimonials } from '@/components/landing/Testimonials';
+import { FAQ } from '@/components/FAQ';
 import {
   ArrowRight,
   Heart,
@@ -128,24 +129,27 @@ const Index = () => {
       <Navigation />
 
       <main>
-        {/* Hero Section */}
+        {/* 1. Hero Section - First */}
         <Hero />
 
-        {/* Pain Point Stories - Full Screen Video Sections */}
+        {/* 2. Pain Point Stories - After Hero */}
         <div className="scroll-snap-container">
           {painPointStories.map((story, index) => (
             <StoryDrivenVideoHero key={story.id} {...story} index={index} />
           ))}
         </div>
 
-        {/* Feature Solutions - Linked from Pain Points */}
+        {/* 3. Product Showcase - After Pain Points (Solutions) */}
         <ProductShowcase />
 
-        {/* Certification & Premium */}
+        {/* 4. Certificates & Premium - After Product Showcase */}
         <CertificatesPremium />
 
-        {/* Testimonials */}
+        {/* 5. Testimonials - After Certificates (Social Proof) */}
         <Testimonials />
+
+        {/* 6. FAQ Section - Near End Before Footer */}
+        <FAQ />
 
       </main>
 

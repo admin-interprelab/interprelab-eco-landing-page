@@ -1,6 +1,5 @@
 {
     "compilerOptions": {
-        "composite": true,
         "baseUrl": ".",
         "rootDir": "src",
         "target": "ES2020",

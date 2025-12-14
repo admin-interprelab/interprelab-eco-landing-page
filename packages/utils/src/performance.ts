@@ -1,3 +1,19 @@
+interface LargestContentfulPaintEntry extends PerformanceEntry {
+  renderTime: number;
+  loadTime: number;
+  element: Element;
+}
+
+interface LayoutShift extends PerformanceEntry {
+  value: number;
+  hadRecentInput: boolean;
+}
+
+interface PerformanceEventTiming extends PerformanceEntry {
+    processingStart: number;
+}
+
+
 /**
  * Performance monitoring utilities for tracking Core Web Vitals
  */
@@ -9,7 +25,6 @@ export interface PerformanceMetrics {
   cls?: number; // Cumulative Layout Shift
   ttfb?: number; // Time to First Byte
 }
-
 /**
  * Report Web Vitals to console (can be extended to send to analytics)
  */
@@ -83,12 +98,8 @@ export const reportWebVitals = (onPerfEntry?: (metric: PerformanceMetrics) => vo
     }
   }
 };
-
-/**
- * Log performance metrics to console in development
- */
 export const logPerformanceMetrics = () => {
-  if (import.meta.env.DEV) {
+  if (process.env.NODE_ENV === 'development') {
     reportWebVitals((metrics) => {
       console.log('📊 Performance Metrics:', metrics);
     });

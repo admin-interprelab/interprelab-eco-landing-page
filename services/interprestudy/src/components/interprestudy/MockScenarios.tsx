@@ -1,10 +1,5 @@
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/lib/ui/components/ui/card';
-import { Button } from '@/lib/ui/components/ui/button';
-import { Textarea } from '@/lib/ui/components/ui/textarea';
-import { Input } from '@/lib/ui/components/ui/input';
-import { Plus, Play, Clock } from 'lucide-react';
-import { Badge } from '@/lib/ui/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle, Button, Textarea, Input, Badge } from '@interprelab/ui';
 
 export const MockScenarios = () => {
   const [isCreating, setIsCreating] = useState(false);

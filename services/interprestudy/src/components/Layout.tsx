@@ -1,5 +1,4 @@
-import { Navigation } from "@/components/Navigation";
-import { Footer } from "@/components/Footer";
+import { Navigation, Footer } from "@interprelab/ui";
 import { ReactNode } from "react";
 
 interface LayoutProps {
