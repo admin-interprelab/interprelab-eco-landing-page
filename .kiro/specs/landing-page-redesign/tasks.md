@@ -13,7 +13,7 @@
   - **Property 1: Navigation Link Consistency**
   - **Validates: Requirements 1.1, 1.4**
 
-- [ ] 2. Create Backend Integration Documentation
+- [x] 2. Create Backend Integration Documentation
   - Create `docs/FIRESTORE_SETUP.md` with collection structures
   - Document Firestore indexes required
   - Provide security rules configuration
@@ -79,7 +79,7 @@
   - Ensure certificate is visually appealing but clearly unavailable
   - _Requirements: 6.1, 6.2, 6.3, 6.4, 6.5_
 
-- [ ] 7. Update All CTA Buttons with Correct Navigation
+- [x] 7. Update All CTA Buttons with Correct Navigation
   - Audit all CTA buttons on landing page
   - Update "Start Free Trial" buttons to navigate to /waitlist
   - Update "Sign In" buttons to navigate to /signin
@@ -101,7 +101,7 @@
   - **Property 11: Learn More Button Behavior**
   - **Validates: Requirements 7.4**
 
-- [ ] 8. Reorder Landing Page Sections
+- [x] 8. Reorder Landing Page Sections
   - Ensure Hero section is first
   - Place pain point stories (StoryDrivenVideoHero) after Hero
   - Position ProductShowcase after pain points
@@ -138,7 +138,7 @@
   - **Property 7: Animation Consistency**
   - **Validates: Requirements 3.5**
 
-- [ ] 11. Fix InterpreStudy Navigation Links
+- [x] 11. Fix InterpreStudy Navigation Links
   - Verify /interprestudy route is correctly configured
   - Update all InterpreStudy links in navigation menu
   - Update any InterpreStudy references in landing page content

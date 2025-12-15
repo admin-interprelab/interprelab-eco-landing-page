@@ -1,5 +1,5 @@
 -- Create language preference and pay rate settings table
-CREATE TABLE public.user_settings (
+CREATE TABLE IF NOT EXISTS public.user_settings (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   preferred_language TEXT NOT NULL DEFAULT 'en',
@@ -12,7 +12,7 @@ CREATE TABLE public.user_settings (
 );
 
 -- Create call logs table
-CREATE TABLE public.call_logs (
+CREATE TABLE IF NOT EXISTS public.call_logs (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   start_time TIMESTAMP WITH TIME ZONE NOT NULL,
@@ -30,49 +30,66 @@ ALTER TABLE public.user_settings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.call_logs ENABLE ROW LEVEL SECURITY;
 
 -- RLS Policies for user_settings
-CREATE POLICY "Users can view their own settings"
-ON public.user_settings
-FOR SELECT
-USING (auth.uid() = user_id);
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'user_settings' AND policyname = 'Users can view their own settings'
+  ) THEN
+    CREATE POLICY "Users can view their own settings" ON public.user_settings FOR SELECT USING (auth.uid() = user_id);
+  END IF;
 
-CREATE POLICY "Users can insert their own settings"
-ON public.user_settings
-FOR INSERT
-WITH CHECK (auth.uid() = user_id);
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'user_settings' AND policyname = 'Users can insert their own settings'
+  ) THEN
+    CREATE POLICY "Users can insert their own settings" ON public.user_settings FOR INSERT WITH CHECK (auth.uid() = user_id);
+  END IF;
 
-CREATE POLICY "Users can update their own settings"
-ON public.user_settings
-FOR UPDATE
-USING (auth.uid() = user_id);
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'user_settings' AND policyname = 'Users can update their own settings'
+  ) THEN
+    CREATE POLICY "Users can update their own settings" ON public.user_settings FOR UPDATE USING (auth.uid() = user_id);
+  END IF;
+END
+$$;
 
 -- RLS Policies for call_logs
-CREATE POLICY "Users can view their own call logs"
-ON public.call_logs
-FOR SELECT
-USING (auth.uid() = user_id);
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'call_logs' AND policyname = 'Users can view their own call logs'
+  ) THEN
+    CREATE POLICY "Users can view their own call logs" ON public.call_logs FOR SELECT USING (auth.uid() = user_id);
+  END IF;
 
-CREATE POLICY "Users can insert their own call logs"
-ON public.call_logs
-FOR INSERT
-WITH CHECK (auth.uid() = user_id);
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'call_logs' AND policyname = 'Users can insert their own call logs'
+  ) THEN
+    CREATE POLICY "Users can insert their own call logs" ON public.call_logs FOR INSERT WITH CHECK (auth.uid() = user_id);
+  END IF;
 
-CREATE POLICY "Users can update their own call logs"
-ON public.call_logs
-FOR UPDATE
-USING (auth.uid() = user_id);
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'call_logs' AND policyname = 'Users can update their own call logs'
+  ) THEN
+    CREATE POLICY "Users can update their own call logs" ON public.call_logs FOR UPDATE USING (auth.uid() = user_id);
+  END IF;
 
-CREATE POLICY "Users can delete their own call logs"
-ON public.call_logs
-FOR DELETE
-USING (auth.uid() = user_id);
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'call_logs' AND policyname = 'Users can delete their own call logs'
+  ) THEN
+    CREATE POLICY "Users can delete their own call logs" ON public.call_logs FOR DELETE USING (auth.uid() = user_id);
+  END IF;
+END
+$$;
 
 -- Add trigger for user_settings updated_at
+DROP TRIGGER IF EXISTS update_user_settings_updated_at ON public.user_settings;
 CREATE TRIGGER update_user_settings_updated_at
 BEFORE UPDATE ON public.user_settings
 FOR EACH ROW
 EXECUTE FUNCTION public.update_updated_at_column();
 
 -- Add trigger for call_logs updated_at
+DROP TRIGGER IF EXISTS update_call_logs_updated_at ON public.call_logs;
 CREATE TRIGGER update_call_logs_updated_at
 BEFORE UPDATE ON public.call_logs
 FOR EACH ROW

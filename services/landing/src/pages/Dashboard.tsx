@@ -280,7 +280,7 @@ const Dashboard = () => {
                       <div className="text-right">
                         <div className="font-semibold">{formatCurrency(call.earnings || 0)}</div>
                         <div className="text-sm text-muted-foreground">
-                          {formatDuration(call.duration_seconds)}
+                          {formatDuration(call.duration_seconds || 0)}
                         </div>
                       </div>
                     </div>

@@ -6,66 +6,11 @@ import {
   Chrome,
   Clock,
   ArrowRight,
-  GraduationCap,
-  Users
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { products } from "@/data/products";
 
 export const ProductShowcase = () => {
-  const products = [
-    {
-      id: "interprebot",
-      name: "InterpreBot",
-      tagline: "Skills Assessment",
-      features: [
-        "AI-powered linguistic analysis",
-        "Grammar & syntax feedback",
-        "Personalized learning paths"
-      ],
-      icon: Brain,
-      link: "/interprebot",
-      cta: "Take Assessment"
-    },
-    {
-      id: "interprecoach",
-      name: "InterpreCoach",
-      tagline: "Real-Time Assistant",
-      features: [
-        "Live terminology support",
-        "Voice & pitch regulation",
-        "Automatic note-taking"
-      ],
-      icon: Chrome,
-      link: "/interprecoach",
-      cta: "Install Extension"
-    },
-    {
-      id: "interprestudy",
-      name: "InterpreStudy",
-      tagline: "Interactive Training",
-      features: [
-        "Role-play simulations",
-        "DCS Schema training",
-        "Vicarious Trauma management"
-      ],
-      icon: GraduationCap,
-      link: "/interprestudy",
-      cta: "Start Learning"
-    },
-    {
-      id: "interprelink",
-      name: "InterpreLink",
-      tagline: "Community Network",
-      features: [
-        "Professional forums",
-        "Job board access",
-        "Mock practice groups"
-      ],
-      icon: Users,
-      link: "/interprelink",
-      cta: "Join Community"
-    }
-  ];
 
   return (
     <section className="py-32 px-6 relative bg-card/50" id="solutions" aria-label="Our products and solutions">

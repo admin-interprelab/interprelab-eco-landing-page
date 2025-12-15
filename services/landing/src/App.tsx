@@ -26,7 +26,7 @@ const Careers = lazy(() => import('./pages/Careers'));
 const GetInTouch = lazy(() => import('./pages/GetInTouch'));
 const Article = lazy(() => import('./pages/Article'));
 const IndustryInsights = lazy(() => import('./pages/IndustryInsights'));
-const ASLTeacher = lazy(() => import('./pages/ASLTeacher'));
+// const ASLTeacher = lazy(() => import('./pages/ASLTeacher')); // Moved to microservice
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 // Microservice redirect component
@@ -43,6 +43,7 @@ const MicroserviceRedirect = ({ servicePath }: { servicePath: string }) => {
       'interpretrack': 3005,
       'interprehub': 3007,
       'interprelink': 3007, // Alias for hub
+      'asl-teacher': 3008, // New ASL Teacher microservice
     };
 
     const targetPort = portMap[servicePath.toLowerCase()];
@@ -85,49 +86,54 @@ const PageLoader = () => (
   </div>
 );
 
+import { LandingPageErrorBoundary } from './components/LandingPageErrorBoundary';
+
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <LanguageProvider>
-          <div className="min-h-screen bg-background">
-            <Navigation />
-            <Suspense fallback={<PageLoader />}>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/resources" element={<Resources />} />
-                <Route path="/waitlist" element={<Waitlist />} />
-                <Route path="/signin" element={<SignIn />} />
-                <Route path="/signup" element={<SignUp />} />
-                
-                {/* Microservices - Redirect to independent services */}
-                <Route path="/interprebot/*" element={<MicroserviceRedirect servicePath="interprebot" />} />
-                <Route path="/interprecoach/*" element={<MicroserviceRedirect servicePath="interprecoach" />} />
-                <Route path="/interprehub/*" element={<MicroserviceRedirect servicePath="interprehub" />} />
-                <Route path="/interprelink/*" element={<MicroserviceRedirect servicePath="interprehub" />} />
-                <Route path="/interprestudy/*" element={<MicroserviceRedirect servicePath="interprestudy" />} />
-                <Route path="/interpretrack/*" element={<MicroserviceRedirect servicePath="interpretrack" />} />
-                
-                {/* Pages kept in landing service */}
-                <Route path="/interpre-wellness" element={<InterpreWellness />} />
-                <Route path="/dilemma" element={<Dilemma />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/calltracker" element={<CallTracker />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="/careers" element={<Careers />} />
-                <Route path="/get-in-touch" element={<GetInTouch />} />
-                <Route path="/article" element={<Article />} />
-                <Route path="/industry-insights" element={<IndustryInsights />} />
-                <Route path="/asl-teacher" element={<ASLTeacher />} />
-                
-                {/* 404 Page */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Suspense>
-            <Footer />
-          </div>
+          <LandingPageErrorBoundary>
+            <div className="min-h-screen bg-background">
+              <Navigation />
+              <Suspense fallback={<PageLoader />}>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/resources" element={<Resources />} />
+                  <Route path="/waitlist" element={<Waitlist />} />
+                  <Route path="/signin" element={<SignIn />} />
+                  <Route path="/signup" element={<SignUp />} />
+                  
+                  {/* Microservices - Redirect to independent services */}
+                  <Route path="/interprebot/*" element={<MicroserviceRedirect servicePath="interprebot" />} />
+                  <Route path="/interprecoach/*" element={<MicroserviceRedirect servicePath="interprecoach" />} />
+                  <Route path="/interprehub/*" element={<MicroserviceRedirect servicePath="interprehub" />} />
+                  <Route path="/interprelink/*" element={<MicroserviceRedirect servicePath="interprehub" />} />
+                  <Route path="/interprestudy/*" element={<MicroserviceRedirect servicePath="interprestudy" />} />
+                  <Route path="/interpretrack/*" element={<MicroserviceRedirect servicePath="interpretrack" />} />
+                  <Route path="/asl-teacher/*" element={<MicroserviceRedirect servicePath="asl-teacher" />} />
+                  
+                  {/* Pages kept in landing service */}
+                  <Route path="/interpre-wellness" element={<InterpreWellness />} />
+                  <Route path="/dilemma" element={<Dilemma />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/calltracker" element={<CallTracker />} />
+                  <Route path="/settings" element={<Settings />} />
+                  <Route path="/careers" element={<Careers />} />
+                  <Route path="/get-in-touch" element={<GetInTouch />} />
+                  <Route path="/article" element={<Article />} />
+                  <Route path="/industry-insights" element={<IndustryInsights />} />
+                  {/* <Route path="/asl-teacher" element={<ASLTeacher />} /> Moved to microservice */}
+                  
+                  {/* 404 Page */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Suspense>
+              <Footer />
+            </div>
+          </LandingPageErrorBoundary>
         </LanguageProvider>
       </AuthProvider>
     </BrowserRouter>

@@ -1,6 +1,6 @@
 # InterpreLab
 
-InterpreLab is a cutting-edge, AI-driven training and real-time assistance platform for medical interpreters, focused on human skill optimization and bridging critical communication gaps in healthcare.
+InterpreLab is a cutting-edge, AI-driven training and real-time assistance platform for medical interpreters.
 
 ## Features
 
@@ -15,82 +15,35 @@ InterpreLab is a cutting-edge, AI-driven training and real-time assistance platf
 - **Styling**: Tailwind CSS, shadcn/ui
 - **State Management**: TanStack Query (React Query)
 - **Routing**: React Router
-- **Backend / BaaS**: Firebase (Auth, Firestore)
-- **Testing**: Vitest, React Testing Library
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js (v18 or higher)
-- npm
-
-### Installation
-
-1. Clone the repository:
-
-   ```bash
-   git clone <repository-url>
-   cd interprelab-eco-landing-page
-   ```
-
-2. Install dependencies:
-
-   ```bash
-   npm install
-   ```
-
-3. Set up environment variables:
-   Create a `.env` file in the root directory and add your Firebase configuration keys (see `.env.example` or project settings).
-
-   ```env
-   VITE_FIREBASE_API_KEY=your_api_key
-   VITE_FIREBASE_AUTH_DOMAIN=your_project_id.firebaseapp.com
-   VITE_FIREBASE_PROJECT_ID=your_project_id
-   VITE_FIREBASE_STORAGE_BUCKET=your_project_id.appspot.com
-   VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-   VITE_FIREBASE_APP_ID=your_app_id
-   ```
-
-4. Start the development server:
-
-   ```bash
-   npm run dev
-   ```
-
-## Testing
-
-Run the test suite with:
-
-```bash
-npm test
-```
-
-For UI mode:
-
-```bash
-npm run test:ui
-```
+- **Backend / BaaS**: **Supabase** (Auth, Database, Realtime)
+- **AI Services**: Python, FastAPI, Gemini, Claude, Whisper
 
 ## Architecture
 
-The project follows a modular architecture. Key modules are located in `src/modules/`.
-See [ARCHITECTURE_FLOWMAP.md](./ARCHITECTURE_FLOWMAP.md) for a detailed overview of the system architecture and data flow.
+The project follows a **microservices architecture**.
+See `GEMINI.md` for the comprehensive Knowledge Base and Project Status.
+See `docs/` for detailed architectural diagrams and deployment guides.
 
-### Directory Structure
+## Getting Started
 
-- `src/components`: Shared UI components.
-- `src/modules`: Feature-specific modules (e.g., `interpretrack`).
-- `src/pages`: Page components.
-- `src/services`: External services (Firebase, etc.).
-- `src/utils`: Utility functions.
+1.  **Prerequisites**: Node.js (v18+), npm, Python 3.11+ (for backends).
+2.  **Installation**:
+    ```bash
+    npm install
+    ```
+3.  **Environment Setup**:
+    Copy `.env.example` to `.env` and configure your Supabase credentials.
+4.  **Development**:
+    ```bash
+    npm run dev
+    ```
 
-## Build & Deployment
+## Deployment
 
-To build the project for production:
+Use the provided PowerShell script for automated deployment to Google Cloud Run:
 
-```bash
-npm run build
+```powershell
+./deploy-all.ps1
 ```
 
-The output will be in the `dist` directory.
+See `docs/PRE-DEPLOYMENT-CHECKLIST.md` before deploying.

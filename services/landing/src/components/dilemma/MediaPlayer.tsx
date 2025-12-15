@@ -5,7 +5,7 @@
 */
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Play, Pause, Volume2, SkipBack, SkipForward, FileText, Activity } from 'lucide-react';
+import { Play, Pause, SkipBack, SkipForward, FileText } from 'lucide-react';
 
 const TranscriptSegment = ({ time, text, active, onClick }: { time: string, text: string, active: boolean, onClick: () => void }) => (
     <div 

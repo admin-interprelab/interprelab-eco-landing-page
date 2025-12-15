@@ -4,9 +4,14 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Button, Card, CardContent, CardHeader, CardTitle, Badge } from "@/lib/ui";
-import { MapPin, Users, Target, Award, Heart, Globe, ArrowRight, Menu, X } from "lucide-react";
+import { Button } from "@/lib/ui";
+import { MapPin, Users, ArrowRight, Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
+
+import { MissionVision } from "@/components/about/MissionVision";
+import { CoreValues } from "@/components/about/CoreValues";
+import { TeamGrid } from "@/components/about/TeamGrid";
+import { CompanyStats } from "@/components/about/CompanyStats";
 
 const About = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -18,63 +23,7 @@ const About = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const values = [
-    {
-      icon: Target,
-      title: "Precision",
-      description: "We believe every word matters in interpretation, and our technology reflects this commitment to accuracy.",
-      delay: "0s"
-    },
-    {
-      icon: Heart,
-      title: "Empathy",
-      description: "Understanding the human element in communication drives everything we build and every decision we make.",
-      delay: "0.1s"
-    },
-    {
-      icon: Globe,
-      title: "Accessibility",
-      description: "Breaking down language barriers to make essential services accessible to everyone, everywhere.",
-      delay: "0.2s"
-    },
-    {
-      icon: Award,
-      title: "Excellence",
-      description: "Continuous improvement and innovation in interpretation technology and professional development.",
-      delay: "0.3s"
-    }
-  ];
 
-  const teamMembers = [
-    {
-      name: "Dr. Maria Rodriguez",
-      role: "Founder & CEO",
-      background: "Former court interpreter with 15+ years experience, PhD in Applied Linguistics",
-      specialization: "AI in Language Processing",
-      delay: "0s"
-    },
-    {
-      name: "David Chen",
-      role: "CTO",
-      background: "Former Google engineer, expert in machine learning and natural language processing",
-      specialization: "AI Architecture",
-      delay: "0.1s"
-    },
-    {
-      name: "Sarah Ahmed",
-      role: "Head of Clinical Affairs",
-      background: "Certified medical interpreter, healthcare administration background",
-      specialization: "Healthcare Interpretation",
-      delay: "0.2s"
-    },
-    {
-      name: "Carlos Mendoza",
-      role: "Director of Training",
-      background: "Conference interpreter, former training director at major interpretation agency",
-      specialization: "Professional Development",
-      delay: "0.3s"
-    }
-  ];
 
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-nobel-gold selection:text-white">
@@ -156,144 +105,16 @@ const About = () => {
 
       <main>
         {/* Mission & Vision */}
-        <section className="py-24 bg-card/50">
-          <div className="container mx-auto px-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              <Card className="glass border-border/50 p-8 hover:border-nobel-gold/50 transition-all duration-300 animate-fade-in-up">
-                <CardHeader>
-                  <CardTitle className="font-serif text-3xl mb-4 text-foreground">Our Mission</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-lg text-muted-foreground leading-relaxed">
-                    To empower interpreters worldwide with cutting-edge AI technology that enhances 
-                    their skills, improves accuracy, and ensures equitable access to essential 
-                    services across language barriers.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="glass border-border/50 p-8 hover:border-nobel-gold/50 transition-all duration-300 animate-fade-in-up stagger-1">
-                <CardHeader>
-                  <CardTitle className="font-serif text-3xl mb-4 text-foreground">Our Vision</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-lg text-muted-foreground leading-relaxed">
-                    A world where language is never a barrier to accessing healthcare, justice, 
-                    education, or any essential service, powered by the perfect collaboration 
-                    between human expertise and artificial intelligence.
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </section>
+        <MissionVision />
 
         {/* Values */}
-        <section className="py-24 bg-background">
-          <div className="container mx-auto px-6">
-            <div className="text-center mb-16 animate-fade-in-up">
-              <div className="inline-block mb-3 text-xs font-bold tracking-widest text-muted-foreground uppercase">Core Values</div>
-              <h2 className="font-serif text-4xl md:text-5xl mb-6 text-foreground">
-                What Drives Us
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                These principles guide every decision we make and every product we build.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {values.map((value, index) => (
-                <Card 
-                  key={index} 
-                  className="glass border-border/50 hover:border-nobel-gold/50 transition-all duration-300 text-center animate-fade-in-up"
-                  style={{ animationDelay: value.delay }}
-                >
-                  <CardHeader>
-                    <div className="w-16 h-16 bg-nobel-gold/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-nobel-gold/20">
-                      <value.icon className="w-8 h-8 text-nobel-gold" />
-                    </div>
-                    <CardTitle className="font-serif text-xl text-foreground">{value.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground text-center leading-relaxed">
-                      {value.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
+        <CoreValues />
 
         {/* Team */}
-        <section className="py-24 bg-card/50">
-          <div className="container mx-auto px-6">
-            <div className="text-center mb-16 animate-fade-in-up">
-              <div className="inline-block mb-3 text-xs font-bold tracking-widest text-muted-foreground uppercase">Leadership</div>
-              <h2 className="font-serif text-4xl md:text-5xl mb-6 text-foreground">
-                Meet Our Team
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Experienced interpreters and technology experts working together to 
-                advance the interpretation profession.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {teamMembers.map((member, index) => (
-                <Card 
-                  key={index} 
-                  className="glass border-border/50 hover:border-nobel-gold/50 transition-all duration-300 animate-fade-in-up"
-                  style={{ animationDelay: member.delay }}
-                >
-                  <CardHeader>
-                    <div className="flex items-center gap-4">
-                      <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center border-2 border-nobel-gold/20">
-                        <span className="text-white font-bold text-lg font-serif">
-                          {member.name.split(' ').map(n => n[0]).join('')}
-                        </span>
-                      </div>
-                      <div>
-                        <CardTitle className="font-serif text-xl text-foreground">{member.name}</CardTitle>
-                        <Badge className="mt-1 bg-nobel-gold/10 text-nobel-gold border-nobel-gold/20">{member.role}</Badge>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground mb-3 leading-relaxed">{member.background}</p>
-                    <Badge className="bg-primary/10 text-primary border-primary/20">
-                      {member.specialization}
-                    </Badge>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
+        <TeamGrid />
 
         {/* Company Stats */}
-        <section className="py-24 bg-background">
-          <div className="container mx-auto px-6">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-              <div className="animate-fade-in-up">
-                <div className="text-5xl font-bold text-nobel-gold mb-2 font-serif">10,000+</div>
-                <div className="text-muted-foreground">Interpreters Trained</div>
-              </div>
-              <div className="animate-fade-in-up stagger-1">
-                <div className="text-5xl font-bold text-nobel-gold mb-2 font-serif">50+</div>
-                <div className="text-muted-foreground">Language Pairs</div>
-              </div>
-              <div className="animate-fade-in-up stagger-2">
-                <div className="text-5xl font-bold text-nobel-gold mb-2 font-serif">95%</div>
-                <div className="text-muted-foreground">Accuracy Improvement</div>
-              </div>
-              <div className="animate-fade-in-up stagger-3">
-                <div className="text-5xl font-bold text-nobel-gold mb-2 font-serif">24/7</div>
-                <div className="text-muted-foreground">Support Available</div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <CompanyStats />
 
         {/* CTA Section */}
         <section className="py-24 bg-card/50">

@@ -1,5 +1,5 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
-import { createClient } from 'jsr:@supabase/supabase-js@2';
+import { createClient } from '@supabase/supabase-js';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -12,9 +12,16 @@ Deno.serve(async (req) => {
   }
 
   try {
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY');
+
+    if (!supabaseUrl || !supabaseAnonKey) {
+      throw new Error('Missing request environment variables');
+    }
+
     const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+      supabaseUrl,
+      supabaseAnonKey,
       { global: { headers: { Authorization: req.headers.get('Authorization')! } } }
     );
 
@@ -29,7 +36,17 @@ Deno.serve(async (req) => {
       );
     }
 
-    const { action, sessionId, metadata } = await req.json();
+    let body;
+    try {
+        body = await req.json();
+    } catch (e) {
+        return new Response(
+            JSON.stringify({ error: 'Invalid JSON body' }),
+            { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+    }
+
+    const { action, sessionId, metadata } = body;
 
     if (!action || !['start', 'end'].includes(action)) {
        return new Response(

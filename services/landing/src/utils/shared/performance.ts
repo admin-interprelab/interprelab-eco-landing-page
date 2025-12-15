@@ -10,6 +10,28 @@ export interface PerformanceMetrics {
   ttfb?: number; // Time to First Byte
 }
 
+// Add missing interfaces for Web Vitals
+interface LayoutShift extends PerformanceEntry {
+  value: number;
+  hadRecentInput: boolean;
+}
+
+interface LargestContentfulPaintEntry extends PerformanceEntry {
+  renderTime: number;
+  loadTime: number;
+  size: number;
+  id: string;
+  url: string;
+}
+
+interface PerformanceEventTiming extends PerformanceEntry {
+    processingStart: number;
+    processingEnd: number;
+    duration: number;
+    cancelable?: boolean;
+    target?: Node | null;
+}
+
 /**
  * Report Web Vitals to console (can be extended to send to analytics)
  */

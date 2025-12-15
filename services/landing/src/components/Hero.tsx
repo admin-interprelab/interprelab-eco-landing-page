@@ -2,7 +2,7 @@ import { Button } from "@/lib/ui/components/ui/button";
 import { Badge } from "@/lib/ui/components/ui/badge";
 import { ArrowRight, User, Shield, Zap, Play } from "lucide-react";
 import { Link } from "react-router-dom";
-import heroBg from '../assets/hero-homepage.jpg';
+
 
 export const Hero = () => {
   return (
@@ -10,7 +10,7 @@ export const Hero = () => {
       {/* Background Image with Parallax */}
       <div
         className="absolute inset-0 z-0 bg-cover bg-center transition-transform duration-700"
-        style={{ backgroundImage: `url(${heroBg})` }}
+
         aria-hidden="true"
       >
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70" />
@@ -50,8 +50,8 @@ export const Hero = () => {
               className="group hover:shadow-glow transition-all duration-300 hover:scale-105" 
               asChild
             >
-              <Link to="/interprebot" aria-label="Start your assessment with InterpreBot">
-                Take the Assessment
+              <Link to="/waitlist" aria-label="Start your free trial">
+                Start Free Trial
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" aria-hidden="true" />
               </Link>
             </Button>
@@ -62,9 +62,9 @@ export const Hero = () => {
               className="group hover:bg-white/10 transition-all duration-300 hover:scale-105" 
               asChild
             >
-              <Link to="/interprecoach" aria-label="Learn more about InterpreCoach AI assistant">
-                <Play className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-300" aria-hidden="true" />
-                Meet InterpreCoach
+              <Link to="/signin" aria-label="Sign in to your account">
+                <User className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-300" aria-hidden="true" />
+                Sign In
               </Link>
             </Button>
           </div>
