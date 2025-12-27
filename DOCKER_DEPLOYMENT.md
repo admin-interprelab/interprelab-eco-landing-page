@@ -151,7 +151,7 @@ services:
       - --entrypoints.websecure.address=:443
       - --providers.docker=true
       - --certificatesresolvers.letsencrypt.acme.tlschallenge=true
-      - --certificatesresolvers.letsencrypt.acme.email=admin.ceo@interprelab.com
+      - --certificatesresolvers.letsencrypt.acme.email=your-email@example.com
       - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
     ports:
       - "80:80"
