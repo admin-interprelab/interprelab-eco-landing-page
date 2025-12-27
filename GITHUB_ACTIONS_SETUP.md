@@ -50,8 +50,7 @@ Go to your GitHub repository → Settings → Secrets and variables → Actions
 2. **VITE_SUPABASE_URL**
    - Value: `https://iokgkrnbawhizmuejluz.supabase.co`
 
-3. **VITE_SUPABASE_ANON_KEY**
-   - Value: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlva2drcm5iYXdoaXptdWVqbHV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE2Mjg5ODcsImV4cCI6MjA3NzIwNDk4N30.GTIKRwPUu44PA209OFLj1WaEEGgKwbBaO0iTc7P-UtY`
+   - Value: <YOUR_SUPABASE_ANON_KEY>
 
 ### **How to Add Secrets:**
 1. Go to `https://github.com/YOUR_USERNAME/interprelab-eco-landing-page/settings/secrets/actions`
