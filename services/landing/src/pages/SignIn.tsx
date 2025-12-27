@@ -9,7 +9,7 @@ import { signInSchema, signUpSchema } from "@/lib/validations";
 const SignIn = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { user, signIn, signUp } = useAuth();
+  const { user, signIn, signUp, signInWithGoogle } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [signInData, setSignInData] = useState({
@@ -88,6 +88,21 @@ const SignIn = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setIsLoading(true);
+    const { error } = await signInWithGoogle();
+    if (error) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to sign in with Google. Please try again.",
+        variant: "destructive",
+      });
+    }
+    // The user will be redirected to Google, so no need to set loading to false here
+    // unless there's an immediate error.
+    setIsLoading(false);
   };
 
   const handleSignUp = async (e: React.FormEvent) => {
@@ -187,6 +202,22 @@ const SignIn = () => {
                   </TabsList>
 
                   <TabsContent value="signin" className="space-y-4 mt-6">
+                    <Button variant="outline" className="w-full" onClick={handleGoogleSignIn}>
+                      <Chrome className="mr-2 h-4 w-4" />
+                      Sign in with Google
+                    </Button>
+
+                    <div className="relative">
+                      <div className="absolute inset-0 flex items-center">
+                        <span className="w-full border-t" />
+                      </div>
+                      <div className="relative flex justify-center text-xs uppercase">
+                        <span className="bg-background px-2 text-muted-foreground">
+                          Or continue with
+                        </span>
+                      </div>
+                    </div>
+
                     <form onSubmit={handleSignIn} className="space-y-4">
                       <div className="space-y-2">
                         <Label htmlFor="signin-email">Email</Label>
