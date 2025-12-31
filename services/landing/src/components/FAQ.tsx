@@ -9,6 +9,22 @@ import { Helmet } from 'react-helmet-async';
 import React from 'react';
 
 export const FAQ = () => {
+  // Helper function to extract text from React elements for SEO schema
+  const extractTextFromReactElement = (element: React.ReactNode): string => {
+    if (typeof element === 'string') return element;
+    if (typeof element === 'number') return element.toString();
+    if (!React.isValidElement(element)) return '';
+    
+    const children = element.props?.children;
+    if (!children) return '';
+    
+    if (Array.isArray(children)) {
+      return children.map(extractTextFromReactElement).join(' ');
+    }
+    
+    return extractTextFromReactElement(children);
+  };
+
   const faqs = [
     {
       question: "What is InterpreLab?",
@@ -125,9 +141,7 @@ export const FAQ = () => {
       "name": faq.question,
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": React.isValidElement(faq.answer) 
-          ? faq.answer.props.children?.toString() || ""
-          : faq.answer
+        "text": extractTextFromReactElement(faq.answer)
       }
     }))
   };

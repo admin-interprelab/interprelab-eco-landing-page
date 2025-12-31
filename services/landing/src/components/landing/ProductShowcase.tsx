@@ -32,7 +32,7 @@ export const ProductShowcase = () => {
         {/* Product Cards - Glass effects with Nobel gold hover */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 max-w-7xl mx-auto">
           {products.map((product, index) => {
-            const Icon = product.icon;
+            const Icon: React.ElementType = product.icon;
             const staggerClass = ['stagger-1', 'stagger-2', 'stagger-3', 'stagger-4'][index] || 'stagger-1';
             return (
               <Card

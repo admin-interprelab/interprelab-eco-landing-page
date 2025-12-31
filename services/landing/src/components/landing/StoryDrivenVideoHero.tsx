@@ -5,7 +5,7 @@ import { cn } from '@/utils/shared';
 interface DataOverlay {
   stat: string;
   label: string;
-  icon?: React.ReactNode;
+  icon: React.ReactNode;
 }
 
 export interface StoryDrivenVideoHeroProps {
