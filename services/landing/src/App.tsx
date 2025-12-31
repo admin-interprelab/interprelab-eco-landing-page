@@ -37,13 +37,13 @@ const MicroserviceRedirect = ({ servicePath }: { servicePath: string }) => {
   
   if (isDev) {
     const portMap: Record<string, number> = {
-      'interprebot': 3001,
+      'interpretest': 3001,
       'interprestudy': 3002,
       'interprecoach': 3004,
       'interpretrack': 3005,
-      'interprehub': 3007,
-      'interprelink': 3007, // Alias for hub
-      'asl-teacher': 3008, // New ASL Teacher microservice
+      'interprelink': 3007,
+      'interpresigns': 3008,
+      'interpreewellness': 3009,
     };
 
     const targetPort = portMap[servicePath.toLowerCase()];
@@ -107,16 +107,15 @@ function App() {
                   <Route path="/signup" element={<SignUp />} />
                   
                   {/* Microservices - Redirect to independent services */}
-                  <Route path="/interprebot/*" element={<MicroserviceRedirect servicePath="interprebot" />} />
+                  <Route path="/interpretest/*" element={<MicroserviceRedirect servicePath="interpretest" />} />
                   <Route path="/interprecoach/*" element={<MicroserviceRedirect servicePath="interprecoach" />} />
-                  <Route path="/interprehub/*" element={<MicroserviceRedirect servicePath="interprehub" />} />
-                  <Route path="/interprelink/*" element={<MicroserviceRedirect servicePath="interprehub" />} />
+                  <Route path="/interprelink/*" element={<MicroserviceRedirect servicePath="interprelink" />} />
                   <Route path="/interprestudy/*" element={<MicroserviceRedirect servicePath="interprestudy" />} />
                   <Route path="/interpretrack/*" element={<MicroserviceRedirect servicePath="interpretrack" />} />
-                  <Route path="/asl-teacher/*" element={<MicroserviceRedirect servicePath="asl-teacher" />} />
+                  <Route path="/interpresigns/*" element={<MicroserviceRedirect servicePath="interpresigns" />} />
                   
                   {/* Pages kept in landing service */}
-                  <Route path="/interpre-wellness" element={<InterpreWellness />} />
+                  <Route path="/interpreewellness" element={<InterpreWellness />} />
                   <Route path="/dilemma" element={<Dilemma />} />
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/calltracker" element={<CallTracker />} />

@@ -5,53 +5,140 @@ import {
   AccordionTrigger,
 } from "@/lib/ui/components/ui/accordion";
 import { Badge } from "@/lib/ui/components/ui/badge";
+import { Helmet } from 'react-helmet-async';
+import React from 'react';
 
 export const FAQ = () => {
   const faqs = [
     {
       question: "What is InterpreLab?",
-      answer:
-        "InterpreLab is an AI-powered platform designed specifically for medical and legal interpreters. We provide three integrated tools: InterpreBot for skills assessment, InterpreCoach for real-time terminology support, and InterpreTrack for performance tracking and earnings management.",
+      answer: (
+        <>
+          <p className="mb-3">InterpreLab helps medical and legal interpreters excel in their careers with AI-powered tools.</p>
+          <p className="mb-2 font-medium">We offer three integrated solutions:</p>
+          <ul className="list-disc list-inside space-y-1 ml-2">
+            <li>InterpreBot – Test and improve your skills</li>
+            <li>InterpreCoach – Get real-time terminology help</li>
+            <li>InterpreTrack – Track your hours and protect your earnings</li>
+          </ul>
+        </>
+      ),
     },
     {
       question: "How does InterpreBot assess my interpretation skills?",
-      answer:
-        "InterpreBot uses advanced AI to analyze your interpretation sessions across multiple dimensions including accuracy, fluency, terminology usage, cultural competency, and ethical compliance. You receive detailed feedback with personalized improvement recommendations after each assessment.",
+      answer: (
+        <>
+          <p className="mb-3">InterpreBot analyzes your sessions with AI and gives you detailed feedback on:</p>
+          <ul className="list-disc list-inside space-y-1 ml-2">
+            <li>Accuracy and fluency</li>
+            <li>Terminology usage</li>
+            <li>Cultural competency</li>
+            <li>Ethical compliance</li>
+          </ul>
+          <p className="mt-3">You receive personalized improvement recommendations after each assessment.</p>
+        </>
+      ),
     },
     {
       question: "Is my data secure and HIPAA compliant?",
-      answer:
-        "Absolutely. We take security seriously. InterpreLab is fully HIPAA compliant, SOC 2 certified, and ISO 27001 certified. All data is encrypted both in transit and at rest. We never share your personal information or interpretation sessions with third parties.",
+      answer: (
+        <>
+          <p className="mb-3">Yes. Your data stays secure with bank-level encryption and industry-leading certifications:</p>
+          <ul className="list-disc list-inside space-y-1 ml-2">
+            <li>HIPAA compliant</li>
+            <li>SOC 2 certified</li>
+            <li>ISO 27001 certified</li>
+          </ul>
+          <p className="mt-3">We never share your personal information or interpretation sessions with anyone.</p>
+        </>
+      ),
     },
     {
       question: "Can I use InterpreCoach during live interpretation sessions?",
-      answer:
-        "Yes! InterpreCoach is a browser extension that provides real-time terminology support during your live sessions. It runs discreetly in the background and offers instant access to medical and legal terminology databases without interrupting your workflow.",
+      answer: (
+        <>
+          <p>Yes! InterpreCoach runs as a browser extension during your live sessions.</p>
+          <p className="mt-3">It provides instant access to medical and legal terminology databases without interrupting your workflow.</p>
+        </>
+      ),
     },
     {
       question: "What languages does InterpreLab support?",
-      answer:
-        "InterpreLab currently supports over 50 languages including Spanish, Mandarin, Arabic, French, Russian, Portuguese, and many more. We're constantly expanding our language offerings based on user demand. Contact us if you need support for a specific language pair.",
+      answer: (
+        <>
+          <p className="mb-3">We support over 50 languages including Spanish, Mandarin, Arabic, French, Russian, Portuguese, and many more.</p>
+          <p>Need a specific language pair? Contact us – we're constantly expanding based on user demand.</p>
+        </>
+      ),
     },
     {
       question: "Do you offer training for healthcare organizations?",
-      answer:
-        "Yes, we offer enterprise solutions for healthcare systems, hospitals, and interpretation agencies. Our platform can be customized for institutional training programs with admin dashboards, team analytics, and white-label options. Contact our sales team for more information.",
+      answer: (
+        <>
+          <p className="mb-3">Yes. We provide enterprise solutions for healthcare systems, hospitals, and interpretation agencies.</p>
+          <p className="mb-2 font-medium">Our platform includes:</p>
+          <ul className="list-disc list-inside space-y-1 ml-2">
+            <li>Admin dashboards</li>
+            <li>Team analytics</li>
+            <li>White-label options</li>
+          </ul>
+          <p className="mt-3">Contact our sales team for custom pricing.</p>
+        </>
+      ),
     },
     {
       question: "How much does InterpreLab cost?",
-      answer:
-        "We offer flexible pricing plans to suit different needs. Individual interpreters can start with our free trial, then choose from monthly or annual subscriptions. Enterprise clients receive custom pricing based on team size and features. Visit our pricing page or contact sales for detailed information.",
+      answer: (
+        <>
+          <p className="mb-3">We offer flexible pricing plans:</p>
+          <ul className="list-disc list-inside space-y-1 ml-2">
+            <li><strong>Individual interpreters:</strong> Start with a free trial, then choose monthly or annual plans</li>
+            <li><strong>Enterprise teams:</strong> Custom pricing based on team size and features</li>
+          </ul>
+          <p className="mt-3">Visit our pricing page or contact sales for details.</p>
+        </>
+      ),
     },
     {
       question: "Can I track my interpretation sessions and earnings?",
-      answer:
-        "Yes! InterpreTrack automatically logs your interpretation sessions, tracks your hours, calculates your earnings, and generates reports for invoicing and tax purposes. It's perfect for freelance interpreters who need to manage multiple clients and track their business performance.",
+      answer: (
+        <>
+          <p className="mb-3">Yes! InterpreTrack automatically:</p>
+          <ul className="list-disc list-inside space-y-1 ml-2">
+            <li>Logs your interpretation sessions</li>
+            <li>Tracks your hours</li>
+            <li>Calculates your earnings</li>
+            <li>Generates reports for invoicing and taxes</li>
+          </ul>
+          <p className="mt-3">Perfect for freelance interpreters managing multiple clients.</p>
+        </>
+      ),
     },
   ];
 
+  // Generate FAQ schema markup for SEO
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": React.isValidElement(faq.answer) 
+          ? faq.answer.props.children?.toString() || ""
+          : faq.answer
+      }
+    }))
+  };
+
   return (
     <section className="py-20 px-6 bg-background border-t border-border/50">
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify(faqSchema)}
+        </script>
+      </Helmet>
       <div className="container mx-auto max-w-4xl">
         <div className="text-center mb-12">
           <Badge className="glass px-6 py-3 mb-4 border-primary/20">

@@ -30,12 +30,12 @@ export const Navigation = () => {
     {
       label: t('solutions'),
       submenu: [
-        { label: 'InterpreBot', href: '/interprebot' },
+        { label: 'InterpreTest', href: '/interpretest' },
         { label: 'InterpreCoach', href: '/interprecoach' },
         { label: 'InterpreTrack', href: '/interpretrack' },
         { label: 'InterpreStudy', href: '/interprestudy' },
-        { label: 'ASL Teacher', href: '/asl-teacher' },
-        { label: 'Interpre-Wellness', href: '/interpre-wellness' },
+        { label: 'InterpreSigns', href: '/interpresigns' },
+        { label: 'InterpreWellness', href: '/interpreewellness' },
         { label: 'InterpreLink', href: '/interprelink' },
       ]
     },

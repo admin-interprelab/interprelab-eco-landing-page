@@ -15,14 +15,13 @@ export const ProductShowcase = () => {
   return (
     <section className="py-32 px-6 relative bg-card/50" id="solutions" aria-label="Our products and solutions">
       <div className="container mx-auto relative z-10">
-        {/* Header - Dilemma style with Nobel gold accent */}
+        {/* Header - SEO optimized with Nobel gold accent */}
         <div className="text-center mb-20 space-y-6">
           <div className="inline-block mb-3 text-xs font-bold tracking-widest text-muted-foreground uppercase animate-fade-in-up stagger-1">
             Complete Ecosystem
           </div>
           <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl leading-tight text-foreground animate-fade-in-up stagger-2">
-            Our Solutions.
-            <br />
+            Medical Interpreter Training<br />Solutions
             <span className="text-muted-foreground italic font-normal text-3xl md:text-4xl block mt-4">
               Built For You.
             </span>

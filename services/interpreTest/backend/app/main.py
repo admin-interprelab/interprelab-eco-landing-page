@@ -56,6 +56,5 @@ async def health_check():
         "service": "interpretest-backend"
     }
 
-# TODO: Import and include API routers
-# from app.api import analysis
-# app.include_router(analysis.router, prefix="/api")
+from app.api import analysis
+app.include_router(analysis.router, prefix="/api/v1")

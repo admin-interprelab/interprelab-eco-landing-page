@@ -17,9 +17,9 @@ export const products: Product[] = [
     name: "InterpreBot",
     tagline: "Skills Assessment",
     features: [
-      "AI-powered linguistic analysis",
-      "Grammar & syntax feedback",
-      "Personalized learning paths"
+      "Discover your weak spots instantly",
+      "Get detailed grammar feedback in seconds",
+      "Follow a custom plan designed for your goals"
     ],
     icon: Brain,
     link: "/interprebot",
@@ -30,9 +30,9 @@ export const products: Product[] = [
     name: "InterpreCoach",
     tagline: "Real-Time Assistant",
     features: [
-      "Live terminology support",
-      "Voice & pitch regulation",
-      "Automatic note-taking"
+      "Never forget a medical term mid-session",
+      "Sound more confident with voice coaching",
+      "Auto-capture key points while you focus on interpreting"
     ],
     icon: Chrome,
     link: "/interprecoach",
@@ -43,9 +43,9 @@ export const products: Product[] = [
     name: "InterpreStudy",
     tagline: "Interactive Training",
     features: [
-      "Role-play simulations",
-      "DCS Schema training",
-      "Vicarious Trauma management"
+      "Practice real scenarios before they happen",
+      "Master difficult conversations with confidence",
+      "Protect your mental health from daily trauma"
     ],
     icon: GraduationCap,
     link: "/interprestudy",
@@ -56,9 +56,9 @@ export const products: Product[] = [
     name: "InterpreLink",
     tagline: "Community Network",
     features: [
-      "Professional forums",
-      "Job board access",
-      "Mock practice groups"
+      "Connect with interpreters who understand you",
+      "Find better-paying opportunities",
+      "Practice together and grow faster"
     ],
     icon: Users,
     link: "/interprelink",
@@ -69,9 +69,9 @@ export const products: Product[] = [
     name: "InterpreTrack",
     tagline: "Earnings Protection",
     features: [
-      "Automated call logging",
-      "Earnings calculator",
-      "PDF/Excel export"
+      "Never lose track of billable minutes again",
+      "See exactly what you've earned in real-time",
+      "Generate professional invoices instantly"
     ],
     icon: Shield,
     link: "/interpretrack",

@@ -5,7 +5,8 @@
   "packageManager": "npm@11.5.1",
   "workspaces": [
     "services/*",
-    "packages/*"
+    "packages/*",
+    "packages/config/*"
   ],
   "type": "module",
   "scripts": {
@@ -74,6 +75,7 @@
     "react-countup": "^6.5.3",
     "react-day-picker": "^9.0.0",
     "react-dom": "^19.2.1",
+    "react-helmet-async": "^2.0.5",
     "react-hook-form": "^7.61.1",
     "react-resizable-panels": "^2.1.9",
     "react-router-dom": "^6.30.1",

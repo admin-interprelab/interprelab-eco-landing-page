@@ -27,19 +27,19 @@ export const Hero = () => {
             AI-Powered Interpretation Platform
           </Badge>
 
-          {/* Main Headline - Simplified */}
+          {/* Main Headline - SEO Optimized */}
           <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-tight">
             <span className="bg-gradient-primary bg-clip-text text-transparent inline-block mb-2">
-              Master Medical
+              Master Medical Interpretation
             </span>
             <span className="block text-white drop-shadow-md">
-              Interpretation
+              with AI-Powered Training
             </span>
           </h1>
 
-          {/* Subtitle - Concise */}
+          {/* Subtitle - Benefit-Focused */}
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Train smarter with AI-driven assessment, real-time coaching, and automated tracking.
+            Build confidence, reduce stress, and protect your earnings with AI-powered tools designed by interpreters, for interpreters.
           </p>
 
           {/* CTA Buttons */}
@@ -69,9 +69,9 @@ export const Hero = () => {
             </Button>
           </div>
 
-          {/* Trust Indicators */}
+          {/* Trust Indicators - Active Voice */}
           <div className="pt-8 text-sm text-muted-foreground animate-slide-up">
-            <p>Trusted by healthcare systems and legal firms across 50+ countries</p>
+            <p>Healthcare systems and legal firms in 50+ countries trust InterpreLab</p>
             <div className="flex justify-center gap-8 mt-4 opacity-60">
               <span>🏥 Medical Centers</span>
               <span>⚖️ Legal Firms</span>

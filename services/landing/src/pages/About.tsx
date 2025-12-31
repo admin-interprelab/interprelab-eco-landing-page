@@ -7,6 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from "@/lib/ui";
 import { MapPin, Users, ArrowRight, Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Helmet } from 'react-helmet-async';
 
 import { MissionVision } from "@/components/about/MissionVision";
 import { CoreValues } from "@/components/about/CoreValues";
@@ -27,6 +28,31 @@ const About = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-nobel-gold selection:text-white">
+      <Helmet>
+        <title>About InterpreLab | AI-Powered Interpreter Training Platform</title>
+        <meta 
+          name="description" 
+          content="Learn about InterpreLab, founded by interpreters to transform medical and legal interpretation with AI-powered training, real-time assistance, and professional development tools." 
+        />
+        <meta name="keywords" content="about interprelab, medical interpreter company, AI interpreter platform, interpreter training, healthcare interpretation services" />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://interprelab.com/about" />
+        <meta property="og:title" content="About InterpreLab - Built by Interpreters, for Interpreters" />
+        <meta property="og:description" content="We create AI tools that help you work with confidence, reduce stress, and earn what you deserve." />
+        <meta property="og:image" content="https://interprelab.com/og-image-about.jpg" />
+
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://interprelab.com/about" />
+        <meta property="twitter:title" content="About InterpreLab - Built by Interpreters, for Interpreters" />
+        <meta property="twitter:description" content="We create AI tools that help you work with confidence, reduce stress, and earn what you deserve." />
+        <meta property="twitter:image" content="https://interprelab.com/og-image-about.jpg" />
+
+        {/* Canonical URL */}
+        <link rel="canonical" href="https://interprelab.com/about" />
+      </Helmet>
       
       {/* Navigation */}
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-background/90 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'}`}>
@@ -75,9 +101,7 @@ const About = () => {
                 About <span className="italic text-nobel-gold">InterpreLab</span>
               </h1>
               <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-                Founded by interpreters, for interpreters. We're on a mission to revolutionize 
-                the interpretation industry through innovative AI technology and comprehensive 
-                professional development.
+                Built by interpreters who understand your challenges. We create AI tools that help you work with confidence, reduce stress, and earn what you deserve.
               </p>
               <div className="flex items-center gap-6 text-sm text-muted-foreground">
                 <div className="flex items-center gap-2">

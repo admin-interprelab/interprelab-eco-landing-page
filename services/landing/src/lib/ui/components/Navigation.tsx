@@ -32,11 +32,13 @@ export const Navigation = () => {
     { 
       label: t('solutions'), 
       submenu: [
-        { label: 'InterpreBot', href: '/interprebot' },
+        { label: 'InterpreTest', href: '/interpretest' },
         { label: 'InterpreCoach', href: '/interprecoach' },
         { label: 'InterpreStudy', href: '/interprestudy' },
         { label: 'InterpreTrack', href: '/interpretrack' },
-        { label: 'InterpreHub', href: '/interpre-hub' },
+        { label: 'InterpreLink', href: '/interprelink' },
+        { label: 'InterpreSigns', href: '/interpresigns' },
+        { label: 'InterpreWellness', href: '/interpreewellness' },
       ]
     },
     { 
