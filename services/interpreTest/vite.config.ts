@@ -19,7 +19,7 @@ export default defineConfig({
       threshold: 1024,
     }),
   ],
-  base: '/interprebot',
+  base: '/interpretest',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

@@ -12,8 +12,39 @@ logger = logging.getLogger(__name__)
 async def lifespan(app: FastAPI):
     # Startup
     logger.info("Starting interpreTest backend...")
-    # TODO: Load NLP models here
-    # TODO: Initialize database connections
+    
+    # =========================================================================
+    # TODO: AGENT IMPLEMENTATION GUIDE - CORE ASSESSMENT LOGIC
+    # =========================================================================
+    # 1. Initialize Gemini Client:
+    #    - Import `google.generativeai`
+    #    - Load API key from env `GEMINI_API_KEY`
+    #    - Configure model: `gemini-1.5-pro`
+    #
+    # 2. Implement Audio Analyis Endpoint (in `app/api/analysis.py`):
+    #    - Route: POST /api/v1/assess/audio
+    #    - Input: `file: UploadFile` (audio/wav, audio/mp3)
+    #    - Logic:
+    #      a. Save temp file or stream bytes.
+    #      b. Transcribe Audio (using Gemini Audio capability or Whisper).
+    #      c. Analyze Transcription & Audio:
+    #         - Prompt: "You are a medical interpreter examiner. Analyze this audio for:
+    #           1. Grammatical accuracy (Verb tenses, syntax)
+    #           2. Medical terminology precision
+    #           3. Tone/Professionalism"
+    #      d. Return JSON Structure:
+    #         {
+    #           "score": 0-100,
+    #           "transcription": "...",
+    #           "feedback": { "grammar": ["..."], "vocab": ["..."] },
+    #           "strengths": ["..."],
+    #           "improvements": ["..."]
+    #         }
+    #
+    # 3. Database Integration:
+    #    - Save the result to Supabase table `assessments`.
+    # =========================================================================
+
     yield
     # Shutdown
     logger.info("Shutting down interpreTest backend...")

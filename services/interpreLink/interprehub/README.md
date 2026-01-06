@@ -1,6 +1,6 @@
-# InterpreTest (Assessment Bot) Microservice
+# InterpreLink (App Hub) Microservice
 
-InterpreTest is an AI-driven assessment tool tailored for medical interpreters. It evaluates linguistic accuracy, terminology usage, and soft skills using advanced speech analysis.
+InterpreLink is the central community and resource hub for InterpreLab, offering forums, job boards, and professional networking features.
 
 ## Architecture
 
@@ -10,32 +10,32 @@ This service follows a 3-layer architecture:
 graph TD
     subgraph "Frontend Layer (Vite/React)"
         UI[User Interface]
-        Recorder[Audio Recorder]
+        Forum[Social Feed]
     end
 
     subgraph "Backend Layer (FastAPI)"
         API[FastAPI Service<br/>Port: 800X]
-        STT[Speech-to-Text<br/>(Whisper/Gemini)]
-        NLP[Grammar & Tone Analysis<br/>(Gemini 1.5 Pro)]
+        Mod[AI Content Moderation]
+        Recs[Recommendation Engine]
     end
 
     subgraph "Data Layer (Supabase)"
         DB[(PostgreSQL)]
-        Auth[Authentication]
+        Social[Social Graph]
     end
 
-    UI --> Recorder
-    Recorder --> API
-    API --> STT
-    API --> NLP
-    NLP --> DB
-    UI --> Auth
+    UI --> Forum
+    Forum --> API
+    API --> Mod
+    API --> Recs
+    Mod --> DB
+    Recs --> Social
 ```
 
 ## Tech Stack
 
-- **Frontend**: React, TanStack Query, Shadcn/UI
-- **Backend**: Python (FastAPI), Google Gemini 1.5 Pro
+- **Frontend**: React, TanStack Query
+- **Backend**: Python (FastAPI)
 - **Database**: Supabase (PostgreSQL)
 
 ## Getting Started

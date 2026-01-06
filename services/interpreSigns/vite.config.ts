@@ -19,7 +19,7 @@ export default defineConfig({
       threshold: 1024,
     }),
   ],
-  base: '/asl-teacher',
+  base: '/interpresigns',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -28,12 +28,12 @@ export default defineConfig({
   server: {
     port: 3008,
   },
+  esbuild: {
+    drop: ['console', 'debugger'],
+  },
   build: {
     // Aggressive minification
     minify: 'esbuild',
-    esbuildOptions: {
-      drop: ['console', 'debugger'],
-    },
     // Target modern browsers
     target: 'es2020',
     // Source maps disabled for production

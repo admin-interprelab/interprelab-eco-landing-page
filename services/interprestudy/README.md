@@ -1,108 +1,56 @@
-# InterpreStudy Service
+# InterpreStudy (Training Platform) Microservice
 
-Specialized AI-powered training platform for medical interpreters.
-
-## Features
-
-- **Interactive Modules**: Video-based training modules with assessments
-- **Core Dynamics Training**: Professional development courses
-- **Conversation Simulator**: Real-time practice with AI
-- **Smart Flashcards**: Adaptive learning system
-- **AI Quiz**: Intelligent assessment generation
-- **Body Mapper**: Anatomical terminology training
-- **Scenario Generator**: Custom medical scenarios
-- **Terminology Lookup**: Medical terminology database
-- **Interactive AI Chat**: General learning assistant
-- **Study Settings**: Personalized learning preferences
-
-## Development
-
-```bash
-# Install dependencies
-npm install
-
-# Run development server
-npm run dev
-# Available at http://localhost:3002/interprestudy
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-```
-
-## Deployment
-
-### Docker
-
-```bash
-# Build image
-docker build -t interprestudy-service .
-
-# Run container
-docker run -p 8080:80 interprestudy-service
-```
-
-### Google Cloud Run
-
-```bash
-# Deploy using Cloud Build
-gcloud builds submit --config cloudbuild.yaml
-
-# Or manual deployment
-gcloud run deploy interprestudy-service \
-  --image gcr.io/PROJECT_ID/interprestudy-service \
-  --platform managed \
-  --region us-central1 \
-  --allow-unauthenticated
-```
-
-## Environment Variables
-
-No environment variables required for basic functionality.
-
-For advanced features (Gemini API integration), add:
-
-- `VITE_GEMINI_API_KEY` - Google Gemini API key
+InterpreStudy is a comprehensive Learning Management System (LMS) designed for interpreter training. It features AI-generated curriculum, interactive modules, and progress tracking.
 
 ## Architecture
 
-- **Framework**: React 19 + TypeScript
-- **Builder**: Vite  
-- **Styling**: Tailwind CSS + shadcn/ui
-- **Routing**: React Router (basename: `/interprestudy`)
-- **Production Server**: Nginx
+This service follows a 3-layer architecture:
 
-## Components
+```mermaid
+graph TD
+    subgraph "Frontend Layer (Vite/React)"
+        UI[User Interface]
+        LMS[Course Player]
+    end
 
-### Pages
+    subgraph "Backend Layer (FastAPI)"
+        API[FastAPI Service<br/>Port: 800X]
+        GenAI[Curriculum Generator<br/>(Gemini 1.5 Pro)]
+    end
 
-- `InterpreStudy.tsx` - Main page with tabbed interface
+    subgraph "Data Layer (Supabase)"
+        DB[(PostgreSQL)]
+        Auth[Authentication]
+    end
 
-### Components
+    UI --> LMS
+    LMS --> API
+    API --> GenAI
+    GenAI --> DB
+    UI --> Auth
+```
 
-- `interprestudy/InteractiveChat.tsx` - AI chat interface
-- `interprestudy/TerminologyLookup.tsx` - Medical terms
-- `interprestudy/StudySettings.tsx` - User preferences
-- `interprestudy/modules/` - Training modules
+## Tech Stack
 
-## Bundle Size
+- **Frontend**: React, React Router, Tailwind CSS
+- **Backend**: Python (FastAPI)
+- **Database**: Supabase (PostgreSQL)
 
-Target: < 200KB gzipped
+## Getting Started
 
-Optimizations:
+1. **Frontend**:
 
-- Code splitting
-- Tree shaking
-- Gzip compression
-- Manual chunks for vendors
+    ```bash
+    npm install
+    npm run dev
+    ```
 
-## Service URL
+2. **Backend**:
 
-- **Development**: `http://localhost:3002/interprestudy`
-- **Production**: `https://yourdomain.com/interprestudy`
-
-## Status
-
-✅ Service extracted and operational
+    ```bash
+    cd backend
+    python -m venv venv
+    ./venv/Scripts/activate
+    pip install -r requirements.txt
+    fastapi dev app/main.py
+    ```

@@ -12,6 +12,33 @@ logger = logging.getLogger(__name__)
 async def lifespan(app: FastAPI):
     # Startup
     logger.info("Starting interpreTrack backend...")
+    
+    # =========================================================================
+    # TODO: AGENT IMPLEMENTATION GUIDE - ANALYTICS & AGGREGATION
+    # =========================================================================
+    # 1. Data Ingestion Endpoint (in `app/api/report.py`):
+    #    - Route: POST /api/v1/log-session
+    #    - Input: JSON
+    #      {
+    #        "user_id": "uuid",
+    #        "session_type": "practice" | "live",
+    #        "duration_seconds": 120,
+    #        "terms_used": 15,
+    #        "accuracy_score": 85
+    #      }
+    #    - Logic:
+    #      a. Validate input.
+    #      b. Async write to Supabase `session_logs` table.
+    #      c. Trigger recalculation of User Stats (or let a Supabase Trigger do it).
+    #
+    # 2. Aggregation Logic:
+    #    - Endpoint: GET /api/v1/stats/{user_id}
+    #    - Logic:
+    #      - Query `session_logs` for last 30 days.
+    #      - Calculate: Total Hours, Average Accuracy, Most Used Terms.
+    #      - Return JSON for Recharts visualization.
+    # =========================================================================
+
     yield
     # Shutdown
     logger.info("Shutting down interpreTrack backend...")

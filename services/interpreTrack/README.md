@@ -1,33 +1,56 @@
-# InterpreTrack Service
+# InterpreTrack (Analytics Dashboard) Microservice
 
-## Overview
-
-InterpreTrack is a dedicated microservice for interpreter earnings tracking and call logging.
-
-## Development
-
-### Prerequisites
-
-- Node.js 18+
-- npm
-
-### Commands
-
-- `npm run dev`: Start development server (port 3005)
-- `npm run build`: Build for production
-- `npm run lint`: Run ESLint
-- `npm run test`: Run Vitest unit tests
+InterpreTrack provides deep insights into an interpreter's performance over time, visualizing metrics like accuracy trends, vocabulary growth, and session history.
 
 ## Architecture
 
-- **Frontend**: React + Vite + Tailwind CSS
-- **Microservice Type**: Client-side application (serves as a feature module)
-- **State Management**: React Query (planned)
-- **Routing**: React Router (basename `/interpretrack`)
+This service follows a 3-layer architecture:
 
-## Directory Structure
+```mermaid
+graph TD
+    subgraph "Frontend Layer (Vite/React)"
+        UI[User Interface]
+        Charts[Recharts / D3]
+    end
 
-- `src/components`: Reusable UI components
-- `src/pages`: Page views (Dashboard, Logs, Calculator)
-- `src/lib`: Shared utilities and UI library code
-- `src/test`: Test setup and configuration
+    subgraph "Backend Layer (FastAPI)"
+        API[FastAPI Service<br/>Port: 800X]
+        Aggregator[Data Aggregation Logic]
+    end
+
+    subgraph "Data Layer (Supabase)"
+        DB[(PostgreSQL)]
+        Logs[Activity Logs]
+    end
+
+    UI --> Charts
+    Charts --> API
+    API --> Aggregator
+    Aggregator --> DB
+    Aggregator --> Logs
+```
+
+## Tech Stack
+
+- **Frontend**: React, Recharts, Tailwind CSS
+- **Backend**: Python (FastAPI), Pandas (for data processing)
+- **Database**: Supabase (PostgreSQL)
+
+## Getting Started
+
+1. **Frontend**:
+
+    ```bash
+    npm install
+    npm run dev
+    ```
+
+2. **Backend**:
+
+    ```bash
+    cd backend
+    python -m venv venv
+    ./venv/Scripts/activate
+    pip install -r requirements.txt
+    fastapi dev app/main.py
+    ```

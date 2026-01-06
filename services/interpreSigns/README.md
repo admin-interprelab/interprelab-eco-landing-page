@@ -1,6 +1,6 @@
-# InterpreTest (Assessment Bot) Microservice
+# InterpreSigns (ASL Teacher) Microservice
 
-InterpreTest is an AI-driven assessment tool tailored for medical interpreters. It evaluates linguistic accuracy, terminology usage, and soft skills using advanced speech analysis.
+InterpreSigns is an AI-powered American Sign Language (ASL) training platform that uses computer vision to track hand movements and provide real-time feedback.
 
 ## Architecture
 
@@ -10,13 +10,12 @@ This service follows a 3-layer architecture:
 graph TD
     subgraph "Frontend Layer (Vite/React)"
         UI[User Interface]
-        Recorder[Audio Recorder]
+        CV[Computer Vision Lib<br/>(TensorFlow.js / MediaPipe)]
     end
 
     subgraph "Backend Layer (FastAPI)"
         API[FastAPI Service<br/>Port: 800X]
-        STT[Speech-to-Text<br/>(Whisper/Gemini)]
-        NLP[Grammar & Tone Analysis<br/>(Gemini 1.5 Pro)]
+        Logic[Progress & Verification Logic]
     end
 
     subgraph "Data Layer (Supabase)"
@@ -24,18 +23,16 @@ graph TD
         Auth[Authentication]
     end
 
-    UI --> Recorder
-    Recorder --> API
-    API --> STT
-    API --> NLP
-    NLP --> DB
+    UI --> CV
+    CV --> Logic
+    Logic --> DB
     UI --> Auth
 ```
 
 ## Tech Stack
 
-- **Frontend**: React, TanStack Query, Shadcn/UI
-- **Backend**: Python (FastAPI), Google Gemini 1.5 Pro
+- **Frontend**: React, TensorFlow.js/Handpose, Tailwind CSS
+- **Backend**: Python (FastAPI)
 - **Database**: Supabase (PostgreSQL)
 
 ## Getting Started
